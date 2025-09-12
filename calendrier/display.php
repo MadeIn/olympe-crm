@@ -1,10 +1,10 @@
 <?  $chemin = $_SERVER['DOCUMENT_ROOT'];
-	include($chemin . "/inc/users.inc"); 
-	include($chemin . "/inc/divers.inc");
-	include($chemin . "/inc/object.inc");
-	include($chemin . "/inc/produits.inc");
-	include($chemin . "/inc/email.inc");
-	include($chemin . "/inc/db.inc");
+	include($chemin . "/inc/users.php"); 
+	include($chemin . "/inc/divers.php");
+	include($chemin . "/inc/object.php");
+	include($chemin . "/inc/produits.php");
+	include($chemin . "/inc/email.php");
+	include($chemin . "/inc/db.php");
 	
 	$base = new Db();
 	$base->Connect();
@@ -26,7 +26,7 @@
 					echo '<option value="' . $rtt["type_num"] . '"';
 					if ($rtt["type_num"]==1)
 						echo " SELECTED";
-					echo '>' . utf8_encode($rtt["type_nom"]) . '</option>';
+					echo '>' . $rtt["type_nom"] . '</option>';
 				}
 						
 				echo '	</select>

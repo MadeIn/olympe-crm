@@ -1,4 +1,4 @@
-<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.inc"); 
+<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.php"); 
 $titre_page = "Dashboard - Olympe Mariage";
 $desc_page = "Dashboard - Olympe Mariage";
 
@@ -166,7 +166,7 @@ function confirme() {
 									
 									$date_test = $annee_deb . "-" . $mois_deb . "-" . $jour_deb;
 									if ($jour!=$date_test) {
-										echo '<tr class="danger"><td colspan="6" align="center"><strong>' . utf8_encode(format_date($date_test,0,1)) . '</strong></td></tr>';
+										echo '<tr class="danger"><td colspan="6" align="center"><strong>' . format_date($date_test,0,1) . '</strong></td></tr>';
 										$jour = $date_test;
 									}
 									echo '<tr>

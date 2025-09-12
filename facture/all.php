@@ -1,4 +1,4 @@
-<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_invite.inc"); ?>
+<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_invite.php"); ?>
 <html>
 <head>
 <title></title>
@@ -27,7 +27,7 @@
 		}
 
 		if ($rcc["client_genre"]==0)
-			$genre = "Chère";
+			$genre = "ChÃ¨re";
 		else
 			$genre = "Cher";
 		$commande = montantCommande($rcc["id"]);
@@ -53,7 +53,7 @@
 							<td>DATE : <? echo format_date($rcc["facture_date"],11,1) ?></td>
 						</tr>
 						<tr>
-							<td>N° CLIENT : <? echo $rcc["client_num"] ?></td>
+							<td>NÂ° CLIENT : <? echo $rcc["client_num"] ?></td>
 						</tr>
 					</table>
 				</td>
@@ -63,11 +63,11 @@
 			<thead>
 				<tr>
 					<th>Description</th>
-					<th>Référence</th>					
+					<th>RÃ©fÃ©rence</th>					
 					<th class="text-center">Taille</th>
 					<th class="text-center">Prix HT</th>
 					<th class="text-center">TVA</th>
-					<th class="text-center">Quantité</th>
+					<th class="text-center">QuantitÃ©</th>
 					<th class="text-center">Remise</th>
 					<th class="text-center">Montant TTC</th>
 				</tr>
@@ -92,8 +92,8 @@
 							<td>' . $rpp["categorie_nom"] . ' - ' . $rpp["marque_nom"] . '</td>
 							<td>' . $rpp["produit_nom"] . '</td>
 							<td class="text-center">' . $rpp["taille_nom"] . '</td>
-							<td class="text-center">' . number_format($rpp["montant_ht"],2,"."," ") . ' €</td>
-							<td class="text-center">' . number_format($rpp["montant_tva"],2,"."," ") . ' €</td>
+							<td class="text-center">' . number_format($rpp["montant_ht"],2,"."," ") . ' Â€</td>
+							<td class="text-center">' . number_format($rpp["montant_tva"],2,"."," ") . ' Â€</td>
 							<td class="text-center">' . $rpp["qte"] . '</td>
 							<td class="text-center">';
 					if ($rpp["commande_produit_remise_type"]!=0) {
@@ -135,7 +135,7 @@
 					<td class="text-center">TVA 20% : </td>
 					<td class="text-center">Total TTC : </td>
 					<td class="text-center">Remise : </td>
-					<td class="text-center">Total à Payer : </td>
+					<td class="text-center">Total Ã  Payer : </td>
 				</tr>
 				<tr>
 					<td class="text-center"><strong><? echo number_format($commande["commande_ht"],2,"."," ") ?> &euro;</strong></td>
@@ -148,7 +148,7 @@
 		<? } ?>
 		<table class="table tablepaiement">
 			<tr>
-				<td><em><strong>Mode de Règlement</strong></em><br>
+				<td><em><strong>Mode de RÃ¨glement</strong></em><br>
 				<? echo $rcc["paiement_titre"] ?></td>
 				<td>
 				<? if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes 
@@ -157,7 +157,7 @@
 					$pp = mysql_query($sql);
 					while ($rpp=mysql_fetch_array($pp)) {
 						echo '<tr>
-								<td><strong>Acompte ' . $rpp["paiement_num"] . ' versé</td>
+								<td><strong>Acompte ' . $rpp["paiement_num"] . ' versÃ©</td>
 								<td>' . number_format($rpp["paiement_montant"],2,"."," ") . '&euro;</td>
 							  </tr>';
 					}
@@ -169,19 +169,19 @@
 		<table class="table tablebanque" style="border: solid 1px #CCC;">
 			<tbody>
 				<tr>
-					<td colspan="4" style="border-top: none!important;">Référence Bancaire<br></td>
+					<td colspan="4" style="border-top: none!important;">RÃ©fÃ©rence Bancaire<br></td>
 				</tr>
 				<tr>
 					<td colspan="4"><? echo $rcc["banque_nom"] ?></td>
 				</tr>
 				<tr>
-					<td>Code établissement<br>
+					<td>Code Ã©tablissement<br>
 					<? echo $rcc["banque_code_etablissement"] ?></td>
 					<td>Code guichet<br>
 					<? echo $rcc["banque_code_guichet"] ?></td>
-					<td>Numéro de compte<br>
+					<td>NumÃ©ro de compte<br>
 					<? echo $rcc["banque_compte"] ?></td>
-					<td>Clé RIB<br>
+					<td>ClÃ© RIB<br>
 					<? echo $rcc["banque_cle_rib"] ?></td>
 				</tr>
 				<tr>
@@ -193,11 +193,11 @@
 					</td>
 			</tbody>
 		</table>
-		<p><small>Tout retard de paiement fera l'objet d'une pénalité de retard, exigible de plein droit, égale au taux de refinancement de la Banque Centrale Européenne (BCE) majorée de 10 points, et ce sans qu'un rappel soit nécessaire. Le débiteur des sommes dues qui ne seraient pas réglées à bonne date est redevable d'une indemnité forfaitaire pour frais de recouvrement d'un montant de 40 € (article D.441-5 du Code de Commerce).<br>
-		Réserve de propriété : les produits restent la propriété du vendeur jusqu'au paiement complet du prix.</small></p>
+		<p><small>Tout retard de paiement fera l'objet d'une pÃ©nalitÃ© de retard, exigible de plein droit, Ã©gale au taux de refinancement de la Banque Centrale EuropÃ©enne (BCE) majorÃ©e de 10 points, et ce sans qu'un rappel soit nÃ©cessaire. Le dÃ©biteur des sommes dues qui ne seraient pas rÃ©glÃ©es Ã  bonne date est redevable d'une indemnitÃ© forfaitaire pour frais de recouvrement d'un montant de 40 Â€ (article D.441-5 du Code de Commerce).<br>
+		RÃ©serve de propriÃ©tÃ© : les produits restent la propriÃ©tÃ© du vendeur jusqu'au paiement complet du prix.</small></p>
 		<footer class="text-center ">
-			<span>OLYMPE - <? echo utf8_encode($rcc["showroom_adr1"]) ?> <? if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <? echo $rcc["showroom_cp"] ?> <? echo $rcc["showroom_ville"] ?> - <? echo $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
-			<small>N° <? echo $rcc["showroom_rcs"] ?></small>
+			<span>OLYMPE - <? echo $rcc["showroom_adr1"] ?> <? if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <? echo $rcc["showroom_cp"] ?> <? echo $rcc["showroom_ville"] ?> - <? echo $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
+			<small>NÂ° <? echo $rcc["showroom_rcs"] ?></small>
 		</footer>
 	</div>
 <? } ?>

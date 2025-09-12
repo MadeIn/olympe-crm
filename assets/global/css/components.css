@@ -493,7 +493,7 @@ body {
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     transition-duration: 0.3s; }
-  .md-checkbox label > span.inc {
+  .md-checkbox label > span.php {
     background: #fff;
     left: -20px;
     top: -20px;
@@ -528,7 +528,7 @@ body {
     -webkit-transition-delay: 0.3s;
     -moz-transition-delay: 0.3s;
     transition-delay: 0.3s; }
-  .md-checkbox label > span.inc {
+  .md-checkbox label > span.php {
     -webkit-animation: growCircle 0.3s ease;
     -moz-animation: growCircle 0.3s ease;
     animation: growCircle 0.3s ease; }
@@ -684,7 +684,7 @@ body {
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     transition-duration: 0.3s; }
-  .md-radio label > span.inc {
+  .md-radio label > span.php {
     background: #fff;
     left: -20px;
     top: -20px;
@@ -717,7 +717,7 @@ body {
     -webkit-transform: scale(0);
     -moz-transform: scale(0);
     transform: scale(0); }
-  .md-radio label > span.inc {
+  .md-radio label > span.php {
     -webkit-animation: growCircleRadio 0.3s ease;
     -moz-animation: growCircleRadio 0.3s ease;
     animation: growCircleRadio 0.3s ease; }

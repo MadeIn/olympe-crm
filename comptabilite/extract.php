@@ -1,4 +1,4 @@
-<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.inc"); 
+<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.php"); 
 $titre_page = "Comptabilite - Olympe Mariage";
 $desc_page = "Comptabilite - Olympe Mariage";
 
@@ -39,7 +39,7 @@ while ($rcc=mysql_fetch_array($cc)) {
 	while ($rco = mysql_fetch_array($co)) {
 		$montant_ht_acc += $rco["montant_ht"];
 	}
-	$param .= format_date($rcc["facture_date"],6,1) . ";" . $rcc["facture_num"] . ";" . utf8_decode($rcc["client_nom"] . " " . $rcc["client_prenom"]) . ";" . $genre . ";" . $montant_ttc . ";" . number_format($montant_ht_robe,2,".","") . ";" . number_format($montant_ht_acc,2,".","") . ";" . number_format($montant_ht,2,".","") . "\n";
+	$param .= format_date($rcc["facture_date"],6,1) . ";" . $rcc["facture_num"] . ";" . $rcc["client_nom"] . " " . $rcc["client_prenom"] . ";" . $genre . ";" . $montant_ttc . ";" . number_format($montant_ht_robe,2,".","") . ";" . number_format($montant_ht_acc,2,".","") . ";" . number_format($montant_ht,2,".","") . "\n";
 }
 
 // On enregistre le fichier
@@ -56,11 +56,11 @@ else {
 
 
 // On traite le fichier des paiements
-$param = utf8_decode("Date du règlement;Mode de Règlement;N° de remise;Nom cliente;Montant TTC\n");
+$param = "Date du règlement;Mode de Règlement;N° de remise;Nom cliente;Montant TTC\n";
 $sql = "select * from commandes c, clients cl, commandes_paiements cp, paiements_modes p where c.id=cp.id and c.client_num=cl.client_num and cp.mode_num=p.mode_num and paiement_date>='" . $date_debut . "' and paiement_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' order by paiement_date ASC";
 $cc = mysql_query($sql);
 while ($rcc=mysql_fetch_array($cc)) {
-	$param .= format_date($rcc["paiement_date"],6,1) . ";" . $rcc["mode_nom"] . ";" . $rcc["cheque_num"] . ";" . utf8_decode($rcc["client_nom"] . " " . $rcc["client_prenom"]) . ";" . $rcc["paiement_montant"] . "\n";
+	$param .= format_date($rcc["paiement_date"],6,1) . ";" . $rcc["mode_nom"] . ";" . $rcc["cheque_num"] . ";" . $rcc["client_nom"] . " " . $rcc["client_prenom"] . ";" . $rcc["paiement_montant"] . "\n";
 }
 
 // On enregistre le fichier

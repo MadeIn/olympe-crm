@@ -1,13 +1,16 @@
 <?
 function SendMail($email,$titre,$message,$user,$client_num) {
-	global $db;
+
 //if ($user==3) { // Pour les test y a que moi qui envoie les mails
-	// On r√©cupere les infos du user et on ouvre qu'au showroom de Montpellier
+	// On rÈcupere les infos du user et on ouvre qu'au showroom de Montpellier
 	$sql = "select * from users u, showrooms s where u.showroom_num=s.showroom_num and u.user_num='" . $user . "' and u.showroom_num IN (1,2,3,5,6)";
 	//echo $sql;
-	$uu = $db->query($sql);
-	if ($ruu=$db->query($uu)) {
-		$contenu_head =  '<html><head></head><body style="margin: 0; padding: 0;"><center>';
+	$uu = mysql_query($sql);
+	if ($ruu=mysql_fetch_array($uu)) {
+		$contenu_head =  '<html>
+		<head></head>
+		<body style="margin: 0; padding: 0;">
+		<center>';
 		$contenu = '<table width="600" cellpadding="0" cellspacing="0" style="border-bottom: solid 1px #EAEAEA; margin-bottom: 25px;">
 			<tbody>
 			  <tr>
@@ -34,7 +37,7 @@ function SendMail($email,$titre,$message,$user,$client_num) {
 					<strong style="color: #333;">' . $ruu["user_prenom"] . '</strong><br>
 					<hr style="border: none; border-top: solid 1px #EAEAEA; width: 20%; margin: 10px 40%;">
 					Olympe Mariage - ' . $ruu["showroom_ville"] . '<br>
-					<small style="font-size: .85em; color: #999;">' . $ruu["showroom_adr1"] . ', ' . $ruu["showroom_cp"] . ' ' . $ruu["showroom_ville"] . ' - <a href="tel:' . $ruu["showroom_tel"] . '" style="text-decoration: none; color: #999;">' . $ruu["showroom_tel"] . '</a> - <a href="https://www.olympe-mariage.com" style="text-decoration: none; font: normal 14px Helvetica,Arial,Sans-Serif; color: #999;">www.olympe-mariage.com</a><br>
+					<small style="font-size: .85em; color: #999;">' . $ruu["showroom_adr1"] . ', ' . $ruu["showroom_cp"] . ' ' . $ruu["showroom_ville"] . ' - <a href="tel:' . $ruu["showroom_tel"] . '" style="text-decoration: none; color: #999;">' . $ruu["showroom_tel"] . '</a> - <a href="http://www.olympe-mariage.com" style="text-decoration: none; font: normal 14px Helvetica,Arial,Sans-Serif; color: #999;">www.olympe-mariage.com</a><br>
 					<hr size="1" color="#EAEAEA">
 					Facebook : <a href="https://www.facebook.com/olympemariage/" style="text-decoration: none; font: normal 14px Helvetica,Arial,Sans-Serif; color: #999;">https://www.facebook.com/olympemariage/</a> - Instagram : <a href="https://www.instagram.com/olympemariage/" style="text-decoration: none; font: normal 14px Helvetica,Arial,Sans-Serif; color: #999;">@olympemariage</a></small>			
 				  </td>
@@ -92,7 +95,7 @@ function SendMail($email,$titre,$message,$user,$client_num) {
 			$contenu = str_replace("'","\'",$contenu);
 			
 			$sql = "insert into mails values(0,'" . Date("Y-m-d H:i:s") . "','" . $titre . "','" . $contenu . "','" . $client_num . "','" . $user . "')";
-			$db->insert($sql);
+			mysql_query($sql);
 		}
 	}
 //}
@@ -101,616 +104,488 @@ function SendMail($email,$titre,$message,$user,$client_num) {
 
 $mail_type[1]["titre"] = "Confirmation Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</I></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
+							<p>TrËs bonne journÈe,</p>";
 
 
 $mail_type[2]["titre"] = "Confirmation de la prise en charge de votre commande Olympe Mariage [VILLE]";
 $mail_type[2]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien.</p>
-							<p>Je vous confirme la prise en charge de la confection de votre robe par l'atelier <strong>[REMARQUE]</strong> avec une livraison confirm√©e au <strong>[DATE]</strong>.</p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions.</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>J'espËre que vous allez bien.</p>
+							<p>Je vous confirme la prise en charge de la confection de votre robe par l'atelier <strong>[REMARQUE]</strong> avec une livraison confirmÈe au <strong>[DATE]</strong>.</p>
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions.</p>
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[3]["titre"] = "R√©ception de votre robe - Olympe Mariage [VILLE]";
+$mail_type[3]["titre"] = "RÈception de votre robe - Olympe Mariage [VILLE]";
 $mail_type[3]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien et que la pr√©paration de votre mariage se d√©roule bien.</p>
+							<p>J'espËre que vous allez bien et que la prÈparation de votre mariage se dÈroule bien.</p>
 							<p>Je suis ravie de vous annoncer la bonne reception de votre robe dans notre showroom. </p>
-							<p>Si votre rendez-vous essayage n‚Äôest pas d√©j√† fix√© merci de nous contacter pour que nous convenions ensemble d‚Äôune date, </p>
+							<p>Si votre rendez-vous essayage n'est pas dÈj‡ fixÈ merci de nous contacter pour que nous convenions ensemble d'une date, </p>
 							<p>Dans l'attente de vous lire ou de vous voir !</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
 $mail_type[5]["titre"] = "Confirmation Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[5]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p>[SHOWROOM_ACCES]</p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, nous vous demandons de: </b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
+							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>venir avec 3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>pour les futures mari√©es, venir maquill√©es le moins possible</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
 							[ACOMPTE_VALEUR]
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[7]["titre"] = "Votre s√©lection - Olympe Mariage [VILLE]";
+$mail_type[7]["titre"] = "Votre sÈlection - Olympe Mariage [VILLE]";
 $mail_type[7]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Merci encore d'avoir choisi Olympe pour essayer votre future robe de mari√©e, notre rendez-vous a √©t√© un vrai plaisir!</p>
-							<p>Pour faire suite, vous trouverez les photos des tenues que vous avez s√©lectionn√©es, accompagn√©es de leur prix en cliquant sur le lien suivant : </p>
-							<p><a href=\"https://crm.olympe-mariage.com/selections/index.php?id=[SELECTION_NUM]\" target=\"_blank\"><u><strong>D√©couvrez votre s√©lection</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous souhaitez des informations suppl√©mentaires ou un second rendez-vous.</p>
+							<p>Merci encore d'avoir choisi Olympe pour essayer votre future robe de mariÈe, notre rendez-vous a ÈtÈ un vrai plaisir!</p>
+							<p>Pour faire suite, vous trouverez les photos des tenues que vous avez sÈlectionnÈes, accompagnÈes de leur prix en cliquant sur le lien suivant : </p>
+							<p><a href=\"https://crm.olympe-mariage.com/selections/index.php?id=[SELECTION_NUM]\" target=\"_blank\"><u><strong>DÈcouvrez votre sÈlection</strong></u></a></p>
+							<p>Je reste ‡ votre entiËre disposition si vous souhaitez des informations supplÈmentaires ou un second rendez-vous.</p>
 							<p>Dans l'attente de vous lire ou de vous voir !</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
 $mail_type[8]["titre"] = "Votre devis - Olympe Mariage [VILLE]";
 $mail_type[8]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je suis ravie que vous ayez trouv√© votre robe de mari√©e chez Olympe !</p>
-							<p>Pour valider votre  commande, nous avons besoin du devis sign√© avec la mention ¬´ bon pour accord ¬ª [ACOMPTE_VALEUR].</p>
-							<p>Vous pouvez nous faire un virement, nos coordonn√©es bancaires sont sur le document ou nous envoyer un ch√®que. D√®s r√©ception du devis sign√© et de l'acompte nous passerons commande de votre robe. Nous reviendrons vers vous avec une date de livraison pr√©vue d√®s que nous aurons la confirmation de la cr√©atrice.</p>
+							<p>Je suis ravie que vous ayez trouvÈ votre robe de mariÈe chez Olympe !</p>
+							<p>Pour valider votre  commande, nous avons besoin du devis signÈ avec la mention ´ bon pour accord ª [ACOMPTE_VALEUR].</p>
+							<p>Vous pouvez nous faire un virement, nos coordonnÈes bancaires sont sur le document ou nous envoyer un chËque. DËs rÈception du devis signÈ et de l'acompte nous passerons commande de votre robe. Nous reviendrons vers vous avec une date de livraison prÈvue dËs que nous aurons la confirmation de la crÈatrice.</p>
 							[ACOMPTE_SUITE]
 							[RETOUCHE]
 							<p>Vous pouvez consulter et imprimer votre devis en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/devis/index.php?devis=[DEVIS_NUM]&print=no\" target=\"_blank\"><u><strong>Votre devis Olympe Mariage</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous avez la moindre question.</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez la moindre question.</p>
+							<p>¿ trËs bientÙt,</p>";
 
 $mail_type[9]["titre"] = "Votre facture - Olympe Mariage [VILLE]";
 $mail_type[9]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien.</p>
+							<p>J'espËre que vous allez bien.</p>
 							<p>Vous pouvez consulter et imprimer votre facture en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/facture/index.php?facture=[FACTURE_NUM]&print=no\" target=\"_blank\"><u><strong>Votre facture Olympe Mariage</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous avez la moindre question.</p>
-							<p>Toute l'√©quipe Olympe vous souhaite beaucoup de bonheur et un tr√®s beau mariage.</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez la moindre question.</p>
+							<p>Toute l'Èquipe Olympe vous souhaite beaucoup de bonheur et un trËs beau mariage.</p>
+							<p>¿ trËs bientÙt,</p>";
 
 $mail_type[10]["titre"] = "Votre facture d'acompte [PAIEMENT_NUM] - Olympe Mariage [VILLE]";
 $mail_type[10]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Nous avons bien re√ßu votre paiement et vous en remercions.</p>
+							<p>Nous avons bien reÁu votre paiement et vous en remercions.</p>
 							<p>Vous pouvez consulter et imprimer votre facture d'acompte en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/acompte/index.php?id=[COMMANDE_NUM]&paiement=[PAIEMENT_NUM]&print=no\" target=\"_blank\"><u><strong>Acompte [PAIEMENT_NUM] : Votre facture Olympe Mariage</strong></u></a></p>
 							<p>Dans l'attente de vous revoir</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>¿ trËs bientÙt,</p>";
 							
 $mail_type[11]["titre"] = "Rappel Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[11]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J‚Äôesp√®re que vous allez bien,</p>
-							<p>Je vous rappelle notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>J'espËre que vous allez bien,</p>
+							<p>Je vous rappelle notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</i></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Merci de nous pr√©venir si vous ne pouvez pas √™tre pr√©sente.</p>
-							<p>Pour pr√©parer notre rendez-vous, vous pouvez d√®s √† pr√©sent consulter notre s√©lection de robes sur notre site : <a href=\"http://www.olympe-mariage.com/categorie-robes-11.html\">Olympe-mariage.com</a>
+							<p>Merci de nous prÈvenir si vous ne pouvez pas Ítre prÈsente.</p>
+							<p>Pour prÈparer notre rendez-vous, vous pouvez dËs ‡ prÈsent consulter notre sÈlection de robes sur notre site : <a href=\"http://www.olympe-mariage.com/categorie-robes-11.html\">Olympe-mariage.com</a>
 							<p>Dans l'attente de vous recevoir,</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[12]["titre"] = "Votre robe de mari√©e Olympe Mariage [VILLE]";
+$mail_type[12]["titre"] = "Votre robe de mariÈe Olympe Mariage [VILLE]";
 $mail_type[12]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien, et que la pr√©paration de votre mariage se passe pour le mieux.</p>
-							<p>Je me permets de revenir vers vous quant au choix de votre robe de mari√©e. Avez vous avanc√© dans votre recherche ? Sachez que nous nous tenons √† votre disposition pour toutes questions ou informations compl√©mentaires.</p>
-							<p>En attendant de vos nouvelles, je vous souhaite une tr√®s belle journ√©e !</p>
-							<p>√Ä bient√¥t,</p>";	
+							<p>J'espËre que vous allez bien, et que la prÈparation de votre mariage se passe pour le mieux.</p>
+							<p>Je me permets de revenir vers vous quant au choix de votre robe de mariÈe. Avez vous avancÈ dans votre recherche ? Sachez que nous nous tenons ‡ votre disposition pour toutes questions ou informations complÈmentaires.</p>
+							<p>En attendant de vos nouvelles, je vous souhaite une trËs belle journÈe !</p>
+							<p>¿ bientÙt,</p>";	
 							
 $mail_type[13][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J‚Äôesp√®re que vous allez bien. Nous allons recevoir votre robe au showroom, aux alentours du [DATE_RECEPTION], nous pouvons donc d√®s √† pr√©sent convenir d‚Äôun rendez-vous pour le premier essayage avec notre couturi√®re, quelles sont vos disponibilit√©s ? 
-							<p>J‚Äôen profite pour vous rappeler que vous devez avoir les chaussures que vous porterez le jour de votre mariage pour ce rendez-vous. Sachez que nous avons au showroom toutes les chaussures disponibles sur notre site internet : <a href=\"http://shop.olympe-mariage.com/fr/type/chaussures/13\">http://shop.olympe-mariage.com/fr/type/chaussures/13</a></p>
-							<p>Dans l‚Äôattente de vous lire, je vous souhaite une tr√®s belle journ√©e !</p>
-							<p>√Ä bient√¥t,</p>";		
+							<p>J'espËre que vous allez bien. Nous allons recevoir votre robe au showroom, aux alentours du [DATE_RECEPTION], nous pouvons donc dËs ‡ prÈsent convenir d'un rendez-vous pour le premier essayage avec notre couturiËre, quelles sont vos disponibilitÈs ? 
+							<p>J'en profite pour vous rappeler que vous devez avoir les chaussures que vous porterez le jour de votre mariage pour ce rendez-vous. Sachez que nous avons au showroom toutes les chaussures disponibles sur notre site internet : <a href=\"http://shop.olympe-mariage.com/fr/type/chaussures/13\">http://shop.olympe-mariage.com/fr/type/chaussures/13</a></p>
+							<p>Dans l'attente de vous lire, je vous souhaite une trËs belle journÈe !</p>
+							<p>¿ bientÙt,</p>";		
 
 $mail_type[14]["titre"] = "Confirmation Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[14]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</I></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Nous vous rappelons qu‚Äôil est indispensable d‚Äôavoir les chaussures que vous porterez pour votre mariage lors de ce rendez-vous.</p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>Nous vous rappelons qu'il est indispensable d'avoir les chaussures que vous porterez pour votre mariage lors de ce rendez-vous.</p>
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
+							<p>TrËs bonne journÈe,</p>";
 
 $mail_type[15]["titre"] = "Confirmation Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[15]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							ShowrooMilk<br>
 							10 rue de Breuteil<br>
 							13001 Marseille<br>
 							Contact Charlotte 04 11 75 68 33
 							</p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Nous vous rappelons qu‚Äôil est indispensable d‚Äôavoir les chaussures que vous porterez pour votre mariage lors de ce rendez-vous.</p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
-							<p>Tr√®s bonne journ√©e,</p>";								
+							<p>Nous vous rappelons qu'il est indispensable d'avoir les chaussures que vous porterez pour votre mariage lors de ce rendez-vous.</p>
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
+							<p>TrËs bonne journÈe,</p>";								
 							
 							
 // Mail FEMME
 $mail_type[1][0]["titre"] = "Confirmation Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[1][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</I></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
+							<p>TrËs bonne journÈe,</p>";
 
 
 $mail_type[2][0]["titre"] = "Confirmation de la prise en charge de votre commande Olympe Mariage [VILLE]";
 $mail_type[2][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien.</p>
-							<p>Je vous confirme la prise en charge de la confection de votre robe par l'atelier <strong>[REMARQUE]</strong> avec une livraison confirm√©e au <strong>[DATE]</strong>.</p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions.</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>J'espËre que vous allez bien.</p>
+							<p>Je vous confirme la prise en charge de la confection de votre robe par l'atelier <strong>[REMARQUE]</strong> avec une livraison confirmÈe au <strong>[DATE]</strong>.</p>
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions.</p>
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[3][0]["titre"] = "R√©ception de votre robe - Olympe Mariage [VILLE]";
+$mail_type[3][0]["titre"] = "RÈception de votre robe - Olympe Mariage [VILLE]";
 $mail_type[3][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien et que la pr√©paration de votre mariage se d√©roule bien.</p>
+							<p>J'espËre que vous allez bien et que la prÈparation de votre mariage se dÈroule bien.</p>
 							<p>Je suis ravie de vous annoncer la bonne reception de votre robe dans notre showroom. </p>
-							<p>Si votre rendez-vous essayage n‚Äôest pas d√©j√† fix√© merci de nous contacter pour que nous convenions ensemble d‚Äôune date, </p>
+							<p>Si votre rendez-vous essayage n'est pas dÈj‡ fixÈ merci de nous contacter pour que nous convenions ensemble d'une date, </p>
 							<p>Dans l'attente de vous lire ou de vous voir !</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
 $mail_type[5][0]["titre"] = "Confirmation Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[5][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous pour la remise de votre robe, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous pour la remise de votre robe, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p>[SHOWROOM_ACCES]</p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
-							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
 							[ACOMPTE_VALEUR]
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[7][0]["titre"] = "Votre s√©lection - Olympe Mariage [VILLE]";
+$mail_type[7][0]["titre"] = "Votre sÈlection - Olympe Mariage [VILLE]";
 $mail_type[7][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Merci encore d'avoir choisi Olympe pour essayer votre future robe de mari√©e, notre rendez-vous a √©t√© un vrai plaisir!</p>
-							<p>Pour faire suite, vous trouverez les photos des tenues que vous avez s√©lectionn√©es, accompagn√©es de leur prix en cliquant sur le lien suivant : </p>
-							<p><a href=\"https://crm.olympe-mariage.com/selections/index.php?id=[SELECTION_NUM]\" target=\"_blank\"><u><strong>D√©couvrez votre s√©lection</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous souhaitez des informations suppl√©mentaires ou un second rendez-vous.</p>
+							<p>Merci encore d'avoir choisi Olympe pour essayer votre future robe de mariÈe, notre rendez-vous a ÈtÈ un vrai plaisir!</p>
+							<p>Pour faire suite, vous trouverez les photos des tenues que vous avez sÈlectionnÈes, accompagnÈes de leur prix en cliquant sur le lien suivant : </p>
+							<p><a href=\"https://crm.olympe-mariage.com/selections/index.php?id=[SELECTION_NUM]\" target=\"_blank\"><u><strong>DÈcouvrez votre sÈlection</strong></u></a></p>
+							<p>Je reste ‡ votre entiËre disposition si vous souhaitez des informations supplÈmentaires ou un second rendez-vous.</p>
 							<p>Dans l'attente de vous lire ou de vous voir !</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
 $mail_type[8][0]["titre"] = "Votre devis - Olympe Mariage [VILLE]";
 $mail_type[8][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je suis ravie que vous ayez trouv√© votre robe de mari√©e chez Olympe !</p>
-							<p>Pour valider votre  commande, nous avons besoin du devis sign√© avec la mention ¬´ bon pour accord ¬ª [ACOMPTE_VALEUR].</p>
-							<p>Vous pouvez nous faire un virement, nos coordonn√©es bancaires sont sur le document ou nous envoyer un ch√®que. D√®s r√©ception du devis sign√© et de l'acompte nous passerons commande de votre robe. Nous reviendrons vers vous avec une date de livraison pr√©vue d√®s que nous aurons la confirmation de la cr√©atrice.</p>
+							<p>Je suis ravie que vous ayez trouvÈ votre robe de mariÈe chez Olympe !</p>
+							<p>Pour valider votre  commande, nous avons besoin du devis signÈ avec la mention ´ bon pour accord ª [ACOMPTE_VALEUR].</p>
+							<p>Vous pouvez nous faire un virement, nos coordonnÈes bancaires sont sur le document ou nous envoyer un chËque. DËs rÈception du devis signÈ et de l'acompte nous passerons commande de votre robe. Nous reviendrons vers vous avec une date de livraison prÈvue dËs que nous aurons la confirmation de la crÈatrice.</p>
 							[ACOMPTE_SUITE]
 							[RETOUCHE]
 							<p>Vous pouvez consulter et imprimer votre devis en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/devis/index.php?devis=[DEVIS_NUM]&print=no\" target=\"_blank\"><u><strong>Votre devis Olympe Mariage</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous avez la moindre question.</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez la moindre question.</p>
+							<p>¿ trËs bientÙt,</p>";
 
 $mail_type[9][0]["titre"] = "Votre facture - Olympe Mariage [VILLE]";
 $mail_type[9][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien.</p>
+							<p>J'espËre que vous allez bien.</p>
 							<p>Vous pouvez consulter et imprimer votre facture en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/facture/index.php?facture=[FACTURE_NUM]&print=no\" target=\"_blank\"><u><strong>Votre facture Olympe Mariage</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous avez la moindre question.</p>
-							<p>Toute l'√©quipe Olympe vous souhaite beaucoup de bonheur et un tr√®s beau mariage.</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez la moindre question.</p>
+							<p>Toute l'Èquipe Olympe vous souhaite beaucoup de bonheur et un trËs beau mariage.</p>
+							<p>¿ trËs bientÙt,</p>";
 
 $mail_type[10][0]["titre"] = "Votre facture d'acompte [PAIEMENT_NUM] - Olympe Mariage [VILLE]";
 $mail_type[10][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Nous avons bien re√ßu votre paiement et vous en remercions.</p>
+							<p>Nous avons bien reÁu votre paiement et vous en remercions.</p>
 							<p>Vous pouvez consulter et imprimer votre facture d'acompte en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/acompte/index.php?id=[COMMANDE_NUM]&paiement=[PAIEMENT_NUM]&print=no\" target=\"_blank\"><u><strong>Acompte [PAIEMENT_NUM] : Votre facture Olympe Mariage</strong></u></a></p>
 							<p>Dans l'attente de vous revoir</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>¿ trËs bientÙt,</p>";
 							
 $mail_type[11][0]["titre"] = "Rappel Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[11][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J‚Äôesp√®re que vous allez bien,</p>
-							<p>Je vous rappelle notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>J'espËre que vous allez bien,</p>
+							<p>Je vous rappelle notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</i></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Merci de nous pr√©venir si vous ne pouvez pas √™tre pr√©sente.</p>
-							<p>Pour pr√©parer notre rendez-vous, vous pouvez d√®s √† pr√©sent consulter notre s√©lection de robes sur notre site : <a href=\"http://www.olympe-mariage.com/categorie-robes-11.html\">Olympe-mariage.com</a>
+							<p>Merci de nous prÈvenir si vous ne pouvez pas Ítre prÈsente.</p>
+							<p>Pour prÈparer notre rendez-vous, vous pouvez dËs ‡ prÈsent consulter notre sÈlection de robes sur notre site : <a href=\"http://www.olympe-mariage.com/categorie-robes-11.html\">Olympe-mariage.com</a>
 							<p>Dans l'attente de vous recevoir,</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[12][0]["titre"] = "Votre robe de mari√©e Olympe Mariage [VILLE]";
+$mail_type[12][0]["titre"] = "Votre robe de mariÈe Olympe Mariage [VILLE]";
 $mail_type[12][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien, et que la pr√©paration de votre mariage se passe pour le mieux.</p>
-							<p>Je me permets de revenir vers vous quant au choix de votre robe de mari√©e. Avez vous avanc√© dans votre recherche ? Sachez que nous nous tenons √† votre disposition pour toutes questions ou informations compl√©mentaires.</p>
-							<p>En attendant de vos nouvelles, je vous souhaite une tr√®s belle journ√©e !</p>
-							<p>√Ä bient√¥t,</p>";			
+							<p>J'espËre que vous allez bien, et que la prÈparation de votre mariage se passe pour le mieux.</p>
+							<p>Je me permets de revenir vers vous quant au choix de votre robe de mariÈe. Avez vous avancÈ dans votre recherche ? Sachez que nous nous tenons ‡ votre disposition pour toutes questions ou informations complÈmentaires.</p>
+							<p>En attendant de vos nouvelles, je vous souhaite une trËs belle journÈe !</p>
+							<p>¿ bientÙt,</p>";			
 
 $mail_type[13][0]["titre"] = "Rendez-vous retouche Olympe Mariage [VILLE]";
 $mail_type[13][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J‚Äôesp√®re que vous allez bien. Nous allons recevoir votre robe au showroom, aux alentours du [DATE_RECEPTION], nous pouvons donc d√®s √† pr√©sent convenir d‚Äôun rendez-vous [RETOUCHE], quelles sont vos disponibilit√©s ? 
-							<p>J‚Äôen profite pour vous rappeler que vous devez avoir les chaussures que vous porterez le jour de votre mariage pour ce rendez-vous. Sachez que nous avons au showroom toutes les chaussures disponibles sur notre site internet : <a href=\"http://shop.olympe-mariage.com/fr/type/chaussures/13\">http://shop.olympe-mariage.com/fr/type/chaussures/13</a></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p>J'espËre que vous allez bien. Nous allons recevoir votre robe au showroom, aux alentours du [DATE_RECEPTION], nous pouvons donc dËs ‡ prÈsent convenir d'un rendez-vous [RETOUCHE], quelles sont vos disponibilitÈs ?</p>
+							<p>J'en profite pour vous rappeler que vous devez avoir les chaussures que vous porterez le jour de votre mariage pour ce rendez-vous. Sachez que nous avons au showroom toutes les chaussures disponibles sur notre site internet : <a href=\"http://shop.olympe-mariage.com/fr/type/chaussures/13\">http://shop.olympe-mariage.com/fr/type/chaussures/13</a></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Dans l‚Äôattente de vous lire, je vous souhaite une tr√®s belle journ√©e !</p>
-							<p>√Ä bient√¥t,</p>";
+							<p>Dans l'attente de vous lire, je vous souhaite une trËs belle journÈe !</p>
+							<p>¿ bientÙt,</p>";
 
 $mail_type[14][0]["titre"] = "Confirmation Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[14][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</I></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Nous vous rappelons qu'il est indispensable d‚Äôavoir les chaussures que vous porterez pour votre mariage lors de ce rendez-vous.</p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
-							<p>Tr√®s bonne journ√©e,</p>";	
+							<p>Nous vous rappelons qu'il est indispensable d'avoir les chaussures que vous porterez pour votre mariage lors de ce rendez-vous.</p>
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
+							<p>TrËs bonne journÈe,</p>";	
 							
 $mail_type[15][0]["titre"] = "Confirmation Rendez-vous Olympe Mariage [VILLE]";
 $mail_type[15][0]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							ShowrooMilk<br>
 							10 rue de Breuteil<br>
 							13001 Marseille<br>
 							Contact Charlotte 04 11 75 68 33</p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
+							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos Èquipes, voici les mesures mises en place dans les showrooms Olympe ‡ partir du 16 mai 2022</b></p>
+							<p><b>Quelques petites informations avant notre rendez-vous :</b></p>
 							<p>Pour les visiteuses et visiteurs:</p>
 							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
+								<li>Pour que nous puissions vous accompagner le mieux possible dans le choix de votre robe de mariÈe, nous vous demandons de venir accompagnÈe de 3 personnes maximum. </li>
+								<li>Venir peu ou pas maquillÈe</li>
+								<li>Porter de la lingerie invisible</li>
 							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Nous vous rappelons qu‚Äôil est indispensable d‚Äôavoir les chaussures que vous porterez pour votre mariage lors de ce rendez-vous.</p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
-							<p>Tr√®s bonne journ√©e,</p>";	
+							<p>Nous vous rappelons qu'il est indispensable d'avoir les chaussures que vous porterez pour votre mariage lors de ce rendez-vous.</p>
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions, en attendant vous pouvez consulter le lien suivant : <a href=\"http://www.olympe-mariage.com/faq.php\" target=\"_blank\">www.olympe-mariage.com/faq.php</a></p>
+							<p>TrËs bonne journÈe,</p>";	
 							
-$mail_type[16][0]["titre"] = "F√©licitation";
-$mail_type[16][0]["message"] = "<p>Ch√®re [PRENOM],</p>
-							<p>L'√©quipe Olympe se joint √† moi pour vous adresser tous nos voeux de bonheur! Nous esp√©rons  que votre mariage s‚Äôest bien pass√©, que vous √©tiez √† l‚Äôaise dans votre tenue et que vous avez profit√© de chaque instant.</p>
-							<p>Vous accompagner a √©t√© un r√©el plaisir pour nous!</p>
-							<p>N‚Äôh√©sitez pas √† nous faire parvenir quelques photos quand vous les aurez.<br>
+$mail_type[16][0]["titre"] = "FÈlicitation";
+$mail_type[16][0]["message"] = "<p>ChËre [PRENOM],</p>
+							<p>L'Èquipe Olympe se joint ‡ moi pour vous adresser tous nos voeux de bonheur! Nous espÈrons  que votre mariage s'est bien passÈ, que vous Ètiez ‡ l'aise dans votre tenue et que vous avez profitÈ de chaque instant.</p>
+							<p>Vous accompagner a ÈtÈ un rÈel plaisir pour nous!</p>
+							<p>N'hÈsitez pas ‡ nous faire parvenir quelques photos quand vous les aurez.<br>
 							Nous vous souhaitons le meilleur pour la suite, </p>
-							<p>Tr√®s bonne journ√©e,</p>";	
+							<p>TrËs bonne journÈe,</p>";	
 
-$mail_type[17][0]["titre"] = "Renseignements compl√©mentaires Olympe Mariage [VILLE]";
-$mail_type[17][0]["message"] = "<p>Ch√®re [PRENOM],</p>
+$mail_type[17][0]["titre"] = "Renseignements complÈmentaires Olympe Mariage [VILLE]";
+$mail_type[17][0]["message"] = "<p>ChËre [PRENOM],</p>
 							<p>Nous sommes impatientes de vous accueillir dans notre showroom Olympe la semaine prochaine.</p>
-							<p>Pour vous accompagner le mieux possible, nous aimerions en savoir un peu plus sur vous et votre mariage.  Voici 3 petites questions qui nous permettrons de mieux appr√©hender ce moment ensemble.</p>
-							<p>- Quel va √™tre le style de votre mariage ?  (lieu / nombre d‚Äôinvit√©s / d√©coration)<br><br></p>
-							<p>- Avez vous d√©j√† une id√©e du style de votre robe de mari√©e ? Si oui lequel ?<br><br></p>
-							<p>- Avez vous d√©j√† fait des essayages ? Si oui qu‚Äôen est il ressorti ?<br><br></p>
-							<p>Merci d‚Äôavance pour vos r√©ponses</p>
-							<p>A bient√¥t !</p>";
+							<p>Pour vous accompagner le mieux possible, nous aimerions en savoir un peu plus sur vous et votre mariage.  Voici 3 petites questions qui nous permettrons de mieux apprÈhender ce moment ensemble.</p>
+							<p>- Quel va Ítre le style de votre mariage ?  (lieu / nombre d'invitÈs / dÈcoration)<br><br></p>
+							<p>- Avez vous dÈj‡ une idÈe du style de votre robe de mariÈe ? Si oui lequel ?<br><br></p>
+							<p>- Avez vous dÈj‡ fait des essayages ? Si oui qu'en est il ressorti ?<br><br></p>
+							<p>Merci d'avance pour vos rÈponses</p>
+							<p>A bientÙt !</p>";
+							
+$mail_type[18][0]["titre"] = "Rendez-vous retouche Olympe Mariage [VILLE]";
+$mail_type[18][0]["message"] = "<p>Bonjour [PRENOM],</p>
+							<p>J'espËre que vous allez bien. Nous allons recevoir votre robe au showroom, aux alentours du [DATE_RECEPTION], nous pouvons donc dËs ‡ prÈsent convenir d'un rendez-vous [RETOUCHE], quelles sont vos disponibilitÈs ?</p>
+							<p>J'en profite pour vous rappeler que vous devez avoir les chaussures que vous porterez le jour de votre mariage pour ce rendez-vous. Sachez que nous avons au showroom toutes les chaussures disponibles sur notre site internet : <a href=\"http://shop.olympe-mariage.com/fr/type/chaussures/13\">http://shop.olympe-mariage.com/fr/type/chaussures/13</a></p>
+							<p><b>D'autre part, comme indiquÈ sur votre bon de commande, je vous remercie de procÈder au paiement du second acompte de votre tenue.</b></p> 
+							<p>Vous trouverez ci-dessous le montant demandÈ ainsi que notre RIB. D'avance merci pour votre paiement.</p>
+							[INFO_PAIEMENT]
+							<p>Dans l'attente de vous lire, je vous souhaite une trËs belle journÈe !</p>
+							<p>¿ bientÙt,</p>";
 							
 // Mail Homme
 $mail_type[1][1]["titre"] = "Confirmation Rendez-vous Beau. [VILLE]";
 $mail_type[1][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</I></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
-							<p>Pour les visiteuses et visiteurs:</p>
-							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
-							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
 							<p>Merci de venir avec une <b>chemise blanche</b>. </p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions.</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions.</p>
+							<p>TrËs bonne journÈe,</p>";
 
 
 $mail_type[2][1]["titre"] = "Confirmation de la prise en charge de votre commande Beau. [VILLE]";
 $mail_type[2][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien.</p>
-							<p>Je vous confirme la prise en charge de la confection de votre costume par l'atelier <strong>Beau.</strong> avec une livraison confirm√©e aux alentours de <strong>[DATE]</strong>.</p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions.</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>J'espËre que vous allez bien.</p>
+							<p>Je vous confirme la prise en charge de la confection de votre costume par l'atelier <strong>Beau.</strong> avec une livraison confirmÈe aux alentours de <strong>[DATE]</strong>.</p>
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions.</p>
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[3][1]["titre"] = "R√©ception de votre costume - Beau. [VILLE]";
+$mail_type[3][1]["titre"] = "RÈception de votre costume - Beau. [VILLE]";
 $mail_type[3][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien et que la pr√©paration de votre mariage se d√©roule bien.</p>
+							<p>J'espËre que vous allez bien et que la prÈparation de votre mariage se dÈroule bien.</p>
 							<p>Je suis ravie de vous annoncer la bonne reception de votre costume dans notre showroom. </p>
-							<p>Si votre rendez-vous essayage n‚Äôest pas d√©j√† fix√© merci de nous contacter pour que nous convenions ensemble d‚Äôune date, </p>
+							<p>Si votre rendez-vous essayage n'est pas dÈj‡ fixÈ merci de nous contacter pour que nous convenions ensemble d'une date, </p>
 							<p>Dans l'attente de vous lire ou de vous voir !</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
 $mail_type[5][1]["titre"] = "Confirmation Rendez-vous Beau. [VILLE]";
 $mail_type[5][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous pour la remise de votre costume, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous pour la remise de votre costume, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p>[SHOWROOM_ACCES]</p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
-							<p>Pour les visiteuses et visiteurs:</p>
-							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
-							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
 							[ACOMPTE_VALEUR]
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[7][1]["titre"] = "Votre s√©lection - Beau. [VILLE]";
+$mail_type[7][1]["titre"] = "Votre sÈlection - Beau. [VILLE]";
 $mail_type[7][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Merci encore d'avoir choisi Beau. pour essayer votre future costume de mari√©, notre rendez-vous a √©t√© un vrai plaisir!</p>
-							<p>Pour faire suite, vous trouverez les photos des tenues que vous avez s√©lectionn√©es, accompagn√©es de leur prix en cliquant sur le lien suivant : </p>
-							<p><a href=\"https://crm.olympe-mariage.com/selections/index.php?id=[SELECTION_NUM]\" target=\"_blank\"><u><strong>D√©couvrez votre s√©lection</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous souhaitez des informations suppl√©mentaires ou un second rendez-vous.</p>
+							<p>Merci encore d'avoir choisi Beau. pour essayer votre future costume de mariÈ, notre rendez-vous a ÈtÈ un vrai plaisir!</p>
+							<p>Pour faire suite, vous trouverez les photos des tenues que vous avez sÈlectionnÈes, accompagnÈes de leur prix en cliquant sur le lien suivant : </p>
+							<p><a href=\"https://crm.olympe-mariage.com/selections/index.php?id=[SELECTION_NUM]\" target=\"_blank\"><u><strong>DÈcouvrez votre sÈlection</strong></u></a></p>
+							<p>Je reste ‡ votre entiËre disposition si vous souhaitez des informations supplÈmentaires ou un second rendez-vous.</p>
 							<p>Dans l'attente de vous lire ou de vous voir !</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
 $mail_type[8][1]["titre"] = "Votre devis - Beau. [VILLE]";
 $mail_type[8][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je suis ravie que vous ayez trouv√© votre costume chez Beau. !</p>
-							<p>Pour valider votre  commande, nous avons besoin du devis sign√© avec la mention ¬´ bon pour accord ¬ª [ACOMPTE_VALEUR].</p>
-							<p>Vous pouvez nous faire un virement, nos coordonn√©es bancaires sont sur le document ou nous envoyer un ch√®que. D√®s r√©ception du devis sign√© et de l'acompte nous lancerons la confecction de votre costume. Nous reviendrons vers vous avec une date de livraison pr√©vue d√®s que nous aurons la confirmation de notre atelier.</p>
+							<p>Je suis ravie que vous ayez trouvÈ votre costume chez Beau. !</p>
+							<p>Pour valider votre  commande, nous avons besoin du devis signÈ avec la mention ´ bon pour accord ª [ACOMPTE_VALEUR].</p>
+							<p>Vous pouvez nous faire un virement, nos coordonnÈes bancaires sont sur le document ou nous envoyer un chËque. DËs rÈception du devis signÈ et de l'acompte nous lancerons la confecction de votre costume. Nous reviendrons vers vous avec une date de livraison prÈvue dËs que nous aurons la confirmation de notre atelier.</p>
 							[ACOMPTE_SUITE]
 							<p>Vous pouvez consulter et imprimer votre devis en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/devis/index.php?devis=[DEVIS_NUM]&print=no\" target=\"_blank\"><u><strong>Votre devis Beau.</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous avez la moindre question.</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez la moindre question.</p>
+							<p>¿ trËs bientÙt,</p>";
 
 $mail_type[9][1]["titre"] = "Votre facture - Beau. [VILLE]";
 $mail_type[9][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien.</p>
+							<p>J'espËre que vous allez bien.</p>
 							<p>Vous pouvez consulter et imprimer votre facture en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/facture/index.php?facture=[FACTURE_NUM]&print=no\" target=\"_blank\"><u><strong>Votre facture Beau.</strong></u></a></p>
-							<p>Je reste √† votre enti√®re disposition si vous avez la moindre question.</p>
-							<p>Toute l'√©quipe Olympe vous souhaite beaucoup de bonheur et un tr√®s beau mariage.</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez la moindre question.</p>
+							<p>Toute l'Èquipe Olympe vous souhaite beaucoup de bonheur et un trËs beau mariage.</p>
+							<p>¿ trËs bientÙt,</p>";
 
 $mail_type[10][1]["titre"] = "Votre facture d'acompte [PAIEMENT_NUM] - Beau. [VILLE]";
 $mail_type[10][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Nous avons bien re√ßu votre paiement et vous en remercions.</p>
+							<p>Nous avons bien reÁu votre paiement et vous en remercions.</p>
 							<p>Vous pouvez consulter et imprimer votre facture d'acompte en cliquant sur le lien suivant :</p>
 							<p><a href=\"https://crm.olympe-mariage.com/acompte/index.php?id=[COMMANDE_NUM]&paiement=[PAIEMENT_NUM]&print=no\" target=\"_blank\"><u><strong>Acompte [PAIEMENT_NUM] : Votre facture Beau.</strong></u></a></p>
 							<p>Dans l'attente de vous revoir</p>
-							<p>√Ä tr√®s bient√¥t,</p>";
+							<p>¿ trËs bientÙt,</p>";
 							
 $mail_type[11][1]["titre"] = "Rappel Rendez-vous Beau. [VILLE]";
 $mail_type[11][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J‚Äôesp√®re que vous allez bien,</p>
-							<p>Je vous rappelle notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>J'espËre que vous allez bien,</p>
+							<p>Je vous rappelle notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</i></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
-							<p>Pour les visiteuses et visiteurs:</p>
-							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
-							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
-							<p>Merci de nous pr√©venir si vous ne pouvez pas √™tre pr√©sent.</p>
+							<p>Merci de nous prÈvenir si vous ne pouvez pas Ítre prÈsent.</p>
 							<p>Dans l'attente de vous recevoir,</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>TrËs bonne journÈe,</p>";
 
 $mail_type[12][1]["titre"] = "Votre costume Beau. [VILLE]";
 $mail_type[12][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J'esp√®re que vous allez bien, et que la pr√©paration de votre mariage se passe pour le mieux.</p>
-							<p>Je me permets de revenir vers vous quant au choix de votre costume. Avez vous avanc√© dans votre recherche ? Sachez que nous nous tenons √† votre disposition pour toutes questions ou informations compl√©mentaires.</p>
-							<p>En attendant de vos nouvelles, je vous souhaite une tr√®s belle journ√©e !</p>
-							<p>√Ä bient√¥t,</p>";		
+							<p>J'espËre que vous allez bien, et que la prÈparation de votre mariage se passe pour le mieux.</p>
+							<p>Je me permets de revenir vers vous quant au choix de votre costume. Avez vous avancÈ dans votre recherche ? Sachez que nous nous tenons ‡ votre disposition pour toutes questions ou informations complÈmentaires.</p>
+							<p>En attendant de vos nouvelles, je vous souhaite une trËs belle journÈe !</p>
+							<p>¿ bientÙt,</p>";		
 
 $mail_type[13][1]["titre"] = "Rendez-vous retouche Olympe Mariage [VILLE]";
 $mail_type[13][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>J‚Äôesp√®re que vous allez bien. Nous allons recevoir votre costume au showroom, aux alentours du [DATE_RECEPTION], nous pouvons donc d√®s √† pr√©sent convenir d‚Äôun rendez-vous pour le premier essayage avec notre couturi√®re, quelles sont vos disponibilit√©s ?</p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
-							<p>Pour les visiteuses et visiteurs:</p>
-							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
-							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>			
-							<p>Dans l‚Äôattente de vous lire, je vous souhaite une tr√®s belle journ√©e !</p>
-							<p>√Ä bient√¥t,</p>";							
+							<p>J'espËre que vous allez bien. Nous allons recevoir votre costume au showroom, aux alentours du [DATE_RECEPTION], nous pouvons donc dËs ‡ prÈsent convenir d'un rendez-vous pour le premier essayage avec notre couturiËre, quelles sont vos disponibilitÈs ?</p>
+							<p>Dans l'attente de vous lire, je vous souhaite une trËs belle journÈe !</p>
+							<p>¿ bientÙt,</p>";							
 
 $mail_type[14][1]["titre"] = "Confirmation Rendez-vous Beau. [VILLE]";
 $mail_type[14][1]["message"] = "<p>Bonjour [PRENOM],</p>
-							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> √† l‚Äôadresse suivante :</p>
+							<p>Je vous confirme notre rendez-vous, dans notre showroom, le <strong>[DATE_HEURE]</strong> ‡ l'adresse suivante :</p>
 							<p><strong>[SHOWROOM_NOM]</strong><br>
 							[SHOWROOM_ADRESSE]<br>
 							[SHOWROOM_CP] [SHOWROOM_VILLE]<br>
 							[SHOWROOM_TEL]</p>
 							<p><small><i>[SHOWROOM_ACCES]</I></small></p>
-							<p><b>Pour que le rendez-vous se passe dans les meilleures conditions possibles pour vous comme pour nos √©quipes, voici les mesures mises en place dans les showrooms Olympe √† partir du 16 mai 2022</b></p>
-							<p>Pour les visiteuses et visiteurs:</p>
-							<ul>
-								<li>3 accompagnants maximum par mari√© ou mari√©e</li>
-								<li>ne pas venir si vous avez le moindre sympt√¥me/li>
-								<li>se laver ou se d√©sinfecter les mains d√®s l‚Äôarriv√©e au showroom</li>
-								<li>ne pas amener de boissons ou de nourriture dans le showroom</li>
-							</ul>
-							<p>De notre cot√©,  nous nous engageons √† </p>
-							<ul>
-								<li>a√©rer le showroom entre chaque rendez-vous</li>
-								<li>nous d√©sinfecter les mains entre chaque rendez-vous</li>
-								<li>espacer les rendez-vous, de mani√®re √† ce que les clients attendent le moins possible</li>
-							</ul>
 							<p>Merci de venir avec une <b>chemise blanche</b>. </p>
-							<p>Je reste √† votre enti√®re disposition si vous avez des questions.</p>
-							<p>Tr√®s bonne journ√©e,</p>";
+							<p>Je reste ‡ votre entiËre disposition si vous avez des questions.</p>
+							<p>TrËs bonne journÈe,</p>";
 
-$mail_type[16][1]["titre"] = "F√©licitation";
-$mail_type[16][1]["message"] = "<p>Ch√®r [PRENOM],</p>
-							<p>L'√©quipe Olympe se joint √† moi pour vous adresser tous nos voeux de bonheur! Nous esp√©rons  que votre mariage s‚Äôest bien pass√©, que vous √©tiez √† l‚Äôaise dans votre tenue et que vous avez profit√© de chaque instant.</p>
-							<p>Vous accompagner a √©t√© un r√©el plaisir pour nous!</p>
-							<p>N‚Äôh√©sitez pas √† nous faire parvenir quelques photos quand vous les aurez.<br>
+$mail_type[16][1]["titre"] = "FÈlicitation";
+$mail_type[16][1]["message"] = "<p>ChËr [PRENOM],</p>
+							<p>L'Èquipe Olympe se joint ‡ moi pour vous adresser tous nos voeux de bonheur! Nous espÈrons  que votre mariage s'est bien passÈ, que vous Ètiez ‡ l'aise dans votre tenue et que vous avez profitÈ de chaque instant.</p>
+							<p>Vous accompagner a ÈtÈ un rÈel plaisir pour nous!</p>
+							<p>N'hÈsitez pas ‡ nous faire parvenir quelques photos quand vous les aurez.<br>
 							Nous vous souhaitons le meilleur pour la suite, </p>
-							<p>Tr√®s bonne journ√©e,</p>";	
+							<p>TrËs bonne journÈe,</p>";	
 ?>

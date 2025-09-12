@@ -1,4 +1,4 @@
-<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.inc"); 
+<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.php"); 
 $titre_page = "Gestion des produits - Olympe Mariage";
 $desc_page = "Gestion des produits - Olympe Mariage";
 
@@ -11,5 +11,5 @@ $cc = mysql_query($sql);
 $nbr_produit = mysql_num_rows($cc);
 
 while ($rcc=mysql_fetch_array($cc)) {
-	echo $rcc["categorie_nom"] .";" . utf8_decode($rcc["marque_nom"]) . ";" . utf8_decode(trim($rcc["produit_nom"])) . ";" . $rcc["prixachat_montant"] . ";" . $rcc["taille_nom"] . ";" . $rcc["stock_reel"] . "\n";
+	echo $rcc["categorie_nom"] .";" . $rcc["marque_nom"] . ";" . trim($rcc["produit_nom"]) . ";" . $rcc["prixachat_montant"] . ";" . $rcc["taille_nom"] . ";" . $rcc["stock_reel"] . "\n";
 }

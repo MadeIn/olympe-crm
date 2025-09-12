@@ -1,4 +1,4 @@
-<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.inc"); 
+<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.php"); 
 $titre_page = "Mon Agenda - Olympe Mariage";
 $desc_page = "Mon Agenda - Olympe Mariage";
 
@@ -58,18 +58,18 @@ if (isset($ajouter)) {
 						$titre_mail = $mail_type[1]["titre"];
 						$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
 						$message_mail = $mail_type[1]["message"];
-						$message_mail = str_replace("[PRENOM]",utf8_decode($rcl["client_prenom"]),$message_mail);
+						$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 						$message_mail = str_replace("[DATE_HEURE]",format_date($date_debut,2,1),$message_mail);
 						$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
 						$adresse = $u->mShowroomInfo["showroom_adr1"];
 						if ($u->mShowroomInfo["showroom_adr2"]!="")
 							$adresse .= "<br>" . $u->mShowroomInfo["showroom_adr2"];
-						$adresse = utf8_decode($adresse);
+						$adresse = $adresse;
 						$message_mail = str_replace("[SHOWROOM_ADRESSE]",$adresse,$message_mail);
 						$message_mail = str_replace("[SHOWROOM_CP]",$u->mShowroomInfo["showroom_cp"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_VILLE]",$u->mShowroomInfo["showroom_ville"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_TEL]",$u->mShowroomInfo["showroom_tel"],$message_mail);
-						$message_mail = str_replace("[SHOWROOM_ACCES]",utf8_decode($u->mShowroomInfo["showroom_acces"]),$message_mail);
+						$message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
 			
 						// On envoi le mail
 						SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
@@ -93,18 +93,18 @@ if (isset($ajouter)) {
 						$titre_mail = $mail_type[1]["titre"];
 						$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
 						$message_mail = $mail_type[1]["message"];
-						$message_mail = str_replace("[PRENOM]",utf8_decode($rcl["client_prenom"]),$message_mail);
+						$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 						$message_mail = str_replace("[DATE_HEURE]",format_date($date_debut,2,1),$message_mail);
 						$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
 						$adresse = $u->mShowroomInfo["showroom_adr1"];
 						if ($u->mShowroomInfo["showroom_adr2"]!="")
 							$adresse .= "<br>" . $u->mShowroomInfo["showroom_adr2"];
-						$adresse = utf8_decode($adresse);
+						$adresse = $adresse;
 						$message_mail = str_replace("[SHOWROOM_ADRESSE]",$adresse,$message_mail);
 						$message_mail = str_replace("[SHOWROOM_CP]",$u->mShowroomInfo["showroom_cp"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_VILLE]",$u->mShowroomInfo["showroom_ville"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_TEL]",$u->mShowroomInfo["showroom_tel"],$message_mail);
-						$message_mail = str_replace("[SHOWROOM_ACCES]",utf8_decode($u->mShowroomInfo["showroom_acces"]),$message_mail);
+						$message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
 			
 						// On envoi le mail
 						SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
@@ -128,18 +128,18 @@ if (isset($ajouter)) {
 						$titre_mail = $mail_type[1]["titre"];
 						$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
 						$message_mail = $mail_type[1]["message"];
-						$message_mail = str_replace("[PRENOM]",utf8_decode($rcl["client_prenom"]),$message_mail);
+						$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 						$message_mail = str_replace("[DATE_HEURE]",format_date($date_debut,2,1),$message_mail);
 						$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
 						$adresse = $u->mShowroomInfo["showroom_adr1"];
 						if ($u->mShowroomInfo["showroom_adr2"]!="")
 							$adresse .= "<br>" . $u->mShowroomInfo["showroom_adr2"];
-						$adresse = utf8_decode($adresse);
+						$adresse = $adresse;
 						$message_mail = str_replace("[SHOWROOM_ADRESSE]",$adresse,$message_mail);
 						$message_mail = str_replace("[SHOWROOM_CP]",$u->mShowroomInfo["showroom_cp"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_VILLE]",$u->mShowroomInfo["showroom_ville"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_TEL]",$u->mShowroomInfo["showroom_tel"],$message_mail);
-						$message_mail = str_replace("[SHOWROOM_ACCES]",utf8_decode($u->mShowroomInfo["showroom_acces"]),$message_mail);
+						$message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
 			
 						// On envoi le mail
 						SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
@@ -169,18 +169,18 @@ if (isset($ajouter)) {
 						$titre_mail = $mail_type[1]["titre"];
 						$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
 						$message_mail = $mail_type[1]["message"];
-						$message_mail = str_replace("[PRENOM]",utf8_decode($rcl["client_prenom"]),$message_mail);
+						$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 						$message_mail = str_replace("[DATE_HEURE]",format_date($date_debut,2,1),$message_mail);
 						$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
 						$adresse = $u->mShowroomInfo["showroom_adr1"];
 						if ($u->mShowroomInfo["showroom_adr2"]!="")
 							$adresse .= "<br>" . $u->mShowroomInfo["showroom_adr2"];
-						$adresse = utf8_decode($adresse);
+						$adresse = $adresse;
 						$message_mail = str_replace("[SHOWROOM_ADRESSE]",$adresse,$message_mail);
 						$message_mail = str_replace("[SHOWROOM_CP]",$u->mShowroomInfo["showroom_cp"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_VILLE]",$u->mShowroomInfo["showroom_ville"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_TEL]",$u->mShowroomInfo["showroom_tel"],$message_mail);
-						$message_mail = str_replace("[SHOWROOM_ACCES]",utf8_decode($u->mShowroomInfo["showroom_acces"]),$message_mail);
+						$message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
 			
 						// On envoi le mail
 						SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
@@ -204,18 +204,18 @@ if (isset($ajouter)) {
 						$titre_mail = $mail_type[5]["titre"];
 						$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
 						$message_mail = $mail_type[5]["message"];
-						$message_mail = str_replace("[PRENOM]",utf8_decode($rcl["client_prenom"]),$message_mail);
+						$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 						$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 						$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
 						$adresse = $u->mShowroomInfo["showroom_adr1"];
 						if ($u->mShowroomInfo["showroom_adr2"]!="")
 							$adresse .= "<br>" . $u->mShowroomInfo["showroom_adr2"];
-						$adresse = utf8_decode($adresse);
+						$adresse = $adresse;
 						$message_mail = str_replace("[SHOWROOM_ADRESSE]",$adresse,$message_mail);
 						$message_mail = str_replace("[SHOWROOM_CP]",$u->mShowroomInfo["showroom_cp"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_VILLE]",$u->mShowroomInfo["showroom_ville"],$message_mail);
 						$message_mail = str_replace("[SHOWROOM_TEL]",$u->mShowroomInfo["showroom_tel"],$message_mail);
-						$message_mail = str_replace("[SHOWROOM_ACCES]",utf8_decode($u->mShowroomInfo["showroom_acces"]),$message_mail);
+						$message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
 						
 						if ($dernier_acompte>0) {
 							$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num='" . $rcl["showroom_num"] . "' order by mode_ordre ASC";
@@ -224,7 +224,7 @@ if (isset($ajouter)) {
 							$moyen_paiement = "";
 							$nbr_mode = 0;
 							while ($rpa=mysql_fetch_array($pa)) {
-								$moyen_paiement .= utf8_encode($rpa["mode_nom"]);
+								$moyen_paiement .= $rpa["mode_nom"];
 								$nbr_mode++;
 								if ($nbr_mode<$nbr_paiement) {
 									if ($nbr_mode==(intval($nbr_paiement)-1))
@@ -234,7 +234,7 @@ if (isset($ajouter)) {
 								}
 							}
 							$message_acompte = '<p>Ce rendez-vous s\'accompagne du paiement d\'un acompte de ' . $dernier_acompte . '&euro;, que vous pouvez régler par ' . $moyen_paiement . '.</p>';
-							$message_mail = str_replace("[ACOMPTE_VALEUR]",utf8_decode($message_acompte),$message_mail);
+							$message_mail = str_replace("[ACOMPTE_VALEUR]",$message_acompte,$message_mail);
 						}
 									
 						// On envoi le mail
@@ -449,7 +449,7 @@ function changeHeureFin() {
 																					echo '<option value="' . $rtt["type_num"] . '"';
 																					if ($rtt["type_num"]==1)
 																						echo " SELECTED";
-																					echo '>' . utf8_encode($rtt["type_nom"]) . '</option>';
+																					echo '>' . $rtt["type_nom"] . '</option>';
 																				}
 																			?>
 																			</select>

@@ -1,9 +1,8 @@
 <?
 	function RecupPrix($produit) {
-		global $db;
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $db->query($sql);
-		if ($rpp = $db->row($pp)) {
+		$pp = mysql_query($sql);
+		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -47,10 +46,9 @@
 	}
 	
 	function AffichePrix($produit) {
-		global $db;
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $db->query($sql);
-		if ($rpp = $db->row($pp)) {
+		$pp = mysql_query($sql);
+		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -82,10 +80,9 @@
 	}
 	
 	function AffichePrixHT($produit) {
-		global $db;
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $db->query($sql);
-		if ($rpp = $db->row($pp)) {
+		$pp = mysql_query($sql);
+		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -117,10 +114,9 @@
 	}
 	
 	function AffichePrixTVA($produit) {
-		global $db;
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $db->query($sql);
-		if ($rpp = $db->row($pp)) {
+		$pp = mysql_query($sql);
+		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -150,10 +146,9 @@
 	}
 	
 	function RecupPrixInit($produit) {
-		global $db;
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $db->query($sql);
-		if ($rpp = $db->row($pp)) {
+		$pp = mysql_query($sql);
+		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -190,10 +185,9 @@
 	}
 	
 	function RecupPhotoProduit($produit) {
-		global $db;
 		$sql = "select * from md_produits_photos where produit_num='" . $produit . "' and photo_pos=1";
-		$ph = $db->query($sql);
-		if ($rph=$db->row($ph)) {
+		$ph = mysql_query($sql);
+		if ($rph=mysql_fetch_array($ph)) {
 			$photo = array(
 				'min'		=> "/photos/produits/min/" . $rph["photo_chemin"],
 				'norm'		=> "/photos/produits/norm/" . $rph["photo_chemin"],
@@ -201,19 +195,18 @@
 			);
 		} else {
 			$photo = array(
-				'min'		=> "https://www.placehold.it/50x50/EFEFEF/AAAAAA&amp;text=no+image",
-				'norm'		=> "https://www.placehold.it/500x500/EFEFEF/AAAAAA&amp;text=no+image",
-				'zoom'		=> "https://www.placehold.it/1000x1000/EFEFEF/AAAAAA&amp;text=no+image",
+				'min'		=> "http://www.placehold.it/50x50/EFEFEF/AAAAAA&amp;text=no+image",
+				'norm'		=> "http://www.placehold.it/500x500/EFEFEF/AAAAAA&amp;text=no+image",
+				'zoom'		=> "http://www.placehold.it/1000x1000/EFEFEF/AAAAAA&amp;text=no+image",
 			);
 		}
 		return $photo;
 	}
 	
 	function montantCommande($id) {
-		global $db;
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = $db->query($sql);
-		if ($rco=$db->row($co)) {
+		$co = mysql_query($sql);
+		if ($rco=mysql_fetch_array($co)) {
 			$commande_remise_ttc = 0;
 			$remise = 0;
 			if ($rco["commande_remise_type"]!=0) {
@@ -244,10 +237,9 @@
 	}
 	
 	function montantCommandeTTC($id) {
-		global $db;
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = $db->query($sql);
-		if ($rco=$db->row($co)) {
+		$co = mysql_query($sql);
+		if ($rco=mysql_fetch_array($co)) {
 			if ($rco["commande_remise_type"]==0)
 				return $rco["commande_ttc"];
 			else {
@@ -267,11 +259,10 @@
 	}
 	
 	function resteAPayerCommande($id) {
-		global $db;
 		$montantTTC = montantCommandeTTC($id);
 		$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $id . "'";
-		$pp = $db->query($sql);
-		if ($rpp=$db->row($pp)) {
+		$pp = mysql_query($sql);
+		if ($rpp=mysql_fetch_array($pp)) {
 			$paye = $rpp["val"];
 			$reste_a_payer = $montantTTC - $paye;
 			if ($reste_a_payer<0)
@@ -284,10 +275,9 @@
 	
 	
 	function montantCommandeHT($id) {
-		global $db;
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = $db->query($sql);
-		if ($rco=$db->row($co)) {
+		$co = mysql_query($sql);
+		if ($rco=mysql_fetch_array($co)) {
 			if ($rco["commande_remise_type"]==0)
 				return $rco["commande_ht"];
 			else {
@@ -311,9 +301,9 @@
 		global $base;
 		// On recupere les produits de la commande pour les enlever du stock
 		$sql = "select * from commandes_produits cp, md_produits p where cp.produit_num=p.produit_num and id='" . decrypte($id) . "'";
-		$co = $db->query($sql);
+		$co = mysql_query($sql);
 		$produits = array();
-		foreach ($co["tab"] as $rco) {
+		while ($rco=mysql_fetch_array($co)) {
 			$produit = array(
 				'ref'		=> $rco["produit_ref"],
 				'taille'	=> $rco["taille_num"],
@@ -330,14 +320,14 @@
 		
 		foreach ($produits as $pp) {
 			$sql = "select * from md_produits p, md_stocks s where p.produit_num=s.produit_num and produit_ref='" . $pp["ref"] . "' and taille_num='" . $pp["taille"] . "'";
-			$ss = $db->query($sql);
+			$ss = mysql_query($sql);
 			
-			if ($rss = $db->row($ss)) {
+			if ($rss = mysql_fetch_array($ss)) {
 				$stock_virtuel = $rss["stock_virtuel"] - $pp["qte"];
 				$stock_reel = $rss["stock_reel"] - $pp["qte"];
 				
 				$sql = "update md_stocks set stock_virtuel='" . $stock_virtuel . "', stock_reel='" . $stock_reel . "' where produit_num='" . $rss["produit_num"] . "' and taille_num='" . $rss["taille_num"] . "'";
-				$db->query($sql);
+				mysql_query($sql);
 			}
 		}
 		$bddshop->Deconnect();

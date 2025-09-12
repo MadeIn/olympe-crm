@@ -1,4 +1,4 @@
-<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.inc"); 
+<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.php"); 
 $titre_page = "Dashboard - Olympe Mariage";
 $desc_page = "Dashboard - Olympe Mariage";
 ?>
@@ -44,13 +44,13 @@ $desc_page = "Dashboard - Olympe Mariage";
 												<span class="col-md-1 col-sm-1 col-xs-1">' . $affiche_date . '</span>
 												<span class="col-md-3 col-sm-3 col-xs-3"><strong>' . $rcc["client_mail"] . '</strong></span>
 												<span class="col-md-3 col-sm-3 col-xs-3">' . $rcc["client_prenom"] . ' ' . $rcc["client_nom"] . '</span>
-												<span class="col-md-5 col-sm-5 col-xs-5"><strong>' . utf8_encode($rcc["mail_titre"]) . '</strong></span>
+												<span class="col-md-5 col-sm-5 col-xs-5"><strong>' . $rcc["mail_titre"] . '</strong></span>
 											</a>
 										</h4>
 									</div>
 									<div id="collapse_' . $i . '" class="panel-collapse collapse">
 										<div class="panel-body text-center" style="height:350px; overflow-y:auto;">
-											' . utf8_encode($rcc["mail_message"]) . '
+											' . $rcc["mail_message"] . '
 										</div>
 									</div>
 								</div>';

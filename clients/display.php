@@ -1,10 +1,10 @@
 <?  $chemin = $_SERVER['DOCUMENT_ROOT'];
-	include($chemin . "/inc/users.inc"); 
-	include($chemin . "/inc/divers.inc");
-	include($chemin . "/inc/object.inc");
-	include($chemin . "/inc/produits.inc");
-	include($chemin . "/inc/email.inc");
-	include($chemin . "/inc/db.inc");
+	include($chemin . "/inc/users.php"); 
+	include($chemin . "/inc/divers.php");
+	include($chemin . "/inc/object.php");
+	include($chemin . "/inc/produits.php");
+	include($chemin . "/inc/email.php");
+	include($chemin . "/inc/db.php");
 	
 	$base = new Db();
 	$base->Connect();
@@ -130,7 +130,7 @@
 							echo '<option value="' . $rpp["paiement_num"] . '"';
 							if ($rpp["paiement_num"]==$rcc["paiement_num"])
 								echo " SELECTED";
-							echo '>' . utf8_encode($rpp["paiement_titre"]) . '</option>';
+							echo '>' . $rpp["paiement_titre"] . '</option>';
 						}
 			echo '	</select>
 					</td>

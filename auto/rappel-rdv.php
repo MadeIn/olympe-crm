@@ -1,4 +1,4 @@
-﻿<? include("/home/madeinpr/www/CRM/olympe-mariage/inc/param_auto.inc"); 
+﻿<? include("/home/madeinpr/www/CRM/olympe-mariage/inc/param_auto.php"); 
 
 	// Envoyer en cron tous les matins à 9h
 	// On recupere les rendez vous à venir dans 3 jours pour envoyer un rappel....
@@ -21,12 +21,12 @@
 		$adresse = $rcc["showroom_adr1"];
 		if ($rcc["showroom_adr2"]!="")
 			$adresse .= "<br>" . $rcc["showroom_adr2"];
-		$adresse = utf8_decode($adresse);
+		$adresse = $adresse;
 		$message_mail = str_replace("[SHOWROOM_ADRESSE]",$adresse,$message_mail);
 		$message_mail = str_replace("[SHOWROOM_CP]",$rcc["showroom_cp"],$message_mail);
 		$message_mail = str_replace("[SHOWROOM_VILLE]",$rcc["showroom_ville"],$message_mail);
 		$message_mail = str_replace("[SHOWROOM_TEL]",$rcc["showroom_tel"],$message_mail);
-		$message_mail = str_replace("[SHOWROOM_ACCES]",utf8_decode($rcc["showroom_acces"]),$message_mail);
+		$message_mail = str_replace("[SHOWROOM_ACCES]",$rcc["showroom_acces"],$message_mail);
 		
 		echo $rcc["client_mail"] . "<br>";
 		

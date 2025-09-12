@@ -124,7 +124,7 @@
 			$savefile =  $rep . $userfile_acc["name"];
 			if (move_uploaded_file($userfile_acc["tmp_name"], $savefile)) { 
 				$img = $rep . $userfile_acc["name"];
-				$nom_image = Slug($nom_photo);
+				$nom_image = xtTraiter($nom_photo);
 				$retour = img_resize($savefile, $size, $rep , $nom_image);
 			}
 		}
@@ -159,7 +159,7 @@
 			if (move_uploaded_file($userfile_acc["tmp_name"], $savefile)) 
 			{ 
 				$img = $rep . $userfile_acc["name"];
-				$nom_image = Slug($nom_photo) . "-" . Date("YmdHis") . ".jpg";
+				$nom_image = xtTraiter($nom_photo) . "-" . Date("YmdHis") . ".jpg";
 				
 				$img_traite_zoom = $rep_save . "zoom/" . $nom_image;
 				$img_traite = $rep_save . "norm/" . $nom_image;
@@ -197,7 +197,7 @@
 				// On redimensionne la photo
 				if (!$source_zoom = @imagecreatefromjpeg($img_traite_zoom))
 				{ 
-					$mess_erreur = "Impossible de traiter l'image. Celle-ci est altÃ©rÃ©e.";
+					$mess_erreur = "Impossible de traiter l'image. Celle-ci est altérée.";
 					$erreur=1;
 					unlink ($img_traite_zoom); 
 					unlink ($img_traite); 
@@ -210,10 +210,10 @@
 					imagecopyresampled($dest, $source_zoom, 0, 0, 0, 0, $largeur, $hauteur,$dim[0],$dim[1]);
 					imagejpeg($dest,$img_traite_zoom);
 					unset($source_zoom);
-					// On crÃ©e la normale
+					// On crée la normale
 					if (!$source_norm = @imagecreatefromjpeg($img_traite))
 					{ 
-						$mess_erreur = "Impossible de traiter l'image. Celle-ci est altÃ©rÃ©e.";
+						$mess_erreur = "Impossible de traiter l'image. Celle-ci est altérée.";
 						$erreur=1;
 						unlink ($img_traite_zoom); 
 						unlink ($img_traite); 
@@ -227,10 +227,10 @@
 						imagejpeg($dest_norm,$img_traite);
 						unset($source_norm);
 
-						// On crÃ©e la miniature
+						// On crée la miniature
 						if (!$source_min = @imagecreatefromjpeg($img_traite_min))
 						{ 
-							$mess_erreur = "Impossible de traiter l'image. Celle-ci est altÃ©rÃ©e.";
+							$mess_erreur = "Impossible de traiter l'image. Celle-ci est altérée.";
 							$erreur=1;
 							unlink ($img_traite_zoom); 
 							unlink ($img_traite); 
@@ -246,7 +246,7 @@
 							
 							// Tout est ok alors on insere dans la base
 							//$sql = "insert into md_produits_photos values (0,'" . $produit_num . "','" . $nom_image . "'," . $portrait . "," . $une . ",0)";
-							//$db->query($sql);
+							//mysql_query($sql);
 							$retour = $nom_image;
 							// On efface la source
 							unlink ($img);
@@ -299,5 +299,40 @@
 		echo $retour;
 		return $retour;
 	}
+	
+	function remove_accent($str)
+	{
+	  $a = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð',
+					'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã',
+					'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ',
+					'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C',
+					'c', 'C', 'c', 'C', 'c', 'D', 'd', 'Ð', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e',
+					'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i',
+					'I', 'i', 'I', 'i', 'I', 'i', '?', '?', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l',
+					'?', '?', 'L', 'l', 'N', 'n', 'N', 'n', 'N', 'n', '?', 'O', 'o', 'O', 'o', 'O', 'o', 'Œ',
+					'œ', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'Š', 'š', 'T', 't', 'T', 
+					't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 
+					'y', 'Ÿ', 'Z', 'z', 'Z', 'z', 'Ž', 'ž', '?', 'ƒ', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i',
+					'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', '?', '?', '?', '?', '?', '?');
 
+	  $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O',
+					'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c',
+					'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u',
+					'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D',
+					'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g',
+					'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K',
+					'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o',
+					'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S',
+					's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W',
+					'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i',
+					'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o');
+	  return str_replace($a, $b, $str);
+	}
+
+	
+	/* Générateur de Slug (Friendly Url) : convertit un titre en une URL conviviale.*/
+	function Slug($str){
+		return mb_strtolower(preg_replace(array('/[^a-zA-Z0-9 \'-]/', '/[ -\']+/', '/^-|-$/'),
+		array('', '-', ''), remove_accent($str)));
+	}
 ?>

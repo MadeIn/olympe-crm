@@ -30,7 +30,7 @@ function decrypte($param)
 // Choix :
 //     0 : Ex : 27 Decembre 2003
 //     1 : Ex : 15:30
-//     2 : Ex : 27 Decembre 2003 à 15:30
+//     2 : Ex : 27 Decembre 2003 � 15:30
 //	   3 : Ex : 27/12
 function clean_text($text,$encodage) {
         $text = str_replace('&lt;','<',$text);
@@ -38,23 +38,32 @@ function clean_text($text,$encodage) {
         $text = str_replace('&quot;','"',$text);
         $text = str_replace('&amp;','&',$text);
         //if ($encodage == 'utf-8') {
-	        $text = utf8_decode($text);
+	        $text = $text;
         //}
         return $text;
 }
+Function xtTraiter($nompage) {
+     $nompage = strtolower($nompage);
+     $nompage = strtr($nompage,"���������������","aaaiioouuueeeec");
+	 $nompage = str_replace(":","",$nompage);
+	 $nompage = str_replace(" - ","-",$nompage);
+ 	 $nompage = str_replace("...","",$nompage);
+	 $nompage = str_replace("/","-",$nompage);
+     $nompage = eregi_replace("[^a-z0-9_:~\\\/\-]","-",$nompage);
+     return($nompage);
+} 
 
 function diff_date($date_deb,$date_fin)
 {
 	list(
 		$annee_deb,
 		$mois_deb,
-		$jour_deb) = explode('-',$date_deb,3);
+		$jour_deb) = split('[: -]',$date_deb,3);
 
 	list(
 		$annee_fin,
 		$mois_fin,
-		$jour_fin) = explode('-',$date_fin,3);
-
+		$jour_fin) = split('[: -]',$date_fin,3);
 
 	$DateLong1 = mktime( 0, 0, 0, $mois_deb, $jour_deb, $annee_deb);
 	$DateLong2 = mktime( 0, 0, 0, $mois_fin, $jour_fin, $annee_fin);
@@ -66,33 +75,28 @@ function diff_date($date_deb,$date_fin)
 
 function format_date($date_traiter,$choix,$langue)
 {
-	$date = substr($date_traiter,0,10);
-	$heure = substr($date_traiter,11);
-	
 	list(
 		$annee,
 		$mois,
-		$jour) = explode('-',$date);
-		
-	list(
+		$jour,
 		$heure,
 		$minute,
-		$seconde ) =  explode(':',$heure);
+		$seconde ) = split('[: -]',$date_traiter,6);
 	
 	$mois_bon = $mois;
 	$mois = $mois / 1;
 
 	//Francais
 	if ($langue==1)
-		$date_mois = array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre");
+		$date_mois = array("Janvier","F�vrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","D�cembre");
 
 	//Anglais
 	if ($langue==2)
-		$date_mois = array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre");
+		$date_mois = array("Janvier","F�vrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","D�cembre");
 
 	//espagnol
 	if ($langue==3)
-		$date_mois = array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre");
+		$date_mois = array("Janvier","F�vrier","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","D�cembre");
 
 	if ($choix==0)
 	{
@@ -106,7 +110,7 @@ function format_date($date_traiter,$choix,$langue)
 
 	if ($choix==2)
 	{
-		$new_date = $jour . " " . $date_mois[$mois-1] . " " . $annee . " à " . $heure . ":" . $minute;
+		$new_date = $jour . " " . $date_mois[$mois-1] . " " . $annee . " � " . $heure . ":" . $minute;
 	}
 	if ($choix==3)
 	{
@@ -199,7 +203,7 @@ function Remet_Carac_Special($chaine)
    return $chaine;
 }
 
-// ajoute des caractères à une chaine
+// ajoute des caract�res � une chaine
 function Comble_Chaine_Vide($chaine,$nbcar,$carac,$pos)
 {	
   $lgchaine = strlen($chaine);
@@ -247,40 +251,5 @@ function recupValeurEntreBalise($text, $baliseDebut, $baliseFin) {
 		$ii++;
 	}
 	return $textFinal;
-}
-
-function remove_accent($str) {
-	$a = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð',
-				  'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã',
-				  'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ',
-				  'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C',
-				  'c', 'C', 'c', 'C', 'c', 'D', 'd', 'Ð', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e',
-				  'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i',
-				  'I', 'i', 'I', 'i', 'I', 'i', '?', '?', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l',
-				  '?', '?', 'L', 'l', 'N', 'n', 'N', 'n', 'N', 'n', '?', 'O', 'o', 'O', 'o', 'O', 'o', 'Œ',
-				  'œ', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'Š', 'š', 'T', 't', 'T', 
-				  't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 
-				  'y', 'Ÿ', 'Z', 'z', 'Z', 'z', 'Ž', 'ž', '?', 'ƒ', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i',
-				  'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', '?', '?', '?', '?', '?', '?');
-
-	$b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O',
-				  'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c',
-				  'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u',
-				  'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D',
-				  'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g',
-				  'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K',
-				  'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o',
-				  'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S',
-				  's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W',
-				  'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i',
-				  'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o');
-	return str_replace($a, $b, $str);
-}
-
-
-/* Générateur de Slug (Friendly Url) : convertit un titre en une URL conviviale.*/
-function Slug($str) {
-	return mb_strtolower(preg_replace(array('/[^a-zA-Z0-9 \'-]/', '/[ -\']+/', '/^-|-$/'),
-	array('', '-', ''), remove_accent($str)));
 }
 ?>

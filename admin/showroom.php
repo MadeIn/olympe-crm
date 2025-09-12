@@ -1,4 +1,4 @@
-<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.inc"); 
+<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.php"); 
 $titre_page = "Gestion des Showrooms - Olympe Mariage";
 $desc_page = "Gestion des Showrooms - Olympe Mariage";
 
@@ -333,7 +333,7 @@ function confirme() {
 															if ($rtt=mysql_fetch_array($tt)) {
 																$checked = " CHECKED";
 															}
-															echo '<li><input type="checkbox" name="mode[]" value="' . $rpp["mode_num"] . '"' . $checked . '> ' . utf8_encode($rpp["mode_nom"]) . '</li>';
+															echo '<li><input type="checkbox" name="mode[]" value="' . $rpp["mode_num"] . '"' . $checked . '> ' . $rpp["mode_nom"] . '</li>';
 														}
 													?>
 												</ul>

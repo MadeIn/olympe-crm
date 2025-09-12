@@ -109,7 +109,7 @@ $calendly = array(
 
 $content = json_encode($calendly);
 
-include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_auto.inc"); 
+include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_auto.php"); 
 
 // Assurez-vous que ce script est accessible via une URL publique.
 
@@ -210,18 +210,18 @@ switch ($data["event"]) {
                     $titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
                     $titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
                     $message_mail = $mail_type[1][$rcl["client_genre"]]["message"];
-                    $message_mail = str_replace("[PRENOM]",utf8_decode($rcl["client_prenom"]),$message_mail);
+                    $message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
                     $message_mail = str_replace("[DATE_HEURE]",format_date($date_debut,2,1),$message_mail);
                     $message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
                     $adresse = $u->mShowroomInfo["showroom_adr1"];
                     if ($u->mShowroomInfo["showroom_adr2"]!="")
                         $adresse .= "<br>" . $u->mShowroomInfo["showroom_adr2"];
-                    $adresse = utf8_decode($adresse);
+                    $adresse = $adresse;
                     $message_mail = str_replace("[SHOWROOM_ADRESSE]",$adresse,$message_mail);
                     $message_mail = str_replace("[SHOWROOM_CP]",$u->mShowroomInfo["showroom_cp"],$message_mail);
                     $message_mail = str_replace("[SHOWROOM_VILLE]",$u->mShowroomInfo["showroom_ville"],$message_mail);
                     $message_mail = str_replace("[SHOWROOM_TEL]",$u->mShowroomInfo["showroom_tel"],$message_mail);
-                    $message_mail = str_replace("[SHOWROOM_ACCES]",utf8_decode($u->mShowroomInfo["showroom_acces"]),$message_mail);
+                    $message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
         
                     // On envoi le mail
                     SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);

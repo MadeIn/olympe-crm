@@ -1,7 +1,7 @@
 <? 
 	echo $_SERVER['DOCUMENT_ROOT'];
 	exit();
-	include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_auto.inc"); 
+	include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_auto.php"); 
 
 	// Envoyer en cron tous les matins à 9h
 	// On recupere les 1er ou 2eme rendez vous d'il y a 30 jours et qui n'ont pas de commande pour les relancer
@@ -28,7 +28,7 @@
 				$titre_mail = $mail_type[12][$rcc["client_genre"]]["titre"];
 				$titre_mail = str_replace("[VILLE]",$rcc["showroom_ville"],$titre_mail);
 				$message_mail = $mail_type[12][$rcc["client_genre"]]["message"];
-				$message_mail = str_replace("[PRENOM]",utf8_decode($rcc["client_prenom"]),$message_mail);
+				$message_mail = str_replace("[PRENOM]",$rcc["client_prenom"],$message_mail);
 				
 				echo $rcc["client_mail"] . "<br>";
 				
