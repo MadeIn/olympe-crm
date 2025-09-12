@@ -69,7 +69,7 @@ class Auth {
                 'success' => true, 
                 'message' => 'Connexion réussie',
                 'user' => $user,
-                'redirect' => $user->isCouturiere() ? '/show/index.php' : '/home/index.php'
+                'redirect' => $user->isCouturiere() ? '/show/index.php' : '/home'
             ];
         } else {
             // Connexion échouée
@@ -127,7 +127,7 @@ class Auth {
      */
     public static function requireAuth(): void {
         if (!self::isLoggedIn()) {
-            self::redirect('/home/index.php');
+            self::redirect('/home');
         }
         
         $user = self::getCurrentUser();

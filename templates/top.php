@@ -15,7 +15,7 @@
                 <!-- End Toggle Button -->
                 
                 <!-- BEGIN LOGO -->
-                <a id="index" class="page-logo" href="/home/index.php">
+                <a id="index" class="page-logo" href="/home">
                     <img src="/assets/images//logo-olympe.png" alt="Logo Olympe Mariage"> 
                     <?php 
                     if ($u && $u->mGroupe == 0) {
@@ -55,7 +55,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/logout.php">
+                                <a href="/logout">
                                     <i class="icon-key"></i> Déconnexion
                                 </a>
                             </li>
@@ -71,13 +71,13 @@
                 <ul class="nav navbar-nav">
                     
                     <!-- Dashboard -->
-                    <li class="dropdown dropdown-fw dropdown-fw-disabled <?= isActiveMenu('/home/index.php') ?>">
-                        <a href="/home/index.php" class="text-uppercase">
+                    <li class="dropdown dropdown-fw dropdown-fw-disabled <?= isActiveMenu('/home') ?>">
+                        <a href="/home" class="text-uppercase">
                             <i class="icon-home"></i> Dashboard
                         </a>
                         <ul class="dropdown-menu dropdown-menu-fw">
                             <li>
-                                <a href="/home/index.php">
+                                <a href="/home">
                                     <i class="fa fa-clone"></i> Accueil
                                 </a>
                             </li>

@@ -408,27 +408,40 @@ class Db {
 }
 
 /**
- * Simule register_globals avec sécurisation automatique de tous les paramètres
+ * Simule register_globals de façon plus sûre.
+ * - Charge GET puis POST (POST écrase GET si même clé).
+ * - Blacklist de noms réservés pour éviter les collisions dangereuses.
+ * - Option: n'écrase pas si la variable existe déjà dans $GLOBALS.
  */
-function secure_register_globals(): void {
-    // Traiter GET et POST
-    $sources = ['_GET' => $_GET, '_POST' => $_POST];
-    
-    foreach ($sources as $source_data) {
-        foreach ($source_data as $key => $value) {
-            // Valider le nom de la variable (sécurité)
-            if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $key)) {
-                continue; // Ignorer les noms de variables invalides
-            }
-            
-            // Créer la variable globale sécurisée
-            global $$key;
-            
-            if (is_array($value)) {
-                $$key = secure_array($value);
-            } else {
-                $$key = secure_value($value);
-            }
+function secure_register_globals(bool $dontOverrideExisting = true): void
+{
+    // 1) Fusion dans l'ordre: GET puis POST (POST > GET)
+    $data = array_merge($_GET ?? [], $_POST ?? []);
+
+    // 2) Noms interdits
+    static $reserved = [
+        'GLOBALS','_GET','_POST','_COOKIE','_FILES','_SERVER','_ENV','_REQUEST','_SESSION',
+        'argv','argc','this','php_errormsg'
+    ];
+
+    foreach ($data as $key => $value) {
+        // Clé valide: style variable PHP
+        if (!is_string($key) || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $key)) {
+            continue;
+        }
+        if (in_array($key, $reserved, true)) {
+            continue;
+        }
+        // Option: ne pas écraser si déjà défini
+        if ($dontOverrideExisting && array_key_exists($key, $GLOBALS)) {
+            continue;
+        }
+
+        // Sanitize
+        if (is_array($value)) {
+            $GLOBALS[$key] = secure_array($value);
+        } else {
+            $GLOBALS[$key] = secure_value($value);
         }
     }
 }

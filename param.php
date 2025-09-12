@@ -1,79 +1,90 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Fichier d'inclusion pour toutes les pages protégées
- * À inclure en haut de chaque page nécessitant une authentification
+ * param.php — garde d’accès (ACL) pour pages protégées
+ * À inclure tout en haut des pages nécessitant une authentification.
+ *
+ * Le routeur index.php fait déjà le bootstrap global (autoload, config, helpers, secure_register_globals).
+ * Ici, on ne fait que garantir la session + l'auth, et exposer $u, $base, $rep_serveur, $app_config.
  */
 
-// Configuration et autoloading
-require_once dirname(__FILE__) . '/classes/Database.php';
-require_once dirname(__FILE__) . '/classes/User.php';
-require_once dirname(__FILE__) . '/classes/Auth.php';
-require_once dirname(__FILE__) . '/includes/functions.php';
+// Si app non bootstrappée (appel direct à la page), on charge le minimum vital.
+if (!defined('APP_BOOTSTRAPPED')) {
+    $ROOT = __DIR__;
 
-// Inclusions des fonctions thématiques modernisées
-require_once dirname(__FILE__) . '/includes/text_functions.php';
-require_once dirname(__FILE__) . '/includes/date_functions.php';
-require_once dirname(__FILE__) . '/includes/crypto_functions.php';
-require_once dirname(__FILE__) . '/includes/image_functions.php';
-require_once dirname(__FILE__) . '/includes/email_functions.php';
-require_once dirname(__FILE__) . '/includes/product_functions.php';
-require_once dirname(__FILE__) . '/vendor/autoload.php';
+    if (is_file($ROOT . '/vendor/autoload.php')) {
+        require $ROOT . '/vendor/autoload.php';
+    }
 
-// Chemin des templates
-define('TEMPLATE_PATH', dirname(__FILE__) . '/templates/');
+    // Config & erreurs
+    $app_config = require $ROOT . '/config/app.php';
+    $env = (string)($app_config['environment'] ?? 'prod');
+    if ($env === 'dev') {
+        ini_set('display_errors', '1');
+        error_reporting((int)($app_config['error_reporting']['dev'] ?? E_ALL));
+    } else {
+        ini_set('display_errors', '0');
+        ini_set('log_errors', '1');
+        if (!empty($app_config['app_root'])) {
+            ini_set('error_log', rtrim($app_config['app_root'], '/').'/logs/error.log');
+        }
+        error_reporting((int)($app_config['error_reporting']['prod'] ?? 0));
+    }
 
-// Configuration de l'application
-$app_config = require dirname(__FILE__) . '/config/app.php';
+    // Classes & helpers minimaux
+    require_once $ROOT . '/classes/Database.php';
+    require_once $ROOT . '/classes/User.php';
+    require_once $ROOT . '/classes/Auth.php';
+    require_once $ROOT . '/includes/functions.php';
 
-// Configuration des erreurs selon l'environnement
-if ($app_config['environment'] === 'dev') {
-    ini_set('display_errors', $app_config['display_errors']['dev']);
-    error_reporting($app_config['error_reporting']['dev']);
+    // (Optionnel) les autres helpers si besoin en accès direct:
+    require_once $ROOT . '/includes/text_functions.php';
+    require_once $ROOT . '/includes/date_functions.php';
+    require_once $ROOT . '/includes/crypto_functions.php';
+    require_once $ROOT . '/includes/image_functions.php';
+    require_once $ROOT . '/includes/email_functions.php';
+    require_once $ROOT . '/includes/product_functions.php';
+    if (!defined('TEMPLATE_PATH')) {
+        define('TEMPLATE_PATH', __DIR__ . '/templates/');
+    }
+    // Sessions
+    Auth::initSession();
+
+    // Compat GET/POST
+    if (function_exists('secure_register_globals')) {
+        secure_register_globals();
+    }
 } else {
-    ini_set('display_errors', $app_config['display_errors']['prod']);
-    ini_set('log_errors', 1);
-    ini_set('error_log', $app_config['app_root'] . '/logs/error.log');
-    error_reporting($app_config['error_reporting']['prod']);
-}
-
-// Configuration UTF-8
-ini_set('default_charset', 'UTF-8');
-if (function_exists('mb_internal_encoding')) {
-    mb_internal_encoding('UTF-8');
-}
-
-// Initialisation des sessions sécurisées
-Auth::initSession();
-
-// Vérification de l'authentification
-Auth::requireAuth();
-
-// Récupération de l'utilisateur connecté
-$u = Auth::getCurrentUser();
-
-if (!$u) {
-    // Si pas d'utilisateur en session, rediriger vers la connexion
-    Auth::redirect('/index.php');
-}
-
-// Instance de base de données (compatible avec l'ancien code)
-$base = Database::getInstance();
-
-// Variables de compatibilité pour l'ancien code
-$rep_serveur = $app_config['app_root']; // Remplace l'ancien chemin
-
-
-foreach ($legacy_includes as $file) {
-    if (file_exists(dirname(__FILE__) . '/' . $file)) {
-        include_once dirname(__FILE__) . '/' . $file;
+    // Si bootstrap fait par le routeur, on récupère la config globale si pas déjà disponible.
+    if (!isset($app_config)) {
+        $app_config = require __DIR__ . '/config/app.php';
     }
 }
 
-// Log de l'accès à la page (optionnel, à activer si souhaité)
-if ($app_config['environment'] === 'dev') {
+// Exige l’authentification
+Auth::requireAuth();
+
+// Utilisateur courant
+$u = Auth::getCurrentUser();
+if (!$u) {
+    // Si pas d'utilisateur en session, on renvoie vers login
+    Auth::redirect('/login'); // ou '/index.php' si tu préfères
+    exit;
+}
+
+// Accès DB si nécessaire dans la page
+$base = Database::getInstance();
+
+// Compat héritage
+$rep_serveur = $app_config['app_root'] ?? __DIR__;
+
+// (Optionnel) log des accès en dev
+if (($app_config['environment'] ?? 'prod') === 'dev' && function_exists('log_page_access')) {
     log_page_access();
 }
 
-// Simulation sécurisée de register_globals (compatible avec l'ancien code)
-secure_register_globals();
-?>
+// (Optionnel) legacy includes si tu en gardes encore
+// foreach ($legacy_includes as $file) {
+//     if (file_exists(__DIR__ . '/' . $file)) {
+//         require_once __DIR__ . '/' . $file;
+//     }
+// }

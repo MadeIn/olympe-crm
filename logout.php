@@ -1,288 +1,188 @@
-<?php
+<?php declare(strict_types=1);
 /**
- * Page de déconnexion
+ * Page de déconnexion (legacy-compatible + front-controller)
+ * URL d'accès : /logout (réécrite par le routeur vers ce fichier)
  */
 
-// Chargement des classes nécessaires
-require_once 'classes/Database.php';
-require_once 'classes/User.php';
-require_once 'classes/Auth.php';
+require_once __DIR__ . '/classes/Database.php';
+require_once __DIR__ . '/classes/User.php';
+require_once __DIR__ . '/classes/Auth.php';
 
-// Configuration
-$app_config = require 'config/app.php';
+// Config
+$app_config = require __DIR__ . '/config/app.php';
 
-// Initialisation des sessions
+// Session
 Auth::initSession();
 
-// Message de confirmation
+/**
+ * Valide une URL de retour : doit être relative (commencer par "/") pour éviter l’open redirect.
+ */
+function safe_return_url(?string $u, string $fallback = '/home'): string {
+    $u = trim((string)$u);
+    if ($u !== '' && str_starts_with($u, '/')) return $u;
+    return $fallback;
+}
+
+/**
+ * Déconnexion sûre (si ta classe Auth::logout() ne redirige pas elle-même).
+ */
+function do_logout_and_redirect(string $to = '/login'): never {
+    // Si Auth::logout() s'occupe de tout, tu peux simplement l'appeler :
+    if (method_exists('Auth', 'logout')) {
+        Auth::logout();
+    } else {
+        // Fallback : on gère ici
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $p = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $p['path'], $p['domain'], $p['secure'], $p['httponly']);
+        }
+        session_destroy();
+    }
+    header('Location: ' . $to, true, 302);
+    exit;
+}
+
+/* ===========================================================
+   1) Déconnexion immédiate si confirm=1 en GET (pratique pour liens)
+   =========================================================== */
+if (($_GET['confirm'] ?? '') === '1') {
+    $returnUrl = safe_return_url($_GET['return'] ?? null, '/login');
+    do_logout_and_redirect($returnUrl);
+}
+
+/* ===========================================================
+   2) Traitement POST (boutons du formulaire)
+   =========================================================== */
 $message = '';
 $messageType = 'info';
 
-// Si c'est une requête POST avec confirmation
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
-    
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $action = (string)($_POST['action'] ?? '');
+
     if ($action === 'confirm_logout') {
-        // Vérification CSRF
         if (Auth::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
-            Auth::logout();
-            // La méthode logout() redirige automatiquement, mais au cas où...
-            header('Location: /index.php');
-            exit();
+            $returnUrl = safe_return_url($_POST['return_url'] ?? null, '/login');
+            do_logout_and_redirect($returnUrl);
         } else {
             $message = 'Token de sécurité invalide.';
             $messageType = 'danger';
         }
     } elseif ($action === 'cancel') {
-        // Retour vers la page d'accueil ou la page précédente
-        $redirect = $_POST['return_url'] ?? '/home.php';
-        
-        // Validation de l'URL de retour pour éviter les redirections malveillantes
-        if (filter_var($redirect, FILTER_VALIDATE_URL) === false && strpos($redirect, '/') === 0) {
-            header('Location: ' . $redirect);
-            exit();
-        }
-        header('Location: /home.php');
-        exit();
+        $returnUrl = safe_return_url($_POST['return_url'] ?? null, '/home');
+        header('Location: ' . $returnUrl, true, 302);
+        exit;
     }
 }
 
-// Si pas encore connecté, rediriger vers la page de connexion
+/* ===========================================================
+   3) Si pas connecté → va direct vers /login
+   =========================================================== */
 if (!Auth::isLoggedIn()) {
-    header('Location: /index.php');
-    exit();
+    header('Location: /login', true, 302);
+    exit;
 }
 
-// Récupérer l'utilisateur actuel pour affichage
+/* ===========================================================
+   4) Rendu de la page de confirmation
+   =========================================================== */
 $user = Auth::getCurrentUser();
-
-// URL de retour (page précédente)
-$returnUrl = $_GET['return'] ?? $_SERVER['HTTP_REFERER'] ?? '/home.php';
-
-// Fonction d'échappement HTML
-function h(string $str): string {
-    return htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-}
+$returnUrl = safe_return_url($_GET['return'] ?? ($_SERVER['HTTP_REFERER'] ?? '/home'), '/home');
+$csrf = Auth::generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="utf-8" />
-    <title><?= h($app_config['app_name']) ?> - Déconnexion</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    
+    <title><?= h(($app_config['app_name'] ?? 'CRM') . ' - Déconnexion') ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- CSS -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/css/components.min.css" rel="stylesheet" type="text/css" />
-    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&display=swap" rel="stylesheet" />
+    <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/global/css/components.min.css" rel="stylesheet" />
     <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            font-family: 'Open Sans', sans-serif;
-        }
-        
-        .logout-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .logout-box {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-        
-        .logout-box h2 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        
-        .logout-box .user-info {
-            background: #f8f9fa;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .logout-box .user-info strong {
-            color: #495057;
-        }
-        
-        .btn-logout {
-            background: #dc3545;
-            border-color: #dc3545;
-            color: white;
-            margin: 10px;
-            min-width: 120px;
-        }
-        
-        .btn-logout:hover {
-            background: #c82333;
-            border-color: #bd2130;
-            color: white;
-        }
-        
-        .btn-cancel {
-            background: #6c757d;
-            border-color: #6c757d;
-            color: white;
-            margin: 10px;
-            min-width: 120px;
-        }
-        
-        .btn-cancel:hover {
-            background: #5a6268;
-            border-color: #545b62;
-            color: white;
-        }
-        
-        .logo {
-            max-width: 200px;
-            margin-bottom: 30px;
-        }
-        
-        .security-info {
-            margin-top: 30px;
-            padding: 15px;
-            background: #fff3cd;
-            border-radius: 5px;
-            border-left: 4px solid #ffc107;
-        }
-        
-        .security-info small {
-            color: #856404;
-        }
+        body{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;font-family:'Open Sans',sans-serif}
+        .logout-container{min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .logout-box{background:#fff;border-radius:10px;box-shadow:0 15px 35px rgba(0,0,0,.1);padding:40px;max-width:520px;width:92%;text-align:center}
+        .logo{max-width:200px;margin-bottom:30px}
+        .user-info{background:#f8f9fa;border-radius:5px;padding:20px;margin:20px 0}
+        .btn-logout{background:#dc3545;border-color:#dc3545;color:#fff;margin:10px;min-width:140px}
+        .btn-logout:hover{background:#c82333;border-color:#bd2130}
+        .btn-cancel{background:#6c757d;border-color:#6c757d;color:#fff;margin:10px;min-width:140px}
+        .btn-cancel:hover{background:#5a6268;border-color:#545b62}
+        .security-info{margin-top:30px;padding:15px;background:#fff3cd;border-radius:5px;border-left:4px solid #ffc107}
     </style>
 </head>
-
 <body>
-    <div class="logout-container">
-        <div class="logout-box">
-            <!-- Logo -->
-            <img src="/assets/images/logo-olympe.png" alt="<?= h($app_config['app_name']) ?>" class="logo" />
-            
-            <h2><i class="fa fa-sign-out"></i> Déconnexion</h2>
-            
-            <?php if (!empty($message)): ?>
-                <div class="alert alert-<?= h($messageType) ?> alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <?= h($message) ?>
-                </div>
-            <?php endif; ?>
-            
-            <?php if ($user): ?>
-                <div class="user-info">
-                    <p><strong>Utilisateur connecté :</strong><br>
-                       <?= h($user->getFullName()) ?><br>
-                       <small class="text-muted"><?= h($user->mEmail) ?></small>
-                    </p>
-                    
+<div class="logout-container">
+    <div class="logout-box">
+        <img src="/assets/images/logo-olympe.png" alt="<?= h($app_config['app_name'] ?? 'CRM') ?>" class="logo" />
+        <h2><i class="fa fa-sign-out"></i> Déconnexion</h2>
+
+        <?php if ($message !== ''): ?>
+            <div class="alert alert-<?= h($messageType) ?> alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <?= h($message) ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($user): ?>
+            <div class="user-info">
+                <p><strong>Utilisateur connecté :</strong><br>
+                    <?= h($user->getFullName()) ?><br>
+                    <small class="text-muted"><?= h($user->mEmail ?? '') ?></small>
+                </p>
+                <?php if (!empty($user->mDatederConn ?? '')): ?>
                     <p><strong>Dernière connexion :</strong><br>
-                       <small><?= h(format_datetime($user->mDatederConn ?? date('Y-m-d H:i:s'))) ?></small>
+                        <small><?= h((new DateTime($user->mDatederConn))->format('d/m/Y H:i')) ?></small>
                     </p>
-                </div>
-            <?php endif; ?>
-            
-            <p class="text-muted">
-                Êtes-vous sûr(e) de vouloir vous déconnecter ?<br>
-                <small>Cette action fermera votre session en toute sécurité.</small>
-            </p>
-            
-            <!-- Formulaire de confirmation -->
-            <form method="post" action="<?= h($_SERVER['PHP_SELF']) ?>">
-                <input type="hidden" name="csrf_token" value="<?= h(Auth::generateCSRFToken()) ?>">
-                <input type="hidden" name="return_url" value="<?= h($returnUrl) ?>">
-                
-                <div class="form-actions" style="margin-top: 30px;">
-                    <button type="submit" name="action" value="confirm_logout" class="btn btn-logout">
-                        <i class="fa fa-sign-out"></i> Oui, me déconnecter
-                    </button>
-                    
-                    <button type="submit" name="action" value="cancel" class="btn btn-cancel">
-                        <i class="fa fa-arrow-left"></i> Annuler
-                    </button>
-                </div>
-            </form>
-            
-            <!-- Information de sécurité -->
-            <div class="security-info">
-                <small>
-                    <i class="fa fa-shield"></i>
-                    <strong>Sécurité :</strong> Pour votre protection, fermez complètement votre navigateur après déconnexion si vous utilisez un ordinateur partagé.
-                </small>
+                <?php endif; ?>
             </div>
-            
-            <!-- Lien direct si JavaScript désactivé -->
-            <div style="margin-top: 20px;">
-                <small class="text-muted">
-                    <a href="/index.php" class="text-muted">
-                        <i class="fa fa-home"></i> Retour à la page de connexion
-                    </a>
-                </small>
-            </div>
+        <?php endif; ?>
+
+        <p class="text-muted">
+            Êtes-vous sûr(e) de vouloir vous déconnecter ?<br>
+            <small>Cette action fermera votre session en toute sécurité.</small>
+        </p>
+
+        <!-- Formulaire -->
+        <div class="mt-3">
+            <a href="/logout?confirm=1&return=/login" class="btn btn-logout">
+                <i class="fa fa-sign-out"></i> Oui, me déconnecter
+			</a>
+			 <a href="/home" class="btn btn-cancel">
+               <i class="fa fa-arrow-left"></i> Annuler
+			</a>
+		</div>
+
+        <div class="security-info">
+            <small><i class="fa fa-shield"></i> <strong>Sécurité :</strong>
+                fermez votre navigateur après déconnexion sur un poste partagé.</small>
+        </div>
+
+        <!-- Liens utiles -->
+        <div style="margin-top:20px">
+            <small class="text-muted">
+                <a href="/login"><i class="fa fa-home"></i> Retour à la page de connexion</a>
+                &nbsp;•&nbsp;
+                <a href="/logout?confirm=1&return=/login"><i class="fa fa-bolt"></i> Déconnexion directe</a>
+            </small>
         </div>
     </div>
+</div>
 
-    <!-- JavaScript -->
-    <script src="/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-    <script src="/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    
-    <script>
-        $(document).ready(function() {
-            // Focus sur le bouton de déconnexion
-            $('.btn-logout').focus();
-            
-            // Raccourci clavier : Echap pour annuler
-            $(document).keyup(function(e) {
-                if (e.keyCode === 27) { // Echap
-                    $('button[value="cancel"]').click();
-                }
-            });
-            
-            // Raccourci clavier : Entrée pour confirmer
-            $(document).keyup(function(e) {
-                if (e.keyCode === 13 && !$('input, textarea').is(':focus')) { // Entrée
-                    $('.btn-logout').click();
-                }
-            });
-            
-            // Animation au chargement
-            $('.logout-box').hide().fadeIn(500);
-            
-            // Confirmation supplémentaire avant déconnexion
-            $('.btn-logout').click(function(e) {
-                $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Déconnexion...');
-                // Le formulaire se soumet normalement
-            });
-        });
-    </script>
+<script src="/assets/global/plugins/jquery.min.js"></script>
+<script src="/assets/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script>
+$(function(){
+    $('.logout-box').hide().fadeIn(200);
+    $('.btn-logout').focus();
+    $(document).on('keyup', function(e){
+        if(e.key === 'Escape'){ $('button[name="action"][value="cancel"]').trigger('click'); }
+    });
+
+});
+</script>
 </body>
 </html>
-
-<?php
-// Fonction utilitaire pour le formatage des dates (si pas déjà définie)
-if (!function_exists('format_datetime')) {
-    function format_datetime(string $datetime, string $format = 'd/m/Y H:i'): string {
-        if (empty($datetime) || $datetime === '0000-00-00 00:00:00') {
-            return 'Non disponible';
-        }
-        
-        try {
-            $dt = new DateTime($datetime);
-            return $dt->format($format);
-        } catch (Exception $e) {
-            return 'Date invalide';
-        }
-    }
-}
-?>

@@ -157,7 +157,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                 <!-- BEGIN BREADCRUMBS -->
                 <?php if ($u->mGroupe != 0) { ?>
                     <div class="breadcrumbs">
-                        <h1>Olympe Mariage - <?php echo h(format_date(date("Y-m-d"), "d/m/Y")); ?></h1>
+                        <h1>Olympe Mariage - <?php echo h(format_date(date("Y-m-d"), 13)); ?></h1>
                         <ol class="breadcrumb">
                             <li><a href="#">Accueil</a></li>
                             <li class="active">Dashboard</li>
@@ -179,7 +179,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                     }
                                     ?>
                                 </select>
-                                - <?php echo h(format_date(date("Y-m-d"), "d/m/Y")); ?>
+                                - <?php echo h(format_date(date("Y-m-d"), 13)); ?>
                             </h1>
                             <ol class="breadcrumb">
                                 <li><a href="#">Accueil</a></li>
