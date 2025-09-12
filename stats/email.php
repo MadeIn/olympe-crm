@@ -1,0 +1,156 @@
+<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.inc"); 
+$titre_page = "Extraction email - Olympe Mariage";
+$desc_page = "Extraction email - Olympe Mariage";
+  
+  $mois_nom = array("","Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre");
+  $mois_jour = array(0,31,28,31,30,31,30,31,31,30,31,30,31);
+
+  if (!isset($genre))
+	  $genre=-1;
+  
+?>
+
+<? include( $chemin . "/mod/head.php"); ?>
+    <body class="page-header-fixed page-sidebar-closed-hide-logo">
+        <!-- BEGIN CONTAINER -->
+        <div class="wrapper">
+            <? include( $chemin . "/mod/top.php"); ?>
+            <div class="container-fluid">
+                <div class="page-content">
+                    <!-- BEGIN BREADCRUMBS -->
+                    <div class="breadcrumbs">
+                        <h1>Olympe Mariage</h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/home.php">Accueil</a>
+                            </li>
+                            <li class="active">Extraction Email</li>
+                        </ol>
+                    </div>
+                    <!-- END BREADCRUMBS -->
+                    <!-- BEGIN PAGE BASE CONTENT -->
+                    <div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div class="portlet light bordered">
+								<div class="portlet-title">
+									<div class="caption font-red-sunglo">
+										<i class="icon-question font-red-sunglo"></i>
+											<span class="caption-subject bold uppercase"> Recherche Email</span>
+									</div>
+								</div>
+								<div class="portlet-body form">
+									<form name="recherche" method="POST" action="<? echo $PHP_SELF ?>">
+									<input type="hidden" name="recherche" value="ok">
+									<table class="table table-striped table-bordered table-advance table-hover">
+										<thead>
+											<tr>
+												<th>Date debut</th>
+												<th>Date fin</th>
+												<th>Etat</th>
+												<th>Showroom</th>
+												<th>Genre</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+													<input type="date" name="date_debut" value="<? echo $date_debut ?>">
+												</td>
+												<td>
+													<input type="date" name="date_fin" value="<? echo $date_fin ?>">
+												</td>
+												<td>
+													<select name="etat" class="form-control input-medium">
+														<option value="0"<? if ($etat==0) echo " SELECTED"; ?>>Tous les clients</option>
+														<option value="1"<? if ($etat==1) echo " SELECTED"; ?>>Les clients qui n'ont pas commandés</option>
+														<option value="2"<? if ($etat==2) echo " SELECTED"; ?>>Les clients qui ont commandés</option>
+														<option value="3"<? if ($etat==3) echo " SELECTED"; ?>>Les clientes qui ont commandées une robe</option>
+													</select>
+												</td>
+												<td>
+													<select name="showroom" class="form-control input-medium">
+														<option value="0">Tous</option>
+													<?
+														$sql = "select * from showrooms order by showroom_nom ASC";
+														$tt = mysql_query($sql);
+														while ($rtt=mysql_fetch_array($tt)) {
+															echo '<option value="' . $rtt["showroom_num"] . '"';
+															if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
+															echo '>' . $rtt["showroom_nom"] . '</option>';
+														}
+													?>
+													</select>
+												</td>
+												<td>
+													<select name="genre" class="form-control input-medium">
+														<option value="-1"<? if ($genre==-1) echo " SELECTED"; ?>>---------</option>
+														<option value="0"<? if ($genre==0) echo " SELECTED"; ?>>Femme</option>
+														<option value="1"<? if ($genre==1) echo " SELECTED"; ?>>Homme</option>
+													</select>
+												</td>
+												<td><input type="submit" value="Rechercher" class="btn blue"></td>
+											</tr>
+										</tbody>
+									</table>
+									</form>
+								</div>
+							</div>
+						</div>
+                    	<? if (isset($recherche)) { ?>
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<?
+							$sql = "select client_num,client_mail, client_prenom, client_nom from clients where client_num=client_num";
+							if ($date_debut!="")
+								$sql .= " and client_datecreation>='" . $date_debut . " 00:00:00'";
+							if ($date_fin!="")
+								$sql .= " and client_datecreation<='" . $date_fin . " 23:59:59'";
+							if ($showroom!=0)
+								$sql .= " and showroom_num='" . $showroom . "'";
+							if ($genre!=-1)
+								$sql .= " and client_genre='" . $genre . "'";
+							$cc = mysql_query($sql);
+							$nbr_email = 0;
+							while ($rcc=mysql_fetch_array($cc)) {
+								$test=1;
+								if ($etat>0) { 
+									// On test si la cliente a déjà commandé
+									if ($etat==3) {
+										$sql = "select * from commandes c, commandes_produits cp, md_produits p where c.id=cp.id and cp.produit_num=p.produit_num and categorie_num IN (11) and commande_num!=0 and client_num='" . $rcc["client_num"] . "'";
+									} else {
+										$sql = "select * from commandes where client_num='" . $rcc["client_num"] . "' and commande_num!=0";
+									}									
+									$tt = mysql_query($sql);
+									$nbr_commande = mysql_num_rows($tt);
+									if ($etat==1) {
+										if ($nbr_commande>0)
+											$test=0;
+									} else if ($etat==2) {
+										if ($nbr_commande==0)
+											$test=0;
+									} else if ($etat==3) {
+										if ($nbr_commande==0)
+											$test=0;
+									}
+								}
+								
+								if ($test==1) {
+									echo $rcc["client_mail"] . ";" . $rcc["client_prenom"] . ";" . $rcc["client_nom"] . "<br>";
+									$nbr_email++;
+								}
+							}
+						?>						
+						<hr>
+						<p>Nombre d'email : <strong><? echo $nbr_email ?></strong></p>
+						</div>
+						<? } ?>
+					</div>
+                    <!-- END PAGE BASE CONTENT -->
+                </div>
+                <? include( $chemin . "/mod/footer.php"); ?>
+            </div>
+        </div>
+         <? include( $chemin . "/mod/bottom.php"); ?>
+    </body>
+
+</html>

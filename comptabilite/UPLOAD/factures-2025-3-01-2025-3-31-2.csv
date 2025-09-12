@@ -1,0 +1,14 @@
+Date de facture;Num de facture;Nom cliente;Genre;Montant TTC;Montant HT Robes avant remise;Montant HT Accessoires avant remise;Montant HT Remise
+04/3/2025;202503001;Caron Marie;Femme;390;0.00;325.00;325.00
+05/3/2025;202503002;Perret Manon;Femme;42;0.00;35.00;35.00
+11/3/2025;202503003;Caron Marie;Femme;100;0.00;83.33;83.33
+14/3/2025;202503004;Pourkier Adeline;Femme;570;0.00;475.00;475.00
+15/3/2025;202503005;Natiez Joséphine;Femme;2300;1833.33;83.30;1916.63
+19/3/2025;202503006;Olympe Montpellier ;;Femme;2379;0.00;2001.33;1982.17
+21/3/2025;202503007;Faget Ségolène;Femme;215;0.00;179.17;179.17
+21/3/2025;202503008;Faget Ségolène;Femme;570;0.00;475.00;475.00
+21/3/2025;202503009;Caron Marie;Femme;2550;2041.67;83.30;2124.97
+26/3/2025;202503010;Fleury Noémie;Femme;3015;2250.00;262.47;2512.47
+29/3/2025;202503011;Ferran Claire;Femme;390;0.00;325.00;325.00
+29/3/2025;202503012;Chatelier Grégoire;Homme;175;0.00;145.84;145.84
+29/3/2025;202503013;Ferran Serge;Homme;1195;0.00;995.83;995.83

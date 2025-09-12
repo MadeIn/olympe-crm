@@ -1,0 +1,21 @@
+# Fichiers de configuration sensibles
+*.log
+/inc/config.php
+/inc/database.php
+/inc/credentials.php
+/assets/layout/
+/assets/global/plugins/
+
+# Fichiers temporaires
+*.tmp
+*.cache
+.DS_Store
+Thumbs.db
+
+# Uploads utilisateurs (si applicable)
+/uploads/
+/photos/
+
+# Backups
+*.bak
+*.backup
