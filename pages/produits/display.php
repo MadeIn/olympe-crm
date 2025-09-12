@@ -10,5 +10,5 @@
 	$base->Connect();
 	
 	$sql = "update md_produits set produit_ref='" . $ref . "' where produit_num='" . $produit . "'";
-	mysql_query($sql);
+	$base->query($sql);
 ?>

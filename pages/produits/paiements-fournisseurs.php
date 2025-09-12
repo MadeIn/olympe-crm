@@ -158,8 +158,8 @@ function changeEtat(id,produit,val,paiement) {
 														<option value="-1">------------</option>
 														<?
 															$sql = "select * from categories";
-															$cc = mysql_query($sql);
-															while ($rcc=mysql_fetch_array($cc)) {
+															$cc = $base->query($sql);
+															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["categorie_num"] . '"';
 																if ($rcc["categorie_num"]==$categorie)
 																	echo " SELECTED";
@@ -173,8 +173,8 @@ function changeEtat(id,produit,val,paiement) {
 														<option value="-1">------------</option>
 														<?
 															$sql = "select * from marques";
-															$cc = mysql_query($sql);
-															while ($rcc=mysql_fetch_array($cc)) {
+															$cc = $base->query($sql);
+															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["marque_num"] . '"';
 																if ($rcc["marque_num"]==$marques)
 																	echo " SELECTED";
@@ -212,7 +212,7 @@ function changeEtat(id,produit,val,paiement) {
 														<select name="showroom" class="form-control input-medium">
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
-															$tt = mysql_query($sql);
+															$tt = $base->query($sql);
 															while ($rtt=mysql_fetch_array($tt)) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
@@ -268,7 +268,7 @@ function changeEtat(id,produit,val,paiement) {
 												  $sql .= " and produit_nom like '%" . $produitauto . "%'";
 											  $sql .= " and commande_fournisseur_date>='" . $date_deb . "' and commande_date<='" . $date_fin . "'";
 											  $sql .= " ORDER BY commande_fournisseur_date DESC ";
-											  $re = mysql_query($sql);
+											  $re = $base->query($sql);
 											  $montant_total_ttc = 0;
 											  $paiement_total = 0;
 											  $paiement_total1 = 0;
@@ -320,7 +320,7 @@ function changeEtat(id,produit,val,paiement) {
 												//echo "[" . $paiement1_val . "€ - " . $paiement2_val . "€] ----- ";
 												 // On regarde les paiements
 												 $sql = "select * from commandes_fournisseurs_paiements where id='" . $row["id"] . "' and produit_num='" . $row["produit_num"] . "'";
-												 $pa = mysql_query($sql);
+												 $pa = $base->query($sql);
 												 if ($rpa = mysql_fetch_array($pa)) {
 													 $paiement1_payer = $rpa["paiement1"];
 													 $paiement1_payer_date = $rpa["paiement1_date"];
@@ -331,7 +331,7 @@ function changeEtat(id,produit,val,paiement) {
 												 $date_reception = "N.R.";
 												 // On regarde la date de reception de la robe
 												 $sql = "select * from rendez_vous where type_num=2 and client_num='" . $row["client_num"] . "'";
-												 $rr = mysql_query($sql);
+												 $rr = $base->query($sql);
 												 if ($rrr=mysql_fetch_array($rr)) {
 													$date_reception = format_date($rrr["rdv_date"],11,1);
 												 }

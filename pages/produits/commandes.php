@@ -109,8 +109,8 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 														<option value="-1">------------</option>
 														<?
 															$sql = "select * from categories";
-															$cc = mysql_query($sql);
-															while ($rcc=mysql_fetch_array($cc)) {
+															$cc = $base->query($sql);
+															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["categorie_num"] . '"';
 																if ($rcc["categorie_num"]==$categorie)
 																	echo " SELECTED";
@@ -124,8 +124,8 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 														<option value="-1">------------</option>
 														<?
 															$sql = "select * from marques";
-															$cc = mysql_query($sql);
-															while ($rcc=mysql_fetch_array($cc)) {
+															$cc = $base->query($sql);
+															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["marque_num"] . '"';
 																if ($rcc["marque_num"]==$marques)
 																	echo " SELECTED";
@@ -163,7 +163,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 														<select name="showroom" class="form-control input-medium">
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
-															$tt = mysql_query($sql);
+															$tt = $base->query($sql);
 															while ($rtt=mysql_fetch_array($tt)) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
@@ -216,7 +216,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												  $sql .= " and produit_nom like '%" . $produitauto . "%'";
 											  $sql .= " and commande_fournisseur_date>='" . $date_deb . "' and commande_date<='" . $date_fin . "'";
 											  $sql .= " ORDER BY commande_fournisseur_date DESC ";
-											  $re = mysql_query($sql);
+											  $re = $base->query($sql);
 											  $montant_total_ttc = 0;
 											  $paiement_total = 0;
 											  $reste_total = 0;
@@ -226,7 +226,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												$reste = 0;
 												 // On regarde les paiements
 												 $sql = "select * from commandes_fournisseurs_paiements where id='" . $row["id"] . "' and produit_num='" . $row["produit_num"] . "'";
-												 $pa = mysql_query($sql);
+												 $pa = $base->query($sql);
 												 if ($rpa = mysql_fetch_array($pa)) {
 													 $paiement = $rpa["paiement1"] + $rpa["paiement2"] + $rpa["paiement3"];
 												 }

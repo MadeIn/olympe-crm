@@ -15,9 +15,9 @@ if (isset($decalle))
 
 	// On decalle 
 	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $pos . "' where " . $nom_champ . "_pos=" . $new_pos;
-	mysql_query($sql);
+	$base->query($sql);
 	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $new_pos . "' where " . $nom_champ . "_num=" . $val_num;
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 if (isset($modif))
@@ -29,7 +29,7 @@ if (isset($modif))
 	$sql = "update " . $nom_table . " set " . $nom_champ . "_visible='" . $etat . "', " . $nom_champ . "_nom='" . $nom . "', " . $nom_champ . "_desc='" . $editor . "', " . $nom_champ . "_raison_social='" . $raison_social . "', " . $nom_champ . "_adr1='" . $adr1 . "', " . $nom_champ . "_adr2='" . $adr2 . "', " . $nom_champ . "_cp='" . $cp . "', " . $nom_champ . "_ville='" . $ville . "', " . $nom_champ . "_rcs='" . $rcs . "', " . $nom_champ . "_tva='" . $tva . "', " . $nom_champ . "_tel='" . $tel . "', " . $nom_champ . "_mail='" . $mail . "', " . $nom_champ . "_site='" . $site . "', " . $nom_champ . "_contact='" . $contact . "', " . $nom_champ . "_contact_mail='" . $contact_mail . "', " . $nom_champ . "_contact_tel='" . $contact_tel . "', " . $nom_champ . "_paiement='" . $paiement . "'";
 	$sql .= $sql_modif;
 	$sql .= " where " . $nom_champ . "_num=" . decrypte($val_num);
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 if (isset($ajout))
@@ -38,17 +38,17 @@ if (isset($ajout))
 	$editor = str_replace("&gt;",">",$elm1);
 	
 	$sql = "insert into " . $nom_table . " values (0,'" . $nom . "','" . $editor . "','" . $raison_social . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $rcs . "','" . $tva . "','" . $tel . "','" . $mail . "','" . $site . "','" . $contact . "','" . $contact_mail . "','" . $contact_tel . "','" . $paiement . "','" . $etat . "')";
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 if (isset($suppr))
 {
 	$sql = "delete from " . $nom_table . " where " . $nom_champ . "_num=" . decrypte($suppr);
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 	$sql = "select * from " . $nom_table . " order by " . $nom_champ . "_nom ASC";
-	$cdr = mysql_query($sql);
+	$cdr = $base->query($sql);
 	$nbr_ligne = mysql_num_rows($cdr);
 
 ?>
@@ -245,7 +245,7 @@ function confirme() {
 										 <tbody>
 										<?php 
 											$sql = "select * from " . $nom_table . " d where d." . $nom_champ . "_num=" . decrypte($modif_num);
-											$cc = mysql_query($sql);
+											$cc = $base->query($sql);
 											$i=0;
 											if ($rcc=mysql_fetch_array($cc))
 											{

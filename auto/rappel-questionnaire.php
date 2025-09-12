@@ -18,9 +18,9 @@
 		$sql = "select * from rendez_vous r, clients c, showrooms s, users u where r.client_num=c.client_num and c.user_num=u.user_num and c.showroom_num=s.showroom_num and rdv_date>='" . $date_debut . "' and rdv_date<='" . $date_fin . "' and type_num IN (1) and client_genre=0";
 		$sql .= " and s.showroom_num IN (1,2,5)";
 		//echo $sql;
-		$cc = mysql_query($sql);
+		$cc = $base->query($sql);
 		
-		while ($rcc=mysql_fetch_array($cc)) {
+		foreach ($cc as $rcc) {
 			
 			// On envoi le mail selon le type de RDV
 			$titre_mail = $mail_type[17][$rcc["client_genre"]]["titre"];

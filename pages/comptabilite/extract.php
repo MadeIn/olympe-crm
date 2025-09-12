@@ -6,14 +6,14 @@ $desc_page = "Comptabilite - Olympe Mariage";
 $param = "Date de facture;Num de facture;Nom cliente;Genre;Montant TTC;Montant HT Robes avant remise;Montant HT Accessoires avant remise;Montant HT Remise\n";
 
 $sql = "select * from commandes c, clients cl, paiements p  where c.paiement_num=p.paiement_num and c.client_num=cl.client_num and facture_date>='" . $date_debut . "' and facture_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' and commande_num!=0 and facture_num!=0 order by facture_date ASC";
-$cc = mysql_query($sql);
+$cc = $base->query($sql);
 $total_ht = 0;
 $total_tva = 0;
 $total_ttc = 0;
 $total_encaisse = 0;
 $total_reste_a_payer = 0;
 $nbr_commande = 0;
-while ($rcc=mysql_fetch_array($cc)) {
+foreach ($cc as $rcc) {
 	$nbr_commande++;
 	$nbr_echeance = $rcc["paiement_nombre"];
 													
@@ -27,7 +27,7 @@ while ($rcc=mysql_fetch_array($cc)) {
 	// On calcul le tarif Robes
 	$montant_ht_robe = 0;
 	$sql = "select * from commandes_produits c, md_produits p where c.produit_num=p.produit_num and categorie_num=11 and c.id='" . $rcc["id"] . "'";
-	$co = mysql_query($sql);
+	$co = $base->query($sql);
 	while ($rco = mysql_fetch_array($co)) {
 		$montant_ht_robe += $rco["montant_ht"];
 	}
@@ -35,7 +35,7 @@ while ($rcc=mysql_fetch_array($cc)) {
 	// On calcul le tarif Accessoires
 	$montant_ht_acc = 0;
 	$sql = "select * from commandes_produits c, md_produits p where c.produit_num=p.produit_num and categorie_num<>11 and c.id='" . $rcc["id"] . "'";
-	$co = mysql_query($sql);
+	$co = $base->query($sql);
 	while ($rco = mysql_fetch_array($co)) {
 		$montant_ht_acc += $rco["montant_ht"];
 	}
@@ -58,8 +58,8 @@ else {
 // On traite le fichier des paiements
 $param = "Date du règlement;Mode de Règlement;N° de remise;Nom cliente;Montant TTC\n";
 $sql = "select * from commandes c, clients cl, commandes_paiements cp, paiements_modes p where c.id=cp.id and c.client_num=cl.client_num and cp.mode_num=p.mode_num and paiement_date>='" . $date_debut . "' and paiement_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' order by paiement_date ASC";
-$cc = mysql_query($sql);
-while ($rcc=mysql_fetch_array($cc)) {
+$cc = $base->query($sql);
+foreach ($cc as $rcc) {
 	$param .= format_date($rcc["paiement_date"],6,1) . ";" . $rcc["mode_nom"] . ";" . $rcc["cheque_num"] . ";" . $rcc["client_nom"] . " " . $rcc["client_prenom"] . ";" . $rcc["paiement_montant"] . "\n";
 }
 

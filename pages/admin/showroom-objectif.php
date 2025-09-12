@@ -7,11 +7,11 @@ $date_mois = array("","Janvier","Février","Mars","Avril","Mai","Juin","Juillet"
 if (isset($objectif)) {
 	// On efface avant de reinserer
 	$sql = "delete from showrooms_objectifs where showroom_num='" . $showroom_choix . "' and mois='" . $mois . "' and genre_num='" . $genre . "' and annee='" . $annee . "'";
-	mysql_query($sql);
+	$base->query($sql);
 	
 	$date = $annee . "-" . $mois . "-01";
 	$sql = "insert into showrooms_objectifs values('" . $showroom_choix . "','" . $genre . "','" . $date . "','" . $mois . "','" . $annee . "','" . $ca . "','" . $nbr . "')";
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 ?>
@@ -64,8 +64,8 @@ function confirme() {
 											<select name="showroom_choix" class="form-control">
 											<?php 
 												$sql = "select * from showrooms";
-												$cc = mysql_query($sql);
-												while ($rcc=mysql_fetch_array($cc)) {
+												$cc = $base->query($sql);
+												foreach ($cc as $rcc) {
 													echo '<option value="' . $rcc["showroom_num"] . '"';
 													if ($rcc["showroom_num"]==$showroom_choix)
 														echo ' SELECTED';
@@ -172,8 +172,8 @@ function confirme() {
 												<tbody>
 												<?php 
 													$sql = "select * from showrooms_objectifs where showroom_num='" . $showroom_choix . "' and genre_num='" . $genre . "' order by annee DESC, mois DESC";
-													$cc = mysql_query($sql);
-													while ($rcc=mysql_fetch_array($cc)) {
+													$cc = $base->query($sql);
+													foreach ($cc as $rcc) {
 														echo '<tr>
 															<td class="highlight">
 																<div class="success"></div> &nbsp;&nbsp;' . $date_mois[$rcc["mois"]] . ' ' . $rcc["annee"] . '

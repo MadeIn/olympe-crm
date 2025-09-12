@@ -69,7 +69,7 @@ $desc_page = "Dashboard - Olympe Mariage";
 														<select name="showroom" class="form-control input-medium">
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
-															$tt = mysql_query($sql);
+															$tt = $base->query($sql);
 															while ($rtt=mysql_fetch_array($tt)) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
@@ -135,8 +135,8 @@ $desc_page = "Dashboard - Olympe Mariage";
 														$date_fin = $annee_select . "-" . $mois_debut . "-" . $mois_jour[$mois_debut] . " 23:59:59";
 														$sql = "select * from commandes c, commandes_produits cp, md_produits p where c.id=cp.id and cp.produit_num=p.produit_num and categorie_num IN (11) and commande_num!=0 and commande_date>='" . $date_debut . "' and commande_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "'";
 														$nbr_mois = 0;
-														$co = mysql_query($sql);
-														while ($rco=mysql_fetch_array($co)) {
+														$co = $base->query($sql);
+														foreach ($co as $rco) {
 															$nbr_mois += $rco["qte"];
 														}
 														echo '<td class="text-center">' . $nbr_mois . '</td>';
@@ -159,8 +159,8 @@ $desc_page = "Dashboard - Olympe Mariage";
 														$date_fin = $annee_select . "-" . $mois_debut . "-" . $mois_jour[$mois_debut] . " 23:59:59";
 														$sql = "select * from commandes c, commandes_produits cp, md_produits p where c.id=cp.id and cp.produit_num=p.produit_num and categorie_num IN (11,25,27)  and commande_num!=0 and commande_date>='" . $date_debut . "' and commande_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "'";
 														$ca_mois = 0;
-														$co = mysql_query($sql);
-														while ($rco=mysql_fetch_array($co)) {
+														$co = $base->query($sql);
+														foreach ($co as $rco) {
 															$prix_produit = $rco["montant_ht"];
 															if ($rco["montant_ht_remise"]!=0)
 																$prix_produit = $rco["montant_ht_remise"];
@@ -200,8 +200,8 @@ $desc_page = "Dashboard - Olympe Mariage";
 														$date_debut = $annee_select . "-" . $mois_debut . "-01 00:00:00";
 														$date_fin = $annee_select . "-" . $mois_debut . "-" . $mois_jour[$mois_debut] . " 23:59:59";
 														$sql = "select * from rendez_vous r, clients c where r.client_num=c.client_num and rdv_date>='" . $date_debut . "' and rdv_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' and r.type_num=1 and client_genre=0";
-														$co = mysql_query($sql);
-														$nbr_premier = mysql_num_rows($co);
+														$co = $base->query($sql);
+														$nbr_premier = count($co);
 														echo '<td class="text-center">' . $nbr_premier . '</td>';
 														$total += $nbr_premier;
 													}
@@ -222,8 +222,8 @@ $desc_page = "Dashboard - Olympe Mariage";
 														$date_fin = $annee_select . "-" . $mois_debut . "-" . $mois_jour[$mois_debut] . " 23:59:59";
 														$sql = "select * from commandes c, commandes_produits cp, md_produits p where c.id=cp.id and cp.produit_num=p.produit_num and categorie_num IN (29) and commande_num!=0 and commande_date>='" . $date_debut . "' and commande_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "'";
 														$nbr_mois = 0;
-														$co = mysql_query($sql);
-														while ($rco=mysql_fetch_array($co)) {
+														$co = $base->query($sql);
+														foreach ($co as $rco) {
 															$nbr_mois += $rco["qte"];
 														}
 														echo '<td class="text-center">' . $nbr_mois . '</td>';
@@ -246,8 +246,8 @@ $desc_page = "Dashboard - Olympe Mariage";
 														$date_fin = $annee_select . "-" . $mois_debut . "-" . $mois_jour[$mois_debut] . " 23:59:59";
 														$sql = "select * from commandes c, commandes_produits cp, md_produits p where c.id=cp.id and cp.produit_num=p.produit_num and categorie_num IN (29)  and commande_num!=0 and commande_date>='" . $date_debut . "' and commande_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "'";
 														$ca_mois = 0;
-														$co = mysql_query($sql);
-														while ($rco=mysql_fetch_array($co)) {
+														$co = $base->query($sql);
+														foreach ($co as $rco) {
 															$prix_produit = $rco["montant_ht"];
 															if ($rco["montant_ht_remise"]!=0)
 																$prix_produit = $rco["montant_ht_remise"];
@@ -287,8 +287,8 @@ $desc_page = "Dashboard - Olympe Mariage";
 														$date_debut = $annee_select . "-" . $mois_debut . "-01 00:00:00";
 														$date_fin = $annee_select . "-" . $mois_debut . "-" . $mois_jour[$mois_debut] . " 23:59:59";
 														$sql = "select * from rendez_vous r, clients c where r.client_num=c.client_num and rdv_date>='" . $date_debut . "' and rdv_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' and r.type_num=1 and client_genre=1";
-														$co = mysql_query($sql);
-														$nbr_premier = mysql_num_rows($co);
+														$co = $base->query($sql);
+														$nbr_premier = count($co);
 														echo '<td class="text-center">' . $nbr_premier . '</td>';
 														$total += $nbr_panier;
 													}

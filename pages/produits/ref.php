@@ -82,8 +82,8 @@ function addWidget(id) {
 								<?php 
 										$sql = "select * from md_produits p, categories c, marques m where p.categorie_num=c.categorie_num and p.marque_num=m.marque_num";
 										$sql .= " order by categorie_nom ASC, marque_nom ASC, produit_nom ASC";
-										$cc = mysql_query($sql);
-										$nbr_produit = mysql_num_rows($cc);
+										$cc = $base->query($sql);
+										$nbr_produit = count($cc);
 								?>
 									<table class="table table-striped table-bordered table-advance table-hover">
 								<?php if ($nbr_produit>0) { ?>
@@ -96,7 +96,7 @@ function addWidget(id) {
 										</tr>
 									</thead>
 										   <tbody>
-											  <?php while ($rcc=mysql_fetch_array($cc)) {  ?>
+											  <?php foreach ($cc as $rcc) {  ?>
 												<tr>
 													<td class="highlight"><a href="produit.php?modif_num=<?php echo crypte($rcc[$nom_champ . "_num"]) ?>"> <?php echo $rcc["produit_nom"] ?></a></td>
 													<td><?php echo $rcc["categorie_nom"] ?></td>

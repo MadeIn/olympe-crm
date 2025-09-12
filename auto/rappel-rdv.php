@@ -8,8 +8,8 @@
 	
 	$sql = "select * from rendez_vous r, clients c, showrooms s, users u where r.client_num=c.client_num and c.user_num=u.user_num and c.showroom_num=s.showroom_num and rdv_date>='" . $date_debut . "' and rdv_date<='" . $date_fin . "' and type_num IN (1,4,5,6,7,8,9) and rdv_mail_relance=0";
 	$sql .= " and s.showroom_num IN (1,3,2,5)";
-	$cc = mysql_query($sql);
-	while ($rcc=mysql_fetch_array($cc)) {
+	$cc = $base->query($sql);
+	foreach ($cc as $rcc) {
 		
 		// On envoi le mail selon le type de RDV
 		$titre_mail = $mail_type[11][$rcc["client_genre"]]["titre"];
@@ -34,7 +34,7 @@
 		SendMail($rcc["client_mail"],$titre_mail,$message_mail,$rcc["user_num"],$rcc["client_num"]);
 		
 		$sql = "update rendez_vous set rdv_mail_relance=1, rdv_mail_relance_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $rcc["rdv_num"] . "'";
-		mysql_query($sql);		
+		$base->query($sql);		
 	}
 	
 	

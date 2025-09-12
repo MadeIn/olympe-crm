@@ -87,8 +87,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<option value="0">------------</option>
 														<?
 															$sql = "select * from categories";
-															$cc = mysql_query($sql);
-															while ($rcc=mysql_fetch_array($cc)) {
+															$cc = $base->query($sql);
+															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["categorie_num"] . '"';
 																if ($rcc["categorie_num"]==$categorie)
 																	echo " SELECTED";
@@ -102,8 +102,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<option value="0">------------</option>
 														<?
 															$sql = "select * from marques";
-															$cc = mysql_query($sql);
-															while ($rcc=mysql_fetch_array($cc)) {
+															$cc = $base->query($sql);
+															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["marque_num"] . '"';
 																if ($rcc["marque_num"]==$marques)
 																	echo " SELECTED";
@@ -124,7 +124,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 															<option value="-1">Tous</option>
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
-															$tt = mysql_query($sql);
+															$tt = $base->query($sql);
 															while ($rtt=mysql_fetch_array($tt)) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
@@ -175,7 +175,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $sql .= " and commande_date>='" . $date_deb . " 00:00:00' and commande_date<='" . $date_fin . " 23:59:59'";
 												  $sql .= " GROUP BY ca.categorie_num";
 												  $sql .= " ORDER BY val DESC ";
-												  $re = mysql_query($sql);
+												  $re = $base->query($sql);
 												  $nbr_total = 0;
 												  $montant = 0;
 												  while ($row=mysql_fetch_array($re))
@@ -251,7 +251,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $sql .= " and commande_date>='" . $date_deb . "' and commande_date<='" . $date_fin . "'";
 												  $sql .= " GROUP BY m.marque_num";
 												  $sql .= " ORDER BY val DESC ";
-												  $re = mysql_query($sql);
+												  $re = $base->query($sql);
 												  $nbr_total = 0;
 												  $montant = 0;
 												  while ($row=mysql_fetch_array($re))
@@ -312,7 +312,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  $sql .= " and commande_date>='" . $date_deb . "' and commande_date<='" . $date_fin . "'";
 											  $sql .= " GROUP BY cd.produit_num,cd.taille_num";
 											  $sql .= " ORDER BY p.produit_nom ASC, val DESC ";
-											  $re = mysql_query($sql);
+											  $re = $base->query($sql);
 											    $nbr_total = 0;
 												  $montant = 0;			  
 											  while ($row=mysql_fetch_array($re))
@@ -375,7 +375,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $sql .= " and cd.produit_num=" . $produit_num;
 											  $sql .= " and commande_date>='" . $date_deb . "' and commande_date<='" . $date_fin . "'";
 											  $sql .= " ORDER BY p.produit_nom ASC";
-											  $re = mysql_query($sql);
+											  $re = $base->query($sql);
 											   $nbr_total = 0;
 												  $montant = 0;			  
 											  while ($row=mysql_fetch_array($re))
@@ -438,7 +438,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  $sql .= " and commande_date>='" . $date_deb . "' and commande_date<='" . $date_fin . "'";
 											  $sql .= " GROUP BY p.produit_num";
 											  $sql .= " ORDER BY val DESC ";
-											  $re = mysql_query($sql);
+											  $re = $base->query($sql);
 											  $nbr_total = 0;
 												  $montant = 0;				  
 											  while ($row=mysql_fetch_array($re))
@@ -495,7 +495,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  $sql .= " and commande_date>='" . $date_deb . "' and commande_date<='" . $date_fin . "'";
 											  $sql .= " GROUP BY cd.taille_num";
 											  $sql .= " ORDER BY val DESC ";
-											  $re = mysql_query($sql);
+											  $re = $base->query($sql);
 												$nbr_total = 0;
 												  $montant = 0;				  
 											  while ($row=mysql_fetch_array($re))
@@ -543,7 +543,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  if ($showroom!=-1)
 												$sql .= " and showroom_num='" . $showroom . "'";
 											  $sql .= " group by client_ville order by val DESC";
-											  $re = mysql_query($sql);
+											  $re = $base->query($sql);
 											  $nbr_total = 0;
 											  while ($row=mysql_fetch_array($re))
 											  {
@@ -572,7 +572,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 					var availableTagsPdts = [';
 				
 					$sql = "select * from md_produits order by produit_nom ASC";
-					$jj = mysql_query($sql);
+					$jj = $base->query($sql);
 					$nbr = mysql_num_rows($jj);
 					$i=0;
 					while ($rjj=mysql_fetch_array($jj)) {

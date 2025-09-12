@@ -9,7 +9,7 @@ if ($u->mGroupe==0) {
 		$u->mShowroom = $showroom_choix;
 
 	$sql = "select * from showrooms where showroom_num='" . $u->mShowroom . "'";
-	$ss = mysql_query($sql);
+	$ss = $base->query($sql);
 	if ($rss=mysql_fetch_array($ss)) {
 		$u->mShowroomInfo = $rss;
 	}
@@ -51,7 +51,7 @@ if ($u->mGroupe==0) {
 						<h1>Olympe Mariage <select name="showroom_choix" onChange="this.form.submit()" class="form-inline">
 						<?
 							$sql = "select * from showrooms order by showroom_num ASC";
-							$sh = mysql_query($sql);
+							$sh = $base->query($sql);
 							while ($rsh=mysql_fetch_array($sh)) {
 								echo '<option value="' . $rsh["showroom_num"] . '"';
 								if ($rsh["showroom_num"]==$u->mShowroom)
@@ -95,10 +95,10 @@ if ($u->mGroupe==0) {
 												$nbr_total_commande = 0;
 												
 												$sql = "select * from users where showroom_num='" . $u->mShowroom . "' and user_num not in (3,5,14) order by user_nom ASC, user_prenom ASC";
-												$cc = mysql_query($sql);
+												$cc = $base->query($sql);
 												while ($rcc = mysql_fetch_array($cc)) {
 													$sql = "select count(rdv_num) val from rendez_vous r, clients c where c.client_num=r.client_num and rdv_date>='" . $date_debut_annee . "' and rdv_date<='" . Date("Y-m-d H:i:s") . "' and r.type_num=1 and c.showroom_num='" . $u->mShowroom . "' and client_genre=0 and c.user_num='" . $rcc["user_num"] . "'";	
-													$rr = mysql_query($sql);
+													$rr = $base->query($sql);
 													$nbr_rdv = 0;
 													$transformation = 0;
 													$nbr_commande = 0;
@@ -109,9 +109,9 @@ if ($u->mGroupe==0) {
 														// Commande réalisé par la conseillere
 														$sql = "select * from commandes c, commandes_produits cp, md_produits p, clients cl where c.id=cp.id and cp.produit_num=p.produit_num and c.client_num=cl.client_num and categorie_num IN (11,25,27) and commande_num!=0 and commande_date>='" . $date_debut_annee . "' and commande_date<='" . $date_fin_annee . "' and c.showroom_num='" . $u->mShowroom . "' and cl.user_num='" . $rcc["user_num"] . "'";
 														$nbr_annne_robe = 0;
-														$co = mysql_query($sql);
+														$co = $base->query($sql);
 														$commande_encours = 0;
-														while ($rco=mysql_fetch_array($co)) {
+														foreach ($co as $rco) {
 															if ($commande_encours!=$rco["id"]) {
 																$nbr_commande += $rco["qte"];
 																$commande_encours = $rco["id"];

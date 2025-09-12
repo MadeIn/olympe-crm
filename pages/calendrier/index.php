@@ -8,7 +8,7 @@ if (isset($modif_desc)) {
 	// On modifie la description du RDV
 	$calendrier_desc = str_replace("'","\'",$calendrier_desc);
 	$sql = "update calendriers set calendrier_desc='" . $calendrier_desc . "' where calendrier_num='" . $calendrier_num . "'";
-	mysql_query($sql);	
+	$base->query($sql);	
 }
 
 if (isset($ajouter)) {
@@ -24,7 +24,7 @@ if (isset($ajouter)) {
 				$client_num = $client_search[0];
 				// On recherche le client 
 				$sql = "select * from clients where client_num='" . $client_num . "'";
-				$cl = mysql_query($sql);
+				$cl = $base->query($sql);
 				if ($rcl = mysql_fetch_array($cl)) {
 					if ($rcl["client_genre"]==0)
 						$genre = "Mme";
@@ -35,19 +35,19 @@ if (isset($ajouter)) {
 					
 					// On regarde si on a pas déjà un rendez vous 
 					$sql = "select * from rendez_vous where client_num='" . $client_num . "' and type_num='" . $type . "'";
-					$tt = mysql_query($sql);
+					$tt = $base->query($sql);
 					if ($rtt=mysql_fetch_array($tt)) {
 						$sql = "delete from rendez_vous where rdv_num='" . $rtt["rdv_num"] . "'";
-						mysql_query($sql);
+						$base->query($sql);
 							
 						$sql = "delete from calendriers where rdv_num='" . $rtt["rdv_num"] . "'";
-						mysql_query($sql);
+						$base->query($sql);
 					}
 					
 					// On insere un Rendez vous
 					$date_rdv = $date_debut;
 					$sql = "insert into rendez_vous values(0,'" . $client_num . "','" . $type . "','" . $date_rdv . "','',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00','" . $u->mNum . "')";
-					mysql_query($sql);
+					$base->query($sql);
 					
 					$num = mysql_insert_id();
 					
@@ -61,7 +61,7 @@ if (isset($ajouter)) {
 							
 							// On insere en bdd
 							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
-							mysql_query($sql);
+							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
 							$titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
@@ -84,7 +84,7 @@ if (isset($ajouter)) {
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
 							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-							mysql_query($sql);
+							$base->query($sql);
 							
 						break;
 						
@@ -96,7 +96,7 @@ if (isset($ajouter)) {
 							
 							// On insere en bdd
 							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
-							mysql_query($sql);
+							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
 							$titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
@@ -119,7 +119,7 @@ if (isset($ajouter)) {
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
 							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-							mysql_query($sql);
+							$base->query($sql);
 							
 						break;
 						
@@ -131,7 +131,7 @@ if (isset($ajouter)) {
 							
 							// On insere en bdd
 							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
-							mysql_query($sql);
+							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
 							$titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
@@ -154,7 +154,7 @@ if (isset($ajouter)) {
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
 							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-							mysql_query($sql);
+							$base->query($sql);
 							
 						break;
 						
@@ -166,7 +166,7 @@ if (isset($ajouter)) {
 							
 							// On insere en bdd
 							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
-							mysql_query($sql);
+							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
 							$titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
@@ -189,7 +189,7 @@ if (isset($ajouter)) {
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
 							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-							mysql_query($sql);
+							$base->query($sql);
 							
 						break;
 						
@@ -207,7 +207,7 @@ if (isset($ajouter)) {
 							
 							// On insere en bdd
 							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
-							mysql_query($sql);
+							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
 							$titre_mail = $mail_type[14][$rcl["client_genre"]]["titre"];
@@ -235,7 +235,7 @@ if (isset($ajouter)) {
 							}
 							
 							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-							mysql_query($sql);
+							$base->query($sql);
 							
 						break;
 						
@@ -247,7 +247,7 @@ if (isset($ajouter)) {
 							
 							// On insere en bdd
 							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
-							mysql_query($sql);
+							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
 							$titre_mail = $mail_type[5][$rcl["client_genre"]]["titre"];
@@ -268,7 +268,7 @@ if (isset($ajouter)) {
 							
 							if ($dernier_acompte>0) {
 								$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num='" . $rcl["showroom_num"] . "' order by mode_ordre ASC";
-								$pa = mysql_query($sql);
+								$pa = $base->query($sql);
 								$nbr_paiement = mysql_num_rows($pa);
 								$moyen_paiement = "";
 								$nbr_mode = 0;
@@ -292,7 +292,7 @@ if (isset($ajouter)) {
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
 							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-							mysql_query($sql);
+							$base->query($sql);
 						break;
 						
 						case 9: // RDV Retouche
@@ -303,7 +303,7 @@ if (isset($ajouter)) {
 							
 							// On insere en bdd
 							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
-							mysql_query($sql);
+							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
 							$titre_mail = $mail_type[14][$rcl["client_genre"]]["titre"];
@@ -326,7 +326,7 @@ if (isset($ajouter)) {
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
 							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-							mysql_query($sql);
+							$base->query($sql);
 							
 						break;
 						
@@ -339,7 +339,7 @@ if (isset($ajouter)) {
 							
 							// On insere en bdd
 							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
-							mysql_query($sql);
+							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
 							$titre_mail = $mail_type[15][$rcl["client_genre"]]["titre"];
@@ -353,7 +353,7 @@ if (isset($ajouter)) {
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
 							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-							mysql_query($sql);
+							$base->query($sql);
 							
 						break;
 					}
@@ -362,7 +362,7 @@ if (isset($ajouter)) {
 			}
 		} else {
 			$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $description . "','','" . $u->mNum . "','" . $u->mShowroom . "','" . $client_num . "','" . $rdv_num . "')";
-			mysql_query($sql);
+			$base->query($sql);
 		}
 	} else {
 		$message_erreur = "Erreur sur les dates de rendez-vous !";
@@ -372,11 +372,11 @@ if (isset($ajouter)) {
 if (isset($ajout_client)) {
 	// On test si le client n'exite pas
 	$sql = "select * from clients where client_mail='" . $mail . "'";
-	$tt = mysql_query($sql);
+	$tt = $base->query($sql);
 	$nbr = mysql_num_rows($tt);
 	if ($nbr==0) {
 		$sql = "insert into clients values (0,'" . $genre . "','" . $nom . "','" . $prenom . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $tel . "','" . $mail . "','" . $date . "','" . $lieu . "','','','" . $u->mShowroom . "','" . $u->mNum . "','" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "','','','','','','','','','','','','',0,0)";
-		mysql_query($sql);
+		$base->query($sql);
 	} else {
 		$message_erreur = "Un client est déjà enregistré avec cette adresse email !";
 	}	
@@ -585,10 +585,10 @@ function changeHeureFin() {
 					$param = "";
 					// ON recherche les events pour remplir le calendrier perso
 					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num='" . $u->mNum . "' and calendrier_datedeb>='2021-08-01 00:00:00' and c.theme_num=4 order by calendrier_datedeb DESC";
-					$cc = mysql_query($sql);
-					$nbr = mysql_num_rows($cc);
+					$cc = $base->query($sql);
+					$nbr = count($cc);
 					$i=0;
-					while ($rcc=mysql_fetch_array($cc)) {
+					foreach ($cc as $rcc) {
 						if ($i>0) {
 							$param .= ',';
 						}
@@ -617,13 +617,13 @@ function changeHeureFin() {
 						if ($rcc["client_num"]!=0) {
 							$genre = 0;
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-							$cl = mysql_query($sql);
+							$cl = $base->query($sql);
 							if ($rcl=mysql_fetch_array($cl)) {
 								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
-							$rr = mysql_query($sql);
+							$rr = $base->query($sql);
 							if ($rrr=mysql_fetch_array($rr)) {
 								if ($genre==0)
 									$couleur = $rrr["type_couleur"];
@@ -654,10 +654,10 @@ function changeHeureFin() {
 					 
 					// ON recherche les events pour remplir le calendrier du showroom
 					$sql = "select * from calendriers c, calendriers_themes ct, clients cl, users u where c.theme_num=ct.theme_num and c.client_num=cl.client_num and cl.user_num=u.user_num and c.showroom_num='" . $u->mShowroom . "'  and calendrier_datedeb>='2021-08-01 00:00:00' and c.theme_num!=4 order by calendrier_datedeb DESC";
-					$cc = mysql_query($sql);
-					$nbr = mysql_num_rows($cc);
+					$cc = $base->query($sql);
+					$nbr = count($cc);
 					$i=0;
-					while ($rcc=mysql_fetch_array($cc)) {
+					foreach ($cc as $rcc) {
 						if ($i>0) {
 							$param .= ',';
 						}
@@ -687,13 +687,13 @@ function changeHeureFin() {
 						if ($rcc["client_num"]!=0) {
 							$genre = 0;
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-							$cl = mysql_query($sql);
+							$cl = $base->query($sql);
 							if ($rcl=mysql_fetch_array($cl)) {
 								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
-							$rr = mysql_query($sql);
+							$rr = $base->query($sql);
 							if ($rrr=mysql_fetch_array($rr)) {
 								$type_rdv = $rrr["type_num"];
 								if ($genre==0)
@@ -831,7 +831,7 @@ function changeHeureFin() {
 		$(function() {
 			var availableTagsClient = [';
 			$sql = "select * from clients where showroom_num='" . $u->mShowroom . "' and client_nom not like'%?%' and client_prenom not like '%?%' order by client_nom ASC, client_prenom ASC";
-			$jj = mysql_query($sql);
+			$jj = $base->query($sql);
 			$nbr = mysql_num_rows($jj);
 			$i=0;
 			while ($rjj=mysql_fetch_array($jj)) {

@@ -14,17 +14,17 @@
 	/*$sql = "select * from rendez_vous r, clients c, showrooms s, users u where r.client_num=c.client_num and c.user_num=u.user_num and c.showroom_num=s.showroom_num and type_num=2 and c.client_num=12519";
 	$sql .= " and s.showroom_num IN (1,3,2,5)";*/
 	//echo $sql . "<br><hr>";
-	$cc = mysql_query($sql);
-	while ($rcc=mysql_fetch_array($cc)) {
+	$cc = $base->query($sql);
+	foreach ($cc as $rcc) {
 		
 		$sql = "select * from rendez_vous where client_num='" . $rcc["client_num"] . "' and type_num IN (4,5)";
-		$tt = mysql_query($sql);
+		$tt = $base->query($sql);
 		$test = mysql_num_rows($tt);
 		if ($test==0) {
 			$info_paiement = "";
 			// On regarde la commande
 			$sql = "select * from commandes c, paiements p, commandes_produits cp, showrooms sh where c.paiement_num=p.paiement_num and c.id=cp.id and c.showroom_num=sh.showroom_num and taille_num=35 and client_num='" . $rcc["client_num"] . "'";
-			$ta = mysql_query($sql);
+			$ta = $base->query($sql);
 			$nbr_ta = mysql_num_rows($ta);
 			if ($nbr_ta==0) {
 				if ($rcc["client_genre"]==0) {
@@ -87,7 +87,7 @@
 			SendMail($rcc["client_mail"],$titre_mail,$message_mail,$rcc["user_num"],$rcc["client_num"]);
 			
 			$sql = "update rendez_vous set rdv_mail_relance=1, rdv_mail_relance_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $rcc["rdv_num"] . "'";
-			mysql_query($sql);
+			$base->query($sql);
 		}
 	}
 	

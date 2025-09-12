@@ -9,10 +9,10 @@
 		var $mPhoto;	    // Prenom de l'utilisateur
 		var $mEmail;		// Email de l'utilisateur
 		var $mEmailMdp;		// Email de l'utilisateur
-		var $mDatederConn;  // Date de derniere connexion à la gestion
-		var $mDateCreation; // Date de derniere connexion à la gestion
+		var $mDatederConn;  // Date de derniere connexion ï¿½ la gestion
+		var $mDateCreation; // Date de derniere connexion ï¿½ la gestion
 		var $mGroupe;	    // Groupe d'appartenance de l'utilisateur
-		var $mCompta;	    // Acces à la compta
+		var $mCompta;	    // Acces ï¿½ la compta
 		var $mShowroom;		// Showroomm
 		
 		function Users($nu=0,$l="",$m="",$c=0,$n="",$p="",$e="",$dconn="",$dcrea="",$g=0,$s=0) {	
@@ -37,12 +37,12 @@
 			$sql = "update users set ";
 			$sql = $sql . "user_dateconnexion='" . $this->mDateCreation . "'";
 			$sql = $sql . "WHERE user_num=" . $this->mNum;
-			mysql_query($sql);
+			$base->query($sql);
 		}
 
 		function TestConnexion() {
 			$sql = "select * from users where user_email='" . $this->mEmail . "' and user_mdp='" . $this->mMdp . "' and user_etat=1";
-			$re=mysql_query($sql);
+			$re=$base->query($sql);
 			
 			// Si y a un resultat on finit de remplir l'objet User et on Update la derniere
 			// date de connexion
@@ -60,7 +60,7 @@
 				$this->mShowroom		 = $row["showroom_num"];
 				
 				$sql = "select * from showrooms where showroom_num='" . $row["showroom_num"] . "'";
-				$ss = mysql_query($sql);
+				$ss = $base->query($sql);
 				if ($rss=mysql_fetch_array($ss)) {
 					$this->mShowroomInfo = $rss;
 				} else {

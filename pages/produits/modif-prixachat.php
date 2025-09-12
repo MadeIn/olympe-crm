@@ -10,5 +10,5 @@
 	$base->Connect();
 	
 	$sql = "update prixachats set prixachat_montant='" . $prix . "',prixachat_date='" . Date("Y-m-d H:i:s") . "' where prixachat_num='" . $id . "'";
-	mysql_query($sql);
+	$base->query($sql);
 ?>

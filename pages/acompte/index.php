@@ -1,7 +1,7 @@
 ﻿<?php include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_invite.php"); 
 
 	$sql = "select * from commandes co, paiements p, showrooms sh, users u, clients c where co.paiement_num=p.paiement_num and co.client_num=c.client_num and co.showroom_num=sh.showroom_num and co.user_num=u.user_num and id='" . decrypte($id) . "'";
-	$cc = mysql_query($sql);
+	$cc = $base->query($sql);
 	if (!$rcc=mysql_fetch_array($cc)) {
 		echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 	}
@@ -15,7 +15,7 @@
 	$commande = montantCommande($rcc["id"]);
 	
 	$sql = "select * from commandes_paiements where id='" . decrypte($id) . "' and paiement_num='" . $paiement . "'";
-	$pp = mysql_query($sql);
+	$pp = $base->query($sql);
 	if ($rpp=mysql_fetch_array($pp)) {
 		//echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 		$date_commande = $rpp["paiement_date"];
@@ -79,7 +79,7 @@
 			<tbody>
 			<?php 																
 				$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . decrypte($id) . "'";
-				$pp = mysql_query($sql);
+				$pp = $base->query($sql);
 				while ($rpp=mysql_fetch_array($pp)) {
 					//$prix_total_ttc = RecupPrixInit($rpp["produit_num"])*$rpp["qte"];
 					$prix_total_ttc = $rpp["montant_ttc"];
@@ -163,7 +163,7 @@
 						$acompte_num = 0;
 						$montant_paye = 0;
 						$sql = "select * from commandes_paiements where id='" . decrypte($id) . "' order by paiement_num ASC";
-						$pa = mysql_query($sql);
+						$pa = $base->query($sql);
 						while ($rpa = mysql_fetch_array($pa)) {
 							$acompte_num++;
 							echo '<tr>

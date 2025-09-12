@@ -11,17 +11,17 @@
 	
 	$sql = "select * from rendez_vous r, clients c, showrooms s, users u where r.client_num=c.client_num and c.user_num=u.user_num and c.showroom_num=s.showroom_num and rdv_date>='" . $date_debut . "' and rdv_date<='" . $date_fin . "' and type_num=1";
 	$sql .= " and s.showroom_num IN (1,3,2,5)";
-	$cc = mysql_query($sql);
-	while ($rcc=mysql_fetch_array($cc)) {
+	$cc = $base->query($sql);
+	foreach ($cc as $rcc) {
 		
 		// On test si la cliente n'a pas un 2e RDV prévu plus tard
 		$sql = "select * from rendez_vous where client_num='" . $rcc["client_num"] . "' and type_num=6 and rdv_date>='" . Date("Y-m-d") . " 00:00:00'";
-		$rr = mysql_query($sql);
+		$rr = $base->query($sql);
 		$nbr_rdv = mysql_num_rows($rr);
 		if ($nbr_rdv==0) {
 			// On test si la cliente n'a pas commandé 
 			$sql = "select * from commandes where commande_num!=0 and client_num='" . $rcc["client_num"] . "'";
-			$tt = mysql_query($sql);
+			$tt = $base->query($sql);
 			$nbr_commande = mysql_num_rows($tt);
 			if ($nbr_commande==0) {
 				// On envoi le mail selon le type de RDV

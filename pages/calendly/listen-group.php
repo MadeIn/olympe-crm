@@ -48,11 +48,11 @@ switch ($data["event"]) {
 
         // On test si le client n'exite pas
         $sql = "select * from clients where client_mail='" . $mail . "'";
-        $tt = mysql_query($sql);
+        $tt = $base->query($sql);
         $nbr = mysql_num_rows($tt);
         if ($nbr==0) {
             $sql = "insert into clients values (0,0,'" . $user["nom"] . "','" . $user["prenom"] . "','','','" . $user["cp"] . "','','" . $user["tel"] . "','" . $user["email"] . "','" . $user["date-mariage"] . "','','','','3','" . $user_num . "','" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "','','','','','','','','','','','','',0,0)";
-            mysql_query($sql);
+            $base->query($sql);
             $client_num = mysql_insert_id();
         } else {
             if ($rtt = mysql_fetch_array($tt)) {
@@ -65,7 +65,7 @@ switch ($data["event"]) {
 
         // On recherche le client 
         $sql = "select * from clients where client_num='" . $client_num . "'";
-        $cl = mysql_query($sql);
+        $cl = $base->query($sql);
         if ($rcl = mysql_fetch_array($cl)) {
             if ($rcl["client_genre"]==0)
                 $genre = "Mme";
@@ -76,20 +76,20 @@ switch ($data["event"]) {
             
             // On regarde si on a pas déjà un rendez vous 
             $sql = "select * from rendez_vous where client_num='" . $client_num . "' and type_num='" . $type . "'";
-            $tt = mysql_query($sql);
+            $tt = $base->query($sql);
             if ($rtt=mysql_fetch_array($tt)) {
                 $sql = "delete from rendez_vous where rdv_num='" . $rtt["rdv_num"] . "'";
-                mysql_query($sql);
+                $base->query($sql);
                     
                 $sql = "delete from calendriers where rdv_num='" . $rtt["rdv_num"] . "'";
-                mysql_query($sql);
+                $base->query($sql);
             }
             
             // On insere un Rendez vous
             $date_rdv = $date_debut;
             $sql = "insert into rendez_vous values(0,'" . $client_num . "','" . $type . "','" . $date_rdv . "','',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00','" . $user_num . "')";
             file_put_contents("calendly_events_group.log", $sql, FILE_APPEND);
-            mysql_query($sql);
+            $base->query($sql);
             $num = mysql_insert_id();
             
             // On ajoute dans le calendrier du user
@@ -103,7 +103,7 @@ switch ($data["event"]) {
                     // On insere en bdd
                     $sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $user_num . "','3','" . $client_num . "','" . $num . "')";
                     file_put_contents("calendly_events_group.log", $sql, FILE_APPEND);
-                    mysql_query($sql);
+                    $base->query($sql);
                     
                     // On envoi le mail selon le type de RDV
                     $titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
@@ -126,7 +126,7 @@ switch ($data["event"]) {
                     SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
                     
                     $sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
-                    mysql_query($sql);
+                    $base->query($sql);
                     
                 break;
             }

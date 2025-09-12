@@ -8,9 +8,9 @@ $alert = "Etes vous sûr de vouloir supprimer cet item ? Attention cet action pe
 
 if (isset($suppr)) {
 	$sql = "delete from md_" . $nom_table . " where " . $nom_champ . "_num=" . decrypte($suppr);
-	mysql_query($sql);
+	$base->query($sql);
 	$sql = "delete from md_" . $nom_table . "_photos where " . $nom_champ . "_num=" . decrypte($suppr);
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 if (!isset($recherche)) {
@@ -109,7 +109,7 @@ function changePrixAchat(id) {
 														<option value="0">-----------------</option>
 														<?php 
 														$sql = "select * from categories order by categorie_nom ASC";
-														$cc = mysql_query($sql);
+														$cc = $base->query($sql);
 														while ($rcc=mysql_fetch_array($cc))
 														{
 															echo "<option value=\"" . $rcc["categorie_num"] . "\"";
@@ -129,7 +129,7 @@ function changePrixAchat(id) {
 														<option value="0">-----------------</option>
 														<?php 
 														$sql = "select * from marques order by marque_nom ASC";
-														$cc = mysql_query($sql);
+														$cc = $base->query($sql);
 														while ($rcc=mysql_fetch_array($cc))
 														{
 															echo "<option value=\"" . $rcc["marque_num"] . "\"";
@@ -181,8 +181,8 @@ function changePrixAchat(id) {
 											$sql .= " and produit_nom like '%" . $nom . "%'";
 										}
 										$sql .= " order by categorie_nom ASC, produit_nom ASC";
-										$cc = mysql_query($sql);
-										$nbr_produit = mysql_num_rows($cc);
+										$cc = $base->query($sql);
+										$nbr_produit = count($cc);
 								?>
 									<table class="table table-striped table-bordered table-advance table-hover">
 								<?php if ($nbr_produit>0) { ?>
@@ -198,13 +198,13 @@ function changePrixAchat(id) {
 										</tr>
 									</thead>
 										   <tbody>
-											  <?php while ($rcc=mysql_fetch_array($cc)) { 
+											  <?php foreach ($cc as $rcc) { 
 													$prix = RecupPrixInit($rcc["produit_num"]);
 													$sql = "select * from md_produits_photos where produit_num='" . $rcc["produit_num"] . "'";
-													$pp = mysql_query($sql);
+													$pp = $base->query($sql);
 													$nbr = mysql_num_rows($pp);	
 													$sql = "select * from prixachats where prixachat_num='" . $rcc["prixachat_num"] . "'";
-													$pp = mysql_query($sql);
+													$pp = $base->query($sql);
 													if ($rpp=mysql_fetch_array($pp))
 														$prix_achat = $rpp["prixachat_montant"];
 											  ?>

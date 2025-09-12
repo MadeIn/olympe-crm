@@ -1,7 +1,7 @@
 <?
 	function RecupPrix($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = mysql_query($sql);
+		$pp = $base->query($sql);
 		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
@@ -47,7 +47,7 @@
 	
 	function AffichePrix($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = mysql_query($sql);
+		$pp = $base->query($sql);
 		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
@@ -81,7 +81,7 @@
 	
 	function AffichePrixHT($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = mysql_query($sql);
+		$pp = $base->query($sql);
 		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
@@ -115,7 +115,7 @@
 	
 	function AffichePrixTVA($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = mysql_query($sql);
+		$pp = $base->query($sql);
 		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
@@ -147,7 +147,7 @@
 	
 	function RecupPrixInit($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = mysql_query($sql);
+		$pp = $base->query($sql);
 		if ($rpp = mysql_fetch_array($pp)) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
@@ -186,7 +186,7 @@
 	
 	function RecupPhotoProduit($produit) {
 		$sql = "select * from md_produits_photos where produit_num='" . $produit . "' and photo_pos=1";
-		$ph = mysql_query($sql);
+		$ph = $base->query($sql);
 		if ($rph=mysql_fetch_array($ph)) {
 			$photo = array(
 				'min'		=> "/photos/produits/min/" . $rph["photo_chemin"],
@@ -205,7 +205,7 @@
 	
 	function montantCommande($id) {
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = mysql_query($sql);
+		$co = $base->query($sql);
 		if ($rco=mysql_fetch_array($co)) {
 			$commande_remise_ttc = 0;
 			$remise = 0;
@@ -238,7 +238,7 @@
 	
 	function montantCommandeTTC($id) {
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = mysql_query($sql);
+		$co = $base->query($sql);
 		if ($rco=mysql_fetch_array($co)) {
 			if ($rco["commande_remise_type"]==0)
 				return $rco["commande_ttc"];
@@ -261,7 +261,7 @@
 	function resteAPayerCommande($id) {
 		$montantTTC = montantCommandeTTC($id);
 		$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $id . "'";
-		$pp = mysql_query($sql);
+		$pp = $base->query($sql);
 		if ($rpp=mysql_fetch_array($pp)) {
 			$paye = $rpp["val"];
 			$reste_a_payer = $montantTTC - $paye;
@@ -276,7 +276,7 @@
 	
 	function montantCommandeHT($id) {
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = mysql_query($sql);
+		$co = $base->query($sql);
 		if ($rco=mysql_fetch_array($co)) {
 			if ($rco["commande_remise_type"]==0)
 				return $rco["commande_ht"];
@@ -301,9 +301,9 @@
 		global $base;
 		// On recupere les produits de la commande pour les enlever du stock
 		$sql = "select * from commandes_produits cp, md_produits p where cp.produit_num=p.produit_num and id='" . decrypte($id) . "'";
-		$co = mysql_query($sql);
+		$co = $base->query($sql);
 		$produits = array();
-		while ($rco=mysql_fetch_array($co)) {
+		foreach ($co as $rco) {
 			$produit = array(
 				'ref'		=> $rco["produit_ref"],
 				'taille'	=> $rco["taille_num"],
@@ -320,14 +320,14 @@
 		
 		foreach ($produits as $pp) {
 			$sql = "select * from md_produits p, md_stocks s where p.produit_num=s.produit_num and produit_ref='" . $pp["ref"] . "' and taille_num='" . $pp["taille"] . "'";
-			$ss = mysql_query($sql);
+			$ss = $base->query($sql);
 			
 			if ($rss = mysql_fetch_array($ss)) {
 				$stock_virtuel = $rss["stock_virtuel"] - $pp["qte"];
 				$stock_reel = $rss["stock_reel"] - $pp["qte"];
 				
 				$sql = "update md_stocks set stock_virtuel='" . $stock_virtuel . "', stock_reel='" . $stock_reel . "' where produit_num='" . $rss["produit_num"] . "' and taille_num='" . $rss["taille_num"] . "'";
-				mysql_query($sql);
+				$base->query($sql);
 			}
 		}
 		$bddshop->Deconnect();

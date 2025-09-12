@@ -9,7 +9,7 @@ if (isset($action)) {
 		case "add" :
 			// On insere le showroom
 			$sql = "insert into users values(0,'" . $nom . "','" . $prenom . "','" . $mail . "','" . $mdp . "','" . $mail_mdp . "','" . $tel . "','','" . Date("Y-m-d H:i:s") . "','0000-00-00 00:00:00','" . $groupe . "','" . $showroom . "','" . $acces . "','" . $etat . "')";
-			mysql_query($sql);	
+			$base->query($sql);	
 			$num = mysql_insert_id();
 			$num = crypte($num);
 		break;
@@ -17,7 +17,7 @@ if (isset($action)) {
 		case "update" :
 			$sql = "update users set user_nom='" . $nom . "',user_prenom='" . $prenom . "',user_email='" . $mail . "',user_mdp='" . $mdp . "',user_email_mdp='" . $mail_mdp . "',user_tel='" . $tel . "',groupe_num='" . $groupe . "',showroom_num='" . $showroom . "',user_etat='" . $etat . "', acces_compta='" . $acces . "' where user_num='" . decrypte($num) . "'";
 			echo $sql;
-			mysql_query($sql);	
+			$base->query($sql);	
 		break;
 	}
 	
@@ -27,7 +27,7 @@ if (isset($action)) {
 	if ($nom_image!="") {
 		// Tout est ok alors on insere dans la base
 		$sql = "update users set user_photo='" . $nom_image . "' where user_num='" . decrypte($num) . "'";
-		mysql_query($sql);
+		$base->query($sql);
 	}
 	
 	$nom 	= "";
@@ -94,7 +94,7 @@ function confirme() {
 										<?php } else { 
 											
 											$sql = "select * from users where user_num='" . decrypte($edit) . "'";
-											$tt = mysql_query($sql);
+											$tt = $base->query($sql);
 											if ($rtt=mysql_fetch_array($tt)) {
 												$num 	= $rtt["user_num"];
 												$nom 	= $rtt["user_nom"];
@@ -186,7 +186,7 @@ function confirme() {
 													<option value="0">--------------------</option>
 													<?
 														$sql = "select * from showrooms";
-														$ss = mysql_query($sql);
+														$ss = $base->query($sql);
 														while ($rss = mysql_fetch_array($ss)) {
 															echo '<option value="' . $rss["showroom_num"] . '"';
 															if ($rss["showroom_num"]==$showroom) {
@@ -259,8 +259,8 @@ function confirme() {
 										<tbody>
 										<?php 
 											$sql = "select * from users where groupe_num=0 order by user_nom ASC, user_prenom ASC";
-											$cc = mysql_query($sql);
-											while ($rcc=mysql_fetch_array($cc)) {
+											$cc = $base->query($sql);
+											foreach ($cc as $rcc) {
 												echo '<tr>
 													<td class="highlight">
 														<div class="success"></div> <a href="' . $_SERVER["PHP_SELF"] . '?edit=' . crypte($rcc["user_num"]) . '">' . $rcc["user_prenom"] . ' ' . $rcc["user_nom"] . '</a>
@@ -281,9 +281,9 @@ function confirme() {
 									<table class="table table-striped table-bordered table-advance table-hover">
 									<?php 
 										$sql = "select * from users u, showrooms s where u.showroom_num=s.showroom_num and groupe_num>0 order by s.showroom_num ASC, user_nom ASC, user_prenom ASC";
-										$cc = mysql_query($sql);
+										$cc = $base->query($sql);
 										$i=0;
-										while ($rcc=mysql_fetch_array($cc)) {
+										foreach ($cc as $rcc) {
 											if ($showroom_select!=$rcc["showroom_num"]) {
 												if ($i!=0)
 													echo '</tbody>'; 

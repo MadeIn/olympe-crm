@@ -83,7 +83,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 														<option value="0">Tous</option>
 													<?
 														$sql = "select * from showrooms order by showroom_nom ASC";
-														$tt = mysql_query($sql);
+														$tt = $base->query($sql);
 														while ($rtt=mysql_fetch_array($tt)) {
 															echo '<option value="' . $rtt["showroom_num"] . '"';
 															if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
@@ -97,7 +97,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 														<option value="0">Tous</option>
 													<?
 														$sql = "select * from users order by user_nom ASC";
-														$tt = mysql_query($sql);
+														$tt = $base->query($sql);
 														while ($rtt=mysql_fetch_array($tt)) {
 															echo '<option value="' . $rtt["user_num"] . '"';
 															if ($rtt["user_num"]==$user_select) echo " SELECTED";
@@ -137,7 +137,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 							if ($genre!=-1)
 								$sql .= " and client_genre='" . $genre . "'";
 					
-							$cc = mysql_query($sql);
+							$cc = $base->query($sql);
 							$nbr_email = 0;
 							if ($affichage==0) {
 								echo '<table class="table table-bordered table-bordered table-hover">
@@ -154,12 +154,12 @@ $desc_page = "Extraction email - Olympe Mariage";
 										</thead>
 										<tbody>';
 							}
-							while ($rcc=mysql_fetch_array($cc)) {
+							foreach ($cc as $rcc) {
 								$test=1;
 								
 								// On test si la cliente a déjà commandé
 								$sql = "select * from commandes where client_num='" . $rcc["client_num"] . "' and commande_num!=0";
-								$tt = mysql_query($sql);
+								$tt = $base->query($sql);
 								$nbr_commande = mysql_num_rows($tt);
 								if ($nbr_commande>0)
 									$test=0;

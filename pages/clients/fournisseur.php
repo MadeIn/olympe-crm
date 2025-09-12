@@ -1,7 +1,7 @@
 ﻿<?php include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_invite.php"); 
 
 	$sql = "select * from commandes co, commandes_fournisseurs cf, showrooms sh, clients c, marques m, md_produits p where co.id=cf.id and cf.marque_num=m.marque_num and cf.produit_num=p.produit_num and co.client_num=c.client_num and co.showroom_num=sh.showroom_num and cf.id='" . decrypte($id) . "' and cf.produit_num='" . decrypte($produit) . "'";
-	$cc = mysql_query($sql);
+	$cc = $base->query($sql);
 	if (!$rcc=mysql_fetch_array($cc)) {
 		//echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 	}

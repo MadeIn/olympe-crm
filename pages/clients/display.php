@@ -11,11 +11,11 @@
 	
 	function afficheDevis($id) {
 		$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . $id . "'";
-		$cc = mysql_query($sql);
+		$cc = $base->query($sql);
 		if ($rcc=mysql_fetch_array($cc)) {
 			$commande = montantCommande($rcc["id"]);
 			$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . $id . "'";
-			$pp = mysql_query($sql);
+			$pp = $base->query($sql);
 			while ($rpp=mysql_fetch_array($pp)) {
 				$image_pdt = RecupPhotoProduit($rpp["produit_num"]);
 				$prix_total_ttc = $rpp["montant_ttc"]*$rpp["qte"];
@@ -31,7 +31,7 @@
 				}			
 				// On verifie les stocke pour chaque produit
 				$sql = "select * from stocks where taille_num=" . $rpp["taille_num"] . " and produit_num=" . $rpp["produit_num"] . " and showroom_num='" . $u->mShowroom . "'";
-				$ss = mysql_query($sql);
+				$ss = $base->query($sql);
 				if ($rss=mysql_fetch_array($ss)) {
 					$stock = $rss["stock_virtuel"];
 				}
@@ -44,7 +44,7 @@
 					<td><select name="taille_' . $rpp["produit_num"] . '_' . $rpp["taille_num"] . '" id="taille_' . $rpp["produit_num"] . '_' . $rpp["taille_num"] . '" onChange="modifTaille(' . $id . ',' . $rpp["produit_num"] . ',' . $rpp["taille_num"] . ');">';
 				echo '<option value="-1">A renseigner</option>';	
 				$sql = "select * from tailles t, categories_tailles c where t.taille_num=c.taille_num and c.categorie_num=" . $rpp["categorie_num"];
-				$ss = mysql_query($sql);
+				$ss = $base->query($sql);
 				while ($st = mysql_fetch_array($ss)) {
 					echo '<option value="' . $st["taille_num"] . '"';
 					if ($st["taille_num"]==$rpp["taille_num"])
@@ -125,7 +125,7 @@
 					<td colspan="2">
 					<select name="paiement_' . $id . '" id="paiement_' . $id . '" onChange="modifPaiement(' . $id . ')">';
 						$sql = "select * from paiements order by paiement_pos ASC";
-						$pp = mysql_query($sql);
+						$pp = $base->query($sql);
 						while ($rpp=mysql_fetch_array($pp)) {
 							echo '<option value="' . $rpp["paiement_num"] . '"';
 							if ($rpp["paiement_num"]==$rcc["paiement_num"])
@@ -153,7 +153,7 @@
 	
 	function recalculMontantCommande($id) {
 		$sql = "select * from commandes_produits cp, md_produits p, tva t where cp.produit_num=p.produit_num and p.tva_num=t.tva_num and id='" . $id . "'";
-		$dd = mysql_query($sql);
+		$dd = $base->query($sql);
 		
 		$montant_total_ht = 0;
 		$montant_total_tva = 0;
@@ -194,12 +194,12 @@
 		
 		// On upadte le montant
 		$sql = "update commandes set commande_ht='" . $montant_total_ht . "', commande_tva='" . $montant_total_tva . "', commande_ttc='" . $montant_total_ttc . "' where id='" . $id . "'";
-		mysql_query($sql);
+		$base->query($sql);
 	}
 
 	function recalculMontantCommande2023($id) {
 		$sql = "select * from commandes_produits cp, md_produits p, tva t where cp.produit_num=p.produit_num and p.tva_num=t.tva_num and id='" . $id . "'";
-		$dd = mysql_query($sql);
+		$dd = $base->query($sql);
 		
 		$montant_total_ht = 0;
 		$montant_total_tva = 0;
@@ -247,12 +247,12 @@
 		
 		// On upadte le montant
 		$sql = "update commandes set commande_ht='" . $montant_total_ht . "', commande_tva='" . $montant_total_tva . "', commande_ttc='" . $montant_total_ttc . "' where id='" . $id . "'";
-		mysql_query($sql);
+		$base->query($sql);
 	}
 
 	/*function recalculMontantCommandeDevis($id) {
 		$sql = "select * from commandes_produits  where id='" . $id . "'";
-		$dd = mysql_query($sql);
+		$dd = $base->query($sql);
 		
 		$montant_total_ht = 0;
 		$montant_total_tva = 0;
@@ -271,28 +271,28 @@
 		
 		// On upadte le montant
 		$sql = "update commandes set commande_ht='" . $montant_total_ht . "', commande_tva='" . $montant_total_tva . "', commande_ttc='" . $montant_total_ttc . "' where id='" . $id . "'";
-		mysql_query($sql);
+		$base->query($sql);
 	}*/
 	
 	switch ($mode) {
 		case 1 : // On insere un produit dans la sélection
 			// On regarde si le produit n'est pas déjà dans la sélection
 			$sql = "select * from selections_produits where selection_num='" . $selection . "' and produit_num='" . $pdt . "'";
-			$cc = mysql_query($sql);
-			$nbr = mysql_num_rows($cc);
+			$cc = $base->query($sql);
+			$nbr = count($cc);
 			if ($nbr==0) { // On insere le produit
 				$sql = "insert into selections_produits values('" . $selection . "','" . $pdt . "')";
-				mysql_query($sql);
+				$base->query($sql);
 			}
 			// On affiche les produits de la sélection
 			$sql = "select * from selections_produits s, md_produits p where s.produit_num=p.produit_num and selection_num='" . $selection . "'";
-			$pp = mysql_query($sql);
+			$pp = $base->query($sql);
 			$nbr_pp = mysql_num_rows($pp);
 			if ($nbr_pp>0) {
 				echo '<div class="mt-element-card mt-element-overlay">';
 				while ($rpp=mysql_fetch_array($pp)) {
 					$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' and photo_pos=1";
-					$ph = mysql_query($sql);
+					$ph = $base->query($sql);
 					if ($rph=mysql_fetch_array($ph)) {
 						$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
 					} else 
@@ -327,17 +327,17 @@
 		
 		case 2 : // On efface un produit de la sélection
 			$sql = "delete from selections_produits where selection_num='" . $selection . "' and produit_num='" . $pdt . "'";
-			mysql_query($sql);
+			$base->query($sql);
 			
 			// On affiche les produits de la sélection
 			$sql = "select * from selections_produits s, md_produits p where s.produit_num=p.produit_num and selection_num='" . $selection . "'";
-			$pp = mysql_query($sql);
+			$pp = $base->query($sql);
 			$nbr_pp = mysql_num_rows($pp);
 			if ($nbr_pp>0) {
 				echo '<div class="mt-element-card mt-element-overlay">';
 				while ($rpp=mysql_fetch_array($pp)) {
 					$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' and photo_pos=1";
-					$ph = mysql_query($sql);
+					$ph = $base->query($sql);
 					if ($rph=mysql_fetch_array($ph)) {
 						$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
 					} else 
@@ -372,7 +372,7 @@
 		
 		case 3: // On modifie la taille d'un produit dans un devis
 			$sql = "update commandes_produits set taille_num='" . $taille_new . "' where id='" . $devis . "' and produit_num='" . $pdt  . "' and taille_num='" . $taille . "'";
-			mysql_query($sql);
+			$base->query($sql);
 		break;
 		
 		case 4 : // On modifie la qte d'un produit dans un devis
@@ -380,7 +380,7 @@
 				$sql = "update commandes_produits set qte='" . $qte_new . "' where id='" . $devis . "' and produit_num='" . $pdt  . "' and taille_num='" . $taille . "'";
 			else
 				$sql = "delete from commandes_produits where id='" . $devis . "' and produit_num='" . $pdt  . "' and taille_num='" . $taille . "'";
-			mysql_query($sql);
+			$base->query($sql);
 			
 			// On recalcul le montant de la commande
 			recalculMontantCommande2023($devis);
@@ -389,19 +389,19 @@
 		
 		case 5: // On modifie la methode de paiement du devis
 			$sql = "update commandes set paiement_num='" . $paiement . "' where id='" . $devis . "'";
-			mysql_query($sql);
+			$base->query($sql);
 			afficheDevis($devis);
 		break;
 		
 		case 6:
 			// ON regarde si le produit n'est pas déjà dans le devis
 			$sql = "select * from commandes_produits where id='" . $devis . "' and produit_num='" . $pdt . "' and taille_num=-1";
-			$tt = mysql_query($sql);
+			$tt = $base->query($sql);
 			$nbr = mysql_num_rows($tt);
 			if ($nbr==0) {
 				$prixProduit = RecupPrix($pdt);
 				$sql = "insert into commandes_produits values ('" . $devis . "','" . $pdt . "','-1',1,'" . $prixProduit["montant_ht"] . "','" . $prixProduit["montant_tva"] . "','" . $prixProduit["montant_ttc"] . "','" . $prixProduit["montant_remise"] . "','" . $prixProduit["montant_remise_type"] . "','" . $prixProduit["montant_ht_remise"] . "','" . $prixProduit["montant_tva_remise"] . "','" . $prixProduit["montant_ttc_remise"] . "','0','0')";
-				mysql_query($sql);
+				$base->query($sql);
 			}
 			// On recalcul le montant de la commande
 			recalculMontantCommande2023($devis);
@@ -411,14 +411,14 @@
 		case 7:
 			// On upadte le montant
 			$sql = "update commandes set commande_remise='" . $remise_montant . "', commande_remise_type='" . $remise_type . "' where id='" . $devis . "'";
-			mysql_query($sql);
+			$base->query($sql);
 			afficheDevis($devis);
 		break;
 		
 		case 8:
 			// On upadte le montant
 			$sql = "update commandes_produits set commande_produit_remise='" . $remise_montant . "', commande_produit_remise_type='" . $remise_type . "' where id='" . $devis . "' and produit_num='" . $produit . "' and taille_num='" . $taille . "'";
-			mysql_query($sql);
+			$base->query($sql);
 			recalculMontantCommande2023($devis);
 			afficheDevis($devis);
 		break;
@@ -427,18 +427,18 @@
 			// On upadte la commande fournisseur
 			if ($val==1) {
 				$sql = "insert into commandes_fournisseurs values('" . $id . "','1','" . Date("Y-m-d H:i:s") . "')";
-				mysql_query($sql);
+				$base->query($sql);
 				echo Date("d/m/Y");
 			} else {
 				$sql = "delete from commandes_fournisseurs where id='" . $id . "'";
-				mysql_query($sql);
+				$base->query($sql);
 				echo "";
 			}			
 		break;
 		
 		case 10 :
 			$sql = "update commandes set commande_date='" . $date_commande . " 14:30:00' where id='" . $devis . "'";
-			mysql_query($sql);
+			$base->query($sql);
 		break;
 	}
 ?>

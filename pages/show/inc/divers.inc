@@ -197,7 +197,7 @@
 				// On redimensionne la photo
 				if (!$source_zoom = @imagecreatefromjpeg($img_traite_zoom))
 				{ 
-					$mess_erreur = "Impossible de traiter l'image. Celle-ci est altérée.";
+					$mess_erreur = "Impossible de traiter l'image. Celle-ci est altï¿½rï¿½e.";
 					$erreur=1;
 					unlink ($img_traite_zoom); 
 					unlink ($img_traite); 
@@ -210,10 +210,10 @@
 					imagecopyresampled($dest, $source_zoom, 0, 0, 0, 0, $largeur, $hauteur,$dim[0],$dim[1]);
 					imagejpeg($dest,$img_traite_zoom);
 					unset($source_zoom);
-					// On crée la normale
+					// On crï¿½e la normale
 					if (!$source_norm = @imagecreatefromjpeg($img_traite))
 					{ 
-						$mess_erreur = "Impossible de traiter l'image. Celle-ci est altérée.";
+						$mess_erreur = "Impossible de traiter l'image. Celle-ci est altï¿½rï¿½e.";
 						$erreur=1;
 						unlink ($img_traite_zoom); 
 						unlink ($img_traite); 
@@ -227,10 +227,10 @@
 						imagejpeg($dest_norm,$img_traite);
 						unset($source_norm);
 
-						// On crée la miniature
+						// On crï¿½e la miniature
 						if (!$source_min = @imagecreatefromjpeg($img_traite_min))
 						{ 
-							$mess_erreur = "Impossible de traiter l'image. Celle-ci est altérée.";
+							$mess_erreur = "Impossible de traiter l'image. Celle-ci est altï¿½rï¿½e.";
 							$erreur=1;
 							unlink ($img_traite_zoom); 
 							unlink ($img_traite); 
@@ -246,7 +246,7 @@
 							
 							// Tout est ok alors on insere dans la base
 							//$sql = "insert into md_produits_photos values (0,'" . $produit_num . "','" . $nom_image . "'," . $portrait . "," . $une . ",0)";
-							//mysql_query($sql);
+							//$base->query($sql);
 							$retour = $nom_image;
 							// On efface la source
 							unlink ($img);
@@ -302,17 +302,17 @@
 	
 	function remove_accent($str)
 	{
-	  $a = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð',
-					'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã',
-					'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ',
-					'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C',
-					'c', 'C', 'c', 'C', 'c', 'D', 'd', 'Ð', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e',
+	  $a = array('ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½',
+					'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½',
+					'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½',
+					'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C',
+					'c', 'C', 'c', 'C', 'c', 'D', 'd', 'ï¿½', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e',
 					'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i',
 					'I', 'i', 'I', 'i', 'I', 'i', '?', '?', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l',
-					'?', '?', 'L', 'l', 'N', 'n', 'N', 'n', 'N', 'n', '?', 'O', 'o', 'O', 'o', 'O', 'o', 'Œ',
-					'œ', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'Š', 'š', 'T', 't', 'T', 
+					'?', '?', 'L', 'l', 'N', 'n', 'N', 'n', 'N', 'n', '?', 'O', 'o', 'O', 'o', 'O', 'o', 'ï¿½',
+					'ï¿½', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'ï¿½', 'ï¿½', 'T', 't', 'T', 
 					't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 
-					'y', 'Ÿ', 'Z', 'z', 'Z', 'z', 'Ž', 'ž', '?', 'ƒ', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i',
+					'y', 'ï¿½', 'Z', 'z', 'Z', 'z', 'ï¿½', 'ï¿½', '?', 'ï¿½', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i',
 					'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', '?', '?', '?', '?', '?', '?');
 
 	  $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O',
@@ -330,7 +330,7 @@
 	}
 
 	
-	/* Générateur de Slug (Friendly Url) : convertit un titre en une URL conviviale.*/
+	/* Gï¿½nï¿½rateur de Slug (Friendly Url) : convertit un titre en une URL conviviale.*/
 	function Slug($str){
 		return mb_strtolower(preg_replace(array('/[^a-zA-Z0-9 \'-]/', '/[ -\']+/', '/^-|-$/'),
 		array('', '-', ''), remove_accent($str)));

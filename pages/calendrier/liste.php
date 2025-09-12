@@ -13,7 +13,7 @@ if (!isset($type))
 
 if (isset($calendrier_suppr)) {
 	$sql = "delete from calendriers where calendrier_num='" . decrypte($calendrier_suppr) . "'";
-	mysql_query($sql);
+	$base->query($sql);
 }
 ?>
 
@@ -94,7 +94,7 @@ function confirme() {
 											<option value="0">Catégorie</option>
 											<?
 												$sql = "select * from calendriers_themes order by theme_pos ASC";
-												$tt = mysql_query($sql);
+												$tt = $base->query($sql);
 												while ($rtt=mysql_fetch_array($tt)) {
 													echo '<option value="' . $rtt["theme_num"] . '"';
 													if ($rtt["theme_num"]==$type)
@@ -146,8 +146,8 @@ function confirme() {
 								} else {
 									$sql .= " and calendrier_datedeb>='" . Date("Y-m-d") . " 00:00:00' order by calendrier_datedeb ASC LIMIT 0,50";
 								}
-								$cc = mysql_query($sql);
-								while ($rcc=mysql_fetch_array($cc)) {
+								$cc = $base->query($sql);
+								foreach ($cc as $rcc) {
 									list(
 										$annee_deb,
 										$mois_deb,
@@ -181,7 +181,7 @@ function confirme() {
 									echo '<td><nobr>';
 									if ($rcc["client_num"]!=0) {
 										$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-										$cl = mysql_query($sql);
+										$cl = $base->query($sql);
 										if ($rcl=mysql_fetch_array($cl)) {
 											echo '<a href="/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '">' . $rcl["client_prenom"] . ' ' . $rcl["client_nom"] . '</a>';
 										}

@@ -170,7 +170,7 @@ function initDate() {
 														<select name="showroom" class="form-control input-medium">
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
-															$tt = mysql_query($sql);
+															$tt = $base->query($sql);
 															while ($rtt=mysql_fetch_array($tt)) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
@@ -239,26 +239,26 @@ function initDate() {
 													
 											}
 											$sql_facture = $sql;
-											$cc = mysql_query($sql);
+											$cc = $base->query($sql);
 											$total_ht = 0;
 											$total_tva = 0;
 											$total_ttc = 0;
 											$total_encaisse = 0;
 											$total_reste_a_payer = 0;
 											$nbr_commande = 0;
-											while ($rcc=mysql_fetch_array($cc)) {
+											foreach ($cc as $rcc) {
 												$nbr_commande++;
 												$nbr_echeance = $rcc["paiement_nombre"];
 																			
 												// On regarde le nombre de paiement effectué
 												$sql = "select * from commandes_paiements where id='" . $rcc["id"] . "'";
-												$pa = mysql_query($sql);
+												$pa = $base->query($sql);
 												$nbr_paiement = mysql_num_rows($pa);
 												
 												// On calcul la somme déjà payé
 												$montant_paye = 0;
 												$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $rcc["id"] . "'";
-												$pa = mysql_query($sql);
+												$pa = $base->query($sql);
 												if ($rpa=mysql_fetch_array($pa))
 													$montant_paye = $rpa["val"];
 												

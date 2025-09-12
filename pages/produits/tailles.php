@@ -15,10 +15,10 @@ if (isset($decalle))
 
 	// On decalle 
 	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $pos . "' where " . $nom_champ . "_pos=" . $new_pos;
-	mysql_query($sql);
+	$base->query($sql);
 
 	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $new_pos . "' where " . $nom_champ . "_num=" . $val_num;
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 if (isset($modif))
@@ -30,23 +30,23 @@ if (isset($modif))
 	$sql = "update " . $nom_table . " set " . $nom_champ . "_nom='" . $nom . "'";
 	$sql .= $sql_modif;
 	$sql .= " where " . $nom_champ . "_num=" . decrypte($val_num);
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 if (isset($ajout))
 {
 	$sql = "insert into " . $nom_table . " values (0,'" . $nom . "','" . $nbr_ligne . "')";
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 if (isset($suppr))
 {
 	$sql = "delete from " . $nom_table . " where " . $nom_champ . "_num=" . decrypte($suppr);
-	mysql_query($sql);
+	$base->query($sql);
 }
 
 $sql = "select * from " . $nom_table . " order by " . $nom_champ . "_pos ASC";
-$cdr = mysql_query($sql);
+$cdr = $base->query($sql);
 $nbr_ligne = mysql_num_rows($cdr);
 
 ?>
@@ -123,7 +123,7 @@ function confirme() {
 										<tbody>
 											<?php 
 												$sql = "select * from " . $nom_table . " d where d." . $nom_champ . "_num=" . decrypte($modif_num);
-												$cc = mysql_query($sql);
+												$cc = $base->query($sql);
 												$i=0;
 												if ($rcc=mysql_fetch_array($cc))
 												{

@@ -17,21 +17,15 @@
 	}
 
 	//Classe BDD
-	class Db	{		var $mHost;		//HOST		var $mUser;		//login		var $mMdp;		//Mot de passe		var $mName;		//Database Name		var $mConn=-1;   // Pointeur sur la base de donnée
-				function Db($h="madeinprcrm.mysql.db",$d="madeinprcrm",$u="madeinprcrm",$m="Ca5t0r34170")
-		{			$this->mName = $d;			$this->mHost = $h;			$this->mUser = $u;			$this->mMdp  = $m;		}
-		function Connect()		{			$this->mConn = mysql_connect($this->mHost,$this->mUser,$this->mMdp);			if (!$this->mConn)			{				echo  "<br>[Probleme de connexion]<BR>";				}			else			{				if (!mysql_select_db($this->mName, $this->mConn))					echo "<BR>[La base de donnees n'a pas ete selectionne]<BR>";			}		}
-		function Deconnect()		{			mysql_close($this->mConn);		}	}
-	
-	class DbShop
+	class Db
 	{
 		var $mHost;		//HOST
 		var $mUser;		//login
 		var $mMdp;		//Mot de passe
 		var $mName;		//Database Name
-		var $mConn=-1;   // Pointeur sur la base de donnée
+		var $mConn=-1;   // Pointeur sur la base de donnï¿½e
 		
-		function DbShop($h="mysql51-8.business",$d="madeinprpro",$u="madeinprpro",$m="w8hqPlRj")
+		function Db($h="madeinprcrm.mysql.db",$d="madeinprcrm",$u="madeinprcrm",$m="Ca5t0r34170")
 		{
 			$this->mName = $d;
 			$this->mHost = $h;
@@ -58,6 +52,41 @@
 		}
 	}
 	
+	class DbShop
+	{
+		var $mHost;		//HOST
+		var $mUser;		//login
+		var $mMdp;		//Mot de passe
+		var $mName;		//Database Name
+		var $mConn=-1;   // Pointeur sur la base de donnï¿½e
+		
+		function DbShop($h="mysql51-8.business",$d="madeinprpro",$u="madeinprpro",$m="w8hqPlRj")
+		{
+			$this->mName = $d;
+			$this$base->query($sql)
+			$this->mUser = $u;
+			$this->mMdp  = $m;
+		}
+
+		function Connect()
+		{
+			$this->mConn = mysql_connect($this->mHost,$this->mUser,$this->mMdp);
+			if (!$this->mConn)
+			{
+				echo  "<br>[Probleme de connexion]<BR>";	
+			}
+			else
+			{
+				if (!mysql_select_db($this->mName, $this->mConn))
+					ech$base->query($sql)e donnees n'a pas ete selectionne]<BR>";
+			}
+		}
+		function Deconnect()
+		{
+			mysql_close($this->mConn);
+		}
+	}
+	
 	function DbMax($table,$champ,$test=0)	
 	{		
 		$sql = "select max(" . $champ . "_num) val from " . $table;		
@@ -67,7 +96,7 @@
 		if ($rcc=mysql_fetch_array($cc))			
 			$max = $rcc["val"];		
 		else			
-			$max = 1;
+			$max $base->query($sql)
 		mysql_free_result($cc);
 		return $max;	
 	}
@@ -80,7 +109,7 @@
 			echo $sql;
 		$cc = mysql_query($sql);
 		$field = mysql_num_fields($cc);
-		$var["nbr"] = mysql_num_rows($cc);
+		$var["$base->query($sql)_rows($cc);
 		$i=0;
 		while ($rcc=mysql_fetch_array($cc))
 		{
@@ -97,7 +126,7 @@
 		if ($test==1)
 			echo $sql;
 		$cc = mysql_query($sql);
-		$nbr = mysql_num_rows($cc);
+		$nbr = count($cc);
 		if ($nbr>0)
 			return true;
 		else
@@ -110,6 +139,7 @@
 		if ($test==1)
 			echo $sql;
 		$cc = mysql_query($sql);
-		return mysql_num_rows($cc);
+		return count($cc);
 		mysql_free_result($cc);		
-	}?>
+	}
+?>

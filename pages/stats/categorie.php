@@ -76,7 +76,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<select name="showroom" class="form-control input-medium">
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
-															$tt = mysql_query($sql);
+															$tt = $base->query($sql);
 															while ($rtt=mysql_fetch_array($tt)) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
@@ -129,8 +129,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 													<tbody>';
                                                     // On va chercher toutes les categories
                                                     $sql = "select * from categories";
-                                                    $cc = mysql_query($sql);
-                                                    while ($rcc=mysql_fetch_array($cc)) {
+                                                    $cc = $base->query($sql);
+                                                    foreach ($cc as $rcc) {
 														echo '<tr>
 															<td class="bold">' . $rcc["categorie_nom"] . '</td>';
                                                     
@@ -149,7 +149,7 @@ $desc_page = "Statistiques - Olympe Mariage";
                                                             $sql = "SELECT sum(qte) val, sum(montant_ht*qte) total, categorie_nom FROM commandes c, commandes_produits cd, md_produits p, categories ca WHERE c.id=cd.id and cd.produit_num=p.produit_num and p.categorie_num=ca.categorie_num and c.commande_num!=0 and c.showroom_num='" . $showroom . "'";
                                                             $sql .= " and p.categorie_num=" . $rcc["categorie_num"];
                                                             $sql .= " and commande_date>='" . $date_debut . "' and commande_date<='" . $date_fin . "'";
-                                                            $re = mysql_query($sql);
+                                                            $re = $base->query($sql);
                                                             $nbr_commande = 0;
                                                             $ca = 0;
                                                             if ($rre=mysql_fetch_array($re)) {

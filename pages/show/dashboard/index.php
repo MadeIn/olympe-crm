@@ -69,8 +69,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<option value="0">----</option>
 														<?php 
 															$sql =" select * from users where showroom_num='" . $u->mShowroom . "'";
-															$cc = mysql_query($sql);
-															while ($rcc=mysql_fetch_array($cc)) {
+															$cc = $base->query($sql);
+															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["user_num"] . '"';
 																if ($user==$rcc["user_num"])
 																	echo " SELECTED";
@@ -114,7 +114,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<select name="showroom" class="form-control input-medium">
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
-															$tt = mysql_query($sql);
+															$tt = $base->query($sql);
 															while ($rtt=mysql_fetch_array($tt)) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
@@ -166,7 +166,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 										  if ($user!=0)
 											  $sql .= " and c.user_num='" . $user . "'";
 										  $sql .= " ORDER BY client_date_mariage DESC ";
-										  $re = mysql_query($sql);
+										  $re = $base->query($sql);
 										  $nbr_total = 0;
 										  $montant = 0;
 										  while ($row=mysql_fetch_array($re))
@@ -176,12 +176,12 @@ $desc_page = "Statistiques - Olympe Mariage";
 												$sql = "select * from commandes c, commandes_produits cp, md_produits p, marques m where c.id=cp.id and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and categorie_num IN (" . $categorie_select . ") and commande_date>='" . $row["commande_date"] . "' and c.commande_num>0 and c.client_num='" . $row["client_num"] . "'";
 											 else
 												$sql = "select * from commandes c, commandes_produits cp, md_produits p, marques m where c.id=cp.id and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and categorie_num IN (" . $categorie_select . ") and devis_date>='" . $row["devis_date"] . "' and c.devis_num>0 and c.commande_num=0 and c.client_num='" . $row["client_num"] . "'";
-											 $cc = mysql_query($sql);
+											 $cc = $base->query($sql);
 											 $produits = array();
 											 $accessoires = array();
-											 $commande_robe = mysql_num_rows($cc);
+											 $commande_robe = count($cc);
 											 if ($commande_robe>0) {
-												 while ($rcc=mysql_fetch_array($cc)) {
+												 foreach ($cc as $rcc) {
 													 $commande_num = $rcc["id"];
 													 $createur = $rcc["marque_nom"];
 													 array_push($produits,$rcc["produit_nom"]);
@@ -189,7 +189,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												 
 												 // On test si on a commande au fournisseur
 												 $sql = "select * from commandes_fournisseurs where id='" . $row["id"] . "'";
-												 $cf = mysql_query($sql);
+												 $cf = $base->query($sql);
 												 $nbr_cde_fournisseur = mysql_num_rows($cf);
 												 if ($nbr_cde_fournisseur>0)
 													 $cde_fournisseur = "X";
@@ -200,8 +200,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 												 $montant_ttc = montantCommandeTTC($commande_num);
 												 
 												 $sql = "select * from commandes c, commandes_produits cp, md_produits p, marques m where c.id=cp.id and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and categorie_num NOT IN (" . $categorie_select . ") and commande_date>='" . $row["commande_date"] . "' and commande_num>0 and c.client_num='" . $row["client_num"] . "'";
-												 $cc = mysql_query($sql);
-												 while ($rcc=mysql_fetch_array($cc)) {
+												 $cc = $base->query($sql);
+												 foreach ($cc as $rcc) {
 													 array_push($accessoires,$rcc["produit_nom"]);
 												 }
 												 
@@ -211,22 +211,22 @@ $desc_page = "Statistiques - Olympe Mariage";
 												 $date_remise = "";
 												 
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=2";
-												 $rr = mysql_query($sql);
+												 $rr = $base->query($sql);
 												 if ($rrv=mysql_fetch_array($rr)) {
 													 $date_livraison = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=3";
-												 $rr = mysql_query($sql);
+												 $rr = $base->query($sql);
 												 if ($rrv=mysql_fetch_array($rr)) {
 													 $date_reception = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=4";
-												 $rr = mysql_query($sql);
+												 $rr = $base->query($sql);
 												 if ($rrv=mysql_fetch_array($rr)) {
 													 $date_retouche = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=5";
-												 $rr = mysql_query($sql);
+												 $rr = $base->query($sql);
 												 if ($rrv=mysql_fetch_array($rr)) {
 													 $date_remise = format_date($rrv["rdv_date"],11,1);
 												 }
@@ -235,17 +235,17 @@ $desc_page = "Statistiques - Olympe Mariage";
 												 $acompte3 = "";
 												 
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='1'";
-												 $pp = mysql_query($sql);
+												 $pp = $base->query($sql);
 												 if ($rpp=mysql_fetch_array($pp)) {
 													 $acompte1 = number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 												 }
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='2'";
-												 $pp = mysql_query($sql);
+												 $pp = $base->query($sql);
 												 if ($rpp=mysql_fetch_array($pp)) {
 													 $acompte2 = number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 												 }
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='3'";
-												 $pp = mysql_query($sql);
+												 $pp = $base->query($sql);
 												 if ($rpp=mysql_fetch_array($pp)) {
 													 $acompte3 = number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 												 }

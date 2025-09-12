@@ -65,7 +65,7 @@ $desc_page = "Rechercher un client - Olympe Mariage";
 												<select name="showroom" class="form-control">
 													<?
 														$sql = "select * from showrooms order by showroom_num ASC";
-														$tt = mysql_query($sql);
+														$tt = $base->query($sql);
 														while ($rtt=mysql_fetch_array($tt)) {
 															echo '<option value="' . $rtt["showroom_num"] . '">' . $rtt["showroom_nom"] . '</option>';
 														}
@@ -100,8 +100,8 @@ $desc_page = "Rechercher un client - Olympe Mariage";
 								if ($email!="")
 									$sql .= " and client_mail='" . $email . "'";
 								$sql .= " order by client_nom ASC, client_prenom ASC";
-								$cc = mysql_query($sql);
-								$nb = mysql_num_rows($cc);
+								$cc = $base->query($sql);
+								$nb = count($cc);
 								if ($nb>0) {
 									echo '<div class="table-scrollable">
 									<table class="table table-striped table-bordered table-advance table-hover">
@@ -116,9 +116,9 @@ $desc_page = "Rechercher un client - Olympe Mariage";
 											</tr>
 										</thead>
 										<tbody>';
-									while ($rcc=mysql_fetch_array($cc)) {
+									foreach ($cc as $rcc) {
 										$sql = "select * from rendez_vous where client_num='" . $rcc["client_num"] . "' and type_num=5";
-										$tt = mysql_query($sql);
+										$tt = $base->query($sql);
 										$nbr = mysql_num_rows($tt);
 										if ($nbr>0)
 											$tab = "&tab=tab_1_4";

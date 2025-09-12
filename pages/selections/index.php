@@ -1,7 +1,7 @@
 ﻿<?php include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_invite.php"); 
 
 	$sql = "select * from selections s, showrooms sh, users u, clients c where s.client_num=c.client_num and s.showroom_num=sh.showroom_num and s.user_num=u.user_num and selection_num='" . decrypte($id) . "'";
-	$cc = mysql_query($sql);
+	$cc = $base->query($sql);
 	if (!$rcc=mysql_fetch_array($cc)) {
 		echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 	}
@@ -44,7 +44,7 @@
 <?php 
 	// On affiche les produits sélectionnés
 	$sql = "select * from selections_produits s, md_produits p, categories c, marques m where s.produit_num=p.produit_num and p.categorie_num=c.categorie_num and p.marque_num=m.marque_num and selection_num='" . decrypte($id) . "' order by c.categorie_num ASC";
-	$pp = mysql_query($sql);
+	$pp = $base->query($sql);
 	$nbr_pp = mysql_num_rows($pp);
 	if ($nbr_pp>0) {
 		while ($rpp=mysql_fetch_array($pp)) {
@@ -52,7 +52,7 @@
 					<h2 class="text-right" style="margin-top: 20px;">' . $rpp["categorie_nom"] . ' - ' . $rpp["marque_nom"] . '<br><strong style="font-size: 22px; line-height: 35px;">' . $rpp["produit_nom"] . '</strong><br><small>' . AffichePrix($rpp["produit_num"]) . '</small></h2>
 				 </div>';
 				$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' order by photo_pos ASC";
-				$ph = mysql_query($sql);
+				$ph = $base->query($sql);
 				echo '<div class="col-sm-7 col-xs-12">';
 				while ($rph=mysql_fetch_array($ph)) {
 					$image_norm = "https://crm.olympe-mariage.com/photos/produits/norm/" . $rph["photo_chemin"];

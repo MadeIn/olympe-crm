@@ -12,10 +12,12 @@ class Auth {
         if (session_status() === PHP_SESSION_NONE) {
             $app_config = require dirname(dirname(__FILE__)) . '/config/app.php';
             
-            // Configuration sécurisée des sessions
-            ini_set('session.cookie_httponly', 1);
-            ini_set('session.cookie_secure', isset($_SERVER['HTTPS']));
-            ini_set('session.use_strict_mode', 1);
+            // Sécurité sessions
+            ini_set('session.cookie_httponly', '1');
+            // FIX: détecter HTTPS de manière robuste (https=on/1 ou server port 443)
+            $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['SERVER_PORT'] ?? null) === '443');
+            ini_set('session.cookie_secure', $https ? '1' : '0');
+            ini_set('session.use_strict_mode', '1');
             ini_set('session.cookie_samesite', 'Lax');
             
             session_name($app_config['session_name']);
@@ -127,7 +129,7 @@ class Auth {
      */
     public static function requireAuth(): void {
         if (!self::isLoggedIn()) {
-            self::redirect('/home');
+            self::redirect('/login');
         }
         
         $user = self::getCurrentUser();

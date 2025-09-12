@@ -123,7 +123,7 @@ function DbMax(string $table, string $champ, int $test = 0): int {
 
 function DbSelect(string $sql, int $test = 0): array {
     $db = Database::getInstance();
-    $result = $db->query($sql);
+    $result = $base->query($sql);
     
     // Format compatible avec l'ancien code
     return [
@@ -139,6 +139,6 @@ function DbTestResultat(string $sql, int $test = 0): bool {
 
 function DbNbrLigne(string $sql, int $test = 0): int {
     $db = Database::getInstance();
-    return count($db->query($sql));
+    return count($base->query($sql));
 }
 ?>

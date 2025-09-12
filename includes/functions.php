@@ -488,17 +488,35 @@ function secure_array(array $arr): array {
 /**
  * Fonction helper pour déterminer si un menu est actif
  */
-function isActiveMenu(string $path): string {
-    $currentPath = $_SERVER["PHP_SELF"] ?? '';
-    
-    if ($path === $currentPath) {
+function isActiveMenu(string $path, bool $prefixMatch = true): string {
+    // 1) Path courant sans query string
+    $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+
+    // 2) Base du site (si l’app tourne dans un sous-dossier)
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    $baseDir = rtrim(str_replace(basename($scriptName), '', $scriptName), '/'); // ex: "/crm" ou ""
+
+    // 3) Cible à comparer (on préfixe par la base si $path est absolu)
+    $target = $path;
+    if ($path !== '/' && str_starts_with($path, '/')) {
+        $target = ($baseDir ? $baseDir : '') . $path;
+    }
+
+    // 4) Normalisation (éviter les soucis de slash final)
+    $norm = fn(string $p) => $p === '/' ? '/' : rtrim($p, '/');
+    $current = $norm($currentPath);
+    $target  = $norm($target);
+
+    // 5) Match exact
+    if ($current === $target) {
         return 'active open selected';
     }
-    
-    if ($path !== '/' && str_contains($currentPath, $path)) {
+
+    // 6) Match préfixe (utile pour /orders et /orders/123)
+    if ($prefixMatch && $target !== '/' && str_starts_with($current . '/', $target . '/')) {
         return 'active open selected';
     }
-    
+
     return '';
 }
 

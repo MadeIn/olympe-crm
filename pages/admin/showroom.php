@@ -12,25 +12,25 @@ if (isset($action)) {
 		case "add" :
 			// On insere le showroom
 			$sql = "insert into showrooms values(0,'" . $nom . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $acces . "','" . $tel . "','" . $mail . "','" . $rcs . "','" . $raison . "','" . $siret . "','" . $tva . "','" . $ca_annee . "','" . $ca_janvier . "','" . $ca_fevrier . "','" . $ca_mars . "','" . $ca_avril . "','" . $ca_mai . "','" . $ca_juin . "','" . $ca_juillet . "','" . $ca_aout . "','" . $ca_septembre . "','" . $ca_octobre . "','" . $ca_novembre . "','" . $ca_decembre . "','" . $nbr_annee . "','" . $nbr_janvier . "','" . $nbr_fevrier . "','" . $nbr_mars . "','" . $nbr_avril . "','" . $nbr_mai . "','" . $nbr_juin . "','" . $nbr_juillet . "','" . $nbr_aout . "','" . $nbr_septembre . "','" . $nbr_octobre . "','" . $nbr_novembre . "','" . $nbr_decembre . "','" . $banque_nom . "','" . $banque_code_etablissement . "','" . $banque_code_guichet . "','" . $banque_compte . "','" . $banque_cle_rib . "','" . $banque_swift . "','" . $banque_iban . "')";
-			mysql_query($sql);
+			$base->query($sql);
 			$num = mysql_insert_id();
 			$num = crypte($num);
 		break;
 		
 		case "update" :
 			$sql = "update showrooms set showroom_nom='" . $nom . "',showroom_adr1='" . $adr1 . "',showroom_adr2='" . $adr2 . "',showroom_cp='" . $cp . "',showroom_ville='" . $ville . "',showroom_acces='" . $acces . "',showroom_tel='" . $tel . "',showroom_mail='" . $mail . "',showroom_rcs='" . $rcs . "',showroom_raison='" . $raison . "',showroom_siret='" . $siret . "',showroom_tva='" . $tva . "',ca_annee='" . $ca_annee . "',ca_janvier='" . $ca_janvier . "',ca_fevrier='" . $ca_fevrier . "',ca_mars='" . $ca_mars . "',ca_avril='" . $ca_avril . "',ca_mai='" . $ca_mai . "',ca_juin='" . $ca_juin . "',ca_juillet='" . $ca_juillet . "',ca_aout='" . $ca_aout . "',ca_septembre='" . $ca_septembre . "',ca_octobre='" . $ca_octobre . "',ca_novembre='" . $ca_novembre . "',ca_decembre='" . $ca_decembre . "',nbr_annee='" . $nbr_annee . "',nbr_janvier='" . $nbr_janvier . "',nbr_fevrier='" . $nbr_fevrier . "',nbr_mars='" . $nbr_mars . "',nbr_avril='" . $nbr_avril . "',nbr_mai='" . $nbr_mai . "',nbr_juin='" . $nbr_juin . "',nbr_juillet='" . $nbr_juillet . "',nbr_aout='" . $nbr_aout . "',nbr_septembre='" . $nbr_septembre . "',nbr_octobre='" . $nbr_octobre . "',nbr_novembre='" . $nbr_novembre . "',nbr_decembre='" . $nbr_decembre . "', banque_nom='" . $banque_nom . "', banque_code_etablissement='" . $banque_code_etablissement . "',banque_code_guichet='" . $banque_code_guichet . "',banque_compte='" . $banque_compte . "',banque_cle_rib='" . $banque_cle_rib . "',banque_swift='" . $banque_swift . "',banque_iban='" . $banque_iban . "' where showroom_num='" . decrypte($num) . "'";
-			mysql_query($sql);	
+			$base->query($sql);	
 			
 			// On efface les moyes de paiements pour les remettre
 			$sql = "delete from showrooms_paiements where showroom_num='" . intval(decrypte($num)) . "'";
-			mysql_query($sql);
+			$base->query($sql);
 		break;
 	}
 	
 	// ON insere les moyens de paiements
 	foreach ($mode as $val) {
 		$sql = "insert into showrooms_paiements values('" . intval(decrypte($num)) . "','" . $val . "')";
-		mysql_query($sql);
+		$base->query($sql);
 	}
 	
 	
@@ -121,7 +121,7 @@ function confirme() {
 										<?php } else { 
 											
 											$sql = "select * from showrooms where showroom_num='" . decrypte($edit) . "'";
-											$tt = mysql_query($sql);
+											$tt = $base->query($sql);
 											if ($rtt=mysql_fetch_array($tt)) {
 												$num = $rtt["showroom_num"];
 												$nom = $rtt["showroom_nom"];
@@ -325,11 +325,11 @@ function confirme() {
 												<ul>
 													<?php 
 														$sql = "select * from paiements_modes order by mode_ordre ASC";
-														$pp = mysql_query($sql);
+														$pp = $base->query($sql);
 														while ($rpp=mysql_fetch_array($pp)) {
 															$checked = "";
 															$sql = "select * from showrooms_paiements where showroom_num='" . intval(decrypte($edit)) . "' and mode_num='" . $rpp["mode_num"] . "'";
-															$tt = mysql_query($sql);
+															$tt = $base->query($sql);
 															if ($rtt=mysql_fetch_array($tt)) {
 																$checked = " CHECKED";
 															}
@@ -430,8 +430,8 @@ function confirme() {
 										<tbody>
 										<?php 
 											$sql = "select * from showrooms order by showroom_nom ASC";
-											$cc = mysql_query($sql);
-											while ($rcc=mysql_fetch_array($cc)) {
+											$cc = $base->query($sql);
+											foreach ($cc as $rcc) {
 												echo '<tr>
 													<td class="highlight">
 														<div class="success"></div> <a href="' . $_SERVER["PHP_SELF"] . '?edit=' . crypte($rcc["showroom_num"]) . '">' . $rcc["showroom_nom"] . '</a>

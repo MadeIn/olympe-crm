@@ -21,7 +21,7 @@
 						<select name="type" class="form-control">';
 						
 				$sql = "select * from rdv_types where type_num NOT IN (2,3) order by type_pos ASC";
-				$tt = mysql_query($sql);
+				$tt = $base->query($sql);
 				while ($rtt=mysql_fetch_array($tt)) {
 					echo '<option value="' . $rtt["type_num"] . '"';
 					if ($rtt["type_num"]==1)
@@ -52,12 +52,12 @@
 				$client_num = $client_search[0];
 				// On recherche le client 
 				$sql = "select * from clients where client_num='" . $client_num . "'";
-				$cl = mysql_query($sql);
+				$cl = $base->query($sql);
 				if ($rcl = mysql_fetch_array($cl)) {
 					// On recherche les commandes en cours non facturée
 					$sql = "select * from commandes where client_num='" . $client_num . "' and devis_num!=0 and commande_num!=0 and facture_num=0 order by commande_date DESC";
-					$co = mysql_query($sql);
-					$nbr_commande = mysql_num_rows($co);
+					$co = $base->query($sql);
+					$nbr_commande = count($co);
 					if ($nbr_commande>0) {
 						echo '<label>Acompte</label>
 						  <div class="input-group">
@@ -65,7 +65,7 @@
 								<i class="fa fa-euro"></i>
 							</span>
 							<select name="dernier_acompte" class="form-control">';
-						while ($rco=mysql_fetch_array($co)) {
+						foreach ($co as $rco) {
 							$dernier_acompte = number_format(resteAPayerCommande($rco["id"]),2,"."," ");
 							echo '<option value="' . $dernier_acompte . '">Commande : ' . $rco["commande_num"] . ' - Acompte : ' . $dernier_acompte . ' €</option>';
 						}

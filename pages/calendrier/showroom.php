@@ -8,7 +8,7 @@ if (!isset($showroom_choix)) {
 	$u->mShowroom = $showroom_choix;
 
 $sql = "select * from showrooms where showroom_num='" . $u->mShowroom . "'";
-$ss = mysql_query($sql);
+$ss = $base->query($sql);
 if ($rss=mysql_fetch_array($ss)) {
 	$u->mShowroomInfo = $rss;
 }
@@ -26,7 +26,7 @@ if ($rss=mysql_fetch_array($ss)) {
 						<h1>Olympe Mariage <select name="showroom_choix" onChange="this.form.submit()" class="form-inline">
 						<?
 							$sql = "select * from showrooms order by showroom_num ASC";
-							$sh = mysql_query($sql);
+							$sh = $base->query($sql);
 							while ($rsh=mysql_fetch_array($sh)) {
 								echo '<option value="' . $rsh["showroom_num"] . '"';
 								if ($rsh["showroom_num"]==$u->mShowroom)
@@ -70,10 +70,10 @@ if ($rss=mysql_fetch_array($ss)) {
 					$param = "";
 					// ON recherche les events pour remplir le calendrier perso
 					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num='" . $u->mNum . "' and calendrier_datedeb>='2021-08-01 00:00:00' and c.theme_num=4 order by calendrier_datedeb DESC";
-					$cc = mysql_query($sql);
-					$nbr = mysql_num_rows($cc);
+					$cc = $base->query($sql);
+					$nbr = count($cc);
 					$i=0;
-					while ($rcc=mysql_fetch_array($cc)) {
+					foreach ($cc as $rcc) {
 						if ($i>0) {
 							$param .= ',';
 						}
@@ -100,7 +100,7 @@ if ($rss=mysql_fetch_array($ss)) {
 						$couleur = $rcc["theme_couleur"];
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
-							$rr = mysql_query($sql);
+							$rr = $base->query($sql);
 							if ($rrr=mysql_fetch_array($rr)) {
 								$couleur = $rrr["type_couleur"];								
 							}
@@ -108,7 +108,7 @@ if ($rss=mysql_fetch_array($ss)) {
 						$link = "";
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-							$cl = mysql_query($sql);
+							$cl = $base->query($sql);
 							if ($rcl=mysql_fetch_array($cl)) {
 								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
 							}
@@ -130,10 +130,10 @@ if ($rss=mysql_fetch_array($ss)) {
 					 
 					// ON recherche les events pour remplir le calendrier du showroom
 					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and showroom_num='" . $u->mShowroom . "' and calendrier_datedeb>='2021-08-01 00:00:00' and c.theme_num!=4 order by calendrier_datedeb DESC";
-					$cc = mysql_query($sql);
-					$nbr = mysql_num_rows($cc);
+					$cc = $base->query($sql);
+					$nbr = count($cc);
 					$i=0;
-					while ($rcc=mysql_fetch_array($cc)) {
+					foreach ($cc as $rcc) {
 						if ($i>0) {
 							$param .= ',';
 						}
@@ -160,7 +160,7 @@ if ($rss=mysql_fetch_array($ss)) {
 						$couleur = $rcc["theme_couleur"];
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
-							$rr = mysql_query($sql);
+							$rr = $base->query($sql);
 							if ($rrr=mysql_fetch_array($rr)) {
 								$couleur = $rrr["type_couleur"];								
 							}
@@ -168,7 +168,7 @@ if ($rss=mysql_fetch_array($ss)) {
 						$link = "";
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-							$cl = mysql_query($sql);
+							$cl = $base->query($sql);
 							if ($rcl=mysql_fetch_array($cl)) {
 								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
 							}
