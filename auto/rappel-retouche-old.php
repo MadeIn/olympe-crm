@@ -16,12 +16,12 @@
 		
 		$sql = "select * from rendez_vous where client_num='" . $rcc["client_num"] . "' and type_num IN (4,5)";
 		$tt = $base->query($sql);
-		$test = mysql_num_rows($tt);
+		$test = count($tt);
 		if ($test==0) {
 			// On regarde la commande
 			$sql = "select * from commandes c, commandes_produits cp where c.id=cp.id and taille_num=35 and client_num='" . $rcc["client_num"] . "'";
 			$ta = $base->query($sql);
-			$nbr_ta = mysql_num_rows($ta);
+			$nbr_ta = count($ta);
 			if ($nbr_ta==0) {
 				if ($rcc["client_genre"]==0)
 					$message = "pour la remise de votre robe";

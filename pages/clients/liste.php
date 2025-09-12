@@ -66,7 +66,7 @@ $desc_page = "Rechercher un client - Olympe Mariage";
 													<?
 														$sql = "select * from showrooms order by showroom_num ASC";
 														$tt = $base->query($sql);
-														while ($rtt=mysql_fetch_array($tt)) {
+														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["showroom_num"] . '">' . $rtt["showroom_nom"] . '</option>';
 														}
 													?>
@@ -119,7 +119,7 @@ $desc_page = "Rechercher un client - Olympe Mariage";
 									foreach ($cc as $rcc) {
 										$sql = "select * from rendez_vous where client_num='" . $rcc["client_num"] . "' and type_num=5";
 										$tt = $base->query($sql);
-										$nbr = mysql_num_rows($tt);
+										$nbr = count($tt);
 										if ($nbr>0)
 											$tab = "&tab=tab_1_4";
 										else

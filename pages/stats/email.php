@@ -74,7 +74,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 													<?
 														$sql = "select * from showrooms order by showroom_nom ASC";
 														$tt = $base->query($sql);
-														while ($rtt=mysql_fetch_array($tt)) {
+														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["showroom_num"] . '"';
 															if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
 															echo '>' . $rtt["showroom_nom"] . '</option>';
@@ -121,7 +121,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 										$sql = "select * from commandes where client_num='" . $rcc["client_num"] . "' and commande_num!=0";
 									}									
 									$tt = $base->query($sql);
-									$nbr_commande = mysql_num_rows($tt);
+									$nbr_commande = count($tt);
 									if ($etat==1) {
 										if ($nbr_commande>0)
 											$test=0;

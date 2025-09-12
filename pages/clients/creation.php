@@ -10,7 +10,7 @@ if (isset($ajout)) {
 	// On test si le client n'exite pas
 	$sql = "select * from clients where client_mail='" . $mail . "'";
 	$tt = $base->query($sql);
-	$nbr = mysql_num_rows($tt);
+	$nbr = count($tt);
 	if ($nbr==0) {
 		$sql = "insert into clients values (0,'" . $genre . "','" . $nom . "','" . $prenom . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $tel . "','" . $mail . "','" . $date . "','" . $lieu . "','" . $remarques . "','" . $connaissance . "','" . $showroom . "','" . $u->mNum . "','" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "','" . $poitrine . "','" . $sous_poitrine . "','" . $taille . "','" . $hanche1 . "','" . $hanche2 . "','" . $carrure_avant . "','" . $carrure_dos . "','" . $longueur_dos . "','" . $biceps . "','" . $taille_sol . "','" . $pointure . "','" . $tour_taille . "','" . $interet . "',0)";
 		$base->query($sql);
@@ -223,7 +223,7 @@ if (isset($ajout)) {
 													<?
 														$sql = "select * from showrooms order by showroom_nom ASC";
 														$tt = $base->query($sql);
-														while ($rtt=mysql_fetch_array($tt)) {
+														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["showroom_num"] . '">' . $rtt["showroom_nom"] . '</option>';
 														}
 													?>

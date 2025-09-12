@@ -92,7 +92,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-fw">
                                 <li>
-                                    <a href="/calendrier/rendez-vous.php">
+                                    <a href="/calendrier/rendez-vous">
                                         <i class="fa fa-list-alt"></i> Prendre Rendez-vous
                                     </a>
                                 </li>
@@ -102,7 +102,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/calendrier/liste.php">
+                                    <a href="/calendrier/liste">
                                         <i class="fa fa-calendar-plus-o"></i> Gestion des RDV
                                     </a>
                                 </li>
@@ -110,12 +110,12 @@
                         </li>
                     <?php else: ?>
                         <li class="dropdown dropdown-fw dropdown-fw-disabled <?= isActiveMenu('/calendrier/') ?>">
-                            <a href="/calendrier/showroom.php" class="text-uppercase">
+                            <a href="/calendrier/showroom" class="text-uppercase">
                                 <i class="fa fa-calendar"></i> RDV / Showroom
                             </a>
                             <ul class="dropdown-menu dropdown-menu-fw">
                                 <li>
-                                    <a href="/calendrier/showroom.php">
+                                    <a href="/calendrier/showroom">
                                         <i class="fa fa-list-alt"></i> Consultation
                                     </a>
                                 </li>
@@ -131,18 +131,18 @@
                         <ul class="dropdown-menu dropdown-menu-fw">
                             <?php if ($u && $u->mGroupe != 0): ?>
                                 <li>
-                                    <a href="/clients/creation.php">
+                                    <a href="/clients/creation">
                                         <i class="fa fa-plus"></i> Création
                                     </a>
                                 </li>
                             <?php endif; ?>
                             <li>
-                                <a href="/clients/liste.php">
+                                <a href="/clients/liste">
                                     <i class="fa fa-list"></i> Consultation
                                 </a>
                             </li>
                             <li>
-                                <a href="/clients/relance.php">
+                                <a href="/clients/relance">
                                     <i class="fa fa-envelope"></i> Relance
                                 </a>
                             </li>
@@ -162,25 +162,25 @@
                             <i class="fa fa-female"></i> Produits
                         </a>
                         <ul class="dropdown-menu dropdown-menu-fw">
-                            <li><a href="/produits/produit.php"><i class="fa fa-plus"></i> Création</a></li>
-                            <li><a href="/produits/liste.php"><i class="fa fa-list"></i> Consultation</a></li>
-                            <li><a href="/produits/categories.php"><i class="fa fa-bookmark-o"></i> Catégories</a></li>
-                            <li><a href="/produits/marques.php"><i class="fa fa-fire"></i> Marques</a></li>
-                            <li><a href="/produits/tailles.php"><i class="fa fa-black-tie"></i> Tailles</a></li>
-                            <li><a href="/produits/commandes.php"><i class="fa fa-industry"></i> Commandes Fournisseurs</a></li>
-                            <li><a href="/produits/paiements-fournisseurs.php"><i class="fa fa-euro"></i> Paiements Fournisseurs</a></li>
+                            <li><a href="/produits/produit"><i class="fa fa-plus"></i> Création</a></li>
+                            <li><a href="/produits/liste"><i class="fa fa-list"></i> Consultation</a></li>
+                            <li><a href="/produits/categories"><i class="fa fa-bookmark-o"></i> Catégories</a></li>
+                            <li><a href="/produits/marques"><i class="fa fa-fire"></i> Marques</a></li>
+                            <li><a href="/produits/tailles"><i class="fa fa-black-tie"></i> Tailles</a></li>
+                            <li><a href="/produits/commandes"><i class="fa fa-industry"></i> Commandes Fournisseurs</a></li>
+                            <li><a href="/produits/paiements-fournisseurs"><i class="fa fa-euro"></i> Paiements Fournisseurs</a></li>
                         </ul>
                     </li>
                     
                     <!-- Comptabilité -->
                     <?php if ($u && $u->mCompta == 1): ?>
                         <li class="dropdown dropdown-fw dropdown-fw-disabled <?= isActiveMenu('/compta/') ?>">
-                            <a href="/comptabilite/index.php" class="text-uppercase">
+                            <a href="/comptabilite/index" class="text-uppercase">
                                 <i class="icon-layers"></i> Comptabilité
                             </a>
                             <ul class="dropdown-menu dropdown-menu-fw">
                                 <li>
-                                    <a href="/comptabilite/index.php">
+                                    <a href="/comptabilite/index">
                                         <i class="fa fa-pie-chart"></i> Tableau de bord
                                     </a>
                                 </li>
@@ -194,15 +194,15 @@
                             <i class="fa fa-area-chart"></i> Statistiques
                         </a>
                         <ul class="dropdown-menu dropdown-menu-fw">
-                            <li><a href="/stats/index.php"><i class="fa fa-pie-chart"></i> Tableau de bord</a></li>
-                            <li><a href="/stats/vente-objectif.php"><i class="fa fa-euro"></i> Ventes / Objectif / RDV / Mois</a></li>
-                            <li><a href="/stats/rdv_conseillere.php"><i class="fa fa-black-tie"></i> Taux de transformation vendeuse</a></li>
-                            <li><a href="/stats/categorie.php"><i class="fa fa-pie-chart"></i> Stats par catégorie</a></li>
+                            <li><a href="/stats/index"><i class="fa fa-pie-chart"></i> Tableau de bord</a></li>
+                            <li><a href="/stats/vente-objectif"><i class="fa fa-euro"></i> Ventes / Objectif / RDV / Mois</a></li>
+                            <li><a href="/stats/rdv_conseillere"><i class="fa fa-black-tie"></i> Taux de transformation vendeuse</a></li>
+                            <li><a href="/stats/categorie"><i class="fa fa-pie-chart"></i> Stats par catégorie</a></li>
                             
                             <?php if ($u && $u->mGroupe == 0): ?>    
-                                <li><a href="/stats/dashboard.php"><i class="fa fa-black-tie"></i> Dashboard annuel</a></li>
-                                <li><a href="/stats/email.php"><i class="fa fa-envelope"></i> Extraction email</a></li>
-                                <li><a href="/stats/addresses.php"><i class="fa fa-envelope"></i> Adresses clientes</a></li>
+                                <li><a href="/stats/dashboard"><i class="fa fa-black-tie"></i> Dashboard annuel</a></li>
+                                <li><a href="/stats/email"><i class="fa fa-envelope"></i> Extraction email</a></li>
+                                <li><a href="/stats/addresses"><i class="fa fa-envelope"></i> Adresses clientes</a></li>
                             <?php endif; ?>
                         </ul>
                     </li>
@@ -214,12 +214,12 @@
                                 <i class="fa fa-cogs"></i> Administration
                             </a>
                             <ul class="dropdown-menu dropdown-menu-fw">
-                                <li><a href="/admin/users.php"><i class="fa fa-user"></i> Utilisateurs</a></li>
-                                <li><a href="/admin/showroom.php"><i class="fa fa-industry"></i> Showroom</a></li>
+                                <li><a href="/admin/users"><i class="fa fa-user"></i> Utilisateurs</a></li>
+                                <li><a href="/admin/showroom"><i class="fa fa-industry"></i> Showroom</a></li>
                                 
                                 <?php if ($u->mCompta == 1): ?>
-                                    <li><a href="/admin/showroom-objectif.php?genre=0"><i class="fa fa-industry"></i> Showroom objectif Femme</a></li>
-                                    <li><a href="/admin/showroom-objectif.php?genre=1"><i class="fa fa-industry"></i> Showroom objectif Homme</a></li>
+                                    <li><a href="/admin/showroom-objectif?genre=0"><i class="fa fa-industry"></i> Showroom objectif Femme</a></li>
+                                    <li><a href="/admin/showroom-objectif?genre=1"><i class="fa fa-industry"></i> Showroom objectif Homme</a></li>
                                 <?php endif; ?>
                             </ul>
                         </li>

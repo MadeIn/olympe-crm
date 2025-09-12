@@ -28,7 +28,7 @@ foreach ($cc as $rcc) {
 	$montant_ht_robe = 0;
 	$sql = "select * from commandes_produits c, md_produits p where c.produit_num=p.produit_num and categorie_num=11 and c.id='" . $rcc["id"] . "'";
 	$co = $base->query($sql);
-	while ($rco = mysql_fetch_array($co)) {
+	foreach ($co as $rco) {
 		$montant_ht_robe += $rco["montant_ht"];
 	}
 	
@@ -36,7 +36,7 @@ foreach ($cc as $rcc) {
 	$montant_ht_acc = 0;
 	$sql = "select * from commandes_produits c, md_produits p where c.produit_num=p.produit_num and categorie_num<>11 and c.id='" . $rcc["id"] . "'";
 	$co = $base->query($sql);
-	while ($rco = mysql_fetch_array($co)) {
+	foreach ($co as $rco) {
 		$montant_ht_acc += $rco["montant_ht"];
 	}
 	$param .= format_date($rcc["facture_date"],6,1) . ";" . $rcc["facture_num"] . ";" . $rcc["client_nom"] . " " . $rcc["client_prenom"] . ";" . $genre . ";" . $montant_ttc . ";" . number_format($montant_ht_robe,2,".","") . ";" . number_format($montant_ht_acc,2,".","") . ";" . number_format($montant_ht,2,".","") . "\n";

@@ -1,4 +1,4 @@
-<?php include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_invite.php"); ?>
+<?php include( $_SERVER['DOCUMENT_ROOT'] . "/param_invite.php"); ?>
 <html>
 <head>
 <title></title>
@@ -18,7 +18,7 @@
 	$sql = "select * from commandes c, clients cl, paiements p  where c.paiement_num=p.paiement_num and c.client_num=cl.client_num and facture_date>='" . $date_deb . "' and facture_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' and commande_num!=0 and facture_num!=0 order by facture_date DESC";
 	$tt = $base->query($sql);
 	
-	while ($rtt=mysql_fetch_array($tt)) {
+	foreach ($tt as $rtt) {
 	
 		$sql = "select * from commandes co, paiements p, showrooms sh, users u, clients c where co.paiement_num=p.paiement_num and co.client_num=c.client_num and co.showroom_num=sh.showroom_num and co.user_num=u.user_num and id='" . $rtt["id"] . "'";
 		$cc = $base->query($sql);
@@ -76,7 +76,7 @@
 			<?php 																
 				$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . $rtt["id"] . "'";
 				$pp = $base->query($sql);
-				while ($rpp=mysql_fetch_array($pp)) {
+				foreach ($pp as $rpp) {
 					//$prix_total_ttc = RecupPrixInit($rpp["produit_num"])*$rpp["qte"];
 					$prix_total_ttc = $rpp["montant_ttc"]*$rpp["qte"];
 					switch ($rpp["commande_produit_remise_type"]) {
@@ -155,7 +155,7 @@
 					echo '<table class="table table-bordered pull-right">';
 					$sql = "select * from commandes_paiements where id='" . decrypte($facture) . "' order by paiement_num ASC";
 					$pp = $base->query($sql);
-					while ($rpp=mysql_fetch_array($pp)) {
+					foreach ($pp as $rpp) {
 						echo '<tr>
 								<td><strong>Acompte ' . $rpp["paiement_num"] . ' versé</td>
 								<td>' . number_format($rpp["paiement_montant"],2,"."," ") . '&euro;</td>

@@ -9,14 +9,12 @@ if (isset($action)) {
 		case "add" :
 			// On insere le showroom
 			$sql = "insert into users values(0,'" . $nom . "','" . $prenom . "','" . $mail . "','" . $mdp . "','" . $mail_mdp . "','" . $tel . "','','" . Date("Y-m-d H:i:s") . "','0000-00-00 00:00:00','" . $groupe . "','" . $showroom . "','" . $acces . "','" . $etat . "')";
-			$base->query($sql);	
-			$num = mysql_insert_id();
+			$num = $base->insert($sql);	
 			$num = crypte($num);
 		break;
 		
 		case "update" :
 			$sql = "update users set user_nom='" . $nom . "',user_prenom='" . $prenom . "',user_email='" . $mail . "',user_mdp='" . $mdp . "',user_email_mdp='" . $mail_mdp . "',user_tel='" . $tel . "',groupe_num='" . $groupe . "',showroom_num='" . $showroom . "',user_etat='" . $etat . "', acces_compta='" . $acces . "' where user_num='" . decrypte($num) . "'";
-			echo $sql;
 			$base->query($sql);	
 		break;
 	}
@@ -94,8 +92,8 @@ function confirme() {
 										<?php } else { 
 											
 											$sql = "select * from users where user_num='" . decrypte($edit) . "'";
-											$tt = $base->query($sql);
-											if ($rtt=mysql_fetch_array($tt)) {
+											$rtt = $base->queryRow($sql);
+ 											if ($rtt) {
 												$num 	= $rtt["user_num"];
 												$nom 	= $rtt["user_nom"];
 												$prenom = $rtt["user_prenom"];
@@ -187,7 +185,7 @@ function confirme() {
 													<?
 														$sql = "select * from showrooms";
 														$ss = $base->query($sql);
-														while ($rss = mysql_fetch_array($ss)) {
+														foreach ($ss as $rss) {
 															echo '<option value="' . $rss["showroom_num"] . '"';
 															if ($rss["showroom_num"]==$showroom) {
 																echo " SELECTED";

@@ -38,15 +38,15 @@
 	// ON recupere le reste à payer
 	$paiement = 0;
 	$sql = "select * from commandes_fournisseurs_paiements where id='" . $id . "' and produit_num='" . $produit . "'";
-	$tt = $base->query($sql);
-	if ($rtt=mysql_fetch_array($tt)) {
+	$rtt = $base->queryRow($sql);
+ if ($rtt) {
 		$paiement = $rtt["paiement1"] + $rtt["paiement2"] + $rtt["paiement3"];
 	}
 	
 	$reste = 0;
 	$sql = "select * from commandes_fournisseurs where id='" . $id . "' and produit_num='" . $produit . "'";
-	$tt = $base->query($sql);
-	if ($rtt=mysql_fetch_array($tt)) {
+	$rtt = $base->queryRow($sql);
+ if ($rtt) {
 		$reste = $rtt["commande_montant"] - $paiement;
 	}
 	

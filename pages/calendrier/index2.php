@@ -15,8 +15,8 @@ if (isset($ajouter)) {
 			$client_num = $client_search[0];
 			// On recherche le client 
 			$sql = "select * from clients where client_num='" . $client_num . "'";
-			$cl = $base->query($sql);
-			if ($rcl = mysql_fetch_array($cl)) {
+			$rcl = $base->queryRow($sql);
+ if ($rcl) {
 				if ($rcl["client_genre"]==0)
 					$genre = "Mme";
 				else
@@ -26,8 +26,8 @@ if (isset($ajouter)) {
 				
 				// On regarde si on a pas déjà un rendez vous 
 				$sql = "select * from rendez_vous where client_num='" . $client_num . "' and type_num='" . $type . "'";
-				$tt = $base->query($sql);
-				if ($rtt=mysql_fetch_array($tt)) {
+				$rtt = $base->queryRow($sql);
+ if ($rtt) {
 					$sql = "delete from rendez_vous where rdv_num='" . $rtt["rdv_num"] . "'";
 					$base->query($sql);
 						
@@ -38,10 +38,8 @@ if (isset($ajouter)) {
 				// On insere un Rendez vous
 				$date_rdv = $date_debut;
 				$sql = "insert into rendez_vous values(0,'" . $client_num . "','" . $type . "','" . $date_rdv . "','',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00','" . $u->mNum . "')";
-				$base->query($sql);
-				
-				$num = mysql_insert_id();
-				
+				$num = $base->insert($sql);
+		
 				// On ajoute dans le calendrier du user
 				switch ($type) {
 					case 1: // 1er RDV
@@ -220,10 +218,10 @@ if (isset($ajouter)) {
 						if ($dernier_acompte>0) {
 							$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num='" . $rcl["showroom_num"] . "' order by mode_ordre ASC";
 							$pa = $base->query($sql);
-							$nbr_paiement = mysql_num_rows($pa);
+							$nbr_paiement = count($pa);
 							$moyen_paiement = "";
 							$nbr_mode = 0;
-							while ($rpa=mysql_fetch_array($pa)) {
+							foreach ($pa as $rpa) {
 								$moyen_paiement .= $rpa["mode_nom"];
 								$nbr_mode++;
 								if ($nbr_mode<$nbr_paiement) {
@@ -259,7 +257,7 @@ if (isset($ajout_client)) {
 	// On test si le client n'exite pas
 	$sql = "select * from clients where client_mail='" . $mail . "'";
 	$tt = $base->query($sql);
-	$nbr = mysql_num_rows($tt);
+	$nbr = count($tt);
 	if ($nbr==0) {
 		$sql = "insert into clients values (0,'" . $genre . "','" . $nom . "','" . $prenom . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $tel . "','" . $mail . "','" . $date . "','" . $lieu . "','','','" . $u->mShowroom . "','" . $u->mNum . "','" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "','','','','','','','','',0)";
 		$base->query($sql);
@@ -424,7 +422,7 @@ function changeHeureFin() {
 																		<?
 																			$sql = "select * from calendriers_themes order by theme_pos ASC";
 																			$tt = $base->query($sql);
-																			while ($rtt=mysql_fetch_array($tt)) {
+																			foreach ($tt as $rtt) {
 																				echo '<option value="' . $rtt["theme_num"] . '"';
 																				if ($rtt["theme_num"]==1)
 																					echo " SELECTED";
@@ -445,7 +443,7 @@ function changeHeureFin() {
 																			<?
 																				$sql = "select * from rdv_types where type_num NOT IN (2,3) order by type_pos ASC";
 																				$tt = $base->query($sql);
-																				while ($rtt=mysql_fetch_array($tt)) {
+																				foreach ($tt as $rtt) {
 																					echo '<option value="' . $rtt["type_num"] . '"';
 																					if ($rtt["type_num"]==1)
 																						echo " SELECTED";
@@ -717,16 +715,16 @@ function changeHeureFin() {
 						$couleur = $rcc["theme_couleur"];
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
-							$rr = $base->query($sql);
-							if ($rrr=mysql_fetch_array($rr)) {
+							$rrr = $base->queryRow($sql);
+if ($rrr) {
 								$couleur = $rrr["type_couleur"];								
 							}
 						}
 						$link = "";
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-							$cl = $base->query($sql);
-							if ($rcl=mysql_fetch_array($cl)) {
+							$rcl = $base->queryRow($sql);
+ if ($rcl) {
 								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
 							}
 						}
@@ -781,16 +779,16 @@ function changeHeureFin() {
 						$couleur = $rcc["theme_couleur"];
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
-							$rr = $base->query($sql);
-							if ($rrr=mysql_fetch_array($rr)) {
+							$rrr = $base->queryRow($sql);
+if ($rrr) {
 								$couleur = $rrr["type_couleur"];								
 							}
 						}
 						$link = "";
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-							$cl = $base->query($sql);
-							if ($rcl=mysql_fetch_array($cl)) {
+							$rcl = $base->queryRow($sql);
+ if ($rcl) {
 								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
 							}
 						}
@@ -901,9 +899,9 @@ function changeHeureFin() {
 			var availableTagsClient = [';
 			$sql = "select * from clients where showroom_num='" . $u->mShowroom . "' and client_nom not like'%?%' and client_prenom not like '%?%' order by client_nom ASC, client_prenom ASC";
 			$jj = $base->query($sql);
-			$nbr = mysql_num_rows($jj);
+			$nbr = count($jj);
 			$i=0;
-			while ($rjj=mysql_fetch_array($jj)) {
+			foreach ($jj as $rjj) {
 				$client_nom = trim($rjj["client_nom"]);
 				$client_prenom = trim($rjj["client_prenom"]);
 				$client_affiche = $client_nom . " " . $client_prenom;

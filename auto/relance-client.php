@@ -17,12 +17,12 @@
 		// On test si la cliente n'a pas un 2e RDV prévu plus tard
 		$sql = "select * from rendez_vous where client_num='" . $rcc["client_num"] . "' and type_num=6 and rdv_date>='" . Date("Y-m-d") . " 00:00:00'";
 		$rr = $base->query($sql);
-		$nbr_rdv = mysql_num_rows($rr);
+		$nbr_rdv = count($rr);
 		if ($nbr_rdv==0) {
 			// On test si la cliente n'a pas commandé 
 			$sql = "select * from commandes where commande_num!=0 and client_num='" . $rcc["client_num"] . "'";
 			$tt = $base->query($sql);
-			$nbr_commande = mysql_num_rows($tt);
+			$nbr_commande = count($tt);
 			if ($nbr_commande==0) {
 				// On envoi le mail selon le type de RDV
 				$titre_mail = $mail_type[12][$rcc["client_genre"]]["titre"];

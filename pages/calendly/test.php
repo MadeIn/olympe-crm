@@ -152,11 +152,10 @@ switch ($data["event"]) {
         // On test si le client n'exite pas
         $sql = "select * from clients where client_mail='" . $mail . "'";
         $tt = $base->query($sql);
-        $nbr = mysql_num_rows($tt);
+        $nbr = count($tt);
         if ($nbr==0) {
             $sql = "insert into clients values (0,0,'" . $user["nom"] . "','" . $user["prenom"] . "','','','" . $urser["cp"] . "','','" . $user["tel"] . "','" . $user["email"] . "','" . $user["date-mariage"] . "','','','','3','" . $user_num . "','" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "','','','','','','','','','','','','',0,0)";
-            $base->query($sql);
-            $client_num = mysql_insert_id();
+            $client_num = $base->insert($sql);
         } else {
            if ($rtt = mysql_fetch_array($tt)) {
                 $client_num = $rtt["client_num"];
@@ -168,8 +167,8 @@ switch ($data["event"]) {
 
         // On recherche le client 
         $sql = "select * from clients where client_num='" . $client_num . "'";
-        $cl = $base->query($sql);
-        if ($rcl = mysql_fetch_array($cl)) {
+        $rcl = $base->queryRow($sql);
+ if ($rcl) {
             if ($rcl["client_genre"]==0)
                 $genre = "Mme";
             else
@@ -179,8 +178,8 @@ switch ($data["event"]) {
             
             // On regarde si on a pas déjà un rendez vous 
             $sql = "select * from rendez_vous where client_num='" . $client_num . "' and type_num='" . $type . "'";
-            $tt = $base->query($sql);
-            if ($rtt=mysql_fetch_array($tt)) {
+            $rtt = $base->queryRow($sql);
+ if ($rtt) {
                 $sql = "delete from rendez_vous where rdv_num='" . $rtt["rdv_num"] . "'";
                 $base->query($sql);
                     
@@ -191,9 +190,8 @@ switch ($data["event"]) {
             // On insere un Rendez vous
             $date_rdv = $date_debut;
             $sql = "insert into rendez_vous values(0,'" . $client_num . "','" . $type . "','" . $date_rdv . "','',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00','" . $user_num . "')";
-            $base->query($sql);
-            $num = mysql_insert_id();
-            
+            $num = $base->insert($sql);
+                       
             // On ajoute dans le calendrier du user
             switch ($type) {
                 case 1: // 1er RDV

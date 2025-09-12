@@ -74,16 +74,16 @@ if ($rss=mysql_fetch_array($ss)) {
 						$couleur = $rcc["theme_couleur"];
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
-							$rr = $base->query($sql);
-							if ($rrr=mysql_fetch_array($rr)) {
+							$rrr = $base->queryRow($sql);
+if ($rrr) {
 								$couleur = $rrr["type_couleur"];								
 							}
 						}
 						$link = "";
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-							$cl = $base->query($sql);
-							if ($rcl=mysql_fetch_array($cl)) {
+							$rcl = $base->queryRow($sql);
+ if ($rcl) {
 								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
 							}
 						}

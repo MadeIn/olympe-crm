@@ -17,10 +17,10 @@ if (isset($decalle)) {
 		
 	// On decalle 
 	$sql = "update md_" . $nom_table . "_photos set photo_pos='" . $pos . "' where photo_pos=" . $new_pos . " and " . $nom_champ ."_num='" . $modif_num . "'";
-	$base->query($sql);
+	$db->query($sql);
 	
 	$sql = "update md_" . $nom_table . "_photos set photo_pos='" . $new_pos . "' where photo_num=" . $photo_pos;
-	$base->query($sql);
+	$db->query($sql);
 }
 
 if (isset($modif)) {
@@ -30,7 +30,7 @@ if (isset($modif)) {
 	
 	$sql = "update md_" . $nom_table . " set " . $nom_champ . "_etat='" . $etat . "'," . $nom_champ . "_ref='" . $ref . "'," . $nom_champ . "_nom='" . $nom . "',  " . $nom_champ . "_desc='" . $desc . "',categorie_num='" . $categorie . "', marque_num='" . $marque . "'";
 	$sql .= " where " . $nom_champ . "_num=" . decrypte($val_num);
-	$base->query($sql);
+	$db->query($sql);
 
 	$img_nom = xtTraiter($nom);
 		 
@@ -38,7 +38,7 @@ if (isset($modif)) {
 		$remise=0;
 	
 	$sql = "select * from md_produits where produit_num='" . decrypte($val_num) . "'";
-	$pp = $base->query($sql);
+	$pp = $db->query($sql);
 	if ($rpp = mysql_fetch_array($pp)) {
 		$pp_num = $rpp["prix_num"];
 		$pa_num = $rpp["prixachat_num"];
@@ -51,14 +51,14 @@ if (isset($modif)) {
 	if ($pp_num!=0) {
 		// On efface le prix pour le remettre
 		$sql = "delete from prix where prix_num='" . $pp_num . "'";
-		$base->query($sql);
+		$db->query($sql);
 	}
 	$prix = str_replace(",",".",$prix);
 	$sql = "insert into prix values(0,'','" . $prix . "','','','','" . Date("Y-m-d H:i:s") . "')";
-	$base->query($sql);
+	$db->query($sql);
 	
 	$sql = "select max(prix_num) val from prix";
-	$test = $base->query($sql);
+	$test = $db->query($sql);
 	if ($rt = mysql_fetch_array($test))
 		$prix_num = $rt["val"];
 	
@@ -67,21 +67,21 @@ if (isset($modif)) {
 	if ($pa_num!=0)	{
 		// On efface le prix pour le remettre
 		$sql = "delete from prixachats where prixachat_num='" . $pa_num . "'";
-		$base->query($sql);
+		$db->query($sql);
 	}
 	if ($prixachat=="")
 		$prixachat=0;
 	$prixachat = str_replace(",",".",$prixachat);
 	$sql = "insert into prixachats values(0,'" . $prixachat . "','" . Date("Y-m-d H:i:s") . "')";
-	$base->query($sql);
+	$db->query($sql);
 	
 	$sql = "select max(prixachat_num) val from prixachats";
-	$test = $base->query($sql);
+	$test = $db->query($sql);
 	if ($rt = mysql_fetch_array($test))
 		$prixachat_num = $rt["val"];
 			
 	$sql = "update md_produits set prix_num='" . $prix_num . "', prixachat_num='" . $prixachat_num . "', produit_poids='" . intval($poids) . "', tva_num='" . $tva . "', produit_montant_remise='" . $remise . "', produit_remise_type='" . $remise_type . "'  where produit_num='" . decrypte($val_num) . "'";
-	$base->query($sql);
+	$db->query($sql);
 	
 	$modif_num = $val_num;
 }
@@ -92,10 +92,10 @@ if (isset($ajout)) {
 	
 	$sql = "insert into md_" . $nom_table . " values (0,'" . $ref . "','" . $nom . "','" . $desc . "','','" . Date("Y-m-d H:i:s") . "','" . $categorie . "','" . $marque . "','" . $etat . "',0,0,0,'',0,0)";
 	echo $sql;
-	$base->query($sql);
+	$db->query($sql);
 	// On recupere le num categ
 	$sql = "select max(" . $nom_champ . "_num) val from md_" . $nom_table;
-	$test = $base->query($sql);
+	$test = $db->query($sql);
 	if ($rt = mysql_fetch_array($test))
 		$num = $rt["val"];
 		
@@ -110,10 +110,10 @@ if (isset($ajout)) {
 		
 	$prix = str_replace(",",".",$prix);
 	$sql = "insert into prix values(0,'','" . $prix . "','','','','" . Date("Y-m-d H:i:s") . "')";
-	$base->query($sql);
+	$db->query($sql);
 	
 	$sql = "select max(prix_num) val from prix";
-	$test = $base->query($sql);
+	$test = $db->query($sql);
 	if ($rt = mysql_fetch_array($test))
 		$prix_num = $rt["val"];
 		
@@ -122,15 +122,15 @@ if (isset($ajout)) {
 		$prixachat=0;
 	$prixachat = str_replace(",",".",$prixachat);
 	$sql = "insert into prixachats values(0,'" . $prixachat . "','" . Date("Y-m-d H:i:s") . "')";
-	$base->query($sql);
+	$db->query($sql);
 	
 	$sql = "select max(prixachat_num) val from prixachats";
-	$test = $base->query($sql);
+	$test = $db->query($sql);
 	if ($rt = mysql_fetch_array($test))
 		$prixachat_num = $rt["val"];
 			
 	$sql = "update md_produits set prix_num='" . $prix_num . "', prixachat_num='" . $prixachat_num . "', produit_poids='" . intval($poids) . "', tva_num='" . $tva_num . "', produit_montant_remise='" . $remise . "', produit_remise_type='" . $remise_type . "'  where produit_num='" . $num . "'";
-	$base->query($sql);
+	$db->query($sql);
 	
 	// On ajoute les photos
 	$nbr_upload = 3;
@@ -144,7 +144,7 @@ if (isset($ajout)) {
 		$nom_image = uploadPhotoPdt($_FILES[$file_upload],$nom_photo,$nom_table,"1200","800","400");
 		if ($nom_image!="")	{
 			$sql = "insert into md_" . $nom_table . "_photos values(0,'" . $num . "','" . $nom_image . "','" . $legende . "','" . $i . "')";
-			$base->query($sql);
+			$db->query($sql);
 		}
 	}	
 	$modif_num = crypte($num);
@@ -177,7 +177,7 @@ if (isset($add_photo)) {
 			$leg = "leg_" . $i;
 			$legende = $_POST[$leg];
 			$sql = "insert into md_" . $nom_table . "_photos values(0,'" . decrypte($modif_num) . "','" . $nom_image . "','" . $legende . "','" . $pos . "')";
-			$base->query($sql);
+			$db->query($sql);
 		}
 		$pos++;
 	}
@@ -185,10 +185,10 @@ if (isset($add_photo)) {
 
 if (isset($suppr)) {
 	$sql = "delete from md_" . $nom_table . " where " . $nom_champ . "_num=" . decrypte($suppr);
-	$base->query($sql);
+	$db->query($sql);
 	
 	$sql = "delete from md_stocks where " . $nom_champ . "_num=" . $suppr;
-	$base->query($sql);
+	$db->query($sql);
 	
 	// On efface les photos
 	$sql = "select * from md_" . $nom_table . "_photos where " . $nom_champ . "_num='" .decrypte($suppr) . "'";
@@ -202,7 +202,7 @@ if (isset($suppr)) {
 		unlink($chemin_photo);
 	}
 	$sql = "delete from md_" . $nom_table . "_photos where " . $nom_champ . "_num=" . decrypte($suppr);
-	$base->query($sql);
+	$db->query($sql);
 }
 
 echo "[" . $modif_stock . "][" . $taille_num . "]";
@@ -210,14 +210,14 @@ if (isset($modif_stock)) {
 	// On efface les anciens stocks pour les reinserer
 	$sql = "delete from stocks where produit_num=" . decrypte($modif_num) . " and taille_num=" . $taille_num . " and showroom_num='" . $u->mShowroom . "'";
 	echo $sql;
-	$base->query($sql);
+	$db->query($sql);
 	
 	if (($st_virtuel!="") && ($st_reel!="")) {
 		if (($st_virtuel>0) && ($st_reel>0))
 			$date_reappro = "0000-00-00";
 		$sql = "insert into stocks values('" . decrypte($modif_num) . "','" . $taille_num . "','" . $st_virtuel . "','" . $st_reel . "','10','" . $date_reappro . "','" . $u->mShowroom . "')";
 		$sql_stock = $sql;
-		$base->query($sql);
+		$db->query($sql);
 	}
 }
 
@@ -234,7 +234,7 @@ if (isset($suppr_photo)) {
 	
 	// On efface dans la base
 	$sql = "delete from md_" . $nom_table . "_photos where photo_num='" . decrypte($suppr_photo) . "'";
-	$base->query($sql);
+	$db->query($sql);
 	
 	// On remet les photos dans l'ordre
 	$sql = "select * from md_" . $nom_table . "_photos where " . $nom_champ . "_num='" . decrypte($modif_num) . "' order by photo_pos ASC";
@@ -243,7 +243,7 @@ if (isset($suppr_photo)) {
 	if ($cc["nbr"]>0) {
 		foreach ($cc["result"] as $res) {
 			$sql = "update md_" . $nom_table . "_photos set photo_pos='" . $pos . "' where photo_num='" . $res["photo_num"] . "'";
-			$base->query($sql);
+			$db->query($sql);
 			$pos++;
 		}
 	}
@@ -339,8 +339,8 @@ function confirme() {
 														<option value="0">-----------------</option>
 													<?
 														$sql = "select * from categories order by categorie_nom ASC";
-														$cc = $base->query($sql);
-														while ($rcc=mysql_fetch_array($cc))	{
+														$cc = $db->query($sql);
+														foreach ($cc as $rcc)	{
 															echo "<option value=\"" . $rcc["categorie_num"] . "\">" . $rcc["categorie_nom"] . "</option>\n";
 														}
 													?>
@@ -355,8 +355,8 @@ function confirme() {
 														<option value="0">-----------------</option>
 													<?
 														$sql = "select * from marques order by marque_nom ASC";
-														$cc = $base->query($sql);
-														while ($rcc=mysql_fetch_array($cc))	{
+														$cc = $db->query($sql);
+														foreach ($cc as $rcc)	{
 															echo "<option value=\"" . $rcc["marque_num"] . "\">" . $rcc["marque_nom"] . "</option>\n";
 														}
 													?>
@@ -391,8 +391,8 @@ function confirme() {
 													<select name="tva">
 													<?php 
 														$sql = "select * from tva";
-														$tt = $base->query($sql);
-														while ($rtt=mysql_fetch_array($tt))
+														$tt = $db->query($sql);
+														foreach ($tt as $rtt)
 														{
 															echo '<option value="' . $rtt["tva_num"] . '"';
 															if ($rtt["tva_num"]==$tva)
@@ -436,7 +436,7 @@ function confirme() {
 										 <tbody>
 										<?php 
 											 $sql = "select * from md_" . $nom_table . " d where d." . $nom_champ . "_num=" . decrypte($modif_num);
-											$cc = $base->query($sql);
+											$cc = $db->query($sql);
 											$i=0;
 											if ($rcc=mysql_fetch_array($cc)) {
 												$etat = $rcc[$nom_champ . "_etat"];
@@ -452,14 +452,14 @@ function confirme() {
 												$remise_type = $rcc["produit_remise_type"];
 												
 												$sql = "select * from prix where prix_num='" . $rcc["prix_num"] . "'";
-												$pp = $base->query($sql);
+												$pp = $db->query($sql);
 												if ($rpp = mysql_fetch_array($pp))
 													$prix = $rpp["prix_montant_ht"];
 												else
 													$prix = 0;
 													
 												$sql = "select * from prixachats where prixachat_num='" . $rcc["prixachat_num"] . "'";
-												$pp = $base->query($sql);
+												$pp = $db->query($sql);
 												if ($rpp = mysql_fetch_array($pp))
 													$prixachat = $rpp["prixachat_montant"];
 												else
@@ -494,8 +494,8 @@ function confirme() {
 														<option value="0">-----------------</option>
 													<?
 														$sql = "select * from categories order by categorie_nom ASC";
-														$cm = $base->query($sql);
-														while ($rcm=mysql_fetch_array($cm))	{
+														$cm = $db->query($sql);
+														foreach ($cm as $rcm)	{
 															echo "<option value=\"" . $rcm["categorie_num"] . "\"";
 															if ($rcm["categorie_num"]==$categorie_num)
 																echo " SELECTED";
@@ -513,8 +513,8 @@ function confirme() {
 														<option value="0">-----------------</option>
 													<?
 														$sql = "select * from marques order by marque_nom ASC";
-														$cm = $base->query($sql);
-														while ($rcm=mysql_fetch_array($cm))	{
+														$cm = $db->query($sql);
+														foreach ($cm as $rcm)	{
 															echo "<option value=\"" . $rcm["marque_num"] . "\"";
 															if ($rcm["marque_num"]==$marque_num)
 																echo " SELECTED";
@@ -552,8 +552,8 @@ function confirme() {
 													<select name="tva">
 													<?php 
 														$sql = "select * from tva";
-														$tt = $base->query($sql);
-														while ($rtt=mysql_fetch_array($tt))	{
+														$tt = $db->query($sql);
+														foreach ($tt as $rtt)	{
 															echo '<option value="' . $rtt["tva_num"] . '"';
 															if ($rtt["tva_num"]==$tva)
 																echo " SELECTED";
@@ -731,10 +731,10 @@ function confirme() {
 										<tbody>
 										<?
 											$sql = "select * from tailles t, categories_tailles c where t.taille_num=c.taille_num and c.categorie_num=" . $categorie_num;
-											$ss = $base->query($sql);
-											while ($st = mysql_fetch_array($ss)) {
+											$ss = $db->query($sql);
+											foreach ($ss as $st) {
 												$sql = "select * from stocks where taille_num=" . $st["taille_num"] . " and produit_num=" . decrypte($modif_num) . " and showroom_num='" . $u->mShowroom . "'";
-												$cc = $base->query($sql);
+												$cc = $db->query($sql);
 												if ($rcc=mysql_fetch_array($cc)) {
 													$stock_virtuel = $rcc["stock_virtuel"];
 													$stock_reel = $rcc["stock_reel"];

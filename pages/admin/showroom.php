@@ -2,9 +2,6 @@
 $titre_page = "Gestion des Showrooms - Olympe Mariage";
 $desc_page = "Gestion des Showrooms - Olympe Mariage";
 
-
-
-
 if (isset($action)) {
 	
 	switch ($action) {
@@ -12,8 +9,7 @@ if (isset($action)) {
 		case "add" :
 			// On insere le showroom
 			$sql = "insert into showrooms values(0,'" . $nom . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $acces . "','" . $tel . "','" . $mail . "','" . $rcs . "','" . $raison . "','" . $siret . "','" . $tva . "','" . $ca_annee . "','" . $ca_janvier . "','" . $ca_fevrier . "','" . $ca_mars . "','" . $ca_avril . "','" . $ca_mai . "','" . $ca_juin . "','" . $ca_juillet . "','" . $ca_aout . "','" . $ca_septembre . "','" . $ca_octobre . "','" . $ca_novembre . "','" . $ca_decembre . "','" . $nbr_annee . "','" . $nbr_janvier . "','" . $nbr_fevrier . "','" . $nbr_mars . "','" . $nbr_avril . "','" . $nbr_mai . "','" . $nbr_juin . "','" . $nbr_juillet . "','" . $nbr_aout . "','" . $nbr_septembre . "','" . $nbr_octobre . "','" . $nbr_novembre . "','" . $nbr_decembre . "','" . $banque_nom . "','" . $banque_code_etablissement . "','" . $banque_code_guichet . "','" . $banque_compte . "','" . $banque_cle_rib . "','" . $banque_swift . "','" . $banque_iban . "')";
-			$base->query($sql);
-			$num = mysql_insert_id();
+			$num = $base->insert($sql);
 			$num = crypte($num);
 		break;
 		
@@ -30,7 +26,7 @@ if (isset($action)) {
 	// ON insere les moyens de paiements
 	foreach ($mode as $val) {
 		$sql = "insert into showrooms_paiements values('" . intval(decrypte($num)) . "','" . $val . "')";
-		$base->query($sql);
+		$base->insert($sql);
 	}
 	
 	
@@ -121,8 +117,8 @@ function confirme() {
 										<?php } else { 
 											
 											$sql = "select * from showrooms where showroom_num='" . decrypte($edit) . "'";
-											$tt = $base->query($sql);
-											if ($rtt=mysql_fetch_array($tt)) {
+											$rtt = $base->queryRow($sql);
+ if ($rtt) {
 												$num = $rtt["showroom_num"];
 												$nom = $rtt["showroom_nom"];
 												$adr1 = $rtt["showroom_adr1"];
@@ -326,11 +322,11 @@ function confirme() {
 													<?php 
 														$sql = "select * from paiements_modes order by mode_ordre ASC";
 														$pp = $base->query($sql);
-														while ($rpp=mysql_fetch_array($pp)) {
+														foreach ($pp as $rpp) {
 															$checked = "";
 															$sql = "select * from showrooms_paiements where showroom_num='" . intval(decrypte($edit)) . "' and mode_num='" . $rpp["mode_num"] . "'";
-															$tt = $base->query($sql);
-															if ($rtt=mysql_fetch_array($tt)) {
+															$rtt = $base->queryRow($sql);
+ if ($rtt) {
 																$checked = " CHECKED";
 															}
 															echo '<li><input type="checkbox" name="mode[]" value="' . $rpp["mode_num"] . '"' . $checked . '> ' . $rpp["mode_nom"] . '</li>';

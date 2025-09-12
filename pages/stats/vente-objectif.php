@@ -107,7 +107,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
-															while ($rtt=mysql_fetch_array($tt)) {
+															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
 																echo '>' . $rtt["showroom_nom"] . '</option>';

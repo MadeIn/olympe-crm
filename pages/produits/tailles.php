@@ -47,7 +47,7 @@ if (isset($suppr))
 
 $sql = "select * from " . $nom_table . " order by " . $nom_champ . "_pos ASC";
 $cdr = $base->query($sql);
-$nbr_ligne = mysql_num_rows($cdr);
+$nbr_ligne = count($cdr);
 
 ?>
 
@@ -165,7 +165,7 @@ function confirme() {
 										  <tbody>
 											<?
 												$i=0;
-												while ($row=mysql_fetch_array($cdr)) {
+												foreach ($cdr as $row) {
 											?>
 											<tr>
 												<td class="highlight">

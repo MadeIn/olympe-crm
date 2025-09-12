@@ -213,7 +213,7 @@ function changeEtat(id,produit,val,paiement) {
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
-															while ($rtt=mysql_fetch_array($tt)) {
+															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
 																echo '>' . $rtt["showroom_nom"] . '</option>';
@@ -276,7 +276,7 @@ function changeEtat(id,produit,val,paiement) {
 											  $paiement_total2 = 0;
 											  $reste_total2 = 0;
 											  $reste_total = 0;
-											  while ($row=mysql_fetch_array($re)) {
+											  foreach ($re as $row) {
 												$nbr++;
 												$paiement = 0;
 												$reste = 0;
@@ -331,8 +331,8 @@ function changeEtat(id,produit,val,paiement) {
 												 $date_reception = "N.R.";
 												 // On regarde la date de reception de la robe
 												 $sql = "select * from rendez_vous where type_num=2 and client_num='" . $row["client_num"] . "'";
-												 $rr = $base->query($sql);
-												 if ($rrr=mysql_fetch_array($rr)) {
+												 $rrr = $base->queryRow($sql);
+if ($rrr) {
 													$date_reception = format_date($rrr["rdv_date"],11,1);
 												 }
 												 

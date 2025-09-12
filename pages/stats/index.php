@@ -125,7 +125,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
-															while ($rtt=mysql_fetch_array($tt)) {
+															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
 																echo '>' . $rtt["showroom_nom"] . '</option>';
@@ -178,7 +178,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $re = $base->query($sql);
 												  $nbr_total = 0;
 												  $montant = 0;
-												  while ($row=mysql_fetch_array($re))
+												  foreach ($re as $row)
 												  {
 													 $nbr++;
 													 $nbr_total += $row["val"];
@@ -254,7 +254,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $re = $base->query($sql);
 												  $nbr_total = 0;
 												  $montant = 0;
-												  while ($row=mysql_fetch_array($re))
+												  foreach ($re as $row)
 												  {
 													 $nbr++;
 													 $nbr_total += $row["val"];
@@ -315,7 +315,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  $re = $base->query($sql);
 											    $nbr_total = 0;
 												  $montant = 0;			  
-											  while ($row=mysql_fetch_array($re))
+											  foreach ($re as $row)
 											  {
 												 $nbr++;
 												  $nbr_total += $row["val"];
@@ -378,7 +378,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  $re = $base->query($sql);
 											   $nbr_total = 0;
 												  $montant = 0;			  
-											  while ($row=mysql_fetch_array($re))
+											  foreach ($re as $row)
 											  {
 												 $nbr++;
 												 $nbr_total += $row["qte"];
@@ -441,7 +441,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  $re = $base->query($sql);
 											  $nbr_total = 0;
 												  $montant = 0;				  
-											  while ($row=mysql_fetch_array($re))
+											  foreach ($re as $row)
 											  {
 												 $nbr++;
 												  $nbr_total += $row["val"];
@@ -498,7 +498,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  $re = $base->query($sql);
 												$nbr_total = 0;
 												  $montant = 0;				  
-											  while ($row=mysql_fetch_array($re))
+											  foreach ($re as $row)
 											  {
 												 $nbr++;
 												   $nbr_total += $row["val"];
@@ -545,7 +545,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											  $sql .= " group by client_ville order by val DESC";
 											  $re = $base->query($sql);
 											  $nbr_total = 0;
-											  while ($row=mysql_fetch_array($re))
+											  foreach ($re as $row)
 											  {
 												 $nbr++;
 											?>
@@ -573,9 +573,9 @@ $desc_page = "Statistiques - Olympe Mariage";
 				
 					$sql = "select * from md_produits order by produit_nom ASC";
 					$jj = $base->query($sql);
-					$nbr = mysql_num_rows($jj);
+					$nbr = count($jj);
 					$i=0;
-					while ($rjj=mysql_fetch_array($jj)) {
+					foreach ($jj as $rjj) {
 						$produit_nom = trim($rjj["produit_nom"]);
 						$link_script .= "\"" . $produit_nom . " [" . $rjj["produit_num"] . "]\"";
 						$i++;

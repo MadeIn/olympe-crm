@@ -95,7 +95,7 @@ function confirme() {
 											<?
 												$sql = "select * from calendriers_themes order by theme_pos ASC";
 												$tt = $base->query($sql);
-												while ($rtt=mysql_fetch_array($tt)) {
+												foreach ($tt as $rtt) {
 													echo '<option value="' . $rtt["theme_num"] . '"';
 													if ($rtt["theme_num"]==$type)
 														echo " SELECTED";
@@ -181,8 +181,8 @@ function confirme() {
 									echo '<td><nobr>';
 									if ($rcc["client_num"]!=0) {
 										$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
-										$cl = $base->query($sql);
-										if ($rcl=mysql_fetch_array($cl)) {
+										$rcl = $base->queryRow($sql);
+ if ($rcl) {
 											echo '<a href="/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '">' . $rcl["client_prenom"] . ' ' . $rcl["client_nom"] . '</a>';
 										}
 									}

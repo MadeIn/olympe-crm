@@ -11,12 +11,12 @@
 	
 	function afficheDevis($id) {
 		$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . $id . "'";
-		$cc = $base->query($sql);
-		if ($rcc=mysql_fetch_array($cc)) {
+		$rcc = $base->queryRow($sql);
+if ($rcc) {
 			$commande = montantCommande($rcc["id"]);
 			$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . $id . "'";
 			$pp = $base->query($sql);
-			while ($rpp=mysql_fetch_array($pp)) {
+			foreach ($pp as $rpp) {
 				$image_pdt = RecupPhotoProduit($rpp["produit_num"]);
 				$prix_total_ttc = $rpp["montant_ttc"]*$rpp["qte"];
 				//$prix_total_ttc = RecupPrixInit($rpp["produit_num"])*$rpp["qte"];
@@ -45,7 +45,7 @@
 				echo '<option value="-1">A renseigner</option>';	
 				$sql = "select * from tailles t, categories_tailles c where t.taille_num=c.taille_num and c.categorie_num=" . $rpp["categorie_num"];
 				$ss = $base->query($sql);
-				while ($st = mysql_fetch_array($ss)) {
+				foreach ($ss as $st) {
 					echo '<option value="' . $st["taille_num"] . '"';
 					if ($st["taille_num"]==$rpp["taille_num"])
 						echo " SELECTED";
@@ -126,7 +126,7 @@
 					<select name="paiement_' . $id . '" id="paiement_' . $id . '" onChange="modifPaiement(' . $id . ')">';
 						$sql = "select * from paiements order by paiement_pos ASC";
 						$pp = $base->query($sql);
-						while ($rpp=mysql_fetch_array($pp)) {
+						foreach ($pp as $rpp) {
 							echo '<option value="' . $rpp["paiement_num"] . '"';
 							if ($rpp["paiement_num"]==$rcc["paiement_num"])
 								echo " SELECTED";
@@ -159,7 +159,7 @@
 		$montant_total_tva = 0;
 		$montant_total_ttc = 0;
 		
-		while ($rdd=mysql_fetch_array($dd)) {
+		foreach ($dd as $rdd) {
 			$prixProduit = RecupPrix($rdd["produit_num"]);
 						
 			
@@ -205,7 +205,7 @@
 		$montant_total_tva = 0;
 		$montant_total_ttc = 0;
 		
-		while ($rdd=mysql_fetch_array($dd)) {
+		foreach ($dd as $rdd) {
 			//$prixProduit = RecupPrix($rdd["produit_num"]);
 			$prixProduit = array(
 				"montant_ht" =>$rdd["montant_ht"],
@@ -258,7 +258,7 @@
 		$montant_total_tva = 0;
 		$montant_total_ttc = 0;
 		
-		while ($rdd=mysql_fetch_array($dd)) {
+		foreach ($dd as $rdd) {
 			$produit_montant_ht = $rdd["montant_ht"]*$rdd["qte"];
 			$produit_montant_tva = $rdd["montant_tva"]*$rdd["qte"];
 			$produit_montant_ttc = $rdd["montant_ttc"]*$rdd["qte"];
@@ -287,10 +287,10 @@
 			// On affiche les produits de la sélection
 			$sql = "select * from selections_produits s, md_produits p where s.produit_num=p.produit_num and selection_num='" . $selection . "'";
 			$pp = $base->query($sql);
-			$nbr_pp = mysql_num_rows($pp);
+			$nbr_pp = count($pp);
 			if ($nbr_pp>0) {
 				echo '<div class="mt-element-card mt-element-overlay">';
-				while ($rpp=mysql_fetch_array($pp)) {
+				foreach ($pp as $rpp) {
 					$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' and photo_pos=1";
 					$ph = $base->query($sql);
 					if ($rph=mysql_fetch_array($ph)) {
@@ -332,10 +332,10 @@
 			// On affiche les produits de la sélection
 			$sql = "select * from selections_produits s, md_produits p where s.produit_num=p.produit_num and selection_num='" . $selection . "'";
 			$pp = $base->query($sql);
-			$nbr_pp = mysql_num_rows($pp);
+			$nbr_pp = count($pp);
 			if ($nbr_pp>0) {
 				echo '<div class="mt-element-card mt-element-overlay">';
-				while ($rpp=mysql_fetch_array($pp)) {
+				foreach ($pp as $rpp) {
 					$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' and photo_pos=1";
 					$ph = $base->query($sql);
 					if ($rph=mysql_fetch_array($ph)) {
@@ -397,7 +397,7 @@
 			// ON regarde si le produit n'est pas déjà dans le devis
 			$sql = "select * from commandes_produits where id='" . $devis . "' and produit_num='" . $pdt . "' and taille_num=-1";
 			$tt = $base->query($sql);
-			$nbr = mysql_num_rows($tt);
+			$nbr = count($tt);
 			if ($nbr==0) {
 				$prixProduit = RecupPrix($pdt);
 				$sql = "insert into commandes_produits values ('" . $devis . "','" . $pdt . "','-1',1,'" . $prixProduit["montant_ht"] . "','" . $prixProduit["montant_tva"] . "','" . $prixProduit["montant_ttc"] . "','" . $prixProduit["montant_remise"] . "','" . $prixProduit["montant_remise_type"] . "','" . $prixProduit["montant_ht_remise"] . "','" . $prixProduit["montant_tva_remise"] . "','" . $prixProduit["montant_ttc_remise"] . "','0','0')";

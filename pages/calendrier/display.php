@@ -22,7 +22,7 @@
 						
 				$sql = "select * from rdv_types where type_num NOT IN (2,3) order by type_pos ASC";
 				$tt = $base->query($sql);
-				while ($rtt=mysql_fetch_array($tt)) {
+				foreach ($tt as $rtt) {
 					echo '<option value="' . $rtt["type_num"] . '"';
 					if ($rtt["type_num"]==1)
 						echo " SELECTED";
@@ -52,8 +52,8 @@
 				$client_num = $client_search[0];
 				// On recherche le client 
 				$sql = "select * from clients where client_num='" . $client_num . "'";
-				$cl = $base->query($sql);
-				if ($rcl = mysql_fetch_array($cl)) {
+				$rcl = $base->queryRow($sql);
+ if ($rcl) {
 					// On recherche les commandes en cours non facturée
 					$sql = "select * from commandes where client_num='" . $client_num . "' and devis_num!=0 and commande_num!=0 and facture_num=0 order by commande_date DESC";
 					$co = $base->query($sql);

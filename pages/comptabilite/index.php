@@ -171,7 +171,7 @@ function initDate() {
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
-															while ($rtt=mysql_fetch_array($tt)) {
+															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
 																echo '>' . $rtt["showroom_nom"] . '</option>';
@@ -253,14 +253,12 @@ function initDate() {
 												// On regarde le nombre de paiement effectué
 												$sql = "select * from commandes_paiements where id='" . $rcc["id"] . "'";
 												$pa = $base->query($sql);
-												$nbr_paiement = mysql_num_rows($pa);
+												$nbr_paiement = count($pa);
 												
 												// On calcul la somme déjà payé
 												$montant_paye = 0;
 												$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $rcc["id"] . "'";
-												$pa = $base->query($sql);
-												if ($rpa=mysql_fetch_array($pa))
-													$montant_paye = $rpa["val"];
+												$rpa = $base->queryRow($sql); if ($rpa)													$montant_paye = $rpa["val"];
 												
 												$reste_a_paye = abs(montantCommandeTTC($rcc["id"]) - $montant_paye);
 																							

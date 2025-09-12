@@ -1,8 +1,8 @@
 <?
 	function RecupPrix($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $base->query($sql);
-		if ($rpp = mysql_fetch_array($pp)) {
+		$rpp = $base->queryRow($sql);
+ if ($rpp) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -47,8 +47,8 @@
 	
 	function AffichePrix($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $base->query($sql);
-		if ($rpp = mysql_fetch_array($pp)) {
+		$rpp = $base->queryRow($sql);
+ if ($rpp) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -81,8 +81,8 @@
 	
 	function AffichePrixHT($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $base->query($sql);
-		if ($rpp = mysql_fetch_array($pp)) {
+		$rpp = $base->queryRow($sql);
+ if ($rpp) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -115,8 +115,8 @@
 	
 	function AffichePrixTVA($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $base->query($sql);
-		if ($rpp = mysql_fetch_array($pp)) {
+		$rpp = $base->queryRow($sql);
+ if ($rpp) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -147,8 +147,8 @@
 	
 	function RecupPrixInit($produit) {
 		$sql = "select * from md_produits p, prix pp, tva t where p.prix_num=pp.prix_num and p.tva_num=t.tva_num and produit_num='" . $produit . "'";
-		$pp = $base->query($sql);
-		if ($rpp = mysql_fetch_array($pp)) {
+		$rpp = $base->queryRow($sql);
+ if ($rpp) {
 			$prix_ht = $rpp["prix_montant_ht"];
 			$remise = $rpp["produit_remise_type"];
 			$remise_montant = $rpp["produit_montant_remise"];
@@ -205,8 +205,8 @@
 	
 	function montantCommande($id) {
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = $base->query($sql);
-		if ($rco=mysql_fetch_array($co)) {
+		$rco = $base->queryRow($sql);
+ if ($rco) {
 			$commande_remise_ttc = 0;
 			$remise = 0;
 			if ($rco["commande_remise_type"]!=0) {
@@ -238,8 +238,8 @@
 	
 	function montantCommandeTTC($id) {
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = $base->query($sql);
-		if ($rco=mysql_fetch_array($co)) {
+		$rco = $base->queryRow($sql);
+ if ($rco) {
 			if ($rco["commande_remise_type"]==0)
 				return $rco["commande_ttc"];
 			else {
@@ -261,8 +261,8 @@
 	function resteAPayerCommande($id) {
 		$montantTTC = montantCommandeTTC($id);
 		$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $id . "'";
-		$pp = $base->query($sql);
-		if ($rpp=mysql_fetch_array($pp)) {
+		$rpp = $base->queryRow($sql);
+ if ($rpp) {
 			$paye = $rpp["val"];
 			$reste_a_payer = $montantTTC - $paye;
 			if ($reste_a_payer<0)
@@ -276,8 +276,8 @@
 	
 	function montantCommandeHT($id) {
 		$sql = "select * from commandes where id='" . $id . "'";
-		$co = $base->query($sql);
-		if ($rco=mysql_fetch_array($co)) {
+		$rco = $base->queryRow($sql);
+ if ($rco) {
 			if ($rco["commande_remise_type"]==0)
 				return $rco["commande_ht"];
 			else {

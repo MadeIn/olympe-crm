@@ -164,7 +164,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 														<?
 															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
-															while ($rtt=mysql_fetch_array($tt)) {
+															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
 																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
 																echo '>' . $rtt["showroom_nom"] . '</option>';
@@ -220,7 +220,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 											  $montant_total_ttc = 0;
 											  $paiement_total = 0;
 											  $reste_total = 0;
-											  while ($row=mysql_fetch_array($re)) {
+											  foreach ($re as $row) {
 												$nbr++;
 												$paiement = 0;
 												$reste = 0;

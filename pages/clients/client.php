@@ -39,9 +39,7 @@ if (isset($rdv_num)) {
 	// On insere un Rendez vous
 	$date_rdv = $date . " " . $time;
 	$sql = "insert into rendez_vous values(0,'" . decrypte($client_num) . "','" . $type_num . "','" . $date_rdv . "','" . $remarque . "',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00','" . $u->mNum . "')";
-	$base->query($sql);
-	
-	$num = mysql_insert_id();
+	$num = $base->insert($sql);
 	
 	// On ajoute dans le calendrier du user
 	switch ($type_num) {
@@ -307,10 +305,10 @@ if (isset($rdv_num)) {
 			if ($dernier_acompte>0) {
 				$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num='" . $rcl["showroom_num"] . "' order by mode_ordre ASC";
 				$pa = $base->query($sql);
-				$nbr_paiement = mysql_num_rows($pa);
+				$nbr_paiement = count($pa);
 				$moyen_paiement = "";
 				$nbr_mode = 0;
-				while ($rpa=mysql_fetch_array($pa)) {
+				foreach ($pa as $rpa) {
 					$moyen_paiement .= $rpa["mode_nom"];
 					$nbr_mode++;
 					if ($nbr_mode<$nbr_paiement) {
@@ -408,8 +406,8 @@ if (isset($selection_devis)) {
 	// ON cherche le numero de devis 
 	$devis_deb = Date("Y") * 10000;
 	$sql = "select max(devis_num) val from commandes where devis_num>'" . $devis_deb . "'";
-	$dd = $base->query($sql);
-	if ($rdd=mysql_fetch_array($dd)) {
+	$rdd = $base->queryRow($sql);
+if ($rdd) {
 		if ($rdd["val"]>0)
 			$devis_num = $rdd["val"]+1;
 		else
@@ -420,9 +418,7 @@ if (isset($selection_devis)) {
 	
 	// On insere le devis
 	$sql = "insert into commandes values(0,'" . decrypte($client_num) . "','" . $devis_num . "','" . Date("Y-m-d H:i:s") . "','0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','1','" . $u->mNum . "','" . $u->mShowroom . "')";
-	$base->query($sql);
-	
-	$id = mysql_insert_id();
+	$id = $base->insert($sql);
 	
 	// ON insere les produits contenu dans la sélection
 	$sql = "select * from selections_produits where selection_num='" . decrypte($selection_devis) . "'";
@@ -432,7 +428,7 @@ if (isset($selection_devis)) {
 	$montant_total_tva = 0;
 	$montant_total_ttc = 0;
 	
-	while ($rdd=mysql_fetch_array($dd)) {
+	foreach ($dd as $rdd) {
 		$prixProduit = RecupPrix($rdd["produit_num"]);
 		$sql = "insert into commandes_produits values ('" . $id . "','" . $rdd["produit_num"] . "','-1',1,'" . $prixProduit["montant_ht"] . "','" . $prixProduit["montant_tva"] . "','" . $prixProduit["montant_ttc"] . "','" . $prixProduit["montant_remise"] . "','" . $prixProduit["montant_remise_type"] . "','" . $prixProduit["montant_ht_remise"] . "','" . $prixProduit["montant_tva_remise"] . "','" . $prixProduit["montant_ttc_remise"] . "','0','0')";
 		$base->query($sql);
@@ -473,12 +469,12 @@ if (isset($commande_passage)) {
 	// On test si toutes les tailles sont renseignées
 	$sql = "select * from commandes_produits where id='" . decrypte($commande_passage) . "' and taille_num='-1'";
 	$tt = $base->query($sql);
-	$nbr = mysql_num_rows($tt);
+	$nbr = count($tt);
 	if ($nbr==0) { // On passe la commande
 		// On recupere le numero de devis pour le mettre dans commande
 		$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($commande_passage) . "'";
-		$co = $base->query($sql);
-		if ($rco = mysql_fetch_array($co)) {
+		$rco = $base->queryRow($sql);
+ if ($rco) {
 			$commande_num = $rco["devis_num"];
 			
 			// ON regarde si il y a une date de commande pour la modifier ou pas
@@ -513,8 +509,8 @@ if (isset($commande_passage)) {
 					// ON genere le numero de facture
 					$facture_deb = Date("Y") * 100000 + Date("n") * 1000;
 					$sql = "select max(facture_num) val from commandes where facture_num>'" . $facture_deb . "' and showroom_num='" . $rco["showroom_num"] . "'";
-					$dd = $base->query($sql);
-					if ($rdd=mysql_fetch_array($dd)) {
+					$rdd = $base->queryRow($sql);
+if ($rdd) {
 						if ($rdd["val"]>0)
 							$facture_num = $rdd["val"]+1;
 						else
@@ -528,8 +524,8 @@ if (isset($commande_passage)) {
 					
 					// On decroit les stocks
 					$sql = "select * from commandes where id='" . decrypte($commande_passage) . "'";
-					$cc = $base->query($sql);
-					if ($rcc = mysql_fetch_array($cc)) {
+					$rcc = $base->queryRow($sql);
+if ($rcc) {
 						$showroom_num = $rcc["showroom_num"];
 						// On recupere les produits de la commande pour les enlever du stock
 						$sql = "select * from commandes_produits where id='" . decrypte($commande_passage) . "'";
@@ -583,14 +579,14 @@ if (isset($paiement)) {
 				if ($echeance==$nbr_echeance) { // Le paiement est terminé, on génére la facture
 					// On regarde si il n'y a pas déjà un numero de facture 
 					$sql = "select * from commandes where id='" . decrypte($commande_modif) . "'";
-					$co = $base->query($sql);
-					if ($rco=mysql_fetch_array($co)) {
+					$rco = $base->queryRow($sql);
+ if ($rco) {
 						if ($rco["facture_num"]==0) {
 							// ON cherche le numero de facture
 							$facture_deb = Date("Y") * 100000 + Date("n") * 1000;
 							$sql = "select max(facture_num) val from commandes where facture_num>'" . $facture_deb . "' and showroom_num='" . $rco["showroom_num"] . "'";
-							$dd = $base->query($sql);
-							if ($rdd=mysql_fetch_array($dd)) {
+							$rdd = $base->queryRow($sql);
+if ($rdd) {
 								if ($rdd["val"]>0)
 									$facture_num = $rdd["val"]+1;
 								else
@@ -604,8 +600,8 @@ if (isset($paiement)) {
 							
 							// On decroit les stocks
 							$sql = "select * from commandes where id='" . decrypte($commande_modif) . "'";
-							$cc = $base->query($sql);
-							if ($rcc = mysql_fetch_array($cc)) {
+							$rcc = $base->queryRow($sql);
+if ($rcc) {
 								$showroom_num = $rcc["showroom_num"];
 								// On recupere les produits de la commande pour les enlever du stock
 								$sql = "select * from commandes_produits where id='" . decrypte($commande_modif) . "'";
@@ -686,8 +682,8 @@ if (isset($devis)) {
 	// ON cherche le numero de devis 
 	$devis_deb = Date("Y") * 10000;
 	$sql = "select max(devis_num) val from commandes where devis_num>'" . $devis_deb . "'";
-	$dd = $base->query($sql);
-	if ($rdd=mysql_fetch_array($dd)) {
+	$rdd = $base->queryRow($sql);
+if ($rdd) {
 		if ($rdd["val"]>0)
 			$devis_num = $rdd["val"]+1;
 		else
@@ -705,7 +701,7 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 	// On test si toutes les tailles sont renseignées
 	$sql = "select * from commandes_produits where id='" . decrypte($devis_envoi) . "' and taille_num='-1'";
 	$tt = $base->query($sql);
-	$nbr = mysql_num_rows($tt);
+	$nbr = count($tt);
 	if ($nbr==0) { // On passe la commande
 		// On envoi le mail avec le devis
 		$titre_mail = $mail_type[8][$rcl["client_genre"]]["titre"];
@@ -746,8 +742,8 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 		
 		// ON regarde si il y a une robe et si elle est sur mesure
 		$sql = "select * from commandes_produits where taille_num='35' and id='" . decrypte($devis_envoi) . "'";
-		$tt = $base->query($sql);
-		if ($rtt=mysql_fetch_array($tt)) {
+		$rtt = $base->queryRow($sql);
+ if ($rtt) {
 			$message_retouche = "";
 		} else {
 			$message_retouche = "";
@@ -782,8 +778,8 @@ if (isset($facture_envoi)) { // ON envoie le devis par mail
 	SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 	
 	$sql = "select * from commandes_mails where id='" . decrypte($facture_envoi) . "'";
-	$tt = $base->query($sql);
-	if ($rtt=mysql_fetch_array($tt)) {
+	$rtt = $base->queryRow($sql);
+ if ($rtt) {
 		$sql = "update commandes_mails set facture_mail=1, facture_mail_date='" . Date("Y-m-d H:i:s") . "' where id='" . decrypte($facture_envoi) . "'";
 		$base->query($sql);
 	} else {
@@ -1283,8 +1279,8 @@ function confirme_commande(id) {
 												</li>
 												<?php 
 													$sql = "select * from users where user_num='" . $rcl["user_num"] . "'";
-													$tt = $base->query($sql);
-													if ($rtt=mysql_fetch_array($tt)) {
+													$rtt = $base->queryRow($sql);
+ if ($rtt) {
 														echo '<li>
 															<a href="#">
 																<i class="fa fa-eye"></i> Suivi par : ' . $rtt["user_prenom"] . ' ' . $rtt["user_nom"]  . '</a>
@@ -1293,8 +1289,8 @@ function confirme_commande(id) {
 												?>
 												<?php 
 													$sql = "select * from users where user_num='" . $rcl["couturiere_num"] . "'";
-													$tt = $base->query($sql);
-													if ($rtt=mysql_fetch_array($tt)) {
+													$rtt = $base->queryRow($sql);
+ if ($rtt) {
 														echo '<li>
 															<a href="#">
 																<i class="fa fa-odnoklassniki"></i> Couturière : ' . $rtt["user_prenom"] . ' ' . $rtt["user_nom"]  . '</a>
@@ -1311,20 +1307,20 @@ function confirme_commande(id) {
 									<?
 											$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
 											$ss = $base->query($sql);
-											$nbr_selection = mysql_num_rows($ss);
+											$nbr_selection = count($ss);
 											
 											$sql = "select * from commandes where client_num='" . decrypte($client_num) . "' and devis_num>0 and commande_num=0 and facture_num=0 order by commande_date DESC";
 											$ss = $base->query($sql);
-											$nbr_devis = mysql_num_rows($ss);
+											$nbr_devis = count($ss);
 											
 											$sql = "select * from commandes where client_num='" . decrypte($client_num) . "' and devis_num>0 and commande_num>0 order by commande_date DESC";
 											$ss = $base->query($sql);
-											$nbr_commande = mysql_num_rows($ss);
+											$nbr_commande = count($ss);
 											
 											$sql = "select * from commandes where client_num='" . decrypte($client_num) . "' and devis_num>0 and commande_num>0 order by commande_date DESC";
 											$ss = $base->query($sql);
 											$commande_ttc = 0;
-											while ($rss=mysql_fetch_array($ss)) 
+											foreach ($ss as $rss) 
 												$commande_ttc += montantCommandeTTC($rss["id"]);
 									?>
 									<div class="portlet light bordered">
@@ -1385,7 +1381,7 @@ function confirme_commande(id) {
 														<?php 
 															$sql = "select * from rdv_types order by type_pos ASC";
 															$tt = $base->query($sql);
-															while ($rtt=mysql_fetch_array($tt)) { 
+															foreach ($tt as $rtt) { 
 																// On test si on a déjà rentré dans la base le RDV
 																$sql = "select * from rendez_vous where client_num='" . decrypte($client_num) . "' and type_num='" . $rtt["type_num"] . "'";
 																$cc = $base->query($sql);
@@ -1480,7 +1476,7 @@ function confirme_commande(id) {
 															<?
 																$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
 																$ss = $base->query($sql);
-																$nbr_selection = mysql_num_rows($ss);
+																$nbr_selection = count($ss);
 																if ($nbr_selection>0) {
 																	echo '<table class="table table-bordered table-striped">
 																			<thead>
@@ -1489,7 +1485,7 @@ function confirme_commande(id) {
 																				<th></th>
 																			</thead>
 																			<tbody>';
-																	while ($rss=mysql_fetch_array($ss)) {
+																	foreach ($ss as $rss) {
 																		echo '<tr>
 																				<td>' . format_date($rss["selection_date"],11,1) . '</td>
 																				<td id="select_' . $rss["selection_num"] . '">
@@ -1497,9 +1493,9 @@ function confirme_commande(id) {
 																		// On affiche les produits sélectionnés
 																		$sql = "select * from selections_produits s, md_produits p where s.produit_num=p.produit_num and selection_num='" . $rss["selection_num"] . "'";
 																		$pp = $base->query($sql);
-																		$nbr_pp = mysql_num_rows($pp);
+																		$nbr_pp = count($pp);
 																		if ($nbr_pp>0) {
-																			while ($rpp=mysql_fetch_array($pp)) {
+																			foreach ($pp as $rpp) {
 																				$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' and photo_pos=1";
 																				$ph = $base->query($sql);
 																				if ($rph=mysql_fetch_array($ph)) {
@@ -1577,7 +1573,7 @@ function confirme_commande(id) {
 																							<?php 
 																							$sql = "select * from categories order by categorie_nom ASC";
 																							$cc = $base->query($sql);
-																							while ($rcc=mysql_fetch_array($cc))
+																							foreach ($cc as $rcc)
 																							{
 																								echo "<option value=\"" . $rcc["categorie_num"] . "\"";
 																								if ($categorie==$rcc["categorie_num"])
@@ -1597,7 +1593,7 @@ function confirme_commande(id) {
 																							<?php 
 																							$sql = "select * from marques order by marque_nom ASC";
 																							$cc = $base->query($sql);
-																							while ($rcc=mysql_fetch_array($cc))
+																							foreach ($cc as $rcc)
 																							{
 																								echo "<option value=\"" . $rcc["marque_num"] . "\"";
 																								if ($marque==$rcc["marque_num"])
@@ -1635,8 +1631,8 @@ function confirme_commande(id) {
 																					if ($nbr_produit>0) {
 																						foreach ($cc as $rcc) { 
 																							$sql = "select * from md_produits_photos where produit_num='" . $rcc["produit_num"] . "' and photo_pos=1";
-																							$pp = $base->query($sql);
-																							if ($rpp=mysql_fetch_array($pp)) {
+																							$rpp = $base->queryRow($sql);
+ if ($rpp) {
 																								$image_pdt = "/photos/produits/min/" . $rpp["photo_chemin"];
 																							} else 
 																								$image_pdt = "http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image";
@@ -1681,7 +1677,7 @@ function confirme_commande(id) {
 															<?
 																$sql = "select * from commandes where devis_num!=0 and commande_num=0 and facture_num=0 and client_num='" . decrypte($client_num) . "' order by devis_date DESC";
 																$ss = $base->query($sql);
-																$nbr_devis = mysql_num_rows($ss);
+																$nbr_devis = count($ss);
 																if ($nbr_devis>0) {
 																	echo '<table class="table table-bordered table-striped">
 																			<thead>
@@ -1693,10 +1689,10 @@ function confirme_commande(id) {
 																				<th> </th>
 																			</thead>
 																			<tbody>';
-																	while ($rss=mysql_fetch_array($ss)) {
+																	foreach ($ss as $rss) {
 																		$sql = "select * from commandes_produits where id='" . $rss["id"] . "'";
 																		$pp = $base->query($sql);
-																		$nbr_produit = mysql_num_rows($pp);
+																		$nbr_produit = count($pp);
 																		
 																		echo '<tr>
 																				<td>' . $rss["devis_num"] . '</td>
@@ -1731,8 +1727,8 @@ function confirme_commande(id) {
 															
 															<?php if (isset($devis_consulte)) { 
 																	$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($devis_consulte) . "'";
-																	$cc = $base->query($sql);
-																	if ($rcc=mysql_fetch_array($cc)) {
+																	$rcc = $base->queryRow($sql);
+if ($rcc) {
 																		$commande = montantCommande($rcc["id"]);
 															?>
 																<h4><i class="fa fa-plus"></i> Devis n° : <?php echo $rcc["devis_num"] ?></h4>
@@ -1749,7 +1745,7 @@ function confirme_commande(id) {
 															<?php 																
 																		$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . decrypte($devis_consulte) . "'";
 																		$pp = $base->query($sql);
-																		while ($rpp=mysql_fetch_array($pp)) {
+																		foreach ($pp as $rpp) {
 																			$image_pdt = RecupPhotoProduit($rpp["produit_num"]);
 																			$prix_total_ttc = $rpp["montant_ttc"]*$rpp["qte"];
 																			//$prix_total_ttc = RecupPrixInit($rpp["produit_num"])*$rpp["qte"];
@@ -1843,8 +1839,8 @@ function confirme_commande(id) {
 															
 															<?php if (isset($devis_modif)) { 
 																	$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($devis_modif) . "'";
-																	$cc = $base->query($sql);
-																	if ($rcc=mysql_fetch_array($cc)) {
+																	$rcc = $base->queryRow($sql);
+if ($rcc) {
 																		$commande = montantCommande($rcc["id"]);
 															?>
 																<h4><i class="fa fa-plus"></i> Devis n° : <?php echo $rcc["devis_num"] ?> <?php if ($message_erreur_devis!="") echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_devis . '</strong></font>'; ?></h4>
@@ -1861,7 +1857,7 @@ function confirme_commande(id) {
 															<?php 																
 																		$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . decrypte($devis_modif) . "'";
 																		$pp = $base->query($sql);
-																		while ($rpp=mysql_fetch_array($pp)) {
+																		foreach ($pp as $rpp) {
 																			$image_pdt = RecupPhotoProduit($rpp["produit_num"]);
 																			$prix_total_ttc = $rpp["montant_ttc"]*$rpp["qte"];
 																			//$prix_total_ttc = RecupPrixInit($rpp["produit_num"])*$rpp["qte"];
@@ -1892,7 +1888,7 @@ function confirme_commande(id) {
 																			echo '<option value="-1">A renseigner</option>';	
 																			$sql = "select * from tailles t, categories_tailles c where t.taille_num=c.taille_num and c.categorie_num=" . $rpp["categorie_num"];
 																			$ss = $base->query($sql);
-																			while ($st = mysql_fetch_array($ss)) {
+																			foreach ($ss as $st) {
 																				echo '<option value="' . $st["taille_num"] . '"';
 																				if ($st["taille_num"]==$rpp["taille_num"])
 																					echo " SELECTED";
@@ -1970,7 +1966,7 @@ function confirme_commande(id) {
 																				<?
 																					$sql = "select * from paiements order by paiement_pos ASC";
 																					$pp = $base->query($sql);
-																					while ($rpp=mysql_fetch_array($pp)) {
+																					foreach ($pp as $rpp) {
 																						echo '<option value="' . $rpp["paiement_num"] . '"';
 																						if ($rpp["paiement_num"]==$rcc["paiement_num"])
 																							echo " SELECTED";
@@ -2035,7 +2031,7 @@ function confirme_commande(id) {
 																							<?php 
 																							$sql = "select * from categories order by categorie_nom ASC";
 																							$cc = $base->query($sql);
-																							while ($rcc=mysql_fetch_array($cc))
+																							foreach ($cc as $rcc)
 																							{
 																								echo "<option value=\"" . $rcc["categorie_num"] . "\"";
 																								if ($categorie==$rcc["categorie_num"])
@@ -2055,7 +2051,7 @@ function confirme_commande(id) {
 																							<?php 
 																							$sql = "select * from marques order by marque_nom ASC";
 																							$cc = $base->query($sql);
-																							while ($rcc=mysql_fetch_array($cc))
+																							foreach ($cc as $rcc)
 																							{
 																								echo "<option value=\"" . $rcc["marque_num"] . "\"";
 																								if ($marque==$rcc["marque_num"])
@@ -2093,8 +2089,8 @@ function confirme_commande(id) {
 																					if ($nbr_produit>0) {
 																						foreach ($cc as $rcc) { 
 																							$sql = "select * from md_produits_photos where produit_num='" . $rcc["produit_num"] . "' and photo_pos=1";
-																							$pp = $base->query($sql);
-																							if ($rpp=mysql_fetch_array($pp)) {
+																							$rpp = $base->queryRow($sql);
+ if ($rpp) {
 																								$image_pdt = "/photos/produits/min/" . $rpp["photo_chemin"];
 																							} else 
 																								$image_pdt = "http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image";
@@ -2138,7 +2134,7 @@ function confirme_commande(id) {
 															<?
 																$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and devis_num!=0 and commande_num!=0 and client_num='" . decrypte($client_num) . "' order by commande_date DESC";
 																$ss = $base->query($sql);
-																$nbr_commande = mysql_num_rows($ss);
+																$nbr_commande = count($ss);
 																if ($nbr_commande>0) {
 																	echo '<table class="table table-bordered table-striped">
 																			<thead>
@@ -2153,26 +2149,24 @@ function confirme_commande(id) {
 																				<th> </th>
 																			</thead>
 																			<tbody>';
-																	while ($rss=mysql_fetch_array($ss)) {
+																	foreach ($ss as $rss) {
 																		$nbr_echeance = $rss["paiement_nombre"];
 																		
 																		// On regarde le nombre de paiement effectué
 																		$sql = "select * from commandes_paiements where id='" . $rss["id"] . "'";
 																		$pa = $base->query($sql);
-																		$nbr_paiement = mysql_num_rows($pa);
+																		$nbr_paiement = count($pa);
 																		
 																		// On calcul la somme déjà payé
 																		$montant_paye = 0;
 																		$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $rss["id"] . "'";
-																		$pa = $base->query($sql);
-																		if ($rpa=mysql_fetch_array($pa))
-																			$montant_paye = $rpa["val"];
+																		$rpa = $base->queryRow($sql); if ($rpa)																			$montant_paye = $rpa["val"];
 																		
 																		$reste_a_paye = number_format(abs(montantCommandeTTC($rss["id"]) - $montant_paye),2,"."," ");
 																																				
 																		$sql = "select * from commandes_produits where id='" . $rss["id"] . "'";
 																		$pp = $base->query($sql);
-																		$nbr_produit = mysql_num_rows($pp);
+																		$nbr_produit = count($pp);
 																		
 																		$facture_num = "-";
 																		if ($rss["facture_num"]!="")
@@ -2216,8 +2210,8 @@ function confirme_commande(id) {
 															?>															
 															<?php if (isset($commande_consulte)) { 
 																	$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($commande_consulte) . "'";
-																	$cc = $base->query($sql);
-																	if ($rcc=mysql_fetch_array($cc)) {
+																	$rcc = $base->queryRow($sql);
+if ($rcc) {
 																		$commande = montantCommande($rcc["id"]);
 															?>
 																<h4><i class="fa fa-plus"></i> Commande n° : <?php echo $rcc["commande_num"] ?></h4>
@@ -2234,7 +2228,7 @@ function confirme_commande(id) {
 															<?php 																
 																		$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . decrypte($commande_consulte) . "'";
 																		$pp = $base->query($sql);
-																		while ($rpp=mysql_fetch_array($pp)) {
+																		foreach ($pp as $rpp) {
 																			$image_pdt = RecupPhotoProduit($rpp["produit_num"]);
 																			//$prix_total_ttc = RecupPrixInit($rpp["produit_num"])*$rpp["qte"];
 																			$prix_total_ttc = $rpp["montant_ttc"]*$rpp["qte"];
@@ -2311,7 +2305,7 @@ function confirme_commande(id) {
 																				// On regarde si il y a déjà eu des paiments
 																				$sql = "select * from commandes_paiements where id='" . $rcc["id"] . "'";
 																				$pa = $base->query($sql);
-																				$nbr_paiement = mysql_num_rows($pa);
+																				$nbr_paiement = count($pa);
 																				if ($nbr_paiement==0) {
 																					$echeance = explode("/",$rcc["paiement_modele"]);
 																					$acompte_num = 1;
@@ -2326,7 +2320,7 @@ function confirme_commande(id) {
 																				} else {
 																					$acompte_num = 0;
 																					$montant_paye = 0;
-																					while ($rpa = mysql_fetch_array($pa)) {
+																					foreach ($pa as $rpa) {
 																						$acompte_num++;
 																						echo '<tr>
 																								<td colspan="6" align="right"><strong>Acompte ' . $acompte_num . '</strong></td>
@@ -2365,14 +2359,12 @@ function confirme_commande(id) {
 																		// On regarde le nombre de paiement effectué
 																		$sql = "select * from commandes_paiements where id='" . $rpa["id"] . "'";
 																		$pa = $base->query($sql);
-																		$nbr_paiement = mysql_num_rows($pa);
+																		$nbr_paiement = count($pa);
 																		
 																		// On calcul la somme déjà payé
 																		$montant_paye = 0;
 																		$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $rpa["id"] . "'";
-																		$pp = $base->query($sql);
-																		if ($rpp=mysql_fetch_array($pp))
-																			$montant_paye = $rpp["val"];
+																		$rpp = $base->queryRow($sql); if ($rpp)																			$montant_paye = $rpp["val"];
 																		
 																		$reste_a_paye = number_format(abs(montantCommandeTTC($rpa["id"]) - $montant_paye),2,".","");
 															?>
@@ -2391,7 +2383,7 @@ function confirme_commande(id) {
 																	$echeance=1;
 																	$sql = "select * from commandes_paiements c, paiements_modes m where c.mode_num=m.mode_num and id='" . decrypte($commande_modif) . "'";
 																	$pp = $base->query($sql);
-																	while ($rpp=mysql_fetch_array($pp)) {
+																	foreach ($pp as $rpp) {
 																		echo '<form name="paiement_' . $e . '" action="' . $_SERVER["PHP_SELF"] . '" method="POST">
 																			<input type="hidden" name="paiement" value="ok">
 																			<input type="hidden" name="modif" value="ok">
@@ -2408,7 +2400,7 @@ function confirme_commande(id) {
 																				<td><select name="mode" class="form-control">';
 																		$sql = "select * from paiements_modes order by mode_ordre ASC";
 																		$mm = $base->query($sql);
-																		while ($rmm=mysql_fetch_array($mm)) {
+																		foreach ($mm as $rmm) {
 																			echo '<option value="' . $rmm["mode_num"] . '"';
 																			if ($rmm["mode_num"]==$rpp["mode_num"])
 																				echo ' SELECTED';
@@ -2451,7 +2443,7 @@ function confirme_commande(id) {
 																				<td><select name="mode" class="form-control">';
 																		$sql = "select * from paiements_modes order by mode_ordre ASC";
 																		$mm = $base->query($sql);
-																		while ($rmm=mysql_fetch_array($mm)) {
+																		foreach ($mm as $rmm) {
 																			echo '<option value="' . $rmm["mode_num"] . '"';
 																			echo '>' . $rmm["mode_nom"] . '</option>';
 																		}
@@ -2649,7 +2641,7 @@ function confirme_commande(id) {
 																			<?
 																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
 																				$uu = $base->query($sql);
-																				while ($ruu=mysql_fetch_array($uu)) {
+																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["user_num"] . '"';
 																					if ($ruu["user_num"]==$rcl["user_num"])
 																						echo " SELECTED";
@@ -2670,7 +2662,7 @@ function confirme_commande(id) {
 																			<?
 																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
 																				$uu = $base->query($sql);
-																				while ($ruu=mysql_fetch_array($uu)) {
+																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["user_num"] . '"';
 																					if ($ruu["user_num"]==$rcl["couturiere_num"])
 																						echo " SELECTED";
@@ -2691,7 +2683,7 @@ function confirme_commande(id) {
 																			<?
 																				$sql = "select * from showrooms";
 																				$uu = $base->query($sql);
-																				while ($ruu=mysql_fetch_array($uu)) {
+																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["showroom_num"] . '"';
 																					if ($ruu["showroom_num"]==$rcl["showroom_num"])
 																						echo " SELECTED";
@@ -2731,8 +2723,8 @@ function confirme_commande(id) {
 																				$date_fournisseur = "";
 																				$montant = 0;
 																				$sql = "select * from commandes_fournisseurs where id='" . $rco["id"] . "' and produit_num='" . $rco["produit_num"] . "'";
-																				$tt = $base->query($sql);
-																				if ($rtt = mysql_fetch_array($tt)) {
+																				$rtt = $base->queryRow($sql);
+ if ($rtt) {
 																					$checked = " CHECKED";
 																					$date_fournisseur = format_date($rtt["commande_fournisseur_date"],11,1);
 																					$montant = number_format($rtt["commande_montant"],2,"."," ");
@@ -2836,8 +2828,8 @@ function confirme_commande(id) {
 																			$montant = $rcl["commande_montant"];
 																			$commande_date = Date("Y-m-d");
 																			$sql = "select * from prixachats where prixachat_num='" . $rmm["prixachat_num"] . "'";
-																			$pp = $base->query($sql);
-																			if ($rpp=mysql_fetch_array($pp)) {
+																			$rpp = $base->queryRow($sql);
+ if ($rpp) {
 																				$montant = $rpp["prixachat_montant"];
 																				if ($montant!=0) {
 																					// On calcul le montant avec la TVA

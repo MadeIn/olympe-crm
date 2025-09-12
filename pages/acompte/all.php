@@ -1,8 +1,8 @@
-<?php include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_invite.php"); 
+<?php include( $_SERVER['DOCUMENT_ROOT'] . "/param_invite.php"); 
 
 	$sql = "select * from commandes co, paiements p, showrooms sh, users u, clients c where co.paiement_num=p.paiement_num and co.client_num=c.client_num and co.showroom_num=sh.showroom_num and co.user_num=u.user_num and id='" . decrypte($id) . "'";
-	$cc = $base->query($sql);
-	if (!$rcc=$db->row($cc)) {
+	$rcc = $base->queryRow($sql);
+	if (!$rcc) {
 		echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 	}
 	
@@ -15,8 +15,8 @@
 	$commande = montantCommande($rcc["id"]);
 	
 	$sql = "select * from commandes_paiements where id='" . decrypte($id) . "' and paiement_num='" . $paiement . "'";
-	$pp = $base->query($sql);
-	if ($rpp=$db->row($pp)) {
+	$rpp = $base->queryRow($sql);
+	if ($rpp) {
 		//echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 		$date_commande = $rpp["paiement_date"];
 	} else 
@@ -80,7 +80,7 @@
 			<?php 																
 				$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . decrypte($id) . "'";
 				$pp = $base->query($sql);
-				foreach ($pp["tab"] as $rpp) {
+				foreach ($pp as $rpp) {
 					$prix_total_ttc = RecupPrixInit($rpp["produit_num"])*$rpp["qte"];
 					switch ($rpp["commande_produit_remise_type"]) {
 						case 1: // Remise en %
@@ -163,7 +163,7 @@
 						$montant_paye = 0;
 						$sql = "select * from commandes_paiements where id='" . decrypte($id) . "' order by paiement_num ASC";
 						$pa = $base->query($sql);
-						foreach ($pa["tab"] as $rpa) {
+						foreach ($pa as $rpa) {
 							$acompte_num++;
 							echo '<tr>
 									<td><strong>Acompte ' . $acompte_num . '</strong></td>

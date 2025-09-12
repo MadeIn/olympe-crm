@@ -111,7 +111,7 @@
 		$field = mysql_num_fields($cc);
 		$var["$base->query($sql)_rows($cc);
 		$i=0;
-		while ($rcc=mysql_fetch_array($cc))
+		foreach ($cc as $rcc)
 		{
 			for ($j=0;$j<$field;$j++)
 				$var["result"][$i][mysql_field_name($cc,$j)] = $rcc[mysql_field_name($cc,$j)];

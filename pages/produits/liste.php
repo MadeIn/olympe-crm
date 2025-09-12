@@ -110,7 +110,7 @@ function changePrixAchat(id) {
 														<?php 
 														$sql = "select * from categories order by categorie_nom ASC";
 														$cc = $base->query($sql);
-														while ($rcc=mysql_fetch_array($cc))
+														foreach ($cc as $rcc)
 														{
 															echo "<option value=\"" . $rcc["categorie_num"] . "\"";
 															if ($categorie==$rcc["categorie_num"])
@@ -130,7 +130,7 @@ function changePrixAchat(id) {
 														<?php 
 														$sql = "select * from marques order by marque_nom ASC";
 														$cc = $base->query($sql);
-														while ($rcc=mysql_fetch_array($cc))
+														foreach ($cc as $rcc)
 														{
 															echo "<option value=\"" . $rcc["marque_num"] . "\"";
 															if ($marque==$rcc["marque_num"])
@@ -202,11 +202,9 @@ function changePrixAchat(id) {
 													$prix = RecupPrixInit($rcc["produit_num"]);
 													$sql = "select * from md_produits_photos where produit_num='" . $rcc["produit_num"] . "'";
 													$pp = $base->query($sql);
-													$nbr = mysql_num_rows($pp);	
+													$nbr = count($pp);	
 													$sql = "select * from prixachats where prixachat_num='" . $rcc["prixachat_num"] . "'";
-													$pp = $base->query($sql);
-													if ($rpp=mysql_fetch_array($pp))
-														$prix_achat = $rpp["prixachat_montant"];
+													$rpp = $base->queryRow($sql); if ($rpp)														$prix_achat = $rpp["prixachat_montant"];
 											  ?>
 												<tr>
 													<td class="highlight">

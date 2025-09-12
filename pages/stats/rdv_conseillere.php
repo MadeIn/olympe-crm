@@ -52,7 +52,7 @@ if ($u->mGroupe==0) {
 						<?
 							$sql = "select * from showrooms order by showroom_num ASC";
 							$sh = $base->query($sql);
-							while ($rsh=mysql_fetch_array($sh)) {
+							foreach ($sh as $rsh) {
 								echo '<option value="' . $rsh["showroom_num"] . '"';
 								if ($rsh["showroom_num"]==$u->mShowroom)
 									echo " SELECTED";
@@ -96,7 +96,7 @@ if ($u->mGroupe==0) {
 												
 												$sql = "select * from users where showroom_num='" . $u->mShowroom . "' and user_num not in (3,5,14) order by user_nom ASC, user_prenom ASC";
 												$cc = $base->query($sql);
-												while ($rcc = mysql_fetch_array($cc)) {
+												foreach ($cc as $rcc) {
 													$sql = "select count(rdv_num) val from rendez_vous r, clients c where c.client_num=r.client_num and rdv_date>='" . $date_debut_annee . "' and rdv_date<='" . Date("Y-m-d H:i:s") . "' and r.type_num=1 and c.showroom_num='" . $u->mShowroom . "' and client_genre=0 and c.user_num='" . $rcc["user_num"] . "'";	
 													$rr = $base->query($sql);
 													$nbr_rdv = 0;

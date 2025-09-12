@@ -57,9 +57,7 @@ if (isset($ajout))
 
 	// On recupere le num categ
 	$sql = "select max(" . $nom_champ . "_num) val from " . $nom_table;
-	$test = $base->query($sql);
-	if ($rt = mysql_fetch_array($test))
-		$num = $rt["val"];
+	$rt = $base->queryRow($sql); if ($rt)		$num = $rt["val"];
 
 	// On insere les tailles
 	if (isset($taille))
@@ -85,7 +83,7 @@ if (isset($suppr)) {
 
 $sql = "select * from " . $nom_table . " order by " . $nom_champ . "_nom ASC";
 $cdr = $base->query($sql);
-$nbr_ligne = mysql_num_rows($cdr);
+$nbr_ligne = count($cdr);
 
 ?>
 
@@ -158,7 +156,7 @@ function confirme() {
 													<?
 														$sql = "select * from tailles where taille_num>0 order by taille_pos ASC";
 														$cc = $base->query($sql);
-														while ($rcc=mysql_fetch_array($cc))
+														foreach ($cc as $rcc)
 															echo "<input type=\"checkbox\" value=\"" . $rcc["taille_num"] . "\" name=\"taille[]\">" . $rcc["taille_nom"] . "<br>";
 													?>
 													</div>
@@ -208,7 +206,7 @@ function confirme() {
 													foreach ($cc as $rcc) {
 														$sql = "select * from categories_tailles where taille_num=" . $rcc["taille_num"] . " and categorie_num=" . decrypte($modif_num);
 														$test = $base->query($sql);
-														$nbr_res = mysql_num_rows($test);
+														$nbr_res = count($test);
 														echo " <input type=\"checkbox\" value=\"" . $rcc["taille_num"] . "\" name=\"taille[]\"";
 														if ($nbr_res>0)
 															echo " CHECKED";
@@ -247,7 +245,7 @@ function confirme() {
 										  <tbody>
 											<?
 												$i=0;
-												while ($row=mysql_fetch_array($cdr)) {
+												foreach ($cdr as $row) {
 											?>
 											<tr>
 												<td class="highlight">
