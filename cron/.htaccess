@@ -1,0 +1,37 @@
+# Protection du dossier CRON
+# Seules les tâches avec token ou en localhost sont autorisées
+
+# Bloquer l'accès direct au dossier
+Options -Indexes
+
+# Limiter l'accès aux adresses IP locales ou avec token
+<Files "*.php">
+    # Permettre localhost
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+    Allow from ::1
+    
+    # Permettre si token présent (pour webcron)
+    SetEnvIf Query_String "token=" allow_token
+    Allow from env=allow_token
+</Files>
+
+# Page d'index sécurisée
+<Files "index.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Bloquer les fichiers sensibles
+<FilesMatch "\.(log|bak|config|sql)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Headers de sécurité pour les tâches CRON
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>

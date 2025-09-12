@@ -1,4 +1,4 @@
-﻿<? include("/home/madeinpr/www/CRM/olympe-mariage/inc/param_auto.php"); 
+﻿<?php include("/home/madeinpr/www/CRM/olympe-mariage/inc/param_auto.php"); 
 
 	// Envoyer en cron tous les matins à 9h
 	// On recupere les rendez vous à venir dans 3 jours pour envoyer un rappel....

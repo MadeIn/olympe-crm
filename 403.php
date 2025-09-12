@@ -1,15 +1,15 @@
-<? include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param.php"); 
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/param.php";
 $titre_page = "Page Introuvable - Olympe Mariage";
 $desc_page = "Page Introuvable - Olympe Mariage";
 $link_plugin = '<link href="/assets/pages/css/error.min.css" rel="stylesheet" type="text/css" />';
 ?>
 
-<? include( $chemin . "/mod/head.php"); ?>
+<?php include TEMPLATE_PATH . 'head.php'; ?>
 
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">
-            <? include( $chemin . "/mod/top.php"); ?>
+            <?php include TEMPLATE_PATH . 'top.php'; ?>
             <div class="container-fluid">
                 <div class="page-content">
                     <!-- BEGIN BREADCRUMBS -->
@@ -42,10 +42,10 @@ $link_plugin = '<link href="/assets/pages/css/error.min.css" rel="stylesheet" ty
 						</div>
                     <!-- END PAGE BASE CONTENT -->
                 </div>
-                <? include( $chemin . "/mod/footer.php"); ?>
+                <?php include TEMPLATE_PATH . 'footer.php'; ?>
             </div>
         </div>
-         <? include( $chemin . "/mod/bottom.php"); ?>
+         <?php include TEMPLATE_PATH . 'bottom.php'; ?>
     </body>
 
 </html>

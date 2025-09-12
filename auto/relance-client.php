@@ -1,4 +1,4 @@
-<? 
+<?php 
 	echo $_SERVER['DOCUMENT_ROOT'];
 	exit();
 	include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_auto.php"); 

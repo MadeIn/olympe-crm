@@ -16,6 +16,9 @@ Thumbs.db
 /uploads/
 /photos/
 
+# Vendor
+/vendor/
+
 # Backups
 *.bak
 *.backup
