@@ -35,7 +35,7 @@ if ($rss) {
             <div class="container-fluid">
                 <div class="page-content">
                     <!-- BEGIN BREADCRUMBS -->
-                   <form name="choix" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
+                   <form name="choix" action="<?= current_path() ?>" method="POST">
 					<div class="breadcrumbs">
 					<?php if ($u->mGroupe!=0) { ?>
 						<div class="breadcrumbs">

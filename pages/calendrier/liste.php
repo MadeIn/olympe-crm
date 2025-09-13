@@ -19,6 +19,10 @@ if (isset($calendrier_suppr)) {
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="JavaScript">
+async function confirme() {
+    return await $ol.confirmDialog("Etes vous sur de vouloir supprimer cette date ?");
+}
+
 function confirme() {
 	if (confirm("Etes vous sur de vouloir supprimer cette date ?"))
 		return true;

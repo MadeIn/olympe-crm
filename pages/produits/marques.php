@@ -14,40 +14,33 @@ if (isset($decalle))
 		$new_pos = $pos-1;
 
 	// On decalle 
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $pos . "' where " . $nom_champ . "_pos=" . $new_pos;
+	$sql = "update marques set marque_pos='" . $pos . "' where marque_pos=" . $new_pos;
 	$base->query($sql);
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $new_pos . "' where " . $nom_champ . "_num=" . $val_num;
+	$sql = "update marques set marque_pos='" . $new_pos . "' where marque_num=" . $val_num;
 	$base->query($sql);
 }
 
 if (isset($modif))
 {
-	$sql_modif = "";
-	$editor = str_replace("&lt;","<",$elm1);
-	$editor = str_replace("&gt;",">",$elm1);
-	
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_visible='" . $etat . "', " . $nom_champ . "_nom='" . $nom . "', " . $nom_champ . "_desc='" . $editor . "', " . $nom_champ . "_raison_social='" . $raison_social . "', " . $nom_champ . "_adr1='" . $adr1 . "', " . $nom_champ . "_adr2='" . $adr2 . "', " . $nom_champ . "_cp='" . $cp . "', " . $nom_champ . "_ville='" . $ville . "', " . $nom_champ . "_rcs='" . $rcs . "', " . $nom_champ . "_tva='" . $tva . "', " . $nom_champ . "_tel='" . $tel . "', " . $nom_champ . "_mail='" . $mail . "', " . $nom_champ . "_site='" . $site . "', " . $nom_champ . "_contact='" . $contact . "', " . $nom_champ . "_contact_mail='" . $contact_mail . "', " . $nom_champ . "_contact_tel='" . $contact_tel . "', " . $nom_champ . "_paiement='" . $paiement . "'";
+	$sql = "update marques set marque_visible='" . $etat . "', marque_nom='" . $nom . "', marque_raison_social='" . $raison_social . "', marque_adr1='" . $adr1 . "', marque_adr2='" . $adr2 . "', marque_cp='" . $cp . "', marque_ville='" . $ville . "', marque_rcs='" . $rcs . "', marque_tva='" . $tva . "', marque_tel='" . $tel . "', marque_mail='" . $mail . "', marque_site='" . $site . "', marque_contact='" . $contact . "', marque_contact_mail='" . $contact_mail . "', marque_contact_tel='" . $contact_tel . "', marque_paiement='" . $paiement . "'";
 	$sql .= $sql_modif;
-	$sql .= " where " . $nom_champ . "_num=" . decrypte($val_num);
+	$sql .= " where marque_num=" . decrypte($val_num);
 	$base->query($sql);
 }
 
 if (isset($ajout))
 {
-	$editor = str_replace("&lt;","<",$elm1);
-	$editor = str_replace("&gt;",">",$elm1);
-	
-	$sql = "insert into " . $nom_table . " values (0,'" . $nom . "','" . $editor . "','" . $raison_social . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $rcs . "','" . $tva . "','" . $tel . "','" . $mail . "','" . $site . "','" . $contact . "','" . $contact_mail . "','" . $contact_tel . "','" . $paiement . "','" . $etat . "')";
+	$sql = "insert into marques values (0,'" . $nom . "','','" . $raison_social . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $rcs . "','" . $tva . "','" . $tel . "','" . $mail . "','" . $site . "','" . $contact . "','" . $contact_mail . "','" . $contact_tel . "','" . $paiement . "','" . $etat . "')";
 	$base->query($sql);
 }
 
 if (isset($suppr))
 {
-	$sql = "delete from " . $nom_table . " where " . $nom_champ . "_num=" . decrypte($suppr);
+	$sql = "delete from marques where marque_num=" . decrypte($suppr);
 	$base->query($sql);
 }
 
-	$sql = "select * from " . $nom_table . " order by " . $nom_champ . "_nom ASC";
+	$sql = "select * from marques order by marque_nom ASC";
 	$cdr = $base->query($sql);
 	$nbr_ligne = count($cdr);
 
@@ -55,11 +48,8 @@ if (isset($suppr))
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
-function confirme() {
-	if (confirm("<?= $alert ?>"))
-		return true;
-	else 
-		return false;
+async function confirme() {
+    return await $ol.confirmDialog("<?= $alert ?>");
 }
 </script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
@@ -244,12 +234,12 @@ function confirme() {
 									<table class="table table-striped table-bordered table-advance table-hover">
 										 <tbody>
 										<?php 
-											$sql = "select * from " . $nom_table . " d where d." . $nom_champ . "_num=" . decrypte($modif_num);
+											$sql = "select * from marques d where d.marque_num=" . decrypte($modif_num);
 											$rcc = $base->queryRow($sql);
 											$i=0;
 											if ($rcc)
 											{
-												$etat = $rcc[$nom_champ . "_visible"];
+												$etat = $rcc["marque_visible"];
 										?>
 										<tr>
 											<td><label>Nom</label>
@@ -257,7 +247,7 @@ function confirme() {
 												<span class="input-group-addon">
 													<i class="fa fa-fire"></i>
 												</span>
-												<input type="text" name="nom" class="form-control" value="<?= $rcc[$nom_champ . "_nom"] ?>" required></div></td>
+												<input type="text" name="nom" class="form-control" value="<?= $rcc["marque_nom"] ?>" required></div></td>
 										</tr>
 										<tr>
 												<td><hr></td>
@@ -268,7 +258,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-industry"></i>
 													</span>
-													<input type="text" name="raison_social" class="form-control" value="<?= $rcc[$nom_champ . "_raison_social"] ?>"></div></td>
+													<input type="text" name="raison_social" class="form-control" value="<?= $rcc["marque_raison_social"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Adresse</label>
@@ -276,7 +266,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-road"></i>
 													</span>
-													<input type="text" name="adr1" class="form-control" value="<?= $rcc[$nom_champ . "_adr1"] ?>"></div></td>
+													<input type="text" name="adr1" class="form-control" value="<?= $rcc["marque_adr1"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td>
@@ -284,7 +274,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-road"></i>
 													</span>
-													<input type="text" name="adr2" class="form-control" value="<?= $rcc[$nom_champ . "_adr2"] ?>"></div></td>
+													<input type="text" name="adr2" class="form-control" value="<?= $rcc["marque_adr2"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Code Postal</label>
@@ -292,7 +282,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-search"></i>
 													</span>
-													<input type="text" name="cp" class="form-control" value="<?= $rcc[$nom_champ . "_cp"] ?>"></div></td>
+													<input type="text" name="cp" class="form-control" value="<?= $rcc["marque_cp"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Ville</label>
@@ -300,7 +290,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-shield"></i>
 													</span>
-													<input type="text" name="ville" class="form-control" value="<?= $rcc[$nom_champ . "_ville"] ?>"></div></td>
+													<input type="text" name="ville" class="form-control" value="<?= $rcc["marque_ville"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>RCS</label>
@@ -308,7 +298,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-bank"></i>
 													</span>
-													<input type="text" name="rcs" class="form-control" value="<?= $rcc[$nom_champ . "_rcs"] ?>"></div></td>
+													<input type="text" name="rcs" class="form-control" value="<?= $rcc["marque_rcs"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>TVA</label>
@@ -316,7 +306,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-bank"></i>
 													</span>
-													<input type="text" name="tva" class="form-control" value="<?= $rcc[$nom_champ . "_tva"] ?>"></div></td>
+													<input type="text" name="tva" class="form-control" value="<?= $rcc["marque_tva"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Tel</label>
@@ -324,7 +314,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-mobile-phone"></i>
 													</span>
-													<input type="text" name="tel" class="form-control" value="<?= $rcc[$nom_champ . "_tel"] ?>"></div></td>
+													<input type="text" name="tel" class="form-control" value="<?= $rcc["marque_tel"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Mail</label>
@@ -332,7 +322,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-envelope"></i>
 													</span>
-													<input type="text" name="mail" class="form-control" value="<?= $rcc[$nom_champ . "_mail"] ?>"></div></td>
+													<input type="text" name="mail" class="form-control" value="<?= $rcc["marque_mail"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Site Web</label>
@@ -340,7 +330,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-globe"></i>
 													</span>
-													<input type="text" name="site" class="form-control" value="<?= $rcc[$nom_champ . "_site"] ?>"></div></td>
+													<input type="text" name="site" class="form-control" value="<?= $rcc["marque_site"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Contact Nom & Prenom</label>
@@ -348,7 +338,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-user"></i>
 													</span>
-													<input type="text" name="contact" class="form-control" value="<?= $rcc[$nom_champ . "_contact"] ?>"></div></td>
+													<input type="text" name="contact" class="form-control" value="<?= $rcc["marque_contact"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Contact mail</label>
@@ -356,7 +346,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-envelope"></i>
 													</span>
-													<input type="text" name="contact_mail" class="form-control" value="<?= $rcc[$nom_champ . "_contact_mail"] ?>"></div></td>
+													<input type="text" name="contact_mail" class="form-control" value="<?= $rcc["marque_contact_mail"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Contact Tel</label>
@@ -364,7 +354,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-mobile-phone"></i>
 													</span>
-													<input type="text" name="contact_tel" class="form-control" value="<?= $rcc[$nom_champ . "_contact_tel"] ?>"></div></td>
+													<input type="text" name="contact_tel" class="form-control" value="<?= $rcc["marque_contact_tel"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Methode de paiement (Ex : 60/40 ou 100)</label>
@@ -372,7 +362,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-euro"></i>
 													</span>
-													<input type="text" name="paiement" class="form-control" value="<?= $rcc[$nom_champ . "_paiement"] ?>"></div></td>
+													<input type="text" name="paiement" class="form-control" value="<?= $rcc["marque_paiement"] ?>"></div></td>
 											</tr>
 										 <tr>
 											<td><label>Etat</label>
@@ -407,20 +397,22 @@ function confirme() {
 								<div class="table-scrollable">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										  <tbody>
-											<?php												$i=0;
+											<?php												
+												$i=0;
 												foreach ($cdr as $row) {
 											?>
 											<tr>
 												<td class="highlight">
-													<div class="success"></div> <a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["marque_num"]) ?>"><?= $row[$nom_champ . "_nom"] ?></a></td>
+													<div class="success"></div> <a href="<?= current_path() . '?modif_num=' . crypte($row["marque_num"]) ?>"><?= $row["marque_nom"] ?></a></td>
 												 <td>
-													<a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["marque_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
+													<a href="<?= current_path() . '?modif_num=' . crypte($row["marque_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
 														<i class="fa fa-edit"></i> Edit </a> 
-													<!--<a href="<?= $_SERVER["PHP_SELF"] . '?suppr=' . crypte($row["marque_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
+													<!--<a href="<?= current_path() . '?suppr=' . crypte($row["marque_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
 														<i class="fa fa-trash-o"></i> Suppr </a>-->
 												</td>
 											</tr>
-											<?php												$i++;
+											<?php												
+													$i++;
 												}
 											?>
 										</tbody>

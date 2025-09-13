@@ -2472,7 +2472,7 @@ include TEMPLATE_PATH . 'head.php';
 															?>
 															<hr><center><h4>Commande Fournisseur de la commande :  <?= $rmm["commande_num"] ?></h4></center><hr>
 															<div class="row">
-																<form name="forunisseur" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
+																<form name="forunisseur" action="<?= current_path() ?>" method="POST">
 																<input type="hidden" name="tab" value="tab_1_6">
 																<input type="hidden" name="client_num" value="<?= $client_num ?>">
 																<input type="hidden" name="id" value="<?= $id ?>">
@@ -2703,7 +2703,6 @@ async function modifQte(devis, pdt, tailleKey) {
   try {
     $ol.loading(true);
     const data = await $ol.apiPost('client', { mode:'modifQte', devis, pdt, taille, qte_new });
-	console.log(data);
     if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
     else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
   } catch(e) {

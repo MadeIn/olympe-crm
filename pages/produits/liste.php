@@ -2,66 +2,16 @@
 $titre_page = "Gestion des produits - Olympe Mariage";
 $desc_page = "Gestion des produits - Olympe Mariage";
 
-$nom_table = "produits";
-$nom_champ = "produit";
 $alert = "Etes vous sûr de vouloir supprimer cet item ? Attention cet action peut avoir des conséquences sur les produits...";
-
-if (isset($suppr)) {
-	$sql = "delete from md_" . $nom_table . " where " . $nom_champ . "_num=" . decrypte($suppr);
-	$base->query($sql);
-	$sql = "delete from md_" . $nom_table . "_photos where " . $nom_champ . "_num=" . decrypte($suppr);
-	$base->query($sql);
-}
 
 if (!isset($recherche)) {
 	$etat=1;
 }
+
+
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
-<script language="Javascript">
-function confirme() {
-	if (confirm("<?= $alert ?>"))
-		return true;
-	else 
-		return false;
-}
-
-function changePrixAchat(id) {
-	var oXmlHttp = null; 
-	
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	prix = document.getElementById("prixachat_" + id).value;
-	
-	link = "modif-prixachat.php?id=" + id + "&prix=" + prix + "&rand=<?= rand(0,1000000) ?>";
-	//alert(link);
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					//displayReponse(oXmlHttp.responseText, affichage_retour);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					//displayReponse("Erreur : " + oXmlHttp.statusText, affichage_retour);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-</script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">
@@ -100,7 +50,7 @@ function changePrixAchat(id) {
 														<span class="input-group-addon">
 															<i class="fa fa-list"></i>
 														</span>
-														<input type="text" name="nom" class="form-control" value="<?= $nom ?>"></div></td>
+														<input type="text" name="nom" class="form-control" value="<?= ($nom ?? '') ?>"></div></td>
 												</tr>
 												<tr>
 													<td><label>Categorie</label>
@@ -112,10 +62,10 @@ function changePrixAchat(id) {
 														$cc = $base->query($sql);
 														foreach ($cc as $rcc)
 														{
-															echo "<option value=\"" . $rcc["categorie_num"] . "\"";
-															if ($categorie==$rcc["categorie_num"])
+															echo '<option value="' . $rcc["categorie_num"] . '"';
+															if (($categorie ?? 0)==$rcc["categorie_num"])
 																echo " SELECTED";
-															echo ">" . $rcc["categorie_nom"] . "</option>\n";
+															echo '>' . $rcc["categorie_nom"] . '</option>';
 														}
 													?>		
 														</select>
@@ -132,10 +82,10 @@ function changePrixAchat(id) {
 														$cc = $base->query($sql);
 														foreach ($cc as $rcc)
 														{
-															echo "<option value=\"" . $rcc["marque_num"] . "\"";
-															if ($marque==$rcc["marque_num"])
+															echo '<option value="' . $rcc["marque_num"] . '"';
+															if (($marque ?? 0)==$rcc["marque_num"])
 																echo " SELECTED";
-															echo ">" . $rcc["marque_nom"] . "</option>\n";
+															echo '>' . $rcc["marque_nom"] . '</option>';
 														}
 													?>		
 														</select>
@@ -204,14 +154,22 @@ function changePrixAchat(id) {
 													$pp = $base->query($sql);
 													$nbr = count($pp);	
 													$sql = "select * from prixachats where prixachat_num='" . $rcc["prixachat_num"] . "'";
-													$rpp = $base->queryRow($sql); if ($rpp)														$prix_achat = $rpp["prixachat_montant"];
+													$rpp = $base->queryRow($sql); 
+													if ($rpp)														
+														$prix_achat = $rpp["prixachat_montant"];
 											  ?>
 												<tr>
 													<td class="highlight">
-														<div class="success"></div> <a href="produit.php?modif_num=<?= crypte($rcc[$nom_champ . "_num"]) ?>"> <?= $rcc["produit_nom"] ?></a> (<?= $nbr ?>)</td>
+														<div class="success"></div> <a href="produit?modif_num=<?= crypte($rcc["produit_num"]) ?>"> <?= $rcc["produit_nom"] ?></a> (<?= $nbr ?>)</td>
 													<td><?= $rcc["categorie_nom"] ?></td>
 													<td><?= $rcc["marque_nom"] ?></td>
-													<td><input type="text" name="prixachat" id="prixachat_<?= $rcc["prixachat_num"] ?>" value="<?= $prix_achat ?>" onBlur="changePrixAchat(<?= $rcc["prixachat_num"] ?>)" class="form-control"></td>
+													<td>
+														<input type="text"
+															name="prixachat"
+															id="prixachat_<?= (int)$rcc["prixachat_num"] ?>"
+															value="<?= h($prix_achat ?? '') ?>"
+															onBlur="changePrixAchat('<?= (float)$rcc["prixachat_num"] ?>')"
+															class="form-control">	
 													<td><?php 
 													if ($prix!=0)
 														echo safe_number_format($prix,2,"."," ") . ' €';
@@ -225,10 +183,14 @@ function changePrixAchat(id) {
 															echo "Invisible"; ?>
 													</td>
 													<td>
-														<a href="produit.php?modif_num=<?= crypte($rcc["produit_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
+														<a href="produit?modif_num=<?= crypte($rcc["produit_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
 															<i class="fa fa-edit"></i> Edit </a> 
-														<a href="<?= $_SERVER["PHP_SELF"] . '?suppr=' . crypte($rcc["produit_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
-															<i class="fa fa-trash-o"></i> Suppr </a>
+														<a href="#"
+															class="btn btn-outline btn-circle dark btn-sm black"
+															data-delete="<?= h(crypte($rcc["produit_num"])) ?>"
+															data-confirm="<?= h($alert) ?>">
+															<i class="fa fa-trash-o"></i> Suppr
+														</a>
 													</td>
 												</tr>
 											  <?php } ?>
@@ -251,6 +213,69 @@ function changePrixAchat(id) {
             </div>
         </div>
          <?php include TEMPLATE_PATH . 'bottom.php'; ?>
-    </body>
+<script>
 
+	// === HANDLER UNIFIÉ pour confirmations ===
+	document.addEventListener('click', async (e) => {
+		// Vérifier si c'est un lien de suppression (priorité)
+		const deleteBtn = e.target.closest('[data-delete]');
+		if (deleteBtn) {
+			e.preventDefault();
+			e.stopPropagation();
+			
+			const message = deleteBtn.dataset.confirm || "Êtes-vous sûr de vouloir supprimer cet item ?";
+			
+			try {
+				// Attendre la confirmation
+				const confirmed = await $ol.ask(message);
+				if (!confirmed) return;
+				
+				// Loading pendant suppression
+				$ol.loading(true);
+				
+				// Supprimer via API
+				await $ol.apiPost('produit', { mode: 'delete', suppr: deleteBtn.dataset.delete });
+				
+				// Redirection après succès
+				window.location.href = '<?= current_path() . '?recherche=ok&nom=' . ($nom ?? '') . '&categorie=' . ($categorie ?? 0) . '&etat=' . ($etat ?? 0) . '&marque=' . ($marque ?? 0) ?>';
+				
+			} catch (err) {
+				$ol.loading(false);
+				$ol.toastError("Suppression", err?.message || "Impossible de supprimer");
+			}
+			return;
+		}
+		
+		// Autres liens avec confirmation simple
+		const confirmLink = e.target.closest('a[data-confirm]:not([data-delete])');
+		if (confirmLink) {
+			e.preventDefault();
+			
+			const message = confirmLink.dataset.confirm || "Confirmer ?";
+			const confirmed = await $ol.ask(message);
+			
+			if (confirmed) {
+				// Si confirmé, suivre le lien
+				window.location.href = confirmLink.href;
+			}
+		}
+	});
+
+	// === MAJ prix d'achat (EXPOSED GLOBAL) ===
+	window.changePrixAchat = function(id) {
+		const input = document.getElementById('prixachat_' + id);
+		if (!input) return;
+
+		const prix = input.value;
+		$ol.apiPost('produit', { mode: 'changePrixAchat', id, prix })
+		.then(() => {
+			$ol.toastSuccess('Prix mis à jour');
+		})
+		.catch(() => {
+			// inline badge près du champ
+			$ol.showInlineError(input, "Échec mise à jour");
+		});
+	};
+</script>
+	</body>
 </html>

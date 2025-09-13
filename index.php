@@ -22,6 +22,7 @@ if (is_file($VENDOR . '/autoload.php')) {
 }
 
 $app_config = require $ROOT . '/config/app.php';
+$chemins = (array)$app_config['paths'] ?? [];
 
 // Gestion des erreurs selon l'env
 $env = (string)($app_config['environment'] ?? 'prod');

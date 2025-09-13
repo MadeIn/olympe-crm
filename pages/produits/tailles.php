@@ -14,38 +14,33 @@ if (isset($decalle))
 		$new_pos = $pos-1;
 
 	// On decalle 
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $pos . "' where " . $nom_champ . "_pos=" . $new_pos;
+	$sql = "update tailles set taille_pos='" . $pos . "' where taille_pos=" . $new_pos;
 	$base->query($sql);
 
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $new_pos . "' where " . $nom_champ . "_num=" . $val_num;
+	$sql = "update tailles set taille_pos='" . $new_pos . "' where taille_num=" . $val_num;
 	$base->query($sql);
 }
 
 if (isset($modif))
 {
-	$sql_modif = "";
-	$editor = str_replace("&lt;","<",$elm1);
-	$editor = str_replace("&gt;",">",$elm1);
-
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_nom='" . $nom . "'";
-	$sql .= $sql_modif;
-	$sql .= " where " . $nom_champ . "_num=" . decrypte($val_num);
+	$sql = "update tailles set taille_nom='" . $nom . "'";
+	$sql .= " where taille_num=" . decrypte($val_num);
 	$base->query($sql);
 }
 
 if (isset($ajout))
 {
-	$sql = "insert into " . $nom_table . " values (0,'" . $nom . "','" . $nbr_ligne . "')";
+	$sql = "insert into tailles values (0,'" . $nom . "','" . $nbr_ligne . "')";
 	$base->query($sql);
 }
 
 if (isset($suppr))
 {
-	$sql = "delete from " . $nom_table . " where " . $nom_champ . "_num=" . decrypte($suppr);
+	$sql = "delete from tailles where taille_num=" . decrypte($suppr);
 	$base->query($sql);
 }
 
-$sql = "select * from " . $nom_table . " order by " . $nom_champ . "_pos ASC";
+$sql = "select * from tailles order by taille_pos ASC";
 $cdr = $base->query($sql);
 $nbr_ligne = count($cdr);
 
@@ -53,11 +48,8 @@ $nbr_ligne = count($cdr);
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
-function confirme() {
-	if (confirm("<?= $alert ?>"))
-		return true;
-	else 
-		return false;
+async function confirme() {
+    return await $ol.confirmDialog("<?= $alert ?>");
 }
 </script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
@@ -122,7 +114,7 @@ function confirme() {
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<tbody>
 											<?php 
-												$sql = "select * from " . $nom_table . " d where d." . $nom_champ . "_num=" . decrypte($modif_num);
+												$sql = "select * from tailles d where d.taille_num=" . decrypte($modif_num);
 												$rcc = $base->queryRow($sql);
 												$i=0;
 												if ($rcc)
@@ -135,7 +127,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-black-tie"></i>
 													</span>
-													<input type="text" name="nom" class="form-control" value="<?= $rcc[$nom_champ . "_nom"] ?>" required></div></td>
+													<input type="text" name="nom" class="form-control" value="<?= $rcc["taille_nom"] ?>" required></div></td>
 											</tr>
 											<?php												}
 											?>
@@ -162,12 +154,13 @@ function confirme() {
 								<div class="table-scrollable">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										  <tbody>
-											<?php												$i=0;
+											<?php												
+												$i=0;
 												foreach ($cdr as $row) {
 											?>
 											<tr>
 												<td class="highlight">
-													<div class="success"></div> <a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["taille_num"]) ?>"><?= $row[$nom_champ . "_nom"] ?></a></td>
+													<div class="success"></div> <a href="<?= current_path() . '?modif_num=' . crypte($row["taille_num"]) ?>"><?= $row["taille_nom"] ?></a></td>
 												<td align="center">
 												<?php 	
 													if ($nbr_ligne>1)
@@ -175,7 +168,7 @@ function confirme() {
 														$fleche_haut=0;
 														if ($i>0)
 														{
-															echo "<a href=\"" . $PHP_SELF . "?val_num=" . $row[$nom_champ . "_num"] . "&pos=" . $row[$nom_champ . "_pos"] . "&decalle=m\"><i class=\"fa fa-chevron-up\"></i></a>";
+															echo '<a href="' . current_path() . '?val_num=' . $row["taille_num"] . '&pos=' . $row["taille_pos"] . '&decalle=m"><i class="fa fa-chevron-up"></i></a>';
 															$fleche_haut=1;
 														}
 														if ($i<($nbr_ligne-1))
@@ -183,19 +176,20 @@ function confirme() {
 															$margin = "";
 															if ($fleche_haut==0)
 																$margin = "margin-left:28px;";
-															echo "<a href=\"" . $PHP_SELF . "?val_num=" . $row[$nom_champ . "_num"] . "&pos=" . $row[$nom_champ . "_pos"] . "&decalle=d\"><i class=\"fa fa-chevron-down\"></i></a>";
+															echo '<a href="' . current_path() . '?val_num=' . $row["taille_num"] . '&pos=' . $row["taille_pos"] . '&decalle=d"><i class="fa fa-chevron-down"></i></a>';
 														}
 													}
 												?>
 												</td>
 												 <td>
-													<a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["taille_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
+													<a href="<?= current_path() . '?modif_num=' . crypte($row["taille_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
 														<i class="fa fa-edit"></i> Edit </a> 
-													<!--<a href="<?= $_SERVER["PHP_SELF"] . '?suppr=' . crypte($row["taille_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
+													<!--<a href="<?= current_path() . '?suppr=' . crypte($row["taille_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
 														<i class="fa fa-trash-o"></i> Suppr </a>-->
 												</td>
 											</tr>
-											<?php												$i++;
+											<?php												
+													$i++;
 												}
 											?>
 										</tbody>

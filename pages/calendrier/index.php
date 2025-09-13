@@ -397,10 +397,8 @@ function displayReponse(sText, place) {
 }
 
 function addWidget() {	
-	//alert(id);
 	var oXmlHttp = null; 
 	 
-	//alert(id);
 	if(window.XMLHttpRequest)
 		oXmlHttp = new XMLHttpRequest();
 	else if(window.ActiveXObject)
@@ -528,7 +526,7 @@ function changeHeureFin() {
 								<h4 id="modalTitle" class="modal-title"></h4>
 							</div>
 							<!--<div id="modalBody" class="modal-body"> </div>-->
-							<form name="calendrier_desc" method="POST" action="<?php $_SERVER["PHP_SELF"] ?>">
+							<form name="calendrier_desc" method="POST" action="<?php current_path() ?>">
 								<input type="hidden" name="modif_desc" value="ok">
 								<input type="hidden" name="calendrier_num" id="calendrier_num" value="">
 								<center><textarea name="calendrier_desc" id="calendrier_desc" cols="80" rows="5"></textarea></center>

@@ -1,16 +1,356 @@
-.ol-toaster{position:fixed;top:16px;right:16px;z-index:10000;display:flex;flex-direction:column;gap:8px}
-.ol-toast{min-width:260px;max-width:420px;background:#fff;border-left:4px solid #dc3545;
-  box-shadow:0 6px 24px rgba(0,0,0,.12);border-radius:10px;padding:10px 12px 10px 10px;
-  font:14px/1.35 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
-  display:flex;align-items:flex-start;gap:8px}
-.ol-toast .ol-ico{flex:0 0 auto;margin-top:1px}
-.ol-toast .ol-ico::before{content:"⛔";display:inline-block}
-.ol-toast .ol-body{flex:1 1 auto}
-.ol-toast .ol-title{font-weight:600;margin-bottom:4px}
-.ol-toast .ol-msg{color:#333}
-.ol-toast .ol-close{background:transparent;border:0;cursor:pointer;font-size:16px;line-height:1;opacity:.6}
-.ol-toast .ol-close:hover{opacity:1}
+/* =========================
+   OLYMPE — UI Helpers (CSS) - Luxury Design
+   ========================= */
 
-.ol-inline-error{display:inline-flex;align-items:center;gap:6px;background:#fff3f3;border:1px solid #f0bdbd;
-  color:#9a1c1c;border-radius:8px;padding:6px 8px;margin:6px 0;font-size:12px}
-.ol-inline-error .dot{width:8px;height:8px;border-radius:50%;background:#dc3545}
+/* Loading overlay */
+.olympe-loading {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 9999;
+    display: none;
+    backdrop-filter: blur(8px);
+}
+
+.olympe-loading .box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 40px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #000000;
+    letter-spacing: 0.3px;
+}
+
+/* =========================
+   Toaster - Style épuré (Compatible Bootstrap 3)
+   ========================= */
+.ol-toaster {
+    position: fixed !important;
+    top: 30px !important;
+    right: 30px !important;
+    z-index: 50000 !important;
+    width: auto !important;
+    max-width: 450px !important;
+}
+
+.ol-toast {
+    width: 350px !important;
+    min-width: 300px !important;
+    max-width: 450px !important;
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+    padding: 20px !important;
+    margin-bottom: 16px !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    position: relative !important;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s ease;
+    box-sizing: border-box !important;
+}
+
+.ol-toast.show {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
+
+.ol-toast::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 3px !important;
+    background: #000000 !important;
+}
+
+.ol-toast .ol-ico {
+    position: absolute !important;
+    top: 20px !important;
+    left: 15px !important;
+    font-size: 16px !important;
+    width: 20px !important;
+    text-align: center !important;
+}
+
+.ol-toast .ol-ico::before {
+    content: "●" !important;
+    display: inline-block !important;
+    color: #000000 !important;
+}
+
+.ol-toast .ol-body {
+    margin-left: 35px !important;
+    padding-right: 30px !important;
+}
+
+.ol-toast .ol-title {
+    font-weight: 500 !important;
+    margin-bottom: 6px !important;
+    color: #000000 !important;
+    font-size: 15px !important;
+    letter-spacing: 0.2px !important;
+}
+
+.ol-toast .ol-msg {
+    color: #666666 !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+}
+
+.ol-toast .ol-close {
+    position: absolute !important;
+    top: 15px !important;
+    right: 15px !important;
+    background: transparent !important;
+    border: 0 !important;
+    cursor: pointer !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    color: #666666 !important;
+    padding: 0 !important;
+    width: 20px !important;
+    height: 20px !important;
+    text-align: center !important;
+    transition: color 0.3s ease !important;
+}
+
+.ol-toast .ol-close:hover {
+    color: #000000 !important;
+}
+
+/* Toast variants */
+.ol-toast.success::before {
+    background: #000000;
+}
+
+.ol-toast.success .ol-ico::before {
+    content: "✓";
+    color: #000000;
+}
+
+.ol-toast.info::before {
+    background: #000000;
+}
+
+.ol-toast.info .ol-ico::before {
+    content: "i";
+    color: #000000;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.ol-toast.warn::before {
+    background: #000000;
+}
+
+.ol-toast.warn .ol-ico::before {
+    content: "!";
+    color: #000000;
+    font-weight: 600;
+}
+
+.ol-toast.error::before {
+    background: #000000;
+}
+
+.ol-toast.error .ol-ico::before {
+    content: "×";
+    color: #000000;
+    font-weight: 500;
+}
+
+/* =========================
+   Inline error badge
+   ========================= */
+.ol-inline-error {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid #000000;
+    color: #000000;
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+}
+
+.ol-inline-error .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #000000;
+}
+
+/* =========================
+   Modal pour Bootstrap 3.3.7 - Version ultra-simple
+   ========================= */
+
+.ol-modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    z-index: 99999 !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    
+    /* Pas de centrage CSS, on va le faire en JS */
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+.ol-modal-overlay.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.ol-modal {
+    position: absolute !important;
+    
+    /* Centrage forcé par JavaScript - valeurs par défaut */
+    top: 50% !important;
+    left: 50% !important;
+    margin-top: -200px !important; /* Approximativement la moitié de la hauteur */
+    margin-left: -250px !important; /* Approximativement la moitié de la largeur */
+    
+    /* Taille fixe pour le calcul */
+    width: 500px !important;
+    max-width: 90vw !important;
+    padding: 50px 40px !important;
+    
+    /* Styles visuels */
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+    
+    /* Typographie */
+    font-family: 'Inter', Arial, sans-serif !important;
+    text-align: center !important;
+    
+    /* Reset */
+    box-sizing: border-box !important;
+    float: none !important;
+    
+    /* Animation simple */
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+.ol-modal-overlay.show .ol-modal {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+}
+
+/* Suppression du pseudo-element qui pose problème */
+.ol-modal-overlay:before {
+    display: none !important;
+}
+
+/* Elements internes - inchangés */
+.ol-modal-title {
+    font-family: 'Playfair Display', Georgia, serif !important;
+    font-weight: 300 !important;
+    font-size: 24px !important;
+    color: #000000 !important;
+    margin: 0 0 20px 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
+
+.ol-modal-message {
+    color: #666666 !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    margin: 0 0 30px 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
+
+.ol-modal-buttons {
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.ol-modal-btn {
+    font-family: 'Inter', Arial, sans-serif !important;
+    font-size: 14px !important;
+    padding: 12px 30px !important;
+    margin: 0 8px !important;
+    min-width: 120px !important;
+    
+    border: 1px solid #000000 !important;
+    background: transparent !important;
+    color: #000000 !important;
+    
+    cursor: pointer !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    
+    transition: all 0.3s ease !important;
+    
+    /* Reset Bootstrap 3 */
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.ol-modal-btn.primary {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.ol-modal-btn.primary:hover,
+.ol-modal-btn.primary:focus {
+    background: #ffffff !important;
+    color: #000000 !important;
+    outline: none !important;
+}
+
+.ol-modal-btn.secondary:hover,
+.ol-modal-btn.secondary:focus {
+    background: #000000 !important;
+    color: #ffffff !important;
+    outline: none !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .ol-toaster {
+        top: 20px;
+        right: 20px;
+        left: 20px;
+    }
+    
+    .ol-toast {
+        min-width: auto;
+        max-width: none;
+    }
+    
+    .ol-modal {
+        width: 90vw !important;
+        margin-left: -45vw !important; /* 50% de 90vw */
+        padding: 30px 20px !important;
+    }
+    
+    .ol-modal-btn {
+        display: block !important;
+        width: 100% !important;
+        margin: 5px 0 !important;
+    }
+}

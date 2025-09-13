@@ -44,11 +44,8 @@ if (isset($action)) {
 <?php $link_plugin = '<link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />'; ?>
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
-function confirme() {
-	if (confirm("Etes vous sur de vouloir supprimer cet utilisateur ?"))
-		return true;
-	else 
-		return false;
+async function confirme() {
+    return await $ol.confirmDialog("Etes vous sur de vouloir supprimer cet utilisateur ?");
 }
 </script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
@@ -114,7 +111,7 @@ function confirme() {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form role="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST" enctype="multipart/form-data">
+									<form role="form" action="<?= current_path() ?>" method="POST" enctype="multipart/form-data">
 									<?php if (!isset($edit)) { ?>
 										<input type="hidden" name="action" value="add">
 									<?php } else { ?>

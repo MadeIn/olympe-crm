@@ -18,11 +18,8 @@ if (isset($objectif)) {
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
-function confirme() {
-	if (confirm("Etes vous sur de vouloir supprimer cet item ?"))
-		return true;
-	else 
-		return false;
+async function confirme() {
+    return await $ol.confirmDialog("Êtes-vous sûr de vouloir supprimer cet item ?");
 }
 </script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
@@ -53,7 +50,7 @@ function confirme() {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form role="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
+									<form role="form" action="<?= current_path() ?>" method="POST">
 									<input type="hidden" name="genre" value="<?= $genre ?>">
 									<div class="form-group">
 										<label>Showroom</label>
@@ -90,7 +87,7 @@ function confirme() {
 										</div>
 									</div>
 									<div class="portlet-body form">
-										<form role="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
+										<form role="form" action="<?= current_path() ?>" method="POST">
 										<input type="hidden" name="showroom_choix" value="<?= $showroom_choix ?>">
 										<input type="hidden" name="genre" value="<?= $genre ?>">
 										<input type="hidden" name="objectif" value="ok">

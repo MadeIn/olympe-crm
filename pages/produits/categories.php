@@ -14,18 +14,18 @@ if (isset($decalle))
 		$new_pos = $pos-1;
 
 	// On decalle 
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $pos . "' where " . $nom_champ . "_pos=" . $new_pos;
+	$sql = "update categories set categorie_pos='" . $pos . "' where categorie_pos=" . $new_pos;
 	$base->query($sql);
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_pos='" . $new_pos . "' where " . $nom_champ . "_num=" . $val_num;
+	$sql = "update categories set categorie_pos='" . $new_pos . "' where categorie_num=" . $val_num;
 	$base->query($sql);
 }
 
 if (isset($modif))
 {
 	$sql_modif = "";
-	$sql = "update " . $nom_table . " set " . $nom_champ . "_visible='" . $etat . "', " . $nom_champ . "_nom='" . $nom . "'";
+	$sql = "update categories set categorie_visible='" . $etat . "', categorie_nom='" . $nom . "'";
 	$sql .= $sql_modif;
-	$sql .= " where " . $nom_champ . "_num=" . decrypte($val_num);
+	$sql .= " where categorie_num=" . decrypte($val_num);
 	$base->query($sql);
 
 	// On insere les tailles
@@ -52,12 +52,8 @@ if (isset($modif))
 
 if (isset($ajout))
 {
-	$sql = "insert into " . $nom_table . " values (0,'" . $nom . "','" . $etat . "')";
-	$base->query($sql);
-
-	// On recupere le num categ
-	$sql = "select max(" . $nom_champ . "_num) val from " . $nom_table;
-	$rt = $base->queryRow($sql); if ($rt)		$num = $rt["val"];
+	$sql = "insert into categories values (0,'" . $nom . "','" . $etat . "')";
+	$num = $base->insert($sql);
 
 	// On insere les tailles
 	if (isset($taille))
@@ -77,11 +73,11 @@ if (isset($ajout))
 }
 
 if (isset($suppr)) {
-	$sql = "delete from " . $nom_table . " where " . $nom_champ . "_num=" . decrypte($suppr);
+	$sql = "delete from categories where categorie_num=" . decrypte($suppr);
 	$base->query($sql);
 }
 
-$sql = "select * from " . $nom_table . " order by " . $nom_champ . "_nom ASC";
+$sql = "select * from categories order by categorie_nom ASC";
 $cdr = $base->query($sql);
 $nbr_ligne = count($cdr);
 
@@ -89,11 +85,8 @@ $nbr_ligne = count($cdr);
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
-function confirme() {
-	if (confirm("<?= $alert ?>"))
-		return true;
-	else 
-		return false;
+async function confirme() {
+    return await $ol.confirmDialog("<?= $alert ?>");
 }
 </script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
@@ -153,7 +146,8 @@ function confirme() {
 											<tr>
 												<td><label>Taille(s)</label>
 													<div class="input-group">
-													<?php														$sql = "select * from tailles where taille_num>0 order by taille_pos ASC";
+													<?php														
+														$sql = "select * from tailles where taille_num>0 order by taille_pos ASC";
 														$cc = $base->query($sql);
 														foreach ($cc as $rcc)
 															echo "<input type=\"checkbox\" value=\"" . $rcc["taille_num"] . "\" name=\"taille[]\">" . $rcc["taille_nom"] . "<br>";
@@ -173,7 +167,7 @@ function confirme() {
 									<table class="table table-striped table-bordered table-advance table-hover">
 										 <tbody>
 										<?php 
-											$sql = "select * from " . $nom_table . " d where d." . $nom_champ . "_num=" . decrypte($modif_num);
+											$sql = "select * from categories d where d.categorie_num=" . decrypte($modif_num);
 											$rcc = $base->queryRow($sql);
 											$i=0;
 											if ($rcc)
@@ -199,16 +193,17 @@ function confirme() {
 										<tr height="35">
 											<td><label>Taille(s)</label>
 												<div class="input-group">
-												<?php													$sql = "select * from tailles where taille_num>=0 order by taille_pos ASC";
+												<?php													
+													$sql = "select * from tailles where taille_num>=0 order by taille_pos ASC";
 													$cc = $base->query($sql);
 													foreach ($cc as $rcc) {
 														$sql = "select * from categories_tailles where taille_num=" . $rcc["taille_num"] . " and categorie_num=" . decrypte($modif_num);
 														$test = $base->query($sql);
 														$nbr_res = count($test);
-														echo " <input type=\"checkbox\" value=\"" . $rcc["taille_num"] . "\" name=\"taille[]\"";
+														echo ' <input type="checkbox" value="' . $rcc["taille_num"] . '" name="taille[]"';
 														if ($nbr_res>0)
 															echo " CHECKED";
-														echo ">" . $rcc["taille_nom"] . "<br>";
+														echo '>' . $rcc["taille_nom"] . '<br>';
 													}
 														
 												?>
@@ -240,20 +235,22 @@ function confirme() {
 								<div class="table-scrollable">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										  <tbody>
-											<?php												$i=0;
+											<?php												
+												$i=0;
 												foreach ($cdr as $row) {
 											?>
 											<tr>
 												<td class="highlight">
-													<div class="success"></div> <a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["categorie_num"]) ?>"><?= $row[$nom_champ . "_nom"] ?></a></td>
+													<div class="success"></div> <a href="<?= current_path() . '?modif_num=' . crypte($row["categorie_num"]) ?>"><?= $row[$nom_champ . "_nom"] ?></a></td>
 												 <td>
-													<a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["categorie_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
+													<a href="<?= current_path() . '?modif_num=' . crypte($row["categorie_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
 														<i class="fa fa-edit"></i> Edit </a> 
-													<!--<a href="<?= $_SERVER["PHP_SELF"] . '?suppr=' . crypte($row["categorie_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
+													<!--<a href="<?= current_path() . '?suppr=' . crypte($row["categorie_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
 														<i class="fa fa-trash-o"></i> Suppr </a>-->
 												</td>
 											</tr>
-											<?php												$i++;
+											<?php												
+													$i++;
 												}
 											?>
 										</tbody>

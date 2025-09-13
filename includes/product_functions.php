@@ -9,7 +9,7 @@
  */
 function RecupPrix(int $produit): array|false {
     try {
-        $db = Database::getInstance();
+        $base = Database::getInstance();
         
         $sql = "SELECT p.*, pp.*, t.* 
                 FROM md_produits p 
@@ -17,7 +17,7 @@ function RecupPrix(int $produit): array|false {
                 INNER JOIN tva t ON p.tva_num = t.tva_num 
                 WHERE p.produit_num = ?";
         
-        $result = $db->queryRow($sql, [$produit]);
+        $result = $base->queryRow($sql, [$produit]);
         
         if (!$result) {
             return false;
@@ -141,14 +141,14 @@ function RecupPrixInit(int $produit): float|false {
  */
 function RecupPhotoProduit(int $produit): array {
     try {
-        $db = Database::getInstance();
+        $base = Database::getInstance();
         
         $sql = "SELECT * FROM md_produits_photos 
                 WHERE produit_num = ? AND photo_pos = 1 
                 ORDER BY photo_pos ASC 
                 LIMIT 1";
         
-        $result = $db->queryRow($sql, [$produit]);
+        $result = $base->queryRow($sql, [$produit]);
         
         if ($result) {
             return [
@@ -179,10 +179,10 @@ function RecupPhotoProduit(int $produit): array {
  */
 function montantCommande(int $id): array|false {
     try {
-        $db = Database::getInstance();
+        $base = Database::getInstance();
         
         $sql = "SELECT * FROM commandes WHERE id = ?";
-        $result = $db->queryRow($sql, [$id]);
+        $result = $base->queryRow($sql, [$id]);
         
         if (!$result) {
             return false;
@@ -268,13 +268,13 @@ function resteAPayerCommande(int $id): float {
             return 0;
         }
         
-        $db = Database::getInstance();
+        $base = Database::getInstance();
         
         $sql = "SELECT COALESCE(SUM(paiement_montant), 0) as total_paye 
                 FROM commandes_paiements 
                 WHERE id = ?";
         
-        $result = $db->queryRow($sql, [$id]);
+        $result = $base->queryRow($sql, [$id]);
         $total_paye = (float)($result["total_paye"] ?? 0);
         
         $reste = $montant_ttc - $total_paye;
@@ -294,7 +294,7 @@ function resteAPayerCommande(int $id): float {
 function majStockWeb(string $id_crypte): bool {
     try {
         $id = decrypte($id_crypte);
-        $db = Database::getInstance();
+        $base = Database::getInstance();
         
         // Récupérer les produits de la commande
         $sql = "SELECT cp.*, p.produit_ref 
@@ -302,7 +302,7 @@ function majStockWeb(string $id_crypte): bool {
                 INNER JOIN md_produits p ON cp.produit_num = p.produit_num 
                 WHERE cp.id = ?";
         
-        $produits = $db->query($sql, [$id]);
+        $produits = $base->query($sql, [$id]);
         
         if (empty($produits)) {
             return false;
@@ -327,7 +327,7 @@ function majStockWeb(string $id_crypte): bool {
  */
 function getProductDetails(int $produit_id): array|false {
     try {
-        $db = Database::getInstance();
+        $base = Database::getInstance();
         
         $sql = "SELECT p.*, c.categorie_nom, m.marque_nom 
                 FROM md_produits p 
@@ -335,7 +335,7 @@ function getProductDetails(int $produit_id): array|false {
                 LEFT JOIN marques m ON p.marque_num = m.marque_num 
                 WHERE p.produit_num = ?";
         
-        $produit = $db->queryRow($sql, [$produit_id]);
+        $produit = $base->queryRow($sql, [$produit_id]);
         
         if (!$produit) {
             return false;
@@ -384,14 +384,14 @@ function calculateDiscount(float $amount, int $discount_type, float $discount_va
  */
 function checkProductAvailability(int $produit_id, int $quantity = 1): bool {
     try {
-        $db = Database::getInstance();
+        $base = Database::getInstance();
         
         $sql = "SELECT stock_reel FROM md_stocks 
                 WHERE produit_num = ? 
                 ORDER BY stock_reel DESC 
                 LIMIT 1";
         
-        $result = $db->queryRow($sql, [$produit_id]);
+        $result = $base->queryRow($sql, [$produit_id]);
         
         if (!$result) {
             return false;

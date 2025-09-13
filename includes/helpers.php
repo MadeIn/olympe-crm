@@ -58,4 +58,11 @@ function json_err(string $msg, int $status = 400, array $extra = []): never {
     exit;
 }
 
+// Normalise un nombre de formulaire: "1 234,56" -> "1234.56" ou '' -> ''
+function norm_num_str(string $v): string {
+    $v = trim($v);
+    if ($v === '') return '';
+    return str_replace([' ', ','], ['', '.'], $v);
+}
+
 ?>

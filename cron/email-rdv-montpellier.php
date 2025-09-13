@@ -32,7 +32,7 @@ try {
             AND c.client_mail != ''
             ORDER BY r.rdv_date ASC";
     
-    $rendez_vous = $db->query($sql, [$date_debut, $date_fin]);
+    $rendez_vous = $base->query($sql, [$date_debut, $date_fin]);
     
     $emails_sent = 0;
     $errors = 0;
@@ -46,7 +46,7 @@ try {
                          AND mail_titre LIKE '%Rappel Rendez-vous%' 
                          AND DATE(mail_date) = CURDATE()";
             
-            $already_sent = $db->queryRow($check_sql, [$rdv['client_num']]);
+            $already_sent = $base->queryRow($check_sql, [$rdv['client_num']]);
             
             if ($already_sent['count'] > 0) {
                 log_cron('email-rdv-montpellier', "Rappel déjà envoyé aujourd'hui pour client {$rdv['client_num']}");

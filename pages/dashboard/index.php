@@ -4,6 +4,10 @@ $desc_page = "Statistiques - Olympe Mariage";
   
   $mois_nom = array("","Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre");
   $mois_jour = array(0,31,28,31,30,31,30,31,31,30,31,30,31);
+
+  $mois = $mois ?? 0;
+  $annee = $annee ?? 0;
+
   if (($mois!=0) && ($annee!=0)) {
 	  $date_deb = $annee . "-" . $mois . "-1";
 	  $date_fin = $annee . "-" . $mois . "-" . $mois_jour[intval($mois)];
@@ -72,7 +76,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 															$cc = $base->query($sql);
 															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["user_num"] . '"';
-																if ($user==$rcc["user_num"])
+																if (($user ?? '')==$rcc["user_num"])
 																	echo " SELECTED";
 																echo '>' . $rcc["user_prenom"] . '</option>';
 															}
@@ -91,7 +95,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<?php 
 														for ($i=1;$i<13;$i++) {
 															echo "<option value=\"" . sprintf($i,"%02d") . "\"";
-															if (sprintf($i,"%02d")==$mois)
+															if (sprintf($i,"%02d")==($mois ?? Date("m")))
 																echo " SELECTED";
 															echo ">" . $mois_nom[$i] . "</option>\n";
 														}
@@ -102,7 +106,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<?php 
 														for ($i=Date("Y")+2;$i>2015;$i--) {
 															echo "<option value=\"" .$i . "\"";
-															if ($i==$annee)
+															if ($i==($annee ?? Date("Y")))
 																echo " SELECTED";
 															echo ">" . $i . "</option>\n";
 														}
@@ -112,11 +116,12 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															
+															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
-																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
+																if ($rtt["showroom_num"]==($showroom ?? 0)) echo " SELECTED";
 																echo '>' . $rtt["showroom_nom"] . '</option>';
 															}
 														?>
@@ -180,7 +185,6 @@ $desc_page = "Statistiques - Olympe Mariage";
 										  $montant_total_ht = 0;
 										  $montant_total_ttc = 0;
 										  foreach ($re as $row) {
-											 $nbr++;
 											 if ($type==1)
 												$sql = "select * from commandes c, commandes_produits cp, md_produits p, marques m where c.id=cp.id and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and categorie_num IN (" . $categorie_select . ") and commande_date>='" . $row["commande_date"] . "' and c.commande_num>0 and c.client_num='" . $row["client_num"] . "'";
 											 else
@@ -190,6 +194,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											 $accessoires = array();
 											 $commande_robe = count($cc);
 											 if ($commande_robe>0) {
+												$nbr++;
 												 foreach ($cc as $rcc) {
 													 $commande_num = $rcc["id"];
 													 $createur = $rcc["marque_nom"];
@@ -224,22 +229,22 @@ $desc_page = "Statistiques - Olympe Mariage";
 												 
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=2";
 												 $rrv = $base->queryRow($sql);
-if ($rrv) {
+												if ($rrv) {
 													 $date_livraison = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=3";
 												 $rrv = $base->queryRow($sql);
-if ($rrv) {
+												if ($rrv) {
 													 $date_reception = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=4";
 												 $rrv = $base->queryRow($sql);
-if ($rrv) {
+												if ($rrv) {
 													 $date_retouche = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=5";
 												 $rrv = $base->queryRow($sql);
-if ($rrv) {
+												if ($rrv) {
 													 $date_remise = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $acompte1 = "";
@@ -249,26 +254,26 @@ if ($rrv) {
 												 
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='1'";
 												 $rpp = $base->queryRow($sql);
- if ($rpp) {
+ 												if ($rpp) {
 													 $acompte1 = safe_number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 													 $montant_acompte1 += $rpp["paiement_montant"];
 												 }
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='2'";
 												 $rpp = $base->queryRow($sql);
- if ($rpp) {
+ 												if ($rpp) {
 													 $acompte2 = safe_number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 													 $montant_acompte2 += $rpp["paiement_montant"];
 												 }
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='3'";
 												 $rpp = $base->queryRow($sql);
- if ($rpp) {
+ 												if ($rpp) {
 													 $acompte3 = safe_number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 													 $montant_acompte3 += $rpp["paiement_montant"];
 												 }
 												 
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='4'";
 												 $rpp = $base->queryRow($sql);
- if ($rpp) {
+ 												if ($rpp) {
 													 $acompte4 = safe_number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 													 $montant_acompte4 += $rpp["paiement_montant"];
 												 }
@@ -298,7 +303,7 @@ if ($rrv) {
 											<tr>
 												<td><b>Total : </b></td>
 												<td><small><?= $nbr ?></small></td>
-												<td><small><?= $createur ?></small></td>
+												<td><small></small></td>
 												<td colspan="7"></td>
 												<td><small><nobr><?= safe_number_format($montant_acompte1,2,'.',' ') ?>€</nobr></small></td>
 												<td><small><nobr><?= safe_number_format($montant_acompte2,2,'.',' ') ?>€</nobr></small></td>

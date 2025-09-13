@@ -20,7 +20,8 @@ return [
     'paths' => [
         'logs' => '/logs',
         'assets' => '/assets',
-        'uploads' => '/uploads'
+        'uploads' => '/uploads',
+        'photos'  => '/photos'
     ],
     
     // Configuration des erreurs selon l'environnement

@@ -164,7 +164,7 @@ $objectif_nbr_robe = safe_number_format($objectif_nbr_robe * 100, 0);
                         </ol>
                     </div>
                 <?php } else { ?>
-                    <form name="choix" action="<?= h($_SERVER["PHP_SELF"]); ?>" method="POST">
+                    <form name="choix" action="<?= h(current_path()); ?>" method="POST">
                         <?= csrf_field(); ?>
                         <div class="breadcrumbs">
                             <h1>Olympe Mariage 

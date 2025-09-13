@@ -17,7 +17,7 @@ function SendMail(string $email, string $titre, string $message, int $user, int 
                 LEFT JOIN showrooms s ON u.showroom_num = s.showroom_num 
                 WHERE u.user_num = ? AND u.showroom_num IN (1,2,3,5,6)";
         
-        $user_data = $db->queryRow($sql, [$user]);
+        $user_data = $base->queryRow($sql, [$user]);
         
         if (!$user_data) {
             error_log("Utilisateur non trouvé pour l'envoi d'email: $user");

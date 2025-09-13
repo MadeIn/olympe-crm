@@ -205,7 +205,7 @@ function uploadPhotoPdt(array $userfile_acc, string $nom_photo, string $repertoi
     }
     
     $app_config = require dirname(dirname(__FILE__)) . '/config/app.php';
-    $base_dir = $app_config['app_root'] . "/public/photos/" . $repertoire . "/";
+    $base_dir = $app_config['app_root'] . "/photos/" . $repertoire . "/";
     
     // Créer les répertoires nécessaires
     $dirs = ['zoom/', 'norm/', 'min/'];
