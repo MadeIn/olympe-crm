@@ -18,8 +18,9 @@ function asset(string $path): string {
 /**
  * Échappement HTML sécurisé
  */
-function h(string $str): string {
-    return htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+function h(null|string|int|float $v): string {
+    // si tu veux garder le format exact des nombres, transforme juste en string
+    return htmlspecialchars((string)$v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
 /* Helpers appel formulaire SAME PAGE */
@@ -42,6 +43,19 @@ function safe_number_format($value, int $decimals = 2, string $dec_point = ".", 
         return "";
     }
     return number_format((float) $value, $decimals, $dec_point, $thousands_sep);
+}
+
+function json_ok(array $payload = [], int $status = 200): never {
+    http_response_code($status);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['ok' => true] + $payload, JSON_UNESCAPED_UNICODE);
+    exit;
+}
+function json_err(string $msg, int $status = 400, array $extra = []): never {
+    http_response_code($status);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['ok' => false, 'error' => $msg] + $extra, JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
 ?>

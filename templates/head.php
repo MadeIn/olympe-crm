@@ -58,6 +58,10 @@ if (!function_exists('h')) {
         <link href="/assets/layouts/layout5/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
 
+        <!-- BEGIN STYLES PERSO -->
+        <link href="/assets/css/olympe.css" rel="stylesheet" type="text/css" />
+        <!-- END STYLES PERSO -->
+
         <link rel="icon" type="image/png" href="/favicon.png" />
         <script src="/assets/js/olympe.js"></script>
     </head>

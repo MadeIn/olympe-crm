@@ -1,0 +1,16 @@
+.ol-toaster{position:fixed;top:16px;right:16px;z-index:10000;display:flex;flex-direction:column;gap:8px}
+.ol-toast{min-width:260px;max-width:420px;background:#fff;border-left:4px solid #dc3545;
+  box-shadow:0 6px 24px rgba(0,0,0,.12);border-radius:10px;padding:10px 12px 10px 10px;
+  font:14px/1.35 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+  display:flex;align-items:flex-start;gap:8px}
+.ol-toast .ol-ico{flex:0 0 auto;margin-top:1px}
+.ol-toast .ol-ico::before{content:"⛔";display:inline-block}
+.ol-toast .ol-body{flex:1 1 auto}
+.ol-toast .ol-title{font-weight:600;margin-bottom:4px}
+.ol-toast .ol-msg{color:#333}
+.ol-toast .ol-close{background:transparent;border:0;cursor:pointer;font-size:16px;line-height:1;opacity:.6}
+.ol-toast .ol-close:hover{opacity:1}
+
+.ol-inline-error{display:inline-flex;align-items:center;gap:6px;background:#fff3f3;border:1px solid #f0bdbd;
+  color:#9a1c1c;border-radius:8px;padding:6px 8px;margin:6px 0;font-size:12px}
+.ol-inline-error .dot{width:8px;height:8px;border-radius:50%;background:#dc3545}

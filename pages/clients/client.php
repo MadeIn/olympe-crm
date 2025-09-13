@@ -57,9 +57,10 @@ if (isset($rdv_num)) {
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(1,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[1][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 			$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
@@ -95,9 +96,10 @@ if (isset($rdv_num)) {
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(1,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[1][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 			$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
@@ -133,9 +135,10 @@ if (isset($rdv_num)) {
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[1]["titre"];
+			$template = getEmailTemplate(1,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[1]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 			$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
@@ -171,9 +174,10 @@ if (isset($rdv_num)) {
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(1,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[1][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 			$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
@@ -197,9 +201,10 @@ if (isset($rdv_num)) {
 		
 		case 2: // Date de reception prévu
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[2][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(2,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[2][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE]",format_date($date,0,1),$message_mail);
 			if ($remarque!="")
@@ -215,9 +220,10 @@ if (isset($rdv_num)) {
 		
 		case 3: // Date de réception
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[3][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(3,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[3][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 		
 			// On envoi le mail
@@ -241,9 +247,10 @@ if (isset($rdv_num)) {
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[14][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(14,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[14][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 			$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
@@ -286,9 +293,10 @@ if (isset($rdv_num)) {
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[5][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(5,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[5][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 			$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
@@ -345,9 +353,10 @@ if (isset($rdv_num)) {
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[14][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(14,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[14][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 			$message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);
@@ -387,9 +396,10 @@ if (isset($rdv_num)) {
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[15][$rcl["client_genre"]]["titre"];
+			$template = getEmailTemplate(15,$rcl["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[15][$rcl["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 			$message_mail = str_replace("[DATE_HEURE]",format_date($date_deb,2,1),$message_mail);
 			
@@ -2600,7 +2610,7 @@ async function addWidget(selection, pdt, mode) {
   const placeId = "select_" + selection;
   try {
     $ol.loading(true);
-    const data = await $ol.apiPost('display', { mode: 'addWidget', selection, pdt, mode });
+    const data = await $ol.apiPost('client', { mode: 'addWidget', selection, pdt, mode });
     if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
     else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
   } catch(e) {
@@ -2612,7 +2622,7 @@ async function addPdtDevis(devis, pdt, mode) {
   const placeId = "devis_" + devis;
   try {
     $ol.loading(true);
-    const data = await $ol.apiPost('display', { mode: 'addPdtDevis', devis, pdt, mode });
+    const data = await $ol.apiPost('client', { mode: 'addPdtDevis', devis, pdt, mode });
     if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
     else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
   } catch(e) {
@@ -2626,7 +2636,7 @@ async function modifTaille(devis, pdt, tailleKey) {
   if (!sel) return;
   const taille_new = sel.value;
   try {
-    await $ol.apiPost('display', { mode:'modifTaille', devis, pdt, taille: tailleKey, taille_new });
+    await $ol.apiPost('client', { mode:'modifTaille', devis, pdt, taille: tailleKey, taille_new });
   } catch(e) { /* toast optionnel */ }
 }
 
@@ -2636,7 +2646,7 @@ async function remiseCommande(devis) {
   const placeId = "devis_" + devis;
   try {
     $ol.loading(true);
-    const data = await $ol.apiPost('display', { mode:'remiseCommande', devis, remise_montant: montant, remise_type: type });
+    const data = await $ol.apiPost('client', { mode:'remiseCommande', devis, remise_montant: montant, remise_type: type });
     if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
     else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
   } catch(e) {
@@ -2651,7 +2661,7 @@ async function remiseProduit(devis, produit, tailleKey) {
   const placeId = "devis_" + devis;
   try {
     $ol.loading(true);
-    const data = await $ol.apiPost('display', { mode:'remiseProduit', devis, produit, taille, remise_montant:m, remise_type:t });
+    const data = await $ol.apiPost('client', { mode:'remiseProduit', devis, produit, taille, remise_montant:m, remise_type:t });
     if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
     else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
   } catch(e) {
@@ -2665,7 +2675,7 @@ async function modifPaiement(devis) {
   const placeId = "devis_" + devis;
   try {
     $ol.loading(true);
-    const data = await $ol.apiPost('display', { mode:'modifPaiement', devis, paiement });
+    const data = await $ol.apiPost('client', { mode:'modifPaiement', devis, paiement });
     if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
     else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
   } catch(e) {
@@ -2676,7 +2686,7 @@ async function modifPaiement(devis) {
 async function modifDateCommande(devis) {
   const date = document.getElementById("date_bdc")?.value || '';
   try {
-    await $ol.apiPost('display', { mode:'modifDateCommande', devis, date_commande: date });
+    await $ol.apiPost('client', { mode:'modifDateCommande', devis, date_commande: date });
   } catch(e) { /* noop */ }
 }
 
@@ -2688,7 +2698,8 @@ async function modifQte(devis, pdt, tailleKey) {
   const placeId = "devis_" + devis;
   try {
     $ol.loading(true);
-    const data = await $ol.apiPost('display', { mode:'modifQte', devis, pdt, taille, qte_new });
+    const data = await $ol.apiPost('client', { mode:'modifQte', devis, pdt, taille, qte_new });
+	console.log(data);
     if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
     else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
   } catch(e) {
@@ -2702,14 +2713,13 @@ async function commandeFournisseur(id) {
   const placeId = "fournisseur_date_" + id;
   try {
     $ol.loading(true);
-    const data = await $ol.apiPost('display', { mode:'commandeFournisseur', id, val });
+    const data = await $ol.apiPost('client', { mode:'commandeFournisseur', id, val });
     if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
     else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
   } catch(e) {
     displayReponse("Erreur réseau", placeId);
   } finally { $ol.loading(false); }
 }
-
 </script>
     </body>
 </html>
