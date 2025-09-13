@@ -214,9 +214,9 @@ function changePrixAchat(id) {
 													<td><input type="text" name="prixachat" id="prixachat_<?= $rcc["prixachat_num"] ?>" value="<?= $prix_achat ?>" onBlur="changePrixAchat(<?= $rcc["prixachat_num"] ?>)" class="form-control"></td>
 													<td><?php 
 													if ($prix!=0)
-														echo number_format($prix,2,"."," ") . ' €';
+														echo safe_number_format($prix,2,"."," ") . ' €';
 													else
-														echo '<font color="red"><strong>' . number_format($prix,2,"."," ") . ' € </strong></font>';
+														echo '<font color="red"><strong>' . safe_number_format($prix,2,"."," ") . ' € </strong></font>';
 													?>
 													</td>													
 													<td><?php if ($rcc["produit_etat"]==1) 

@@ -250,26 +250,26 @@ if ($rrv) {
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='1'";
 												 $rpp = $base->queryRow($sql);
  if ($rpp) {
-													 $acompte1 = number_format($rpp["paiement_montant"],2,'.',' ') . "€";
+													 $acompte1 = safe_number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 													 $montant_acompte1 += $rpp["paiement_montant"];
 												 }
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='2'";
 												 $rpp = $base->queryRow($sql);
  if ($rpp) {
-													 $acompte2 = number_format($rpp["paiement_montant"],2,'.',' ') . "€";
+													 $acompte2 = safe_number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 													 $montant_acompte2 += $rpp["paiement_montant"];
 												 }
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='3'";
 												 $rpp = $base->queryRow($sql);
  if ($rpp) {
-													 $acompte3 = number_format($rpp["paiement_montant"],2,'.',' ') . "€";
+													 $acompte3 = safe_number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 													 $montant_acompte3 += $rpp["paiement_montant"];
 												 }
 												 
 												 $sql = "select * from commandes_paiements where id='" . $commande_num . "' and paiement_num='4'";
 												 $rpp = $base->queryRow($sql);
  if ($rpp) {
-													 $acompte4 = number_format($rpp["paiement_montant"],2,'.',' ') . "€";
+													 $acompte4 = safe_number_format($rpp["paiement_montant"],2,'.',' ') . "€";
 													 $montant_acompte4 += $rpp["paiement_montant"];
 												 }
 											?>
@@ -289,8 +289,8 @@ if ($rrv) {
 													<td><small><nobr><?= $acompte3 ?></nobr></small></td>
 													<td><small><nobr><?= $acompte4 ?></nobr></small></td>
 													<td><small><?= $row["client_remarque"] ?></small></td>
-													<td><small><nobr><?= number_format($montant_ht,2,'.',' ') ?>€</small><nobr></td>
-													<td><small><nobr><?= number_format($montant_ttc,2,'.',' ') ?>€</small><nobr></td>
+													<td><small><nobr><?= safe_number_format($montant_ht,2,'.',' ') ?>€</small><nobr></td>
+													<td><small><nobr><?= safe_number_format($montant_ttc,2,'.',' ') ?>€</small><nobr></td>
 												</tr>
 											<?php 
 											 }
@@ -300,13 +300,13 @@ if ($rrv) {
 												<td><small><?= $nbr ?></small></td>
 												<td><small><?= $createur ?></small></td>
 												<td colspan="7"></td>
-												<td><small><nobr><?= number_format($montant_acompte1,2,'.',' ') ?>€</nobr></small></td>
-												<td><small><nobr><?= number_format($montant_acompte2,2,'.',' ') ?>€</nobr></small></td>
-												<td><small><nobr><?= number_format($montant_acompte3,2,'.',' ') ?>€</nobr></small></td>
-												<td><small><nobr><?= number_format($montant_acompte4,2,'.',' ') ?>€</nobr></small></td>
+												<td><small><nobr><?= safe_number_format($montant_acompte1,2,'.',' ') ?>€</nobr></small></td>
+												<td><small><nobr><?= safe_number_format($montant_acompte2,2,'.',' ') ?>€</nobr></small></td>
+												<td><small><nobr><?= safe_number_format($montant_acompte3,2,'.',' ') ?>€</nobr></small></td>
+												<td><small><nobr><?= safe_number_format($montant_acompte4,2,'.',' ') ?>€</nobr></small></td>
 												<td></td>
-												<td><small><nobr><?= number_format($montant_total_ht,2,'.',' ') ?>€</small><nobr></td>
-												<td><small><nobr><?= number_format($montant_total_ttc,2,'.',' ') ?>€</small><nobr></td>
+												<td><small><nobr><?= safe_number_format($montant_total_ht,2,'.',' ') ?>€</small><nobr></td>
+												<td><small><nobr><?= safe_number_format($montant_total_ttc,2,'.',' ') ?>€</small><nobr></td>
 											</tr>
 										</tbody>
 									</table>

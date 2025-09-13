@@ -178,10 +178,10 @@ $desc_page = "Dashboard - Olympe Mariage";
 															$ca_mois += $prix_produit;
 														}
 														$total += $ca_mois;
-														$ca_mois = number_format($ca_mois,2,"."," ");
+														$ca_mois = safe_number_format($ca_mois,2,"."," ");
 														echo '<td class="text-center">' . $ca_mois . '€</td>';
 													}
-													$total = number_format($total,2,"."," ");
+													$total = safe_number_format($total,2,"."," ");
 													echo '<td class="text-center">' . $total . '€</td>';
 													echo '</tr>';
 													echo '<tr>
@@ -265,10 +265,10 @@ $desc_page = "Dashboard - Olympe Mariage";
 															$ca_mois += $prix_produit;
 														}
 														$total += $ca_mois;
-														$ca_mois = number_format($ca_mois,2,"."," ");
+														$ca_mois = safe_number_format($ca_mois,2,"."," ");
 														echo '<td class="text-center">' . $ca_mois . '€</td>';
 													}
-													$total = number_format($total,2,"."," ");
+													$total = safe_number_format($total,2,"."," ");
 													echo '<td class="text-center">' . $total . '€</td>';
 													echo '</tr>';
 													echo '<tr>

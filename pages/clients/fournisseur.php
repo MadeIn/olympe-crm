@@ -19,7 +19,7 @@ if (!$rcc) {
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="/assets/css/style-document.css" />
 </head>
 
 <body>
@@ -28,7 +28,7 @@ if (!$rcc) {
 		<tr>
 			<td class="col-sm-8">
 				<figure style="display: inline-grid">
-					<img src="img/olympe-mariage-logo.jpg">
+					<img src="/assets/images/olympe-mariage-logo.jpg">
 					<figcaption class="text-center"><h5 style="display: inline-block;"><?= str_replace("-","",$rcc["showroom_nom"]) ?><br>Bon de commande fournisseur</h5></figcaption>
 				</figure>
 			</td>

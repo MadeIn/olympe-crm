@@ -156,10 +156,10 @@ $desc_page = "Statistiques - Olympe Mariage";
                                                                 $total_nbr_commande += $nbr_commande;
                                                                 $total_ca_commande += $ca;
                                                             }
-                                                            echo '<td class="text-center">' . $nbr_commande . '<br>' . number_format($ca,2,"."," ") . '€</td>';
+                                                            echo '<td class="text-center">' . $nbr_commande . '<br>' . safe_number_format($ca,2,"."," ") . '€</td>';
                                                             $total += $nbr_premier;
                                                         }
-                                                        echo '<td class="text-center"><b>' . $total_nbr_commande . '<br>' . number_format($total_ca_commande,2,"."," ") . '€</b></td>';
+                                                        echo '<td class="text-center"><b>' . $total_nbr_commande . '<br>' . safe_number_format($total_ca_commande,2,"."," ") . '€</b></td>';
                                                         echo '</tr>';
                                                     }
 												}

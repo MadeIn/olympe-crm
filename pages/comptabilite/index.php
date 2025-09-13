@@ -287,11 +287,11 @@ function initDate() {
 												else 
 													echo "<td></td><td></td>";
 												echo 	'<td class="text-center">' . $nbr_paiement . '/' . $nbr_echeance . '</td>
-														 <td>' . number_format($montant_ht,2,"."," ") . ' €</td>
-														 <td>' . number_format($montant_tva,2,"."," ") . ' €</td>
-														 <td>' . number_format($montant_ttc,2,"."," ") . ' €</td>
-														 <td>' . number_format($montant_paye,2,"."," ") . ' €</td>
-														 <td>' . number_format($reste_a_paye,2,"."," ") . ' €</td>
+														 <td>' . safe_number_format($montant_ht,2,"."," ") . ' €</td>
+														 <td>' . safe_number_format($montant_tva,2,"."," ") . ' €</td>
+														 <td>' . safe_number_format($montant_ttc,2,"."," ") . ' €</td>
+														 <td>' . safe_number_format($montant_paye,2,"."," ") . ' €</td>
+														 <td>' . safe_number_format($reste_a_paye,2,"."," ") . ' €</td>
 													</tr>';
 											}
 										?>
@@ -302,11 +302,11 @@ function initDate() {
 											<td><?php if ($etat==2) { ?><a href="#" class="btn blue" onClick="window.open('/facture/all.php?date_deb=<?= $date_deb ?>&date_fin=<?= $date_fin ?>&showroom=<?= $showroom ?>','print','toolbars=no,menubar=no,width=1000,height=600');">Imprimer</a><?php } ?></td>
 											<td><strong>Total commande : <?= $nbr_commande ?></strong></td>
 											<td colspan="4" align="right"><strong>Total</strong> : </td>
-											<td><strong><?= number_format($total_ht,2,"."," ") ?> €</strong></td>
-											<td><strong><?= number_format($total_tva,2,"."," ") ?> €</strong></td>
-											<td><strong><?= number_format($total_ttc,2,"."," ") ?> €</strong></td>
-											<td><strong><?= number_format($total_encaisse,2,"."," ") ?> €</strong></td>
-											<td><strong><?= number_format($total_reste_a_payer,2,"."," ") ?> €</strong></td>
+											<td><strong><?= safe_number_format($total_ht,2,"."," ") ?> €</strong></td>
+											<td><strong><?= safe_number_format($total_tva,2,"."," ") ?> €</strong></td>
+											<td><strong><?= safe_number_format($total_ttc,2,"."," ") ?> €</strong></td>
+											<td><strong><?= safe_number_format($total_encaisse,2,"."," ") ?> €</strong></td>
+											<td><strong><?= safe_number_format($total_reste_a_payer,2,"."," ") ?> €</strong></td>
 										</tr>
 									</tbody>
 									</table>

@@ -39,7 +39,7 @@ foreach ($cc as $rcc) {
 	foreach ($co as $rco) {
 		$montant_ht_acc += $rco["montant_ht"];
 	}
-	$param .= format_date($rcc["facture_date"],6,1) . ";" . $rcc["facture_num"] . ";" . $rcc["client_nom"] . " " . $rcc["client_prenom"] . ";" . $genre . ";" . $montant_ttc . ";" . number_format($montant_ht_robe,2,".","") . ";" . number_format($montant_ht_acc,2,".","") . ";" . number_format($montant_ht,2,".","") . "\n";
+	$param .= format_date($rcc["facture_date"],6,1) . ";" . $rcc["facture_num"] . ";" . $rcc["client_nom"] . " " . $rcc["client_prenom"] . ";" . $genre . ";" . $montant_ttc . ";" . safe_number_format($montant_ht_robe,2,".","") . ";" . safe_number_format($montant_ht_acc,2,".","") . ";" . safe_number_format($montant_ht,2,".","") . "\n";
 }
 
 // On enregistre le fichier

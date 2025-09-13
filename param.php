@@ -37,6 +37,7 @@ if (!defined('APP_BOOTSTRAPPED')) {
     require_once $ROOT . '/includes/functions.php';
 
     // (Optionnel) les autres helpers si besoin en accès direct:
+    require_once $ROOT . '/includes/helpers.php';
     require_once $ROOT . '/includes/text_functions.php';
     require_once $ROOT . '/includes/date_functions.php';
     require_once $ROOT . '/includes/crypto_functions.php';

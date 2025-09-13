@@ -43,6 +43,7 @@ require_once $ROOT . '/classes/User.php';
 require_once $ROOT . '/classes/Auth.php';
 
 // Helpers & fonctions (tes fichiers existants)
+require_once $ROOT . '/includes/helpers.php';
 require_once $ROOT . '/includes/functions.php';
 require_once $ROOT . '/includes/text_functions.php';
 require_once $ROOT . '/includes/date_functions.php';

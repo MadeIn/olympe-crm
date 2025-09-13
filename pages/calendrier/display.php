@@ -66,7 +66,7 @@
 							</span>
 							<select name="dernier_acompte" class="form-control">';
 						foreach ($co as $rco) {
-							$dernier_acompte = number_format(resteAPayerCommande($rco["id"]),2,"."," ");
+							$dernier_acompte = safe_number_format(resteAPayerCommande($rco["id"]),2,"."," ");
 							echo '<option value="' . $dernier_acompte . '">Commande : ' . $rco["commande_num"] . ' - Acompte : ' . $dernier_acompte . ' €</option>';
 						}
 						echo '</select>

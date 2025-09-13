@@ -24,7 +24,7 @@
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="/assets/css/style-document.css" />
 </head>
 
 <body>
@@ -32,7 +32,7 @@
 		<table class="table tablesansbordure" style="margin: 25px 0 15px;">
 			<tr>
 				<td class="col-sm-4 text-center">
-					<img src="img/olympe-mariage-logo.jpg" style="width: 90%;">
+					<img src="/assets/images/olympe-mariage-logo.jpg" style="width: 90%;">
 					<h3>bon de réception</h3>
 				</td>
 				<td class="col-sm-6 text-center idclient"><?= $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>

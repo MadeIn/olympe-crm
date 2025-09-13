@@ -178,7 +178,7 @@ function confirme() {
 															<td class="highlight">
 																<div class="success"></div> &nbsp;&nbsp;' . $date_mois[$rcc["mois"]] . ' ' . $rcc["annee"] . '
 															</td>
-															<td class="text-center">' . number_format($rcc["ca"],2) . ' €</td>
+															<td class="text-center">' . safe_number_format($rcc["ca"],2) . ' €</td>
 															<td class="text-center">' . $rcc["nbr"] . '</td>
 														</tr>';
 														

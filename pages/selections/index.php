@@ -24,19 +24,19 @@
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="css/style.css" />
-<script src="js/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery.lightbox.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/jquery.lightbox.css" />
+<link rel="stylesheet" href="/assets/css/style-document.css" />
+<script src="/assets/js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/assets/js/jquery.lightbox.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/assets/css/jquery.lightbox.css" />
 <!--[if IE 6]>
-<link rel="stylesheet" type="text/css" href="css/jquery.lightbox.ie6.css" />
+<link rel="stylesheet" type="text/css" href="/assets/css/jquery.lightbox.ie6.css" />
 <![endif]-->
 </head>
 <body>
 
 <section class="container selections" id="showroom">
 	<div class="text-center">
-		<img src="img/olympe-mariage-logo.jpg">
+		<img src="/assets/images/olympe-mariage-logo.jpg">
 		<p><strong><?= $genre ?> <?= $rcc["client_prenom"] ?></strong>,<br>
 		vous trouverez votre sélection de produits proposés par Olympe Mariage <?= $rcc["showroom_ville"] ?> ci-dessous</p>
 		<hr style="width: 30%; border: none; border-top: solid 1px #EAEAEA; margin: 25px 35%;">

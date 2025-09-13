@@ -50,5 +50,5 @@
 		$reste = $rtt["commande_montant"] - $paiement;
 	}
 	
-	echo number_format($reste,2,'.',' ') . " &euro;";
+	echo safe_number_format($reste,2,'.',' ') . " &euro;";
 ?>

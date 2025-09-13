@@ -236,9 +236,9 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 													<td><?= $row["marque_nom"] ?></td>
 													<td><?= $row["categorie_nom"] ?></td>
 													<td><?= $row["produit_nom"] ?></td>
-													<td><?= number_format($row["commande_montant"],2,'.',' ') ?></td>
-													<td><?= number_format($paiement,2,'.',' ') ?></td>
-													<td><?= number_format($reste,2,'.',' ') ?></td>
+													<td><?= safe_number_format($row["commande_montant"],2,'.',' ') ?></td>
+													<td><?= safe_number_format($paiement,2,'.',' ') ?></td>
+													<td><?= safe_number_format($reste,2,'.',' ') ?></td>
 													<td><a href="/clients/client?client_num=<?= crypte($row["client_num"]) ?>&tab=tab_1_6"><?= $row["client_nom"] . " " . $row["client_prenom"] ?></a></td>
 													<td><?= $row["commande_num"] ?></td>
 													<td><?= format_date($row["commande_date"],11,1) ?></td>
@@ -249,9 +249,9 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												<td><b>Total</b></td>
 												<td><?= $nbr ?></td>
 												<td colspan="2"></td>
-												<td><?= number_format($montant_total_ttc,2,'.',' ') ?> €</td>
-												<td><?= number_format($paiement_total,2,'.',' ') ?> €</td>
-												<td><?= number_format($reste_total,2,'.',' ') ?> €</td>
+												<td><?= safe_number_format($montant_total_ttc,2,'.',' ') ?> €</td>
+												<td><?= safe_number_format($paiement_total,2,'.',' ') ?> €</td>
+												<td><?= safe_number_format($reste_total,2,'.',' ') ?> €</td>
 												<td></td>
 												<td></td>
 												<td></td>

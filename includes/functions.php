@@ -1,19 +1,8 @@
 <?php
 /**
  * Fonctions utilitaires du CRM
- * Fichier centralisé pour toutes les fonctions helper
+ * Fichier centralisé pour toutes les fonctions
  */
-
-/**
- * SÉCURITÉ ET VALIDATION
- */
-
-/**
- * Échappement HTML sécurisé
- */
-function h(string $str): string {
-    return htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-}
 
 /**
  * Génération d'un champ CSRF pour les formulaires
@@ -100,20 +89,6 @@ function redirect(string $url): void {
     Auth::redirect($url);
 }
 
-/**
- * Génération d'URL sécurisée
- */
-function url(string $path = ''): string {
-    global $app_config;
-    return $app_config['base_url'] . $path;
-}
-
-/**
- * Génération d'URL pour les assets (CSS, JS, images)
- */
-function asset(string $path): string {
-    return url('/assets/' . ltrim($path, '/'));
-}
 
 /**
  * PERMISSIONS ET CONTRÔLE D'ACCÈS
@@ -188,65 +163,10 @@ function has_permission(string $permission): bool {
  */
 
 /**
- * Formatage de dates
- */
-function format_date_base(string $date, string $format = 'd/m/Y'): string {
-    if (empty($date) || $date === '0000-00-00' || $date === '0000-00-00 00:00:00') {
-        return '';
-    }
-    
-    try {
-        $dt = new DateTime($date);
-        return $dt->format($format);
-    } catch (Exception $e) {
-        return '';
-    }
-}
-
-/**
- * Formatage de dates avec heure
- */
-function format_datetime(string $datetime, string $format = 'd/m/Y H:i'): string {
-    return format_date($datetime, $format);
-}
-
-/**
- * Formatage d'une date pour la base de données
- */
-function format_date_for_db(string $date): string {
-    if (empty($date)) {
-        return '';
-    }
-    
-    try {
-        // Tentative de parsing de différents formats
-        $formats = ['d/m/Y', 'd-m-Y', 'Y-m-d', 'd/m/Y H:i:s', 'd-m-Y H:i:s'];
-        
-        foreach ($formats as $format) {
-            $dt = DateTime::createFromFormat($format, $date);
-            if ($dt !== false) {
-                return $dt->format('Y-m-d');
-            }
-        }
-        
-        // Fallback avec strtotime
-        $timestamp = strtotime($date);
-        if ($timestamp !== false) {
-            return date('Y-m-d', $timestamp);
-        }
-        
-    } catch (Exception $e) {
-        error_log("Erreur formatage date: " . $e->getMessage());
-    }
-    
-    return '';
-}
-
-/**
  * Formatage monétaire
  */
 function format_currency(float $amount, string $currency = '€'): string {
-    return number_format($amount, 2, ',', ' ') . ' ' . $currency;
+    return safe_number_format($amount, 2, ',', ' ') . ' ' . $currency;
 }
 
 /**
@@ -387,25 +307,6 @@ function sanitize_filename(string $filename): string {
  * COMPATIBILITÉ AVEC L'ANCIEN CODE
  */
 
-/**
- * Classe Db de compatibilité pour l'ancien code
- */
-class Db {
-    private Database $modern_db;
-    public $mConn = 1; // Pour compatibilité
-    
-    public function __construct() {
-        $this->modern_db = Database::getInstance();
-    }
-    
-    public function Connect(): void {
-        // Ne fait rien, la connexion moderne est automatique
-    }
-    
-    public function Deconnect(): void {
-        // Ne fait rien, PDO gère automatiquement
-    }
-}
 
 /**
  * Simule register_globals de façon plus sûre.
@@ -520,14 +421,5 @@ function isActiveMenu(string $path, bool $prefixMatch = true): string {
     return '';
 }
 
-/* Helpers appel formulaire SAME PAGE */
-function form_action_same(): string {
-    return htmlspecialchars(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-}
-
-/* Helpers Rappel SAME PAGE */
-function current_path(): string {
-    return htmlspecialchars(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-}
 
 ?>

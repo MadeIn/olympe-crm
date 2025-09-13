@@ -54,7 +54,7 @@ try {
 					$echeance_desc = explode("/",$rco["paiement_description"]);
 					$acompte_num = 0;
 					foreach ($echeance as $val) {
-						$acompte_val = number_format(($montant_a_payer*($val/100)),2,"."," ");
+						$acompte_val = safe_number_format(($montant_a_payer*($val/100)),2,"."," ");
 						$acompte_num++;
 						if ($acompte_num==2) { // On recupere la somme du deuxième acompte
 							$acompte2 = $acompte_val;

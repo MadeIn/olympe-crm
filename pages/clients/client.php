@@ -494,9 +494,9 @@ if (isset($commande_passage)) {
 			if ($rco["paiement_nombre"]==1) {
 				$echeance = explode("/",$rde["paiement_modele"]);
 				if ($commande["remise"]==0) { 
-					$montant_a_payer = number_format($commande["commande_ttc"],2,".","");
+					$montant_a_payer = safe_number_format($commande["commande_ttc"],2,".","");
 				} else { 
-					$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".","");
+					$montant_a_payer = safe_number_format($commande["commande_remise_ttc"],2,".","");
 				}
 				$sql = "delete from commandes_paiements where id='" . decrypte($commande_passage) . "'";
 				$base->query($sql);
@@ -580,13 +580,13 @@ if (isset($paiement)) {
 					// On regarde si il n'y a pas déjà un numero de facture 
 					$sql = "select * from commandes where id='" . decrypte($commande_modif) . "'";
 					$rco = $base->queryRow($sql);
- if ($rco) {
+ 					if ($rco) {
 						if ($rco["facture_num"]==0) {
 							// ON cherche le numero de facture
 							$facture_deb = Date("Y") * 100000 + Date("n") * 1000;
 							$sql = "select max(facture_num) val from commandes where facture_num>'" . $facture_deb . "' and showroom_num='" . $rco["showroom_num"] . "'";
 							$rdd = $base->queryRow($sql);
-if ($rdd) {
+							if ($rdd) {
 								if ($rdd["val"]>0)
 									$facture_num = $rdd["val"]+1;
 								else
@@ -601,7 +601,7 @@ if ($rdd) {
 							// On decroit les stocks
 							$sql = "select * from commandes where id='" . decrypte($commande_modif) . "'";
 							$rcc = $base->queryRow($sql);
-if ($rcc) {
+							if ($rcc) {
 								$showroom_num = $rcc["showroom_num"];
 								// On recupere les produits de la commande pour les enlever du stock
 								$sql = "select * from commandes_produits where id='" . decrypte($commande_modif) . "'";
@@ -609,7 +609,7 @@ if ($rcc) {
 								foreach ($co as $rco) {
 									$sql = "select * from stocks where produit_num='" . $rco["produit_num"] . "' and taille_num='" . $rco["taille_num"] . "' and showroom_num='" . $showroom_num . "'";
 									$rss = $base->queryRow($sql);
-if ($rss) {
+									if ($rss) {
 										// On update les stocks
 										$stock_virtuel = $rss["stock_virtuel"] - $rco["qte"];
 										$stock_reel = $rss["stock_reel"] - $rco["qte"];
@@ -621,7 +621,7 @@ if ($rss) {
 							}
 							
 							// Si on est dans le showroom de Montpellier on decroit les stock du WEBSHOP
-							if ($showroom_num==1) {
+							if ($showroom_num===1) {
 								majStockWeb($commande_passage);
 							}
 						}
@@ -683,7 +683,7 @@ if (isset($devis)) {
 	$devis_deb = Date("Y") * 10000;
 	$sql = "select max(devis_num) val from commandes where devis_num>'" . $devis_deb . "'";
 	$rdd = $base->queryRow($sql);
-if ($rdd) {
+	if ($rdd) {
 		if ($rdd["val"]>0)
 			$devis_num = $rdd["val"]+1;
 		else
@@ -717,11 +717,11 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 			if ($rde["paiement_nombre"]>1) {
 				$echeance = explode("/",$rde["paiement_modele"]);
 				if ($commande["remise"]==0) { 
-					$montant_a_payer = number_format($commande["commande_ttc"],2,".","");
-					$acompte = number_format(($montant_a_payer*($echeance[0]/100)),2,"."," ");
+					$montant_a_payer = safe_number_format($commande["commande_ttc"],2,".","");
+					$acompte = safe_number_format(($montant_a_payer*($echeance[0]/100)),2,"."," ");
 				} else { 
-					$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".","");
-					$acompte = number_format(($montant_a_payer*($echeance[0]/100)),2,"."," ");
+					$montant_a_payer = safe_number_format($commande["commande_remise_ttc"],2,".","");
+					$acompte = safe_number_format(($montant_a_payer*($echeance[0]/100)),2,"."," ");
 				}
 				$message_acompte = "accompagné du paiement du premier acompte de " . $echeance[0] . "% (" . $acompte . " &euro;)";
 				$message_mail = str_replace("[ACOMPTE_VALEUR]",$message_acompte,$message_mail);
@@ -730,7 +730,7 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 								
 				$echeance_desc = explode("/",$rde["paiement_description"]);
 				for ($i=1;$i<$rde["paiement_nombre"];$i++) {
-					$acompte_val = number_format(($montant_a_payer*($echeance[$i]/100)),2,"."," ");
+					$acompte_val = safe_number_format(($montant_a_payer*($echeance[$i]/100)),2,"."," ");
 					$message_suite_acompte .= $echeance[$i] .'% ' . $echeance_desc[$i] . ' ('. $acompte_val . '&euro;)';
 					if ($i<($rde["paiement_nombre"]-1))
 						$message_suite_acompte .= " et ";
@@ -743,7 +743,7 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 		// ON regarde si il y a une robe et si elle est sur mesure
 		$sql = "select * from commandes_produits where taille_num='35' and id='" . decrypte($devis_envoi) . "'";
 		$rtt = $base->queryRow($sql);
- if ($rtt) {
+ 		if ($rtt) {
 			$message_retouche = "";
 		} else {
 			$message_retouche = "";
@@ -779,7 +779,7 @@ if (isset($facture_envoi)) { // ON envoie le devis par mail
 	
 	$sql = "select * from commandes_mails where id='" . decrypte($facture_envoi) . "'";
 	$rtt = $base->queryRow($sql);
- if ($rtt) {
+ 	if ($rtt) {
 		$sql = "update commandes_mails set facture_mail=1, facture_mail_date='" . Date("Y-m-d H:i:s") . "' where id='" . decrypte($facture_envoi) . "'";
 		$base->query($sql);
 	} else {
@@ -1438,7 +1438,7 @@ function confirme_commande(id) {
 																						if ($nbr_commande>0) {
 																							echo '<select name="dernier_acompte" class="form-control">';
 																							foreach ($co as $rco) {
-																								$dernier_acompte = number_format(resteAPayerCommande($rco["id"]),2,"."," ");
+																								$dernier_acompte = safe_number_format(resteAPayerCommande($rco["id"]),2,"."," ");
 																								echo '<option value="' . $dernier_acompte . '">Commande : ' . $rco["commande_num"] . ' - Acompte : ' . $dernier_acompte . ' €</option>';
 																							}
 																							echo '</select>';
@@ -1698,7 +1698,7 @@ function confirme_commande(id) {
 																				<td>' . $rss["devis_num"] . '</td>
 																				<td>' . format_date($rss["devis_date"],11,1) . '</td>
 																				<td>' . $nbr_produit . '</td>
-																				<td>' . number_format(montantCommandeTTC($rss["id"]),2) . ' €</td>
+																				<td>' . safe_number_format(montantCommandeTTC($rss["id"]),2) . ' €</td>
 																				<td class="text-center"> 
 																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_modif=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-plus"></i> Modifier</a> 
 																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_consulte=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm green"><i class="fa fa-book"></i> Consulter</a> 
@@ -1775,34 +1775,34 @@ function confirme_commande(id) {
 																				}																				
 																				echo '</td>
 																				<td>';
-																				if (number_format($prix_total_ttc,2)<=0)
+																				if (safe_number_format($prix_total_ttc,2)<=0)
 																					echo "OFFERT";
 																				else
-																					echo number_format($prix_total_ttc,2) . ' €';
+																					echo safe_number_format($prix_total_ttc,2) . ' €';
 																				echo '</td>
 																			</tr>';
 																		} ?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total HT</strong></td>
-																			<td><?= number_format($commande["commande_ht"],2,"."," ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_ht"],2,"."," ") ?> €</td>
 																		</tr>
 																		<tr>
 																			<td colspan="6" align="right"><strong>TVA (20%)</strong></td>
-																			<td><?= number_format($commande["commande_tva"],2,"."," ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_tva"],2,"."," ") ?> €</td>
 																		</tr>
 																		<?php if ($commande["remise"]==0) { 
-																				$montant_a_payer = number_format($commande["commande_ttc"],2,".","");
+																				$montant_a_payer = safe_number_format($commande["commande_ttc"],2,".","");
 																		?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total TTC</strong></td>
-																			<td><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
 																		</tr>	
 																		<?php } else { 
-																				$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".","");
+																				$montant_a_payer = safe_number_format($commande["commande_remise_ttc"],2,".","");
 																		?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total TTC</strong></td>
-																			<td><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
 																		</tr>	
 																		<tr>
 																			<td colspan="6" align="right"><strong>Remise</strong></td>
@@ -1810,7 +1810,7 @@ function confirme_commande(id) {
 																		</tr>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total à payer</strong></td>
-																			<td><?= number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</td>
 																		</tr>	
 																		<?php } ?>
 																		<tr>
@@ -1821,7 +1821,7 @@ function confirme_commande(id) {
 																				$echeance = explode("/",$rcc["paiement_modele"]);
 																				$acompte_num = 1;
 																				foreach ($echeance as $val) {
-																					$acompte_val = number_format(($montant_a_payer*($val/100)),2,"."," ");
+																					$acompte_val = safe_number_format(($montant_a_payer*($val/100)),2,"."," ");
 																					echo '<tr>
 																							<td colspan="6" align="right"><strong>Acompte ' . $acompte_num . ' (' . $val . '%)</strong></td>
 																							<td>' . $acompte_val . ' €</td>
@@ -1842,7 +1842,10 @@ function confirme_commande(id) {
 																	if ($rcc) {
 																		$commande = montantCommande($rcc["id"]);
 															?>
-																<h4><i class="fa fa-plus"></i> Devis n° : <?= $rcc["devis_num"] ?> <?php if ($message_erreur_devis!="") echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_devis . '</strong></font>'; ?></h4>
+																<h4><i class="fa fa-plus"></i> Devis n° : <?= $rcc["devis_num"] ?> 
+																<?php if (($message_erreur_devis ?? '') !="") 
+																	echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_devis . '</strong></font>'; ?>
+																</h4>
 																<table class="table table-bordered table-striped">
 																	<thead>
 																		<th colspan="2">Produit</th>
@@ -1894,7 +1897,7 @@ function confirme_commande(id) {
 																				echo '>' . $st["taille_nom"] . '</option>';
 																			}
 																			echo '</select></td>
-																				<td>' . number_format($rpp["montant_ttc"],2,"."," ") . ' €</td>
+																				<td>' . safe_number_format($rpp["montant_ttc"],2,"."," ") . ' €</td>
 																				<td align="center"><select name="qte_' . $rpp["produit_num"] . '_' . $rpp["taille_num"] . '" id="qte_' . $rpp["produit_num"] . '_' . $rpp["taille_num"] . '" onChange="modifQte(' . decrypte($devis_modif) . ',' . $rpp["produit_num"] . ',' . $rpp["taille_num"] . ');">';
 																				for ($i=0;$i<=$stock;$i++) {
 																					echo '<option value="' . $i . '"';
@@ -1904,10 +1907,10 @@ function confirme_commande(id) {
 																				}
 																			echo '</select></td>
 																				<td>';
-																					if (number_format($prix_total_ttc,2)<=0)
+																					if (safe_number_format($prix_total_ttc,2)<=0)
 																						echo "OFFERT";
 																					else
-																						echo number_format($prix_total_ttc,2,"."," ") . ' €';
+																						echo safe_number_format($prix_total_ttc,2,"."," ") . ' €';
 																			echo '</td>	
 																				<td><input type="text" name="remise_produit_' . $rpp["produit_num"] . '" id="remise_produit_' . $rpp["produit_num"] . '" value="' . $rpp["commande_produit_remise"] . '" class="form-inline input-xsmall"> 
 																				<select name="remise_type_produit_' . $rpp["produit_num"] . '" id="remise_type_produit_' . $rpp["produit_num"] . '" class="form-inline input-xsmall" onChange="remiseProduit(' . $rcc["id"] . ',' . $rpp["produit_num"] . ',' . $rpp["taille_num"]  . ')">
@@ -1924,15 +1927,15 @@ function confirme_commande(id) {
 																		} ?>
 																		<tr>
 																			<td colspan="5" align="right"><strong>Total HT</strong></td>
-																			<td colspan="2"><?= number_format($commande["commande_ht"],2,"."," ") ?> €</td>
+																			<td colspan="2"><?= safe_number_format($commande["commande_ht"],2,"."," ") ?> €</td>
 																		</tr>
 																		<tr>
 																			<td colspan="5" align="right"><strong>TVA (20%)</strong></td>
-																			<td colspan="2"><?= number_format($commande["commande_tva"],2,"."," ") ?> €</td>
+																			<td colspan="2"><?= safe_number_format($commande["commande_tva"],2,"."," ") ?> €</td>
 																		</tr>
 																		<tr>
 																			<td colspan="5" align="right"><strong>Total TTC</strong></td>
-																			<td colspan="2"><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
+																			<td colspan="2"><?= safe_number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
 																		</tr>	
 																		<tr>
 																			<td colspan="5" align="right"><strong>Remise</strong></td>
@@ -1948,12 +1951,12 @@ function confirme_commande(id) {
 																			<td colspan="5" align="right"><strong>Total à payer</strong></td>
 																			<td colspan="2"><?php 
 																				if ($commande["commande_remise_type"]!=0) {
-																					echo number_format($commande["commande_remise_ttc"],2,"."," ");
-																					$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".","");
+																					echo safe_number_format($commande["commande_remise_ttc"],2,"."," ");
+																					$montant_a_payer = safe_number_format($commande["commande_remise_ttc"],2,".","");
 																				}
 																				else {
-																					echo number_format($commande["commande_ttc"],2,"."," ");
-																					$montant_a_payer = number_format($commande["commande_ttc"],2,".","");
+																					echo safe_number_format($commande["commande_ttc"],2,"."," ");
+																					$montant_a_payer = safe_number_format($commande["commande_ttc"],2,".","");
 																				}
 																				?> €
 																			</td>
@@ -1990,7 +1993,7 @@ function confirme_commande(id) {
 																				$echeance = explode("/",$rcc["paiement_modele"]);
 																				$acompte_num = 1;
 																				foreach ($echeance as $val) {
-																					$acompte_val = number_format(($montant_a_payer*($val/100)),2,"."," ");
+																					$acompte_val = safe_number_format(($montant_a_payer*($val/100)),2,"."," ");
 																					echo '<tr>
 																							<td colspan="6" align="right"><strong>Acompte ' . $acompte_num . ' (' . $val . '%)</strong></td>
 																							<td>' . $acompte_val . ' €</td>
@@ -2019,7 +2022,7 @@ function confirme_commande(id) {
 																							<span class="input-group-addon">
 																								<i class="fa fa-list"></i>
 																							</span>
-																							<input type="text" name="nom" class="form-control" value="<?= $nom ?>"></div></td>
+																							<input type="text" name="nom" class="form-control" value="<?= ($nom ?? '') ?>"></div></td>
 																					</tr>
 																					<tr>
 																						<td><label>Categorie</label>
@@ -2032,7 +2035,7 @@ function confirme_commande(id) {
 																							foreach ($cc as $rcc)
 																							{
 																								echo "<option value=\"" . $rcc["categorie_num"] . "\"";
-																								if ($categorie==$rcc["categorie_num"])
+																								if (($categorie ?? 0)==$rcc["categorie_num"])
 																									echo " SELECTED";
 																								echo ">" . $rcc["categorie_nom"] . "</option>\n";
 																							}
@@ -2052,7 +2055,7 @@ function confirme_commande(id) {
 																							foreach ($cc as $rcc)
 																							{
 																								echo "<option value=\"" . $rcc["marque_num"] . "\"";
-																								if ($marque==$rcc["marque_num"])
+																								if (($marque ?? 0) ==$rcc["marque_num"])
 																									echo " SELECTED";
 																								echo ">" . $rcc["marque_nom"] . "</option>\n";
 																							}
@@ -2062,7 +2065,8 @@ function confirme_commande(id) {
 																						</td>
 																					</tr>
 																					<tr>
-																						<td><input type="submit" value="Rechercher" class="btn blue"> <a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_3" class="btn red">Annuler</a></td>
+																						<td><input type="submit" value="Rechercher" class="btn blue"> 
+																						<a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_3" class="btn red">Annuler</a></td>
 																					</tr>
 																				</tbody>
 																			</table>									
@@ -2158,9 +2162,11 @@ function confirme_commande(id) {
 																		// On calcul la somme déjà payé
 																		$montant_paye = 0;
 																		$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $rss["id"] . "'";
-																		$rpa = $base->queryRow($sql); if ($rpa)																			$montant_paye = $rpa["val"];
+																		$rpa = $base->queryRow($sql); 
+																		if ($rpa)																			
+																			$montant_paye = $rpa["val"];
 																		
-																		$reste_a_paye = number_format(abs(montantCommandeTTC($rss["id"]) - $montant_paye),2,"."," ");
+																		$reste_a_paye = safe_number_format(abs(montantCommandeTTC($rss["id"]) - $montant_paye),2,"."," ");
 																																				
 																		$sql = "select * from commandes_produits where id='" . $rss["id"] . "'";
 																		$pp = $base->query($sql);
@@ -2174,9 +2180,9 @@ function confirme_commande(id) {
 																				<td>' . $rss["commande_num"] . '</td>
 																				<td>' . format_date($rss["commande_date"],11,1) . '</td>
 																				<td class="text-center">' . $nbr_produit . '</td>
-																				<td>' . number_format(montantCommandeTTC($rss["id"]),2,"."," ") . ' €</td>
+																				<td>' . safe_number_format((float) montantCommandeTTC($rss["id"]), 2, ".", " ") . ' €</td>
 																				<td class="text-center">' . $nbr_paiement . '/' . $nbr_echeance . '</td>
-																				<td>' . number_format($montant_paye,2) . ' €</td>
+																				<td>' . safe_number_format((float) $montant_paye,2) . ' €</td>
 																				<td>' . $reste_a_paye . ' €</td>
 																				<td align="center">' . $facture_num . '</td>
 																				<td> 
@@ -2243,7 +2249,7 @@ function confirme_commande(id) {
 																				<td><img src="' . $image_pdt["min"] . '" style="width:90px"/></td>
 																				<td>' . $rpp["categorie_nom"] . '<br>' . $rpp["marque_nom"] . '<br><strong>' . $rpp["produit_nom"] . '</strong></td>
 																				<td>' . $rpp["taille_nom"] . '</td>
-																				<td>' . number_format($rpp["montant_ttc"],2,".", " ") . ' €' . '</td>
+																				<td>' . safe_number_format((float) $rpp["montant_ttc"],2,".", " ") . ' €' . '</td>
 																				<td align="center">' . $rpp["qte"] . '</td>
 																				<td align="center">';
 																				if ($rpp["commande_produit_remise_type"]!=0) {
@@ -2256,34 +2262,34 @@ function confirme_commande(id) {
 																				}																				
 																				echo '</td>
 																				<td>';
-																				if (number_format($prix_total_ttc,2)<=0)
+																				if (safe_number_format((float) $prix_total_ttc,2)<=0)
 																					echo "OFFERT";
 																				else
-																					echo number_format($prix_total_ttc,2,".", " ") . ' €';
+																					echo safe_number_format((float) $prix_total_ttc,2,".", " ") . ' €';
 																				echo '</td>
 																			</tr>';
 																		} ?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total HT</strong></td>
-																			<td><?= number_format($commande["commande_ht"],2,".", " ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_ht"],2,".", " ") ?> €</td>
 																		</tr>
 																		<tr>
 																			<td colspan="6" align="right"><strong>TVA (20%)</strong></td>
-																			<td><?= number_format($commande["commande_tva"],2,".", " ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_tva"],2,".", " ") ?> €</td>
 																		</tr>
 																		<?php if ($commande["remise"]==0) { 
-																				$montant_a_payer = number_format($commande["commande_ttc"],2,".", "");
+																				$montant_a_payer = safe_number_format($commande["commande_ttc"],2,".", "");
 																		?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total TTC</strong></td>
-																			<td><?= number_format($commande["commande_ttc"],2,".", " ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_ttc"],2,".", " ") ?> €</td>
 																		</tr>	
 																		<?php } else { 
-																				$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".", "");
+																				$montant_a_payer = safe_number_format($commande["commande_remise_ttc"],2,".", "");
 																		?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total TTC</strong></td>
-																			<td><?= number_format($commande["commande_ttc"],2,".", " ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_ttc"],2,".", " ") ?> €</td>
 																		</tr>	
 																		<tr>
 																			<td colspan="6" align="right"><strong>Remise</strong></td>
@@ -2291,7 +2297,7 @@ function confirme_commande(id) {
 																		</tr>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total à payer</strong></td>
-																			<td><?= number_format($commande["commande_remise_ttc"],2,".", " ") ?> €</td>
+																			<td><?= safe_number_format($commande["commande_remise_ttc"],2,".", " ") ?> €</td>
 																		</tr>	
 																		<?php } ?>
 																		<tr>
@@ -2308,7 +2314,7 @@ function confirme_commande(id) {
 																					$echeance = explode("/",$rcc["paiement_modele"]);
 																					$acompte_num = 1;
 																					foreach ($echeance as $val) {
-																						$acompte_val = number_format(($montant_a_payer*($val/100)),2,"."," ");
+																						$acompte_val = safe_number_format(($montant_a_payer*($val/100)),2,"."," ");
 																						echo '<tr>
 																								<td colspan="6" align="right"><strong>Acompte ' . $acompte_num . ' (' . $val . '%)</strong></td>
 																								<td>' . $acompte_val . ' €</td>
@@ -2322,9 +2328,9 @@ function confirme_commande(id) {
 																						$acompte_num++;
 																						echo '<tr>
 																								<td colspan="6" align="right"><strong>Acompte ' . $acompte_num . '</strong></td>
-																								<td>' . number_format($rpa["paiement_montant"],2,"."," ") . ' €</td>
+																								<td>' . safe_number_format($rpa["paiement_montant"],2,"."," ") . ' €</td>
 																							</tr>';
-																						$montant_paye += number_format($rpa["paiement_montant"],2,".","");
+																						$montant_paye += safe_number_format($rpa["paiement_montant"],2,".","");
 																					}
 																					$reste_a_payer = $montant_a_payer - $montant_paye;
 																					if ($acompte_num<$rcc["paiement_nombre"]) {
@@ -2333,7 +2339,7 @@ function confirme_commande(id) {
 																						for ($zz=$acompte_num+1;$zz<=$rcc["paiement_nombre"];$zz++) {
 																							echo '<tr>
 																								<td colspan="6" align="right"><strong>Acompte ' . $zz . '</strong></td>
-																								<td>' . number_format($reste_acompte_a_payer,2,"."," ") . ' €</td>
+																								<td>' . safe_number_format($reste_acompte_a_payer,2,"."," ") . ' €</td>
 																							</tr>';
 																						}
 																					}
@@ -2364,9 +2370,13 @@ function confirme_commande(id) {
 																		$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $rpa["id"] . "'";
 																		$rpp = $base->queryRow($sql); if ($rpp)																			$montant_paye = $rpp["val"];
 																		
-																		$reste_a_paye = number_format(abs(montantCommandeTTC($rpa["id"]) - $montant_paye),2,".","");
+																		$reste_a_paye = safe_number_format(abs(montantCommandeTTC($rpa["id"]) - $montant_paye),2,".","");
 															?>
-																<h4><i class="fa fa-plus"></i> Paiement commande : <?= $rpa["commande_num"] ?> <?php if ($message_erreur_paiement!="") echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_paiement . '</strong></font>'; ?></h4>
+																<h4><i class="fa fa-plus"></i> Paiement commande : <?= $rpa["commande_num"] ?> 
+																<?php 
+																if (($message_erreur_paiement ?? '') !== '') 
+																	echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_paiement . '</strong></font>'; 
+																?></h4>
 																<table class="table table-bordered table-striped">
 																	<thead>
 																		<th>Echéance</th>
@@ -2725,7 +2735,7 @@ function confirme_commande(id) {
  																				if ($rtt) {
 																					$checked = " CHECKED";
 																					$date_fournisseur = format_date($rtt["commande_fournisseur_date"],11,1);
-																					$montant = number_format($rtt["commande_montant"],2,"."," ");
+																					$montant = safe_number_format($rtt["commande_montant"],2,"."," ");
 																				}
 																				echo '<tr>
 																						<td>' . $rco["commande_num"] . '</td>
@@ -2831,7 +2841,7 @@ function confirme_commande(id) {
 																				$montant = $rpp["prixachat_montant"];
 																				if ($montant!=0) {
 																					// On calcul le montant avec la TVA
-																					$montant = number_format($montant*1.20,2,".","");
+																					$montant = safe_number_format($montant*1.20,2,".","");
 																				}
 																			} else {
 																				$montant = 0;

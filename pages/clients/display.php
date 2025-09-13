@@ -52,7 +52,7 @@ if ($rss) {
 					echo '>' . $st["taille_nom"] . '</option>';
 				}
 				echo '</select></td>
-					<td>' . number_format($rpp["montant_ttc"],2,"."," ") . ' €</td>
+					<td>' . safe_number_format($rpp["montant_ttc"],2,"."," ") . ' €</td>
 					<td align="center"><select name="qte_' . $rpp["produit_num"] . '_' . $rpp["taille_num"] . '" id="qte_' . $rpp["produit_num"] . '_' . $rpp["taille_num"] . '" onChange="modifQte(' . $id . ',' . $rpp["produit_num"] . ',' . $rpp["taille_num"] . ');">';
 					for ($i=0;$i<=$stock;$i++) {
 						echo '<option value="' . $i . '"';
@@ -62,10 +62,10 @@ if ($rss) {
 					}
 				echo '</select></td>
 					<td>';
-						if (number_format($prix_total_ttc,2)<=0)
+						if (safe_number_format($prix_total_ttc,2)<=0)
 							echo "OFFERT";
 						else
-							echo number_format($prix_total_ttc,2,"."," ") . ' €';
+							echo safe_number_format($prix_total_ttc,2,"."," ") . ' €';
 				echo '</td>
 					<td><input type="text" name="remise_produit_' . $rpp["produit_num"] . '" id="remise_produit_' . $rpp["produit_num"] . '" value="' . $rpp["commande_produit_remise"] . '" class="form-inline input-xsmall"> 
 					<select name="remise_type_produit_' . $rpp["produit_num"] . '" id="remise_type_produit_' . $rpp["produit_num"] . '" class="form-inline input-xsmall" onChange="remiseProduit(' . $rcc["id"] . ',' . $rpp["produit_num"] . ',' . $rpp["taille_num"]  . ')">
@@ -82,15 +82,15 @@ if ($rss) {
 			} 
 			echo '<tr>
 					<td colspan="5" align="right"><strong>Total HT</strong></td>
-					<td colspan="2">' . number_format($commande["commande_ht"],2,"."," ") . ' €</td>
+					<td colspan="2">' . safe_number_format($commande["commande_ht"],2,"."," ") . ' €</td>
 				</tr>
 				<tr>
 					<td colspan="5" align="right"><strong>TVA (20%)</strong></td>
-					<td colspan="2">' .  number_format($commande["commande_tva"],2,"."," ") . ' €</td>
+					<td colspan="2">' .  safe_number_format($commande["commande_tva"],2,"."," ") . ' €</td>
 				</tr>
 				<tr>
 					<td colspan="5" align="right"><strong>Total TTC</strong></td>
-					<td colspan="2">' . number_format($commande["commande_ttc"],2,"."," ") . ' €</td>
+					<td colspan="2">' . safe_number_format($commande["commande_ttc"],2,"."," ") . ' €</td>
 				</tr>
 				<tr>
 					<td colspan="5" align="right"><strong>Remise</strong></td>
@@ -110,12 +110,12 @@ if ($rss) {
 					<td colspan="5" align="right"><strong>Total à payer</strong></td>
 					<td colspan="2">';
 				if ($commande["commande_remise_type"]!=0) {
-					echo number_format($commande["commande_remise_ttc"],2,"."," ");
-					$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".","");
+					echo safe_number_format($commande["commande_remise_ttc"],2,"."," ");
+					$montant_a_payer = safe_number_format($commande["commande_remise_ttc"],2,".","");
 				}
 				else {
-					echo number_format($commande["commande_ttc"],2,"."," ");
-					$montant_a_payer = number_format($commande["commande_ttc"],2,".","");
+					echo safe_number_format($commande["commande_ttc"],2,"."," ");
+					$montant_a_payer = safe_number_format($commande["commande_ttc"],2,".","");
 				}
 				echo ' €	
 					</td>
@@ -139,7 +139,7 @@ if ($rss) {
 				$echeance = explode("/",$rcc["paiement_modele"]);
 				$acompte_num = 1;
 				foreach ($echeance as $val) {
-					$acompte_val = number_format(($montant_a_payer*($val/100)),2,"."," ");
+					$acompte_val = safe_number_format(($montant_a_payer*($val/100)),2,"."," ");
 					echo '<tr>
 							<td colspan="6" align="right"><strong>Acompte ' . $acompte_num . ' (' . $val . '%)</strong></td>
 							<td>' . $acompte_val . ' €</td>

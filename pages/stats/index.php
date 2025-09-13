@@ -205,13 +205,13 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<td><?= $nbr ?>.</td>
 														<td><?= $row["categorie_nom"] ?></td>
 														<td><?= $row["val"] ?></td>
-														<td><?= number_format($row["total"],2,'.',' ') ?></td>
+														<td><?= safe_number_format($row["total"],2,'.',' ') ?></td>
 													</tr>
 												<?php } ?>	
 												<tr>
 													<td colspan="2"></td>
 													<td><?= $nbr_total ?></td>
-													<td><?= number_format($montant,2,'.',' ') ?></td>
+													<td><?= safe_number_format($montant,2,'.',' ') ?></td>
 												</tr>
 												</tbody>
 											</table>
@@ -259,13 +259,13 @@ $desc_page = "Statistiques - Olympe Mariage";
 														<td><?= $nbr ?>.</td>
 														<td><?= $row["marque_nom"] ?></td>
 														<td><?= $row["val"] ?></td>
-														<td><?= number_format($row["total"],2,',',' ') ?></td>
+														<td><?= safe_number_format($row["total"],2,',',' ') ?></td>
 													</tr>
 												<?php } ?>	
 												<tr>
 													<td colspan="2"></td>
 													<td><?= $nbr_total ?></td>
-													<td><?= number_format($montant,2,'.',' ') ?></td>
+													<td><?= safe_number_format($montant,2,'.',' ') ?></td>
 												</tr>
 												</tbody>
 											</table>
@@ -322,13 +322,13 @@ $desc_page = "Statistiques - Olympe Mariage";
 													<td><?= $row["marque_nom"] ?></td>
 													<td><?= $row["taille_nom"] ?></td>
 													<td><?= $row["val"] ?></td>
-													<td><?= number_format($row["total"],2,',',' ') ?></td>
+													<td><?= safe_number_format($row["total"],2,',',' ') ?></td>
 												</tr>
 											<?php } ?>	
 											<tr>
 													<td colspan="5"></td>
 													<td><?= $nbr_total ?></td>
-													<td><?= number_format($montant,2,'.',' ') ?></td>
+													<td><?= safe_number_format($montant,2,'.',' ') ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -385,13 +385,13 @@ $desc_page = "Statistiques - Olympe Mariage";
 													<td><?= $row["marque_nom"] ?></td>
 													<td><?= $row["taille_nom"] ?></td>
 													<td><?= $row["qte"] ?></td>
-													<td><?= number_format($row["qte"]*$row["montant_ht"],2,',',' ') ?></td>
+													<td><?= safe_number_format($row["qte"]*$row["montant_ht"],2,',',' ') ?></td>
 												</tr>
 											<?php } ?>	
 											<tr>
 													<td colspan="6"></td>
 													<td><?= $nbr_total ?></td>
-													<td><?= number_format($montant,2,'.',' ') ?></td>
+													<td><?= safe_number_format($montant,2,'.',' ') ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -443,13 +443,13 @@ $desc_page = "Statistiques - Olympe Mariage";
 													<td><?= $nbr ?>.</td>
 													<td><?= $row["produit_nom"] ?></td>
 													<td><?= $row["val"] ?></td>
-													<td><?= number_format($row["total"],2,',',' ') ?></td>
+													<td><?= safe_number_format($row["total"],2,',',' ') ?></td>
 												</tr>
 											<?php } ?>	
 											<tr>
 													<td colspan="2"></td>
 													<td><?= $nbr_total ?></td>
-													<td><?= number_format($montant,2,'.',' ') ?></td>
+													<td><?= safe_number_format($montant,2,'.',' ') ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -499,13 +499,13 @@ $desc_page = "Statistiques - Olympe Mariage";
 													<td><?= $nbr ?>.</td>
 													<td><?= $row["taille_nom"] ?></td>
 													<td><?= $row["val"] ?></td>
-													<td><?= number_format($row["total"],2,',',' ') ?></td>
+													<td><?= safe_number_format($row["total"],2,',',' ') ?></td>
 												</tr>
 											<?php } ?>
 											<tr>
 													<td colspan="2"></td>
 													<td><?= $nbr_total ?></td>
-													<td><?= number_format($montant,2,'.',' ') ?></td>
+													<td><?= safe_number_format($montant,2,'.',' ') ?></td>
 												</tr>
 											</tbody>
 										</table>

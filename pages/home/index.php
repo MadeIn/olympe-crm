@@ -141,8 +141,8 @@ if ($objectif_nbr[date("n")] > 0) {
     if ($objectif_nbr_robe > 1) $objectif_nbr_robe = 1;
 }
 
-$objectif_ca = number_format($objectif_ca * 100, 0);
-$objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
+$objectif_ca = safe_number_format($objectif_ca * 100, 0);
+$objectif_nbr_robe = safe_number_format($objectif_nbr_robe * 100, 0);
 
 ?>
 
@@ -197,7 +197,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-green-sharp">
-                                        <span data-counter="counterup" data-value="<?= number_format($ca_mois, 2); ?>">0</span>
+                                        <span data-counter="counterup" data-value="<?= safe_number_format($ca_mois, 2); ?>">0</span>
                                         <small class="font-green-sharp">€</small>
                                     </h3>
                                     <small>CA HT du mois</small>
@@ -230,7 +230,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-blue-sharp">
-                                        <span data-counter="counterup" data-value="<?= number_format($ca_mois_robe, 2); ?>">0</span>
+                                        <span data-counter="counterup" data-value="<?= safe_number_format($ca_mois_robe, 2); ?>">0</span>
                                         <small class="font-blue-sharp">€</small>
                                     </h3>
                                     <small>CA HT Vente de robes du mois</small>
@@ -342,7 +342,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             if ($u->mShowroomInfo["ca_annee"] > 0) {
                                 $objectif_ca_annee = ($ca_annee_robe / $u->mShowroomInfo["ca_annee"]);
                                 if ($objectif_ca_annee > 1) $objectif_ca_annee = 1;
-                                $objectif_ca_annee = number_format($objectif_ca_annee * 100, 0);
+                                $objectif_ca_annee = safe_number_format($objectif_ca_annee * 100, 0);
                             }
                             ?>
                             
@@ -352,7 +352,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         <div class="display">
                                             <div class="number">
                                                 <h3 class="font-green-sharp">
-                                                    <span data-counter="counterup" data-value="<?= number_format($ca_annee_robe, 2); ?>">0</span>
+                                                    <span data-counter="counterup" data-value="<?= safe_number_format($ca_annee_robe, 2); ?>">0</span>
                                                     <small class="font-green-sharp">€</small>
                                                 </h3>
                                                 <small>CA HT Robes de l'année</small>
@@ -360,7 +360,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                             <div class="number">
                                                 <h3 class="font-red-soft">
                                                     <span style="margin-left:30px;margin-right:30px;">/</span> 
-                                                    <span data-counter="counterup" data-value="<?= number_format($u->mShowroomInfo["ca_annee"], 2); ?>">0</span>
+                                                    <span data-counter="counterup" data-value="<?= safe_number_format($u->mShowroomInfo["ca_annee"], 2); ?>">0</span>
                                                     <small class="font-red-soft">€</small>
                                                 </h3>
                                                 <span style="margin-left:50px;margin-right:30px;"></span><small>Objectif annuel</small>
@@ -398,7 +398,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                             $transformation = ($nbr_annee_robe / $nbr_rdv)*100;
                                         else
                                             $transformation = 0;
-                                        $transformation = number_format($transformation,0);
+                                        $transformation = safe_number_format($transformation,0);
                                     }
                                 ?>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -437,7 +437,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         $ca_annee += montantCommandeHT($rco["id"]);
                                         $nbr_commande_mois++;
                                     }
-                                    $ca_annee = number_format($ca_annee,2);
+                                    $ca_annee = safe_number_format($ca_annee,2);
                                 ?>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <div class="dashboard-stat2 bordered">
@@ -474,8 +474,8 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                     } else {
                                         $taux_dette = 0.0;
                                     }
-                                    $taux_dette = number_format($taux_dette,0);
-                                    $montant_commande = number_format($montant_commande,2);                                    
+                                    $taux_dette = safe_number_format($taux_dette,0);
+                                    $montant_commande = safe_number_format($montant_commande,2);                                    
                                 ?>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="dashboard-stat2 bordered">
@@ -617,22 +617,22 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
 													$objectif_nbr_total += $objectif_nbr[$mois_deb];
 													$objectif_ca_total += $objectif[$mois_deb];
 													
-													$ca_mois = number_format($ca_mois,2,"."," ");
+													$ca_mois = safe_number_format($ca_mois,2,"."," ");
 													echo '</tr>
 															<td>' . $abscisse_mois . '</td>
 															<td>' . $nbr_mois . '</td>
 															<td>' . $ca_mois . ' €</td>
 															<td>' . $objectif_nbr[$mois_deb] . '</td>
-															<td>' . number_format($objectif[$mois_deb],2,"."," ") . ' €</td>
+															<td>' . safe_number_format($objectif[$mois_deb],2,"."," ") . ' €</td>
 															<td class="text-center">' . $etat . '</td>
 														</tr>';
 												}
 												echo '</tr>
 															<td><strong>Total</strong></td>
 															<td><strong>' . $nbr_total . '</strong></td>
-															<td><strong>' . number_format($ca_total,2,"."," ") . ' €</strong></td>
+															<td><strong>' . safe_number_format($ca_total,2,"."," ") . ' €</strong></td>
 															<td><strong>' . $objectif_nbr_total . '</strong></td>
-															<td><strong>' . number_format($objectif_ca_total,2,"."," ") . ' €</strong></td>
+															<td><strong>' . safe_number_format($objectif_ca_total,2,"."," ") . ' €</strong></td>
 															<td class="text-center"></td>
 														</tr>';
 											?>
@@ -783,18 +783,18 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
 													$objectif_nbr_total += $objectif_homme_nbr[$mois_deb];
 													$objectif_ca_total += $objectif_homme[$mois_deb];
 													
-													$ca_mois = number_format($ca_mois,2,"."," ");
+													$ca_mois = safe_number_format($ca_mois,2,"."," ");
 													echo '</tr>
 															<td>' . $abscisse_mois . '</td>
 															<td>' . $ca_mois . ' €</td>
-															<td>' . number_format($objectif_homme[$mois_deb],2,"."," ") . ' €</td>
+															<td>' . safe_number_format($objectif_homme[$mois_deb],2,"."," ") . ' €</td>
 															<td class="text-center">' . $etat . '</td>
 														</tr>';
 												}
 												echo '</tr>
 															<td><strong>Total</strong></td>
-															<td><strong>' . number_format($ca_total,2,"."," ") . ' €</strong></td>
-															<td><strong>' . number_format($objectif_ca_total,2,"."," ") . ' €</strong></td>
+															<td><strong>' . safe_number_format($ca_total,2,"."," ") . ' €</strong></td>
+															<td><strong>' . safe_number_format($objectif_ca_total,2,"."," ") . ' €</strong></td>
 															<td class="text-center"></td>
 														</tr>';
 											?>
@@ -1117,7 +1117,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
 				}
 				$ca_mois += $prix_produit;
 			}
-			$ca_mois = number_format($ca_mois,2,".","");
+			$ca_mois = safe_number_format($ca_mois,2,".","");
 			$link_script .= '{mois:"' . $abscisse_mois . '",income:' . $ca_mois . ',expenses:' . $objectif[$mois_deb] . '}';
 			$link_script_nbr .= '{mois:"' . $abscisse_mois . '",income:' . $nbr_mois . ',expenses:' . $objectif_nbr[$mois_deb] . '}';
 			if ($i<11) {

@@ -35,7 +35,7 @@
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="/assets/css/style-document.css" />
 </head>
 
 <body>
@@ -43,7 +43,7 @@
 		<table class="table tablesansbordure" style="margin: 25px 0 15px;">
 			<tr>
 				<td class="col-sm-4 text-center">
-					<img src="img/olympe-mariage-logo.jpg" style="width: 90%;">
+					<img src="/assets/images/olympe-mariage-logo.jpg" style="width: 90%;">
 					<h3>Acompte</h3>
 				</td>
 				<td class="col-sm-6 text-center idclient"><?= $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
@@ -109,17 +109,17 @@
 					}						
 					echo '	</td>
 							<td class="text-center">';
-					if (number_format($prix_total_ttc,2)<=0)
+					if (safe_number_format($prix_total_ttc,2)<=0)
 						echo "OFFERT";
 					else
-						echo number_format($prix_total_ttc,2,".", " ") . ' €';
+						echo safe_number_format($prix_total_ttc,2,".", " ") . ' €';
 					echo '	</td>
 						</tr>';
 				} ?>
 			</tbody>
 		</table>
 		<?php if ($commande["remise"]==0) { 
-				$montant_a_payer = number_format($commande["commande_ttc"],2,".","");
+				$montant_a_payer = safe_number_format($commande["commande_ttc"],2,".","");
 		?>
 			<table class="table tabletotaux">
 				<tr>
@@ -128,13 +128,13 @@
 					<td class="text-center">Total TTC : </td>
 				</tr>
 				<tr>
-					<td class="text-center"><strong><?= number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
 				</tr>
 			</table>		
 		<?php } else { 
-				$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".","");
+				$montant_a_payer = safe_number_format($commande["commande_remise_ttc"],2,".","");
 		?>
 			<table class="table tabletotaux">
 				<tr>
@@ -145,11 +145,11 @@
 					<td class="text-center">Total à Payer : </td>
 				</tr>
 				<tr>
-					<td class="text-center"><strong><?= number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
 					<td class="text-center"><strong><?= $commande["remise"] ?></strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</strong></td>
 				</tr>
 			</table>		
 		<?php } ?>
@@ -167,9 +167,9 @@
 							$acompte_num++;
 							echo '<tr>
 									<td><strong>Acompte ' . $acompte_num . '</strong></td>
-									<td class="text-center">' . number_format($rpa["paiement_montant"],2,"."," ") . ' €</td>
+									<td class="text-center">' . safe_number_format($rpa["paiement_montant"],2,"."," ") . ' €</td>
 								</tr>';
-							$montant_paye += number_format($rpa["paiement_montant"],2,".","");
+							$montant_paye += safe_number_format($rpa["paiement_montant"],2,".","");
 						}
 						$reste_a_payer = $montant_a_payer - $montant_paye;
 						if ($acompte_num<$rcc["paiement_nombre"]) {
@@ -182,7 +182,7 @@
 						}
 						echo '<tr>
 								<td><strong>Reste à payer</strong></td>
-								<td class="text-center">' . number_format($reste_a_payer,2,"."," ") . ' €</td>
+								<td class="text-center">' . safe_number_format($reste_a_payer,2,"."," ") . ' €</td>
 							</tr>';
 				?>
 					</table>

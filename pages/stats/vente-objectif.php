@@ -200,22 +200,22 @@ $desc_page = "Statistiques - Olympe Mariage";
 													$objectif_nbr_total += $objectif_nbr;
 													$objectif_ca_total += $objectif_ca;
 													
-													$ca_mois = number_format($ca_mois,2,"."," ");
+													$ca_mois = safe_number_format($ca_mois,2,"."," ");
 													echo '</tr>
 															<td>' . $abscisse_mois . '</td>
 															<td>' . $nbr_mois . '</td>
 															<td>' . $ca_mois . ' €</td>
 															<td>' . $objectif_nbr . '</td>
-															<td>' . number_format($objectif_ca,2,"."," ") . ' €</td>
+															<td>' . safe_number_format($objectif_ca,2,"."," ") . ' €</td>
 															<td class="text-center">' . $etat . '</td>
 														</tr>';
 												}
 												echo '</tr>
 															<td><strong>Total</strong></td>
 															<td><strong>' . $nbr_total . '</strong></td>
-															<td><strong>' . number_format($ca_total,2,"."," ") . ' €</strong></td>
+															<td><strong>' . safe_number_format($ca_total,2,"."," ") . ' €</strong></td>
 															<td><strong>' . $objectif_nbr_total . '</strong></td>
-															<td><strong>' . number_format($objectif_ca_total,2,"."," ") . ' €</strong></td>
+															<td><strong>' . safe_number_format($objectif_ca_total,2,"."," ") . ' €</strong></td>
 															<td class="text-center"></td>
 														</tr>';
 											?>
@@ -358,22 +358,22 @@ $desc_page = "Statistiques - Olympe Mariage";
 													$objectif_nbr_total += $objectif_nbr;
 													$objectif_ca_total += $objectif_ca;
 													
-													$ca_mois = number_format($ca_mois,2,"."," ");
+													$ca_mois = safe_number_format($ca_mois,2,"."," ");
 													echo '</tr>
 															<td>' . $abscisse_mois . '</td>
 															<td>' . $nbr_mois . '</td>
 															<td>' . $ca_mois . ' €</td>
 															<td>' . $objectif_nbr . '</td>
-															<td>' . number_format($objectif_ca,2,"."," ") . ' €</td>
+															<td>' . safe_number_format($objectif_ca,2,"."," ") . ' €</td>
 															<td class="text-center">' . $etat . '</td>
 														</tr>';
 												}
 												echo '</tr>
 															<td><strong>Total</strong></td>
 															<td><strong>' . $nbr_total . '</strong></td>
-															<td><strong>' . number_format($ca_total,2,"."," ") . ' €</strong></td>
+															<td><strong>' . safe_number_format($ca_total,2,"."," ") . ' €</strong></td>
 															<td><strong>' . $objectif_nbr_total . '</strong></td>
-															<td><strong>' . number_format($objectif_ca_total,2,"."," ") . ' €</strong></td>
+															<td><strong>' . safe_number_format($objectif_ca_total,2,"."," ") . ' €</strong></td>
 															<td class="text-center"></td>
 														</tr>';
 											?>

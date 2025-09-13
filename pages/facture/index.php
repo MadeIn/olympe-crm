@@ -23,14 +23,14 @@
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
   <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="/assets/css/style-document.css" />
 </head>
 <body>
 	<div class="container">
 		<table class="table tablesansbordure" style="margin: 25px 0 15px;">
 			<tr>
 				<td class="col-sm-4 text-center">
-					<img src="img/olympe-mariage-logo.jpg" style="width: 70%;">
+					<img src="/assets/images/olympe-mariage-logo.jpg" style="width: 70%;">
 					<h5><?= $rcc["showroom_raison"] ?><br>
 						SIRET : <?= $rcc["showroom_siret"] ?><br>
 						TVA : <?= $rcc["showroom_tva"] ?></h5>
@@ -86,8 +86,8 @@
 							<td>' . $rpp["categorie_nom"] . ' - ' . $rpp["marque_nom"] . '</td>
 							<td>' . $rpp["produit_nom"] . '</td>
 							<td class="text-center">' . $rpp["taille_nom"] . '</td>
-							<td class="text-center">' . number_format($rpp["montant_ht"],2,"."," ") . ' €</td>
-							<td class="text-center">' . number_format($rpp["montant_tva"],2,"."," ") . ' €</td>
+							<td class="text-center">' . safe_number_format($rpp["montant_ht"],2,"."," ") . ' €</td>
+							<td class="text-center">' . safe_number_format($rpp["montant_tva"],2,"."," ") . ' €</td>
 							<td class="text-center">' . $rpp["qte"] . '</td>
 							<td class="text-center">';
 					if ($rpp["commande_produit_remise_type"]!=0) {
@@ -100,10 +100,10 @@
 					}						
 					echo '	</td>
 							<td class="text-center">';
-					if (number_format($prix_total_ttc,2)<=0)
+					if (safe_number_format($prix_total_ttc,2)<=0)
 						echo "OFFERT";
 					else
-						echo number_format($prix_total_ttc,2,".", " ") . ' €';
+						echo safe_number_format($prix_total_ttc,2,".", " ") . ' €';
 					echo '	</td>
 						</tr>';
 				} ?>
@@ -117,9 +117,9 @@
 					<td class="text-center">Total TTC : </td>
 				</tr>
 				<tr>
-					<td class="text-center"><strong><?= number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
 				</tr>
 			</table>		
 		<?php } else { ?>
@@ -132,11 +132,11 @@
 					<td class="text-center">Total à Payer : </td>
 				</tr>
 				<tr>
-					<td class="text-center"><strong><?= number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
 					<td class="text-center"><strong><?= $commande["remise"] ?></strong></td>
-					<td class="text-center"><strong><?= number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= safe_number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</strong></td>
 				</tr>
 			</table>		
 		<?php } ?>
@@ -152,7 +152,7 @@
 					foreach ($pp as $rpp) {
 						echo '<tr>
 								<td><strong>Acompte ' . $rpp["paiement_num"] . ' versé</td>
-								<td>' . number_format($rpp["paiement_montant"],2,"."," ") . '€</td>
+								<td>' . safe_number_format($rpp["paiement_montant"],2,"."," ") . '€</td>
 							  </tr>';
 					}
 					echo '</table>';

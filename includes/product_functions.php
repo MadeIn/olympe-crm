@@ -81,10 +81,10 @@ function AffichePrix(int $produit): string|false {
     }
     
     if ($prix_data['montant_remise_type'] == 0) {
-        return number_format($prix_data['montant_ttc'], 2, ',', ' ') . ' €';
+        return safe_number_format($prix_data['montant_ttc'], 2, ',', ' ') . ' €';
     } else {
-        return '<del>' . number_format($prix_data['montant_ttc'], 2, ',', ' ') . ' €</del> ' . 
-               '<strong>' . number_format($prix_data['montant_ttc_remise'], 2, ',', ' ') . ' €</strong>';
+        return '<del>' . safe_number_format($prix_data['montant_ttc'], 2, ',', ' ') . ' €</del> ' . 
+               '<strong>' . safe_number_format($prix_data['montant_ttc_remise'], 2, ',', ' ') . ' €</strong>';
     }
 }
 
@@ -99,10 +99,10 @@ function AffichePrixHT(int $produit): string|false {
     }
     
     if ($prix_data['montant_remise_type'] == 0) {
-        return number_format($prix_data['montant_ht'], 2, ',', ' ') . ' € HT';
+        return safe_number_format($prix_data['montant_ht'], 2, ',', ' ') . ' € HT';
     } else {
-        return '<del>' . number_format($prix_data['montant_ht'], 2, ',', ' ') . ' €</del> ' . 
-               '<strong>' . number_format($prix_data['montant_ht_remise'], 2, ',', ' ') . ' € HT</strong>';
+        return '<del>' . safe_number_format($prix_data['montant_ht'], 2, ',', ' ') . ' €</del> ' . 
+               '<strong>' . safe_number_format($prix_data['montant_ht_remise'], 2, ',', ' ') . ' € HT</strong>';
     }
 }
 
@@ -119,7 +119,7 @@ function AffichePrixTVA(int $produit): string|false {
     $montant_tva = $prix_data['montant_remise_type'] == 0 ? 
         $prix_data['montant_tva'] : $prix_data['montant_tva_remise'];
     
-    return number_format($montant_tva, 2, ',', ' ') . ' € TVA';
+    return safe_number_format($montant_tva, 2, ',', ' ') . ' € TVA';
 }
 
 /**
@@ -204,7 +204,7 @@ function montantCommande(int $id): array|false {
                     
                 case 2: // Remise en euros
                     $commande_remise_ttc = $commande_ttc - $remise_montant;
-                    $remise_label = '-' . number_format($remise_montant, 2, ',', ' ') . '€';
+                    $remise_label = '-' . safe_number_format($remise_montant, 2, ',', ' ') . '€';
                     break;
             }
         }
@@ -363,7 +363,7 @@ function getProductDetails(int $produit_id): array|false {
  * Formate un prix pour l'affichage
  */
 function formatPrice(float $price, bool $show_currency = true): string {
-    $formatted = number_format($price, 2, ',', ' ');
+    $formatted = safe_number_format($price, 2, ',', ' ');
     
     return $show_currency ? $formatted . ' €' : $formatted;
 }

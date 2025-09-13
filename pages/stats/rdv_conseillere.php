@@ -118,7 +118,7 @@ if ($rss) {
 															$transformation = ($nbr_commande / $nbr_rdv)*100;
 														else
 															$transformation = 0;
-														$transformation = number_format($transformation,0);
+														$transformation = safe_number_format($transformation,0);
 														$nbr_total_rdv += $nbr_rdv;
 														$nbr_total_rdv_avenir += $nbr_rdv_avenir;
 														$nbr_total_commande += $nbr_commande;
@@ -135,7 +135,7 @@ if ($rss) {
 													$total_transformation = ($nbr_total_commande / $nbr_total_rdv)*100;
 												else
 													$total_transformation = 0;
-												$total_transformation = number_format($total_transformation,0);
+												$total_transformation = safe_number_format($total_transformation,0);
 											?>	
 											<tr>
 												<td><strong>Total</strong></td>

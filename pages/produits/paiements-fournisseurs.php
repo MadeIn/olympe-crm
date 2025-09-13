@@ -348,7 +348,7 @@ if ($rrr) {
 													<td><small><?= $row["marque_nom"] ?></small></td>
 													<td><small><?= $row["categorie_nom"] ?></small></td>
 													<td><small><?= $row["produit_nom"] ?></small></td>
-													<td><small><?= number_format($row["commande_montant"],2,'.',' ') ?>€</small></td>
+													<td><small><?= safe_number_format($row["commande_montant"],2,'.',' ') ?>€</small></td>
 													<td><small><?php 
 														if ($paiement_commande==1) { 
 															if ($paiement1_payer==0)
@@ -363,10 +363,10 @@ if ($rrr) {
 													<?php 
 														if ($paiement_commande==1) {
 															if ($paiement1_payer==0) {
-																echo number_format($paiement1_val,2,'.',' ') . " € ";
+																echo safe_number_format($paiement1_val,2,'.',' ') . " € ";
 																echo ' <input type="checkbox" name="paiement1_' . $row["id"] . '" id="paiement1_' . $row["id"] . '" onClick="changeEtat(' . $row["id"] . ',' . $row["produit_num"] . ',' . $paiement1_val . ',1)">';
 															} else {
-																echo number_format($paiement1_payer,2,'.',' ') . " € ";
+																echo safe_number_format($paiement1_payer,2,'.',' ') . " € ";
 																echo ' <input type="checkbox" name="paiement1_' . $row["id"] . '" id="paiement1_' . $row["id"] . '" CHECKED onClick="changeEtat(' . $row["id"] . ',' . $row["produit_num"] . ',' . $paiement1_val . ',1)">';
 															}
 														}
@@ -383,17 +383,17 @@ if ($rrr) {
 													<?php 
 														if ($paiement_reception==1) {
 															if ($paiement2_payer==0) {
-																echo number_format($paiement2_val,2,'.',' ') . " € ";
+																echo safe_number_format($paiement2_val,2,'.',' ') . " € ";
 																if ($date_reception!="NR")
 																	echo ' <input type="checkbox" name="paiement2_' . $row["id"] . '" id="paiement2_' . $row["id"] . '" onClick="changeEtat(' . $row["id"] . ',' . $row["produit_num"] . ',' . $paiement2_val . ',2)">';
 															} else {
-																echo number_format($paiement2_payer,2,'.',' ') . " € ";
+																echo safe_number_format($paiement2_payer,2,'.',' ') . " € ";
 																echo ' <input type="checkbox" name="paiement1_' . $row["id"] . '" CHECKED id="paiement2_' . $row["id"] . '"  onClick="changeEtat(' . $row["id"] . ',' . $row["produit_num"] . ',' . $paiement2_val . ',2)">';
 															}
 														}
 													?>
 													</small></td>
-													<td><small id="reste_<?= $row["id"] ?>"><?= number_format($reste,2,'.',' ') ?>€</small></td>
+													<td><small id="reste_<?= $row["id"] ?>"><?= safe_number_format($reste,2,'.',' ') ?>€</small></td>
 													<td><a href="/clients/client?client_num=<?= crypte($row["client_num"]) ?>&tab=tab_1_6"><small><?= $row["client_nom"] . " " . $row["client_prenom"] ?></small></a></td>
 													<td><small><?= $row["commande_num"] ?></small></td>
 													<td><small><?= format_date($row["commande_date"],11,1) ?></small></td>
@@ -404,12 +404,12 @@ if ($rrr) {
 												<td><b>Total</b></td>
 												<td><?= $nbr ?></td>
 												<td colspan="2"></td>
-												<td><?= number_format($montant_total_ttc,2,'.',' ') ?> €</td>
+												<td><?= safe_number_format($montant_total_ttc,2,'.',' ') ?> €</td>
 												<td></td>
-												<td><small>Reste <?= number_format($reste_total1,2,'.','') ?>€<br>sur <?= number_format($paiement_total1,2,'.',' ') ?>€</small></td>
+												<td><small>Reste <?= safe_number_format($reste_total1,2,'.','') ?>€<br>sur <?= safe_number_format($paiement_total1,2,'.',' ') ?>€</small></td>
 												<td></td>
-												<td><small>Reste <?= number_format($reste_total2,2,'.','') ?>€<br>sur <?= number_format($paiement_total2,2,'.',' ') ?>€</small></td>
-												<td><?= number_format($reste_total,2,'.',' ') ?> €</td>
+												<td><small>Reste <?= safe_number_format($reste_total2,2,'.','') ?>€<br>sur <?= safe_number_format($paiement_total2,2,'.',' ') ?>€</small></td>
+												<td><?= safe_number_format($reste_total,2,'.',' ') ?> €</td>
 												<td colspan="3"></td>
 											</tr>
 										</table>
