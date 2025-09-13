@@ -158,8 +158,7 @@
 				<?php echo $rcc["paiement_titre"] ?></td>
 				<td class="col-sm-4">
 					<table class="table tablepaiement">
-				<?
-						$acompte_num = 0;
+				<?php						$acompte_num = 0;
 						$montant_paye = 0;
 						$sql = "select * from commandes_paiements where id='" . decrypte($id) . "' order by paiement_num ASC";
 						$pa = $base->query($sql);

@@ -524,7 +524,7 @@ function changeHeureFin() {
 															<!-- BEGIN DRAGGABLE EVENTS PORTLET-->
 															<h3 class="event-form-title margin-bottom-20"><i class="fa fa-plus"></i> Ajouter un Rendez-vous</h3>
 															<div id="external-events">
-																<form name="ajouter" method="POST" id="formfield" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+																<form name="ajouter" method="POST" id="formfield" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 																<input type="hidden" name="ajouter" value="ok">
 																<div class="form-group">
 																	<label>Catégorie</label>
@@ -533,8 +533,7 @@ function changeHeureFin() {
 																			<i class="fa fa-meh-o"></i>
 																		</span>
 																		<select name="theme" id="theme" class="form-control" onChange="addWidget();">
-																		<?
-																			$sql = "select * from calendriers_themes order by theme_pos ASC";
+																		<?php																			$sql = "select * from calendriers_themes order by theme_pos ASC";
 																			$tt = $base->query($sql);
 																			foreach ($tt as $rtt) {
 																				echo '<option value="' . $rtt["theme_num"] . '"';
@@ -554,8 +553,7 @@ function changeHeureFin() {
 																				<i class="fa fa-share-alt"></i>
 																			</span>
 																			<select name="type" id="type" class="form-control">
-																			<?
-																				$sql = "select * from rdv_types where type_num NOT IN (2,3) order by type_pos ASC";
+																			<?php																				$sql = "select * from rdv_types where type_num NOT IN (2,3) order by type_pos ASC";
 																				$tt = $base->query($sql);
 																				foreach ($tt as $rtt) {
 																					echo '<option value="' . $rtt["type_num"] . '"';
@@ -617,7 +615,7 @@ function changeHeureFin() {
 														<div class="tab-pane" id="tab_1_2">
 															<h3 class="event-form-title margin-bottom-20"><i class="fa fa-plus"></i> Ajouter un client</h3>
 															<div id="external-events">
-																<form name="ajouter_client" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+																<form name="ajouter_client" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 																<input type="hidden" name="ajout_client" value="ok">
 																<div class="form-group">
 																	<label>Genre</label>
@@ -799,8 +797,7 @@ function changeHeureFin() {
 						</div>
 					</div>
 				</div>
-				<?
-					$param = "";
+				<?php					$param = "";
 					$date_deb = Date("Y-m-d 00:00:00", strtotime("-30 days"));
 					// ON recherche les events pour remplir le calendrier perso
 					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num='" . $u->mNum . "' and calendrier_datedeb>='" . $date_deb . "' and c.theme_num=4 order by calendrier_datedeb DESC";
@@ -812,21 +809,11 @@ function changeHeureFin() {
 							$param .= ',';
 						}
 						
-						list(
-							$annee_deb,
-							$mois_deb,
-							$jour_deb,
-							$heure_deb,
-							$minute_deb,
-							$seconde_deb ) = split('[: -]',$rcc["calendrier_datedeb"],6);
-						
-						list(
-							$annee_fin,
-							$mois_fin,
-							$jour_fin,
-							$heure_fin,
-							$minute_fin,
-							$seconde_fin ) = split('[: -]',$rcc["calendrier_datefin"],6);
+						list($annee_deb, $mois_deb, $jour_deb, $heure_deb, $minute_deb, $seconde_deb) =
+							preg_split('/[: -]/', $rcc["calendrier_datedeb"], 6);
+
+						list($annee_fin, $mois_fin, $jour_fin, $heure_fin, $minute_fin, $seconde_fin) =
+							preg_split('/[: -]/', $rcc["calendrier_datefin"], 6);
 							
 						$mois_deb = $mois_deb-1;
 						$mois_fin = $mois_fin-1;
@@ -837,13 +824,13 @@ function changeHeureFin() {
 							$genre = 0;
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
 							$rcl = $base->queryRow($sql);
- if ($rcl) {
-								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
+ 							if ($rcl) {
+								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
 							$rrr = $base->queryRow($sql);
-if ($rrr) {
+							if ($rrr) {
 								if ($genre==0)
 									$couleur = $rrr["type_couleur"];
 								else 
@@ -881,21 +868,11 @@ if ($rrr) {
 							$param .= ',';
 						}
 						
-						list(
-							$annee_deb,
-							$mois_deb,
-							$jour_deb,
-							$heure_deb,
-							$minute_deb,
-							$seconde_deb ) = split('[: -]',$rcc["calendrier_datedeb"],6);
-						
-						list(
-							$annee_fin,
-							$mois_fin,
-							$jour_fin,
-							$heure_fin,
-							$minute_fin,
-							$seconde_fin ) = split('[: -]',$rcc["calendrier_datefin"],6);
+						list($annee_deb, $mois_deb, $jour_deb, $heure_deb, $minute_deb, $seconde_deb) =
+							preg_split('/[: -]/', $rcc["calendrier_datedeb"], 6);
+
+						list($annee_fin, $mois_fin, $jour_fin, $heure_fin, $minute_fin, $seconde_fin) =
+							preg_split('/[: -]/', $rcc["calendrier_datefin"], 6);
 							
 						$mois_deb = $mois_deb-1;
 						$mois_fin = $mois_fin-1;
@@ -907,13 +884,13 @@ if ($rrr) {
 							$genre = 0;
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
 							$rcl = $base->queryRow($sql);
- if ($rcl) {
-								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
+ 							if ($rcl) {
+								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
 							$rrr = $base->queryRow($sql);
-if ($rrr) {
+							if ($rrr) {
 								$type_rdv = $rrr["type_num"];
 								if ($genre==0)
 									$couleur = $rrr["type_couleur"];
@@ -958,7 +935,7 @@ if ($rrr) {
 								desc_modal : "' . $desc_modal . '",
 								description : "' . $calendrier_desc . '",
 								id : "' . $rcc["calendrier_num"] . '",
-								link : "/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '",';
+								link : "/clients/client?client_num=' . crypte($rcc["client_num"]) . '",';
 						/*if ($link!="")
 							$param .= ' url:"' . $link . '",';*/
 						$param .= '	allDay: ' . $allday  . '
@@ -1079,7 +1056,7 @@ if ($rrr) {
                 <?php include TEMPLATE_PATH . 'footer.php'; ?>
             </div>
         </div>
-         <?php  include( $chemin . "/mod/bottom.php"); ?>
+        <?php include TEMPLATE_PATH . 'bottom.php'; ?>
 		<script language="Javascript">
 			$('#calendrier_desc').keypress(
 				 function(event){

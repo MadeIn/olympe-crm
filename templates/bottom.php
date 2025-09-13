@@ -61,7 +61,7 @@
 					idleAfter: 900,
 					timeout: 0,
 					pollingInterval: 10,
-					keepAliveURL: "/home.php",
+					keepAliveURL: "/home",
 					serverResponseEquals: "OK",
 					onTimeout: function() {
 						window.location = "/index.php"

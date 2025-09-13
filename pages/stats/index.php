@@ -46,7 +46,7 @@ $desc_page = "Statistiques - Olympe Mariage";
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Statistiques</li>
                         </ol>
@@ -63,7 +63,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="recherche" method="POST" action="<?php echo $PHP_SELF ?>">
+									<form name="recherche" method="POST" action="<?= form_action_same() ?>">
 									<input type="hidden" name="recherche" value="ok">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -85,8 +85,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<td>
 													<select name="categorie" class="form-control">
 														<option value="0">------------</option>
-														<?
-															$sql = "select * from categories";
+														<?php															$sql = "select * from categories";
 															$cc = $base->query($sql);
 															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["categorie_num"] . '"';
@@ -100,8 +99,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<td>
 													<select name="marques" class="form-control">
 														<option value="0">------------</option>
-														<?
-															$sql = "select * from marques";
+														<?php															$sql = "select * from marques";
 															$cc = $base->query($sql);
 															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["marque_num"] . '"';
@@ -122,8 +120,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 													<td>
 														<select name="showroom" class="form-control input-medium">
 															<option value="-1">Tous</option>
-														<?
-															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -162,8 +159,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 													</tr>
 												</thead>
 												<tbody>
-												<?
-												
+												<?php												
 												  $nbr = 0;
 												  $sql = "SELECT sum(qte) val, sum(montant_ht*qte) total, categorie_nom FROM commandes c, commandes_produits cd, md_produits p, categories ca WHERE c.id=cd.id and cd.produit_num=p.produit_num and p.categorie_num=ca.categorie_num and c.commande_num!=0";
 												  if ($showroom!=-1)
@@ -239,8 +235,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 													</tr>
 												</thead>
 												<tbody>
-												<?
-												  $nbr = 0;
+												<?php												  $nbr = 0;
 												  $sql = "SELECT sum(qte) val, sum(montant_ht*qte) total, marque_nom FROM commandes c, commandes_produits cd, md_produits p, marques m WHERE c.id=cd.id and cd.produit_num=p.produit_num and p.marque_num=m.marque_num and commande_num!=0";
 												  if ($showroom!=-1)
 													$sql .= " and c.showroom_num='" . $showroom . "'";
@@ -298,8 +293,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>									 
 											<tbody>
-											<?
-											  $nbr = 0;
+											<?php											  $nbr = 0;
 											  $sql = "SELECT sum(qte) val, sum(montant_ht*qte) total, produit_nom, taille_nom, categorie_nom, marque_nom FROM commandes c, commandes_produits cd, md_produits p, categories ca, marques m, tailles t WHERE c.id=cd.id and cd.produit_num=p.produit_num and p.categorie_num=ca.categorie_num and p.marque_num=m.marque_num and cd.taille_num=t.taille_num and commande_num!=0";
 											  if ($showroom!=-1)
 													$sql .= " and c.showroom_num='" . $showroom . "'";
@@ -362,8 +356,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-											  $nbr = 0;
+											<?php											  $nbr = 0;
 											  $sql = "SELECT * FROM commandes c, commandes_produits cd, md_produits p, categories ca, marques m, tailles t WHERE c.id=cd.id and cd.produit_num=p.produit_num and p.categorie_num=ca.categorie_num and p.marque_num=m.marque_num and cd.taille_num=t.taille_num and commande_num!=0";
 											  if ($showroom!=-1)
 													$sql .= " and c.showroom_num='" . $showroom . "'";
@@ -424,8 +417,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-											  $nbr = 0;
+											<?php											  $nbr = 0;
 											  $sql = "SELECT sum(qte) val, sum(montant_ht*qte) total, produit_nom FROM commandes c, commandes_produits cd, md_produits p WHERE c.id=cd.id and cd.produit_num=p.produit_num and commande_num!=0";
 											  if ($showroom!=-1)
 													$sql .= " and c.showroom_num='" . $showroom . "'";
@@ -481,8 +473,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-											  $nbr = 0;
+											<?php											  $nbr = 0;
 											  $sql = "SELECT sum(qte) val, sum(montant_ht*qte) total, taille_nom FROM commandes c, commandes_produits cd, md_produits p, tailles t WHERE c.id=cd.id and cd.produit_num=p.produit_num and cd.taille_num=t.taille_num and commande_num!=0";
 											  if ($showroom!=-1)
 													$sql .= " and c.showroom_num='" . $showroom . "'";
@@ -537,8 +528,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-											  $nbr = 0;
+											<?php											  $nbr = 0;
 											  $sql = "select client_ville, count(client_num) val from clients where client_datecreation>='" . $date_deb . "' and client_datecreation<='" . $date_fin . "'";
 											  if ($showroom!=-1)
 												$sql .= " and showroom_num='" . $showroom . "'";
@@ -565,8 +555,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 					</div>
                     <!-- END PAGE BASE CONTENT -->
                 </div>
-				<?
-					$link_script .= '<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+				<?php					$link_script .= '<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 				<script>
 				  $(function() {
 					var availableTagsPdts = [';

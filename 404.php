@@ -34,7 +34,7 @@ $link_plugin = '<link href="/assets/pages/css/error.min.css" rel="stylesheet" ty
 										<h3>Oops! Vous êtes perdu.</h3>
 										<p> La page que vous cherchez est introuvable ou a été déplacé.
 											<br/>
-											<a href="/home.php"> Retournez à l'accueil </a> ou essayer une autre URL. </p>
+											<a href="/home"> Retournez à l'accueil </a> ou essayer une autre URL. </p>
 									</div>
 								</div>
 							</div>

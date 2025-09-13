@@ -34,7 +34,7 @@ $link_plugin = '<link href="/assets/pages/css/error.min.css" rel="stylesheet" ty
 										<h3>Oops! Un problème est survenue lors de l'execution de la page.</h3>
 										<p> Veuillez contacter l'administrateur du site.
 											<br/>
-											<a href="/home.php"> Retournez à l'accueil </a> ou essayer une autre URL. </p>
+											<a href="/home"> Retournez à l'accueil </a> ou essayer une autre URL. </p>
 									</div>
 								</div>
 							</div>

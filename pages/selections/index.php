@@ -2,7 +2,7 @@
 
 	$sql = "select * from selections s, showrooms sh, users u, clients c where s.client_num=c.client_num and s.showroom_num=sh.showroom_num and s.user_num=u.user_num and selection_num='" . decrypte($id) . "'";
 	$rcc = $base->queryRow($sql);
-if (!$rcc) {
+	if (!$rcc) {
 		echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 	}
 	

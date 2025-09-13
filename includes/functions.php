@@ -520,4 +520,14 @@ function isActiveMenu(string $path, bool $prefixMatch = true): string {
     return '';
 }
 
+/* Helpers appel formulaire SAME PAGE */
+function form_action_same(): string {
+    return htmlspecialchars(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+/* Helpers Rappel SAME PAGE */
+function current_path(): string {
+    return htmlspecialchars(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
 ?>

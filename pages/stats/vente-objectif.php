@@ -25,7 +25,7 @@ $desc_page = "Statistiques - Olympe Mariage";
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Statistiques</li>
                         </ol>
@@ -42,7 +42,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="recherche" method="POST" action="<?php echo $PHP_SELF ?>">
+									<form name="recherche" method="POST" action="<?= form_action_same() ?>">
 									<input type="hidden" name="recherche" value="ok">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -104,8 +104,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?
-															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -145,8 +144,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-												$date_deb = $annee_deb . "-" . $mois_deb . "-01";
+											<?php												$date_deb = $annee_deb . "-" . $mois_deb . "-01";
 												$date_fin = $annee_fin . "-" . $mois_fin . "-01";
 												
 												$sql = "select * from showrooms_objectifs where showroom_num='" . $showroom . "' and genre_num=0 and date>='" . $date_deb . "' and date<='" . $date_fin . "' order by date ASC";
@@ -243,8 +241,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-												$date_deb = $annee_deb . "-" . $mois_deb . "-01";
+											<?php												$date_deb = $annee_deb . "-" . $mois_deb . "-01";
 												$date_fin = $annee_fin . "-" . $mois_fin . "-01";
 												
 												$sql = "select * from showrooms_objectifs where showroom_num='" . $showroom . "' and genre_num=0 and date>='" . $date_deb . "' and date<='" . $date_fin . "' order by date ASC";
@@ -305,8 +302,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-												$date_deb = $annee_deb . "-" . $mois_deb . "-01";
+											<?php												$date_deb = $annee_deb . "-" . $mois_deb . "-01";
 												$date_fin = $annee_fin . "-" . $mois_fin . "-01";
 												
 												$sql = "select * from showrooms_objectifs where showroom_num='" . $showroom . "' and genre_num=1 and date>='" . $date_deb . "' and date<='" . $date_fin . "' order by date ASC";
@@ -403,8 +399,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-												$date_deb = $annee_deb . "-" . $mois_deb . "-01";
+											<?php												$date_deb = $annee_deb . "-" . $mois_deb . "-01";
 												$date_fin = $annee_fin . "-" . $mois_fin . "-01";
 												
 												$sql = "select * from showrooms_objectifs where showroom_num='" . $showroom . "' and genre_num=1 and date>='" . $date_deb . "' and date<='" . $date_fin . "' order by date ASC";

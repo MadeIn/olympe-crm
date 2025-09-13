@@ -49,7 +49,7 @@ function confirme() {
 							<div class="col-md-6 col-sm-12">
 								<!-- BEGIN DRAGGABLE EVENTS PORTLET-->
 							
-									<form name="recherche" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+									<form name="recherche" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 									<input type="hidden" name="recherche" value="ok">
 									<div class="form-inline">
 										<div class="input-group">
@@ -77,8 +77,7 @@ function confirme() {
 											</span>
 											<select name="annee" class="form-control">
 											<option value="00">Année</option>
-											<?
-												for ($i=Date("Y");$i<=Date("Y")+3;$i++) {
+											<?php												for ($i=Date("Y");$i<=Date("Y")+3;$i++) {
 													echo '<option value="' . $i . '"';
 													if ($i==$annee)
 														echo " SELECTED";
@@ -92,8 +91,7 @@ function confirme() {
 											</span>
 											<select name="type" class="form-control">
 											<option value="0">Catégorie</option>
-											<?
-												$sql = "select * from calendriers_themes order by theme_pos ASC";
+											<?php												$sql = "select * from calendriers_themes order by theme_pos ASC";
 												$tt = $base->query($sql);
 												foreach ($tt as $rtt) {
 													echo '<option value="' . $rtt["theme_num"] . '"';
@@ -124,8 +122,7 @@ function confirme() {
 							</tr>
 						</thead>
 						<tbody>
-							<?
-								$jour = "0000-00-00";
+							<?php								$jour = "0000-00-00";
 								$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num ";
 								if ($type!=0) {
 									$sql .= " and c.theme_num='" . $type . "'";
@@ -148,21 +145,11 @@ function confirme() {
 								}
 								$cc = $base->query($sql);
 								foreach ($cc as $rcc) {
-									list(
-										$annee_deb,
-										$mois_deb,
-										$jour_deb,
-										$heure_deb,
-										$minute_deb,
-										$seconde_deb ) = split('[: -]',$rcc["calendrier_datedeb"],6);
-									
-									list(
-										$annee_fin,
-										$mois_fin,
-										$jour_fin,
-										$heure_fin,
-										$minute_fin,
-										$seconde_fin ) = split('[: -]',$rcc["calendrier_datefin"],6);
+									list($annee_deb, $mois_deb, $jour_deb, $heure_deb, $minute_deb, $seconde_deb) =
+										preg_split('/[: -]/', $rcc["calendrier_datedeb"], 6);
+
+									list($annee_fin, $mois_fin, $jour_fin, $heure_fin, $minute_fin, $seconde_fin) =
+										preg_split('/[: -]/', $rcc["calendrier_datefin"], 6);
 									
 									$date_test = $annee_deb . "-" . $mois_deb . "-" . $jour_deb;
 									if ($jour!=$date_test) {
@@ -183,11 +170,11 @@ function confirme() {
 										$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
 										$rcl = $base->queryRow($sql);
  if ($rcl) {
-											echo '<a href="/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '">' . $rcl["client_prenom"] . ' ' . $rcl["client_nom"] . '</a>';
+											echo '<a href="/clients/client?client_num=' . crypte($rcc["client_num"]) . '">' . $rcl["client_prenom"] . ' ' . $rcl["client_nom"] . '</a>';
 										}
 									}
 									echo '</nobr></td>';
-									echo '<td><a href="' . $_SERVER["PHP_SELF"] . '?calendrier_suppr=' . crypte($rcc["calendrier_num"]) . '&mois=' . $mois . '&annee=' . $annee . '&type=' . $type . '" onClick="return confirme()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a></td>';
+									echo '<td><a href="' . current_path() . '?calendrier_suppr=' . crypte($rcc["calendrier_num"]) . '&mois=' . $mois . '&annee=' . $annee . '&type=' . $type . '" onClick="return confirme()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a></td>';
 									echo '</tr>';
 								}
 							?>

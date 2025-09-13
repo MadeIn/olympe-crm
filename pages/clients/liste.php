@@ -33,7 +33,7 @@ $desc_page = "Rechercher un client - Olympe Mariage";
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="liste" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+									<form name="liste" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 									<input type="hidden" name="recherche" value="ok">
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 										<div class="form-group">
@@ -63,8 +63,7 @@ $desc_page = "Rechercher un client - Olympe Mariage";
 													<i class="fa fa-industry"></i>
 												</span>
 												<select name="showroom" class="form-control">
-													<?
-														$sql = "select * from showrooms order by showroom_num ASC";
+													<?php														$sql = "select * from showrooms order by showroom_num ASC";
 														$tt = $base->query($sql);
 														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["showroom_num"] . '">' . $rtt["showroom_nom"] . '</option>';
@@ -130,7 +129,7 @@ $desc_page = "Rechercher un client - Olympe Mariage";
 												<td>' . $rcc["client_tel"] . '</td>
 												<td>' . format_date($rcc["client_date_mariage"],11,1) . '</td>
 												<td>' . $rcc["client_lieu_mariage"] . '</td>
-												<td><a href="client.php?client_num=' . crypte($rcc["client_num"]) . $tab . '"  class="btn btn-outline btn-circle btn-sm purple">
+												<td><a href="client?client_num=' . crypte($rcc["client_num"]) . $tab . '"  class="btn btn-outline btn-circle btn-sm purple">
 															<i class="fa fa-edit"></i> Edit </a></td>';
 									}
 									echo '	</tbody>

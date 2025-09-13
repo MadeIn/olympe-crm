@@ -25,7 +25,7 @@ $desc_page = "Dashboard - Olympe Mariage";
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Dashboard</li>
                         </ol>
@@ -42,7 +42,7 @@ $desc_page = "Dashboard - Olympe Mariage";
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="recherche" method="POST" action="<?php echo $PHP_SELF ?>">
+									<form name="recherche" method="POST" action="<?= form_action_same() ?>">
 									<input type="hidden" name="recherche" value="ok">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -67,8 +67,7 @@ $desc_page = "Dashboard - Olympe Mariage";
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?
-															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -97,8 +96,7 @@ $desc_page = "Dashboard - Olympe Mariage";
 									</div>
 									<div class="portlet-body">
 									   <table class="table bordered">
-											<?
-												$nbr_annee = Date("Y") - $annee_deb;
+											<?php												$nbr_annee = Date("Y") - $annee_deb;
 												$mois_encours = Date("n");
 												if ($mois_encours>=9) 
 													$nbr_annee++;

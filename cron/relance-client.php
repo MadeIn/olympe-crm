@@ -1,7 +1,16 @@
-<?php 
-	echo $_SERVER['DOCUMENT_ROOT'];
-	exit();
-	include( $_SERVER['DOCUMENT_ROOT'] . "/inc/param_auto.php"); 
+<?php
+/**
+ * Tâche CRON - Rappel des rendez-vous Montpellier
+ * Envoie un rappel 3 jours avant le rendez-vous
+ */
+
+// Sécurisation et initialisation
+require_once 'cron_security.php';
+
+start_cron_task('relance-client');
+
+try {
+    $db = init_cron_database();
 
 	// Envoyer en cron tous les matins à 9h
 	// On recupere les 1er ou 2eme rendez vous d'il y a 30 jours et qui n'ont pas de commande pour les relancer
@@ -37,6 +46,15 @@
 			}
 		}
 	}
-	
+} catch (Exception $e) {
+    log_cron('relance-client', "Erreur fatale: " . $e->getMessage(), 'error');
+    
+    if (php_sapi_name() !== 'cli') {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    
+    exit(1);
+}	
 	
 ?>

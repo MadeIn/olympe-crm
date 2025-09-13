@@ -22,7 +22,7 @@ $desc_page = "Extraction email - Olympe Mariage";
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Relance Cliente</li>
                         </ol>
@@ -39,7 +39,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="recherche" method="POST" action="<?php echo $PHP_SELF ?>">
+									<form name="recherche" method="POST" action="<?= form_action_same() ?>">
 									<input type="hidden" name="recherche" value="ok">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -81,8 +81,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 												<td>
 													<select name="showroom" class="form-control input-medium">
 														<option value="0">Tous</option>
-													<?
-														$sql = "select * from showrooms order by showroom_nom ASC";
+													<?php														$sql = "select * from showrooms order by showroom_nom ASC";
 														$tt = $base->query($sql);
 														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -95,8 +94,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 												<td>
 													<select name="user_select" class="form-control input-medium">
 														<option value="0">Tous</option>
-													<?
-														$sql = "select * from users order by user_nom ASC";
+													<?php														$sql = "select * from users order by user_nom ASC";
 														$tt = $base->query($sql);
 														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["user_num"] . '"';
@@ -122,8 +120,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 						</div>
                     	<?php if (isset($recherche)) { ?>
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<?
-							$sql = "select * from clients c, rendez_vous r where c.client_num=r.client_num and r.type_num=1 ";
+						<?php							$sql = "select * from clients c, rendez_vous r where c.client_num=r.client_num and r.type_num=1 ";
 							if ($date_debut!="")
 								$sql .= " and rdv_date>='" . $date_debut . " 00:00:00'";
 							if ($date_fin!="")
@@ -169,7 +166,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 										$nbr_email++;
 									} else {
 										echo '<tr>
-												<td><a href="/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '">' . $rcc["client_prenom"] . ' ' . $rcc["client_nom"] . '</td>
+												<td><a href="/clients/client?client_num=' . crypte($rcc["client_num"]) . '">' . $rcc["client_prenom"] . ' ' . $rcc["client_nom"] . '</td>
 												<td>' . $rcc["client_tel"] . '</td>
 												<td>' . $rcc["client_mail"] . '</td>
 												<td>' . format_date($rcc["client_date_mariage"],11,1) . '</td>

@@ -11,8 +11,8 @@
 	
 	// on regarde si le paiement existe
 	$sql = "select * from commandes_fournisseurs_paiements where id='" . $id . "'";
-	$cc = $base->query($sql);
-	if (!$rcc = mysql_fetch_array($cc)) { // Si elle existe pas on l'a créé
+	$rcc = $base->queryRow($sql);
+	if (!$rcc) { // Si elle existe pas on l'a créé
 		$sql = "insert into commandes_fournisseurs_paiements values('" . $id . "','" . $produit . "',0,0,0,'0000-00-00','0000-00-00','0000-00-00')";
 		$base->query($sql);
 	} 

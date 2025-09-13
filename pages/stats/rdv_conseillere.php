@@ -9,8 +9,8 @@ if ($u->mGroupe==0) {
 		$u->mShowroom = $showroom_choix;
 
 	$sql = "select * from showrooms where showroom_num='" . $u->mShowroom . "'";
-	$ss = $base->query($sql);
-	if ($rss=mysql_fetch_array($ss)) {
+	$rss = $base->queryRow($sql);
+if ($rss) {
 		$u->mShowroomInfo = $rss;
 	}
 }
@@ -27,7 +27,7 @@ if ($u->mGroupe==0) {
 	$date_debut_annee = $annee_deb . "-09-01 00:00:00";
 	$date_fin_annee = $annee_fin . "-08-31 23:59:59";
 	
-	include( $chemin . "/mod/head.php"); ?>
+	include TEMPLATE_PATH . 'head.php'; ?>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">
@@ -49,8 +49,7 @@ if ($u->mGroupe==0) {
 						</div>
 					<?php } else { ?>
 						<h1>Olympe Mariage <select name="showroom_choix" onChange="this.form.submit()" class="form-inline">
-						<?
-							$sql = "select * from showrooms order by showroom_num ASC";
+						<?php							$sql = "select * from showrooms order by showroom_num ASC";
 							$sh = $base->query($sql);
 							foreach ($sh as $rsh) {
 								echo '<option value="' . $rsh["showroom_num"] . '"';
@@ -90,21 +89,19 @@ if ($u->mGroupe==0) {
 												</tr>
 											</thead>
 											<tbody>
-											<?
-												$nbr_total_rdv = 0;
+											<?php												$nbr_total_rdv = 0;
 												$nbr_total_commande = 0;
 												
 												$sql = "select * from users where showroom_num='" . $u->mShowroom . "' and user_num not in (3,5,14) order by user_nom ASC, user_prenom ASC";
 												$cc = $base->query($sql);
 												foreach ($cc as $rcc) {
 													$sql = "select count(rdv_num) val from rendez_vous r, clients c where c.client_num=r.client_num and rdv_date>='" . $date_debut_annee . "' and rdv_date<='" . Date("Y-m-d H:i:s") . "' and r.type_num=1 and c.showroom_num='" . $u->mShowroom . "' and client_genre=0 and c.user_num='" . $rcc["user_num"] . "'";	
-													$rr = $base->query($sql);
+													$rrr = $base->queryRow($sql);
 													$nbr_rdv = 0;
 													$transformation = 0;
 													$nbr_commande = 0;
-													if ($rrr=mysql_fetch_array($rr)) {
-														$nbr_rdv = $rrr["val"];
-																											
+													if ($rrr) {
+														$nbr_rdv = $rrr["val"];																				
 														
 														// Commande réalisé par la conseillere
 														$sql = "select * from commandes c, commandes_produits cp, md_produits p, clients cl where c.id=cp.id and cp.produit_num=p.produit_num and c.client_num=cl.client_num and categorie_num IN (11,25,27) and commande_num!=0 and commande_date>='" . $date_debut_annee . "' and commande_date<='" . $date_fin_annee . "' and c.showroom_num='" . $u->mShowroom . "' and cl.user_num='" . $rcc["user_num"] . "'";

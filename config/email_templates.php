@@ -78,7 +78,7 @@ return [
                          [ACOMPTE_SUITE]
                          [RETOUCHE]
                          <p>Vous pouvez consulter et imprimer votre devis en cliquant sur le lien suivant :</p>
-                         <p><a href="https://crm.olympe-mariage.com/devis/index.php?devis=[DEVIS_NUM]&print=no" target="_blank"><u><strong>Votre devis Olympe Mariage</strong></u></a></p>
+                         <p><a href="https://crm.olympe-mariage.com/devis/index?devis=[DEVIS_NUM]&print=no" target="_blank"><u><strong>Votre devis Olympe Mariage</strong></u></a></p>
                          <p>Je reste à votre entière disposition si vous avez la moindre question.</p>
                          <p>À très bientôt,</p>'
         ],
@@ -88,7 +88,7 @@ return [
             'message' => '<p>Bonjour [PRENOM],</p>
                          <p>J\'espère que vous allez bien.</p>
                          <p>Vous pouvez consulter et imprimer votre facture en cliquant sur le lien suivant :</p>
-                         <p><a href="https://crm.olympe-mariage.com/facture/index.php?facture=[FACTURE_NUM]&print=no" target="_blank"><u><strong>Votre facture Olympe Mariage</strong></u></a></p>
+                         <p><a href="https://crm.olympe-mariage.com/facture/index?facture=[FACTURE_NUM]&print=no" target="_blank"><u><strong>Votre facture Olympe Mariage</strong></u></a></p>
                          <p>Je reste à votre entière disposition si vous avez la moindre question.</p>
                          <p>Toute l\'équipe Olympe vous souhaite beaucoup de bonheur et un très beau mariage.</p>
                          <p>À très bientôt,</p>'

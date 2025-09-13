@@ -14,15 +14,14 @@
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<?
-	$sql = "select * from commandes c, clients cl, paiements p  where c.paiement_num=p.paiement_num and c.client_num=cl.client_num and facture_date>='" . $date_deb . "' and facture_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' and commande_num!=0 and facture_num!=0 order by facture_date DESC";
+<?php	$sql = "select * from commandes c, clients cl, paiements p  where c.paiement_num=p.paiement_num and c.client_num=cl.client_num and facture_date>='" . $date_deb . "' and facture_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' and commande_num!=0 and facture_num!=0 order by facture_date DESC";
 	$tt = $base->query($sql);
 	
 	foreach ($tt as $rtt) {
 	
 		$sql = "select * from commandes co, paiements p, showrooms sh, users u, clients c where co.paiement_num=p.paiement_num and co.client_num=c.client_num and co.showroom_num=sh.showroom_num and co.user_num=u.user_num and id='" . $rtt["id"] . "'";
-		$cc = $base->query($sql);
-		if (!$rcc=mysql_fetch_array($cc)) {
+		$rcc = $base->queryRow($sql);
+		if (!$rcc) {
 			echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 		}
 

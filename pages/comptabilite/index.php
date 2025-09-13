@@ -111,7 +111,7 @@ function initDate() {
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Statistiques comptables</li>
                         </ol>
@@ -128,7 +128,7 @@ function initDate() {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="liste" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+									<form name="liste" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 									<input type="hidden" name="recherche" value="ok">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -168,8 +168,7 @@ function initDate() {
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?
-															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -218,8 +217,7 @@ function initDate() {
 										</tr>
 									</thead>
 									<tbody>
-										<?
-											if ($facture!="") {
+										<?php											if ($facture!="") {
 												$sql = "select * from commandes c, clients cl, paiements p  where c.paiement_num=p.paiement_num and c.client_num=cl.client_num and c.showroom_num='" . $showroom . "' and facture_num='" . $facture . "' order by commande_date DESC";
 											} else {
 												switch ($etat) {
@@ -274,16 +272,16 @@ function initDate() {
 												
 												echo '<tr>
 														<td>' . $rcc["id"] . '</td>
-														<td><a href="/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '">' . $rcc["client_nom"] . ' ' . $rcc["client_prenom"] . '</td>
+														<td><a href="/clients/client?client_num=' . crypte($rcc["client_num"]) . '">' . $rcc["client_nom"] . ' ' . $rcc["client_prenom"] . '</td>
 														<td>';
 												if ($etat==1)
-													echo '<a href="#" onClick="window.open(\'/acompte/index.php?id=' . crypte($rcc["id"]) . '&paiement=1&print=no\',\'_blank\',\'width=1200,height=800,toolbar=no\');">' . $rcc["commande_num"] . '</a>';
+													echo '<a href="#" onClick="window.open(\'/acompte/index?id=' . crypte($rcc["id"]) . '&paiement=1&print=no\',\'_blank\',\'width=1200,height=800,toolbar=no\');">' . $rcc["commande_num"] . '</a>';
 												else 
 													echo $rcc["commande_num"];
 												echo '  </td>
 														<td>' . format_date($rcc["commande_date"],11,1) . '</td>';
 												if (($etat==2) || ($etat==3)) {
-													echo '<td><a href="#" onClick="window.open(\'/facture/index.php?facture=' . crypte($rcc["id"]) . '&paiement=1&print=no\',\'_blank\',\'width=1200,height=800,toolbar=no\');">' . $rcc["facture_num"] . '</td>';
+													echo '<td><a href="#" onClick="window.open(\'/facture/index?facture=' . crypte($rcc["id"]) . '&paiement=1&print=no\',\'_blank\',\'width=1200,height=800,toolbar=no\');">' . $rcc["facture_num"] . '</td>';
 													echo '	<td>' . format_date($rcc["facture_date"],11,1) . '</td>';
 												}
 												else 

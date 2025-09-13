@@ -31,8 +31,8 @@ if ($rcc) {
 				}			
 				// On verifie les stocke pour chaque produit
 				$sql = "select * from stocks where taille_num=" . $rpp["taille_num"] . " and produit_num=" . $rpp["produit_num"] . " and showroom_num='" . $u->mShowroom . "'";
-				$ss = $base->query($sql);
-				if ($rss=mysql_fetch_array($ss)) {
+				$rss = $base->queryRow($sql);
+if ($rss) {
 					$stock = $rss["stock_virtuel"];
 				}
 				else { // Pour tester tant qu'il n'y a pas de stock, on met 10...
@@ -147,7 +147,7 @@ if ($rcc) {
 					$acompte_num++;
 				}
 			}	
-			echo '<tr><td colspan="7" align="right"><a href="/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '&tab=tab_1_3" class="btn red">Fermer</a> <a href="/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '&tab=tab_1_4&commande_passage=' . crypte($id) . '" class="btn blue" onClick="return confirme_commande(' . $rcc["id"] . ')">Passer la commande</a></td></tr>';
+			echo '<tr><td colspan="7" align="right"><a href="/clients/client?client_num=' . crypte($rcc["client_num"]) . '&tab=tab_1_3" class="btn red">Fermer</a> <a href="/clients/client?client_num=' . crypte($rcc["client_num"]) . '&tab=tab_1_4&commande_passage=' . crypte($id) . '" class="btn blue" onClick="return confirme_commande(' . $rcc["id"] . ')">Passer la commande</a></td></tr>';
 		}
 	}
 	
@@ -292,8 +292,8 @@ if ($rcc) {
 				echo '<div class="mt-element-card mt-element-overlay">';
 				foreach ($pp as $rpp) {
 					$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' and photo_pos=1";
-					$ph = $base->query($sql);
-					if ($rph=mysql_fetch_array($ph)) {
+					$rph = $base->queryRow($sql);
+					if ($rph) {
 						$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
 					} else 
 						$image_pdt = "http://www.placehold.it/50x50/EFEFEF/AAAAAA&amp;text=no+image";
@@ -337,8 +337,8 @@ if ($rcc) {
 				echo '<div class="mt-element-card mt-element-overlay">';
 				foreach ($pp as $rpp) {
 					$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' and photo_pos=1";
-					$ph = $base->query($sql);
-					if ($rph=mysql_fetch_array($ph)) {
+					$rph = $base->queryRow($sql);
+					if ($rph) {
 						$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
 					} else 
 						$image_pdt = "http://www.placehold.it/50x50/EFEFEF/AAAAAA&amp;text=no+image";

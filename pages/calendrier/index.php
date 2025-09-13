@@ -579,8 +579,7 @@ function changeHeureFin() {
 						</div>
 					</div>
 				</div>
-				<?
-					$param = "";
+				<?php					$param = "";
 					// ON recherche les events pour remplir le calendrier perso
 					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num='" . $u->mNum . "' and calendrier_datedeb>='2021-08-01 00:00:00' and c.theme_num=4 order by calendrier_datedeb DESC";
 					$cc = $base->query($sql);
@@ -591,21 +590,11 @@ function changeHeureFin() {
 							$param .= ',';
 						}
 						
-						list(
-							$annee_deb,
-							$mois_deb,
-							$jour_deb,
-							$heure_deb,
-							$minute_deb,
-							$seconde_deb ) = split('[: -]',$rcc["calendrier_datedeb"],6);
-						
-						list(
-							$annee_fin,
-							$mois_fin,
-							$jour_fin,
-							$heure_fin,
-							$minute_fin,
-							$seconde_fin ) = split('[: -]',$rcc["calendrier_datefin"],6);
+						list($annee_deb, $mois_deb, $jour_deb, $heure_deb, $minute_deb, $seconde_deb) =
+							preg_split('/[: -]/', $rcc["calendrier_datedeb"], 6);
+
+						list($annee_fin, $mois_fin, $jour_fin, $heure_fin, $minute_fin, $seconde_fin) =
+							preg_split('/[: -]/', $rcc["calendrier_datefin"], 6);
 							
 						$mois_deb = $mois_deb-1;
 						$mois_fin = $mois_fin-1;
@@ -616,13 +605,13 @@ function changeHeureFin() {
 							$genre = 0;
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
 							$rcl = $base->queryRow($sql);
- if ($rcl) {
-								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
+ 							if ($rcl) {
+								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
 							$rrr = $base->queryRow($sql);
-if ($rrr) {
+							if ($rrr) {
 								if ($genre==0)
 									$couleur = $rrr["type_couleur"];
 								else 
@@ -660,21 +649,11 @@ if ($rrr) {
 							$param .= ',';
 						}
 						
-						list(
-							$annee_deb,
-							$mois_deb,
-							$jour_deb,
-							$heure_deb,
-							$minute_deb,
-							$seconde_deb ) = split('[: -]',$rcc["calendrier_datedeb"],6);
-						
-						list(
-							$annee_fin,
-							$mois_fin,
-							$jour_fin,
-							$heure_fin,
-							$minute_fin,
-							$seconde_fin ) = split('[: -]',$rcc["calendrier_datefin"],6);
+						list($annee_deb, $mois_deb, $jour_deb, $heure_deb, $minute_deb, $seconde_deb) =
+							preg_split('/[: -]/', $rcc["calendrier_datedeb"], 6);
+
+						list($annee_fin, $mois_fin, $jour_fin, $heure_fin, $minute_fin, $seconde_fin) =
+							preg_split('/[: -]/', $rcc["calendrier_datefin"], 6);
 							
 						$mois_deb = $mois_deb-1;
 						$mois_fin = $mois_fin-1;
@@ -686,13 +665,13 @@ if ($rrr) {
 							$genre = 0;
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
 							$rcl = $base->queryRow($sql);
- if ($rcl) {
-								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
+ 							if ($rcl) {
+								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
 							$rrr = $base->queryRow($sql);
-if ($rrr) {
+							if ($rrr) {
 								$type_rdv = $rrr["type_num"];
 								if ($genre==0)
 									$couleur = $rrr["type_couleur"];
@@ -737,7 +716,7 @@ if ($rrr) {
 								desc_modal : "' . $desc_modal . '",
 								description : "' . $calendrier_desc . '",
 								id : "' . $rcc["calendrier_num"] . '",
-								link : "/clients/client.php?client_num=' . crypte($rcc["client_num"]) . '",';
+								link : "/clients/client?client_num=' . crypte($rcc["client_num"]) . '",';
 						/*if ($link!="")
 							$param .= ' url:"' . $link . '",';*/
 						$param .= '	allDay: ' . $allday  . '
@@ -858,7 +837,7 @@ if ($rrr) {
                 <?php include TEMPLATE_PATH . 'footer.php'; ?>
             </div>
         </div>
-         <?php  include( $chemin . "/mod/bottom.php"); ?>
+        <?php include TEMPLATE_PATH . 'bottom.php'; ?>
 		<script language="Javascript">
 			$('#calendrier_desc').keypress(
 				 function(event){

@@ -38,8 +38,8 @@ if (isset($modif)) {
 		$remise=0;
 	
 	$sql = "select * from md_produits where produit_num='" . decrypte($val_num) . "'";
-	$pp = $db->query($sql);
-	if ($rpp = mysql_fetch_array($pp)) {
+	$rpp = $db->queryRow($sql);
+	if ($rpp) {
 		$pp_num = $rpp["prix_num"];
 		$pa_num = $rpp["prixachat_num"];
 	}
@@ -58,8 +58,8 @@ if (isset($modif)) {
 	$db->query($sql);
 	
 	$sql = "select max(prix_num) val from prix";
-	$test = $db->query($sql);
-	if ($rt = mysql_fetch_array($test))
+	$rt = $db->queryRow($sql);
+	if ($rt)
 		$prix_num = $rt["val"];
 	
 		
@@ -76,8 +76,8 @@ if (isset($modif)) {
 	$db->query($sql);
 	
 	$sql = "select max(prixachat_num) val from prixachats";
-	$test = $db->query($sql);
-	if ($rt = mysql_fetch_array($test))
+	$rt = $db->queryRow($sql);
+	if ($rt)
 		$prixachat_num = $rt["val"];
 			
 	$sql = "update md_produits set prix_num='" . $prix_num . "', prixachat_num='" . $prixachat_num . "', produit_poids='" . intval($poids) . "', tva_num='" . $tva . "', produit_montant_remise='" . $remise . "', produit_remise_type='" . $remise_type . "'  where produit_num='" . decrypte($val_num) . "'";
@@ -95,8 +95,8 @@ if (isset($ajout)) {
 	$db->query($sql);
 	// On recupere le num categ
 	$sql = "select max(" . $nom_champ . "_num) val from md_" . $nom_table;
-	$test = $db->query($sql);
-	if ($rt = mysql_fetch_array($test))
+	$rt = $db->queryRow($sql);
+	if ($rt)
 		$num = $rt["val"];
 		
 	$nom = xtTraiter($nom);
@@ -113,8 +113,8 @@ if (isset($ajout)) {
 	$db->query($sql);
 	
 	$sql = "select max(prix_num) val from prix";
-	$test = $db->query($sql);
-	if ($rt = mysql_fetch_array($test))
+	$rt = $db->queryRow($sql);
+	if ($rt)
 		$prix_num = $rt["val"];
 		
 	// On insere le prix d'achat
@@ -125,8 +125,8 @@ if (isset($ajout)) {
 	$db->query($sql);
 	
 	$sql = "select max(prixachat_num) val from prixachats";
-	$test = $db->query($sql);
-	if ($rt = mysql_fetch_array($test))
+	$rt = $db->queryRow($sql);
+	if ($rt)
 		$prixachat_num = $rt["val"];
 			
 	$sql = "update md_produits set prix_num='" . $prix_num . "', prixachat_num='" . $prixachat_num . "', produit_poids='" . intval($poids) . "', tva_num='" . $tva_num . "', produit_montant_remise='" . $remise . "', produit_remise_type='" . $remise_type . "'  where produit_num='" . $num . "'";
@@ -280,7 +280,7 @@ function confirme() {
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
 							<?php if (!isset($modif_num)) { ?>
 								<li class="active">Ajouter un produit</li>
@@ -305,7 +305,7 @@ function confirme() {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="ajouter" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+									<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 									<?php if (!isset($modif_num)) { ?>		
 									 <input type="hidden" name="ajout" value="ok">
 									 <input type="hidden" name="nbr_ligne" value="0">
@@ -337,8 +337,7 @@ function confirme() {
 													<div class="input-group">
 													 <select name="categorie">
 														<option value="0">-----------------</option>
-													<?
-														$sql = "select * from categories order by categorie_nom ASC";
+													<?php														$sql = "select * from categories order by categorie_nom ASC";
 														$cc = $db->query($sql);
 														foreach ($cc as $rcc)	{
 															echo "<option value=\"" . $rcc["categorie_num"] . "\">" . $rcc["categorie_nom"] . "</option>\n";
@@ -353,8 +352,7 @@ function confirme() {
 													<div class="input-group">
 													 <select name="marque">
 														<option value="0">-----------------</option>
-													<?
-														$sql = "select * from marques order by marque_nom ASC";
+													<?php														$sql = "select * from marques order by marque_nom ASC";
 														$cc = $db->query($sql);
 														foreach ($cc as $rcc)	{
 															echo "<option value=\"" . $rcc["marque_num"] . "\">" . $rcc["marque_nom"] . "</option>\n";
@@ -436,9 +434,9 @@ function confirme() {
 										 <tbody>
 										<?php 
 											 $sql = "select * from md_" . $nom_table . " d where d." . $nom_champ . "_num=" . decrypte($modif_num);
-											$cc = $db->query($sql);
+											$rcc = $db->queryRow($sql);
 											$i=0;
-											if ($rcc=mysql_fetch_array($cc)) {
+											if ($rcc) {
 												$etat = $rcc[$nom_champ . "_etat"];
 												$ref = $rcc["produit_ref"];
 												$nom = $rcc["produit_nom"];
@@ -452,15 +450,15 @@ function confirme() {
 												$remise_type = $rcc["produit_remise_type"];
 												
 												$sql = "select * from prix where prix_num='" . $rcc["prix_num"] . "'";
-												$pp = $db->query($sql);
-												if ($rpp = mysql_fetch_array($pp))
+												$rpp = $db->queryRow($sql);
+												if ($rpp)
 													$prix = $rpp["prix_montant_ht"];
 												else
 													$prix = 0;
 													
 												$sql = "select * from prixachats where prixachat_num='" . $rcc["prixachat_num"] . "'";
-												$pp = $db->query($sql);
-												if ($rpp = mysql_fetch_array($pp))
+												$rpp = $db->queryRow($sql);
+												if ($rpp)
 													$prixachat = $rpp["prixachat_montant"];
 												else
 													$prixachat = 0;								
@@ -492,8 +490,7 @@ function confirme() {
 													<div class="input-group">
 													<select name="categorie">
 														<option value="0">-----------------</option>
-													<?
-														$sql = "select * from categories order by categorie_nom ASC";
+													<?php														$sql = "select * from categories order by categorie_nom ASC";
 														$cm = $db->query($sql);
 														foreach ($cm as $rcm)	{
 															echo "<option value=\"" . $rcm["categorie_num"] . "\"";
@@ -511,8 +508,7 @@ function confirme() {
 													<div class="input-group">
 													<select name="marque">
 														<option value="0">-----------------</option>
-													<?
-														$sql = "select * from marques order by marque_nom ASC";
+													<?php														$sql = "select * from marques order by marque_nom ASC";
 														$cm = $db->query($sql);
 														foreach ($cm as $rcm)	{
 															echo "<option value=\"" . $rcm["marque_num"] . "\"";
@@ -589,8 +585,7 @@ function confirme() {
 											</tbody>
 											</table>
 											</form>
-										<?
-											}
+										<?php											}
 										} ?>
 								</div>
 							</div>
@@ -632,7 +627,7 @@ function confirme() {
 									<div class="portlet-body">
 										<div class="control-group">
 											<label class="control-label"><b>Photo : </b></label>
-											<form name="ajouter_photo" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+											<form name="ajouter_photo" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 											<input type="hidden" name="add_photo" value="ok">
 											<input type="hidden" name="modif_num" value="<?php echo $modif_num ?>">
 											<input type="hidden" name="nbr_ligne" value="<?php echo $nbr_ligne ?>">
@@ -664,8 +659,7 @@ function confirme() {
 											</tr>
 										</thead>
 										<tbody>
-										<?
-											$sql = "select * from md_" . $nom_table . "_photos p where " . $nom_champ . "_num='" . decrypte($modif_num) . "' order by photo_pos ASC";
+										<?php											$sql = "select * from md_" . $nom_table . "_photos p where " . $nom_champ . "_num='" . decrypte($modif_num) . "' order by photo_pos ASC";
 											$res = DbSelect($sql);
 											$nbr_ligne = $res["nbr"];
 											$i=0;
@@ -699,8 +693,7 @@ function confirme() {
 													</td>
 													<td><a href="<?php echo $PHP_SELF ?>?suppr_photo=<?php echo crypte($rcc["photo_num"]) ?>&modif_num=<?php echo $modif_num ?>" onClick="return confirme();" class="btn red mini">Supprimer</a></td>
 												</tr>
-											<?
-													$i++;
+											<?php													$i++;
 												}
 											}
 										?>
@@ -729,13 +722,12 @@ function confirme() {
 											</tr>
 										</thead>
 										<tbody>
-										<?
-											$sql = "select * from tailles t, categories_tailles c where t.taille_num=c.taille_num and c.categorie_num=" . $categorie_num;
+										<?php											$sql = "select * from tailles t, categories_tailles c where t.taille_num=c.taille_num and c.categorie_num=" . $categorie_num;
 											$ss = $db->query($sql);
 											foreach ($ss as $st) {
 												$sql = "select * from stocks where taille_num=" . $st["taille_num"] . " and produit_num=" . decrypte($modif_num) . " and showroom_num='" . $u->mShowroom . "'";
-												$cc = $db->query($sql);
-												if ($rcc=mysql_fetch_array($cc)) {
+												$rcc = $db->queryRow($sql);
+												if ($rcc) {
 													$stock_virtuel = $rcc["stock_virtuel"];
 													$stock_reel = $rcc["stock_reel"];
 													$stock_limite = $rcc["stock_limite"];

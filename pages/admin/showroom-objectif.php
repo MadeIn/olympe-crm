@@ -36,7 +36,7 @@ function confirme() {
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Gestion des objectif des showrooms</li>
                         </ol>

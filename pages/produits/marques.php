@@ -73,7 +73,7 @@ function confirme() {
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Gestion des marques</li>
                         </ol>
@@ -94,7 +94,7 @@ function confirme() {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="ajouter" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+									<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 									<?php if (!isset($modif_num)) { ?>		
 									 <input type="hidden" name="ajout" value="ok">
 								 	 <input type="hidden" name="nbr_ligne" value="<?php echo $nbr_ligne ?>">
@@ -245,9 +245,9 @@ function confirme() {
 										 <tbody>
 										<?php 
 											$sql = "select * from " . $nom_table . " d where d." . $nom_champ . "_num=" . decrypte($modif_num);
-											$cc = $base->query($sql);
+											$rcc = $base->queryRow($sql);
 											$i=0;
-											if ($rcc=mysql_fetch_array($cc))
+											if ($rcc)
 											{
 												$etat = $rcc[$nom_champ . "_visible"];
 										?>
@@ -382,8 +382,7 @@ function confirme() {
 											</div>
 											</td>
 										</tr>
-										<?
-											}
+										<?php											}
 										?>
 										<tr>
 											<td><input type="submit" value="Modifier" class="btn blue"></td>
@@ -408,8 +407,7 @@ function confirme() {
 								<div class="table-scrollable">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										  <tbody>
-											<?
-												$i=0;
+											<?php												$i=0;
 												foreach ($cdr as $row) {
 											?>
 											<tr>
@@ -422,8 +420,7 @@ function confirme() {
 														<i class="fa fa-trash-o"></i> Suppr </a>-->
 												</td>
 											</tr>
-											<?
-												$i++;
+											<?php												$i++;
 												}
 											?>
 										</tbody>

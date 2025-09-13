@@ -1,4 +1,16 @@
-<?php include("/home/madeinpr/www/CRM/olympe-mariage/inc/param_auto.php"); 
+<?php
+/**
+ * Tâche CRON - Rappel des rendez-vous Montpellier
+ * Envoie un rappel 3 jours avant le rendez-vous
+ */
+
+// Sécurisation et initialisation
+require_once 'cron_security.php';
+
+start_cron_task('rappel-retouche');
+
+try {
+    $db = init_cron_database();
 
 	// Envoyer en cron tous les matins à 9h
 	// On recupere les rendez vous à venir dans 3 jours pour envoyer un rappel....
@@ -24,8 +36,8 @@
 			$info_paiement = "";
 			// On regarde la commande
 			$sql = "select * from commandes c, paiements p, commandes_produits cp, showrooms sh where c.paiement_num=p.paiement_num and c.id=cp.id and c.showroom_num=sh.showroom_num and taille_num=35 and client_num='" . $rcc["client_num"] . "'";
-			$ta = $base->query($sql);
-			$nbr_ta = count($ta);
+			$rco = $base->queryRow($sql);
+			$nbr_ta = count($rco);
 			if ($nbr_ta==0) {
 				if ($rcc["client_genre"]==0) {
 					$message = "pour la remise de votre robe";
@@ -35,7 +47,6 @@
 			}
 			else {
 				$message = "pour le premier essayage avec notre couturière";
-				$rco = mysql_fetch_array($ta);
 				// On va chercher les infos de paiements
 				if ($rco["paiement_nombre"]>1) { // ON affiche les acomptes
 					$montant_a_payer = $rco["commande_ttc"];
@@ -58,7 +69,7 @@
 												<li>Code BIC / SWIFT : ' . $rco["banque_swift"] . '</li>
 											</ul>
 										</li>
-										<li>Retrouvez les détails de votre commande en <a href="https://crm.olympe-mariage.com/commandes/index.php?cde=' . crypte($rco["commande_num"]) . '">cliquant ici</a></li>
+										<li>Retrouvez les détails de votre commande en <a href="https://crm.olympe-mariage.com/commandes/index?cde=' . crypte($rco["commande_num"]) . '">cliquant ici</a></li>
 									</ul';										
 				}
 			}
@@ -90,6 +101,15 @@
 			$base->query($sql);
 		}
 	}
-	
+} catch (Exception $e) {
+    log_cron('rappel-retouche', "Erreur fatale: " . $e->getMessage(), 'error');
+    
+    if (php_sapi_name() !== 'cli') {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    
+    exit(1);
+}	
 	
 ?>

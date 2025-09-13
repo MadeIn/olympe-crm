@@ -32,7 +32,7 @@ $desc_page = "Statistiques - Olympe Mariage";
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Statistiques / catégorie</li>
                         </ol>
@@ -49,7 +49,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="recherche" method="POST" action="<?php echo $PHP_SELF ?>">
+									<form name="recherche" method="POST" action="<?= form_action_same() ?>">
 									<input type="hidden" name="recherche" value="ok">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -74,8 +74,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?
-															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -104,8 +103,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 									</div>
 									<div class="portlet-body">
 									   <table class="table bordered">
-											<?
-												$nbr_annee = Date("Y") - $annee_deb;
+											<?php												$nbr_annee = Date("Y") - $annee_deb;
 												$mois_encours = Date("n");
 												if ($mois_encours>=9) 
 													$nbr_annee++;
@@ -149,10 +147,10 @@ $desc_page = "Statistiques - Olympe Mariage";
                                                             $sql = "SELECT sum(qte) val, sum(montant_ht*qte) total, categorie_nom FROM commandes c, commandes_produits cd, md_produits p, categories ca WHERE c.id=cd.id and cd.produit_num=p.produit_num and p.categorie_num=ca.categorie_num and c.commande_num!=0 and c.showroom_num='" . $showroom . "'";
                                                             $sql .= " and p.categorie_num=" . $rcc["categorie_num"];
                                                             $sql .= " and commande_date>='" . $date_debut . "' and commande_date<='" . $date_fin . "'";
-                                                            $re = $base->query($sql);
+                                                            $rre = $base->queryRow($sql);
                                                             $nbr_commande = 0;
                                                             $ca = 0;
-                                                            if ($rre=mysql_fetch_array($re)) {
+                                                            if ($rre) {
                                                                 $nbr_commande = $rre["val"];
                                                                 $ca = $rre["total"];
                                                                 $total_nbr_commande += $nbr_commande;

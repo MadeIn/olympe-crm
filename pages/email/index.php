@@ -25,8 +25,7 @@ $desc_page = "Dashboard - Olympe Mariage";
                     <!-- BEGIN PAGE BASE CONTENT -->
                     <div class="row">
 						<div class="panel-group accordion" id="accordion1">
-						<?
-							$sql = "select * from mails m, clients c where m.client_num=c.client_num and m.user_num='" . $u->mNum . "' order by mail_date DESC LIMIT 0,50";
+						<?php							$sql = "select * from mails m, clients c where m.client_num=c.client_num and m.user_num='" . $u->mNum . "' order by mail_date DESC LIMIT 0,50";
 							$cc = $base->query($sql);
 							$i=1;
 							foreach ($cc as $rcc) {

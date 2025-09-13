@@ -2,7 +2,7 @@
 
 	$sql = "select * from commandes co, paiements p, showrooms sh, users u, clients c where co.paiement_num=p.paiement_num and co.client_num=c.client_num and co.showroom_num=sh.showroom_num and co.user_num=u.user_num and id='" . decrypte($devis) . "'";
 	$rcc = $base->queryRow($sql);
-if (!$rcc) {
+	if (!$rcc) {
 		echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 	}
 	
@@ -168,8 +168,7 @@ if (!$rcc) {
 				</tr>
 			</table>		
 		<?php } ?>
-		<?
-			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
+		<?php			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
 				echo '<table class="table tablepaiement">
 					  <tr>
 						<td><em><strong>Mode de règlement</strong></em><br>';

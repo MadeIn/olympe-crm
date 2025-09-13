@@ -42,7 +42,7 @@ $desc_page = "Statistiques - Olympe Mariage";
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Tableau de bord</li>
                         </ol>
@@ -59,7 +59,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="recherche" method="POST" action="<?php echo $PHP_SELF ?>">
+									<form name="recherche" method="POST" action="<?= form_action_same() ?>">
 									<input type="hidden" name="recherche" value="ok">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<tbody>
@@ -112,8 +112,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?
-															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -161,8 +160,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											</tr>
 										</thead>
 										<tbody>
-										<?
-										
+										<?php										
 										  $nbr = 0;
 										  $sql = "select * from clients c, commandes co where c.client_num=co.client_num";
 										  if ($type==1)
@@ -225,23 +223,23 @@ $desc_page = "Statistiques - Olympe Mariage";
 												 $date_remise = "";
 												 
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=2";
-												 $rr = $base->query($sql);
-												 if ($rrv=mysql_fetch_array($rr)) {
+												 $rrv = $base->queryRow($sql);
+if ($rrv) {
 													 $date_livraison = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=3";
-												 $rr = $base->query($sql);
-												 if ($rrv=mysql_fetch_array($rr)) {
+												 $rrv = $base->queryRow($sql);
+if ($rrv) {
 													 $date_reception = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=4";
-												 $rr = $base->query($sql);
-												 if ($rrv=mysql_fetch_array($rr)) {
+												 $rrv = $base->queryRow($sql);
+if ($rrv) {
 													 $date_retouche = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $sql = "select * from rendez_vous where client_num='" . $row["client_num"] . "' and type_num=5";
-												 $rr = $base->query($sql);
-												 if ($rrv=mysql_fetch_array($rr)) {
+												 $rrv = $base->queryRow($sql);
+if ($rrv) {
 													 $date_remise = format_date($rrv["rdv_date"],11,1);
 												 }
 												 $acompte1 = "";
@@ -277,7 +275,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 											?>
 												<tr>
 													<td><small><?php echo format_date($row["client_date_mariage"],11,1) ?></small></td>
-													<td><small><a href="/clients/client.php?client_num=<?php echo crypte($row["client_num"]) ?>"><?php echo $row["client_prenom"] . " " . $row["client_nom"] ?></a></small></td>
+													<td><small><a href="/clients/client?client_num=<?php echo crypte($row["client_num"]) ?>"><?php echo $row["client_prenom"] . " " . $row["client_nom"] ?></a></small></td>
 													<td><small><?php echo $createur ?></small></td>
 													<td><small><?php echo implode(",",$produits) ?></small></td>
 													<td><small><?php echo implode(",",$accessoires) ?></small></td>

@@ -62,7 +62,7 @@ function confirme() {
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Gestion des utilisateurs</li>
                         </ol>
@@ -182,8 +182,7 @@ function confirme() {
 												<label>Showroom</label>
 												<select name="showroom" class="form-control">
 													<option value="0">--------------------</option>
-													<?
-														$sql = "select * from showrooms";
+													<?php														$sql = "select * from showrooms";
 														$ss = $base->query($sql);
 														foreach ($ss as $rss) {
 															echo '<option value="' . $rss["showroom_num"] . '"';
@@ -261,10 +260,10 @@ function confirme() {
 											foreach ($cc as $rcc) {
 												echo '<tr>
 													<td class="highlight">
-														<div class="success"></div> <a href="' . $_SERVER["PHP_SELF"] . '?edit=' . crypte($rcc["user_num"]) . '">' . $rcc["user_prenom"] . ' ' . $rcc["user_nom"] . '</a>
+														<div class="success"></div> <a href="' . current_path() . '?edit=' . crypte($rcc["user_num"]) . '">' . $rcc["user_prenom"] . ' ' . $rcc["user_nom"] . '</a>
 													</td>
 													<td>
-														<a href="' . $_SERVER["PHP_SELF"] . '?edit=' . crypte($rcc["user_num"]) . '" class="btn btn-outline btn-circle btn-sm purple">
+														<a href="' . current_path() . '?edit=' . crypte($rcc["user_num"]) . '" class="btn btn-outline btn-circle btn-sm purple">
 															<i class="fa fa-edit"></i> Edit </a>
 													</td>
 												</tr>';
@@ -273,8 +272,7 @@ function confirme() {
 										?>
 										</tbody>
 									</table>
-									<?
-										$showroom_select = 0;
+									<?php										$showroom_select = 0;
 									?>
 									<table class="table table-striped table-bordered table-advance table-hover">
 									<?php 
@@ -296,10 +294,10 @@ function confirme() {
 											}
 											echo '<tr>
 												<td class="highlight">
-													<div class="success"></div> <a href="' . $_SERVER["PHP_SELF"] . '?edit=' . crypte($rcc["user_num"]) . '">' . $rcc["user_prenom"] . ' ' . $rcc["user_nom"] . '</a>
+													<div class="success"></div> <a href="' . current_path() . '?edit=' . crypte($rcc["user_num"]) . '">' . $rcc["user_prenom"] . ' ' . $rcc["user_nom"] . '</a>
 												</td>
 												<td>
-													<a href="' . $_SERVER["PHP_SELF"] . '?edit=' . crypte($rcc["user_num"]) . '" class="btn btn-outline btn-circle btn-sm purple">
+													<a href="' . current_path() . '?edit=' . crypte($rcc["user_num"]) . '" class="btn btn-outline btn-circle btn-sm purple">
 														<i class="fa fa-edit"></i> Edit </a>
 												</td>
 											</tr>';

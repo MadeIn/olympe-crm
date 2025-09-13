@@ -8,8 +8,8 @@ if (!isset($showroom_choix)) {
 	$u->mShowroom = $showroom_choix;
 
 $sql = "select * from showrooms where showroom_num='" . $u->mShowroom . "'";
-$ss = $base->query($sql);
-if ($rss=mysql_fetch_array($ss)) {
+$rss = $base->queryRow($sql);
+if ($rss) {
 	$u->mShowroomInfo = $rss;
 }
 ?>
@@ -24,8 +24,7 @@ if ($rss=mysql_fetch_array($ss)) {
                    <form name="choix" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
 					<div class="breadcrumbs">
 						<h1>Olympe Mariage <select name="showroom_choix" onChange="this.form.submit()" class="form-inline">
-						<?
-							$sql = "select * from showrooms order by showroom_num ASC";
+						<?php							$sql = "select * from showrooms order by showroom_num ASC";
 							$sh = $base->query($sql);
 							foreach ($sh as $rsh) {
 								echo '<option value="' . $rsh["showroom_num"] . '"';
@@ -66,8 +65,7 @@ if ($rss=mysql_fetch_array($ss)) {
 					</div>
 					<!-- END PAGE BASE CONTENT -->
                 </div>
-				<?
-					$param = "";
+				<?php					$param = "";
 					// ON recherche les events pour remplir le calendrier perso
 					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num='" . $u->mNum . "' and calendrier_datedeb>='2021-08-01 00:00:00' and c.theme_num=4 order by calendrier_datedeb DESC";
 					$cc = $base->query($sql);
@@ -78,21 +76,11 @@ if ($rss=mysql_fetch_array($ss)) {
 							$param .= ',';
 						}
 						
-						list(
-							$annee_deb,
-							$mois_deb,
-							$jour_deb,
-							$heure_deb,
-							$minute_deb,
-							$seconde_deb ) = split('[: -]',$rcc["calendrier_datedeb"],6);
-						
-						list(
-							$annee_fin,
-							$mois_fin,
-							$jour_fin,
-							$heure_fin,
-							$minute_fin,
-							$seconde_fin ) = split('[: -]',$rcc["calendrier_datefin"],6);
+						list($annee_deb, $mois_deb, $jour_deb, $heure_deb, $minute_deb, $seconde_deb) =
+							preg_split('/[: -]/', $rcc["calendrier_datedeb"], 6);
+
+						list($annee_fin, $mois_fin, $jour_fin, $heure_fin, $minute_fin, $seconde_fin) =
+							preg_split('/[: -]/', $rcc["calendrier_datefin"], 6);
 							
 						$mois_deb = $mois_deb-1;
 						$mois_fin = $mois_fin-1;
@@ -101,7 +89,7 @@ if ($rss=mysql_fetch_array($ss)) {
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
 							$rrr = $base->queryRow($sql);
-if ($rrr) {
+							if ($rrr) {
 								$couleur = $rrr["type_couleur"];								
 							}
 						}
@@ -109,8 +97,8 @@ if ($rrr) {
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
 							$rcl = $base->queryRow($sql);
- if ($rcl) {
-								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
+ 							if ($rcl) {
+								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 							}
 						}
 						
@@ -138,21 +126,11 @@ if ($rrr) {
 							$param .= ',';
 						}
 						
-						list(
-							$annee_deb,
-							$mois_deb,
-							$jour_deb,
-							$heure_deb,
-							$minute_deb,
-							$seconde_deb ) = split('[: -]',$rcc["calendrier_datedeb"],6);
-						
-						list(
-							$annee_fin,
-							$mois_fin,
-							$jour_fin,
-							$heure_fin,
-							$minute_fin,
-							$seconde_fin ) = split('[: -]',$rcc["calendrier_datefin"],6);
+						list($annee_deb, $mois_deb, $jour_deb, $heure_deb, $minute_deb, $seconde_deb) =
+							preg_split('/[: -]/', $rcc["calendrier_datedeb"], 6);
+
+						list($annee_fin, $mois_fin, $jour_fin, $heure_fin, $minute_fin, $seconde_fin) =
+							preg_split('/[: -]/', $rcc["calendrier_datefin"], 6);
 							
 						$mois_deb = $mois_deb-1;
 						$mois_fin = $mois_fin-1;
@@ -161,7 +139,7 @@ if ($rrr) {
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
 							$rrr = $base->queryRow($sql);
-if ($rrr) {
+							if ($rrr) {
 								$couleur = $rrr["type_couleur"];								
 							}
 						}
@@ -169,8 +147,8 @@ if ($rrr) {
 						if ($rcc["client_num"]!=0) {
 							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
 							$rcl = $base->queryRow($sql);
- if ($rcl) {
-								$link = '/clients/client.php?client_num=' . crypte($rcc["client_num"]);
+ 							if ($rcl) {
+								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 							}
 						}
 						
@@ -265,7 +243,7 @@ if ($rrr) {
                 <?php include TEMPLATE_PATH . 'footer.php'; ?>
             </div>
         </div>
-         <?php  include( $chemin . "/mod/bottom.php"); ?>
+        <?php include TEMPLATE_PATH . 'bottom.php'; ?>
 		
     </body>
 

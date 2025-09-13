@@ -73,7 +73,7 @@ function changePrixAchat(id) {
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Rechercher un produit</li>
                         </ol>
@@ -90,7 +90,7 @@ function changePrixAchat(id) {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="ajouter" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+									<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 										<input type="hidden" name="recherche" value="ok">
 										<table class="table table-striped table-bordered table-advance table-hover">
 											<tbody>

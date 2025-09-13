@@ -1,4 +1,16 @@
-<?php include("/home/madeinpr/www/CRM/olympe-mariage/inc/param_auto.php"); 
+<?php
+/**
+ * Tâche CRON - Rappel des rendez-vous Montpellier
+ * Envoie un rappel 3 jours avant le rendez-vous
+ */
+
+// Sécurisation et initialisation
+require_once 'cron_security.php';
+
+start_cron_task('rappel-questionnaire');
+
+try {
+    $db = init_cron_database();
 
 	// Envoyer en cron tous les matins au RDV du samedi dans 7 jours
 	// On recupere les rendez vous � venir dans 3 jours pour envoyer un rappel....
@@ -34,6 +46,15 @@
 			SendMail($rcc["client_mail"],$titre_mail,$message_mail,$rcc["user_num"],$rcc["client_num"]);
 		}
 	//}
-	
+} catch (Exception $e) {
+    log_cron('rappel-questionnaire', "Erreur fatale: " . $e->getMessage(), 'error');
+    
+    if (php_sapi_name() !== 'cli') {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    
+    exit(1);
+}	
 	
 ?>

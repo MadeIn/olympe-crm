@@ -31,7 +31,7 @@ if (isset($ajout)) {
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Ajouter un client</li>
                         </ol>
@@ -51,7 +51,7 @@ if (isset($ajout)) {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="ajouter" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+									<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 									<input type="hidden" name="ajout" value="ok">
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 										<div class="form-group">
@@ -220,8 +220,7 @@ if (isset($ajout)) {
 													<i class="fa fa-industry"></i>
 												</span>
 												<select name="showroom" class="form-control">
-													<?
-														$sql = "select * from showrooms order by showroom_nom ASC";
+													<?php														$sql = "select * from showrooms order by showroom_nom ASC";
 														$tt = $base->query($sql);
 														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["showroom_num"] . '">' . $rtt["showroom_nom"] . '</option>';

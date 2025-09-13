@@ -151,13 +151,13 @@ switch ($data["event"]) {
 
         // On test si le client n'exite pas
         $sql = "select * from clients where client_mail='" . $mail . "'";
-        $tt = $base->query($sql);
-        $nbr = count($tt);
+        $rtt = $base->queryRow($sql);
+        $nbr = count($rtt);
         if ($nbr==0) {
             $sql = "insert into clients values (0,0,'" . $user["nom"] . "','" . $user["prenom"] . "','','','" . $urser["cp"] . "','','" . $user["tel"] . "','" . $user["email"] . "','" . $user["date-mariage"] . "','','','','3','" . $user_num . "','" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "','','','','','','','','','','','','',0,0)";
             $client_num = $base->insert($sql);
         } else {
-           if ($rtt = mysql_fetch_array($tt)) {
+           if ($rtt) {
                 $client_num = $rtt["client_num"];
            }
         }	

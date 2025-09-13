@@ -99,7 +99,7 @@ function confirme() {
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Gestion des showrooms</li>
                         </ol>
@@ -430,10 +430,10 @@ function confirme() {
 											foreach ($cc as $rcc) {
 												echo '<tr>
 													<td class="highlight">
-														<div class="success"></div> <a href="' . $_SERVER["PHP_SELF"] . '?edit=' . crypte($rcc["showroom_num"]) . '">' . $rcc["showroom_nom"] . '</a>
+														<div class="success"></div> <a href="' . current_path() . '?edit=' . crypte($rcc["showroom_num"]) . '">' . $rcc["showroom_nom"] . '</a>
 													</td>
 													<td>
-														<a href="' . $_SERVER["PHP_SELF"] . '?edit=' . crypte($rcc["showroom_num"]) . '" class="btn btn-outline btn-circle btn-sm purple">
+														<a href="' . current_path() . '?edit=' . crypte($rcc["showroom_num"]) . '" class="btn btn-outline btn-circle btn-sm purple">
 															<i class="fa fa-edit"></i> Edit </a>
 													</td>
 												</tr>';

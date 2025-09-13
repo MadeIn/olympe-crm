@@ -69,7 +69,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
                         <h1>Olympe Mariage</h1>
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/home.php">Accueil</a>
+                                <a href="/home">Accueil</a>
                             </li>
                             <li class="active">Commandes Fournisseurs</li>
                         </ol>
@@ -86,7 +86,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form name="recherche" method="POST" action="<?php echo $PHP_SELF ?>">
+									<form name="recherche" method="POST" action="<?= form_action_same() ?>">
 									<input type="hidden" name="recherche" value="ok">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<thead>
@@ -107,8 +107,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												<td>
 													<select name="categorie" class="form-control">
 														<option value="-1">------------</option>
-														<?
-															$sql = "select * from categories";
+														<?php															$sql = "select * from categories";
 															$cc = $base->query($sql);
 															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["categorie_num"] . '"';
@@ -122,8 +121,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												<td>
 													<select name="marques" class="form-control">
 														<option value="-1">------------</option>
-														<?
-															$sql = "select * from marques";
+														<?php															$sql = "select * from marques";
 															$cc = $base->query($sql);
 															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["marque_num"] . '"';
@@ -161,8 +159,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?
-															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -205,8 +202,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?
-											  $nbr = 0;
+											<?php											  $nbr = 0;
 											  $sql = "select * from commandes c, commandes_fournisseurs f, md_produits p, marques m, categories ca, clients cl where c.id=f.id and f.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=ca.categorie_num and c.client_num=cl.client_num and c.showroom_num='" . $showroom . "'";
 											  if ($categorie!=-1)
 												  $sql .= " and p.categorie_num=" . $categorie;
@@ -226,8 +222,8 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												$reste = 0;
 												 // On regarde les paiements
 												 $sql = "select * from commandes_fournisseurs_paiements where id='" . $row["id"] . "' and produit_num='" . $row["produit_num"] . "'";
-												 $pa = $base->query($sql);
-												 if ($rpa = mysql_fetch_array($pa)) {
+												 $rpa = $base->queryRow($sql);
+												 if ($rpa) {
 													 $paiement = $rpa["paiement1"] + $rpa["paiement2"] + $rpa["paiement3"];
 												 }
 												 $reste = $row["commande_montant"] - $paiement;
@@ -243,7 +239,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 													<td><?php echo number_format($row["commande_montant"],2,'.',' ') ?></td>
 													<td><?php echo number_format($paiement,2,'.',' ') ?></td>
 													<td><?php echo number_format($reste,2,'.',' ') ?></td>
-													<td><a href="/clients/client.php?client_num=<?php echo crypte($row["client_num"]) ?>&tab=tab_1_6"><?php echo $row["client_nom"] . " " . $row["client_prenom"] ?></a></td>
+													<td><a href="/clients/client?client_num=<?php echo crypte($row["client_num"]) ?>&tab=tab_1_6"><?php echo $row["client_nom"] . " " . $row["client_prenom"] ?></a></td>
 													<td><?php echo $row["commande_num"] ?></td>
 													<td><?php echo format_date($row["commande_date"],11,1) ?></td>
 												</tr>

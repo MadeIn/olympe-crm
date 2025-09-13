@@ -14,9 +14,9 @@ if (isset($modifier)) { // On modifie les infos
 }
 
 $sql = "select * from clients where client_num='" . decrypte($client_num) . "'";
-$cl = $base->query($sql);
-if (!$rcl = mysql_fetch_array($cl)) {
-	header("location:/home.php");
+$rcl = $base->queryRow($sql);
+if (!$rcl) {
+	header("location:/home");
 }
 
 if ($rcl["client_genre"]==0)
@@ -532,8 +532,8 @@ if ($rcc) {
 						$co = $base->query($sql);
 						foreach ($co as $rco) {
 							$sql = "select * from stocks where produit_num='" . $rco["produit_num"] . "' and taille_num='" . $rco["taille_num"] . "' and showroom_num='" . $showroom_num . "'";
-							$ss = $base->query($sql);
-							if ($rss=mysql_fetch_array($ss)) {
+							$rss = $base->queryRow($sql);
+if ($rss) {
 								// On update les stocks
 								$stock_virtuel = $rss["stock_virtuel"] - $rco["qte"];
 								$stock_reel = $rss["stock_reel"] - $rco["qte"];
@@ -608,8 +608,8 @@ if ($rcc) {
 								$co = $base->query($sql);
 								foreach ($co as $rco) {
 									$sql = "select * from stocks where produit_num='" . $rco["produit_num"] . "' and taille_num='" . $rco["taille_num"] . "' and showroom_num='" . $showroom_num . "'";
-									$ss = $base->query($sql);
-									if ($rss=mysql_fetch_array($ss)) {
+									$rss = $base->queryRow($sql);
+if ($rss) {
 										// On update les stocks
 										$stock_virtuel = $rss["stock_virtuel"] - $rco["qte"];
 										$stock_reel = $rss["stock_reel"] - $rco["qte"];
@@ -711,8 +711,8 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 		$message_mail = str_replace("[DEVIS_NUM]",$devis_envoi,$message_mail);
 		
 		$sql = "select * from commandes co, paiements p where co.paiement_num=p.paiement_num and id='" . decrypte($devis_envoi) . "'";
-		$de = $base->query($sql);
-		if ($rde=mysql_fetch_array($de)) {
+		$rde = $base->queryRow($sql);
+		if ($rde) {
 			$commande = montantCommande($rde["id"]);
 			if ($rde["paiement_nombre"]>1) {
 				$echeance = explode("/",$rde["paiement_modele"]);
@@ -836,7 +836,7 @@ $desc_page = "Client " . $rcl["client_nom"] . " " . $rcl["client_prenom"] . " - 
 ?>
 <?php 
 $link_plugin = '<link href="/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />';
-include( $chemin . "/mod/head.php"); ?>
+include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
 function confirme_annulation_rdv() {
 	if (confirm("Etes vous sur de vouloir annuler ce rendez-vous ?"))
@@ -1304,8 +1304,7 @@ function confirme_commande(id) {
 									</div>
 									<!-- END PORTLET MAIN -->
 									<!-- PORTLET MAIN -->
-									<?
-											$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
+									<?php											$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
 											$ss = $base->query($sql);
 											$nbr_selection = count($ss);
 											
@@ -1384,7 +1383,7 @@ function confirme_commande(id) {
 															foreach ($tt as $rtt) { 
 																// On test si on a déjà rentré dans la base le RDV
 																$sql = "select * from rendez_vous where client_num='" . decrypte($client_num) . "' and type_num='" . $rtt["type_num"] . "'";
-																$cc = $base->query($sql);
+																$rcc = $base->queryRow($sql);
 																$etat=0;
 																$num=0;
 																$remarque = "";
@@ -1392,7 +1391,7 @@ function confirme_commande(id) {
 																$mail_relance = 0;
 																$date = "";
 																$heure = "";
-																if ($rcc=mysql_fetch_array($cc)) {
+																if ($rcc) {
 																	$etat=1;
 																	$num = $rcc["rdv_num"];
 																	$date = format_date($rcc["rdv_date"],7,1);
@@ -1404,7 +1403,7 @@ function confirme_commande(id) {
 																	$mail_relance_date = $rcc["rdv_mail_relance_date"];
 																}
 															?>
-																<form name="ajouter" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+																<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 																<input type="hidden" name="tab" value="tab_1_1">
 																<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
 																<input type="hidden" name="type_num" value="<?php echo $rtt["type_num"] ?>">
@@ -1454,7 +1453,7 @@ function confirme_commande(id) {
 																				<input type="submit" value="Ok" class="btn btn-outline btn-circle btn-sm purple">
 																			<?php } else { ?>
 																				<input type="submit" value="Modifier" class="btn btn-outline btn-circle btn-sm purple"> 
-																				<a href="client.php?client_num=<?php echo crypte($rcc["client_num"]) ?>&suppr_rdv_num=<?php echo crypte($num) ?>"  class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme_annulation_rdv()"> Annuler</a>
+																				<a href="client?client_num=<?php echo crypte($rcc["client_num"]) ?>&suppr_rdv_num=<?php echo crypte($num) ?>"  class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme_annulation_rdv()"> Annuler</a>
 																			<?php } ?>
 																		</td>
 																		<td>
@@ -1473,8 +1472,7 @@ function confirme_commande(id) {
 														<!-- CHANGE PASSWORD TAB -->
 														<div class="tab-pane<?php if ($tab=="tab_1_2") echo " active"?>" id="tab_1_2">
 															<h4><i class="fa fa-plus"></i> Liste des sélections</h4>
-															<?
-																$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
+															<?php																$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
 																$ss = $base->query($sql);
 																$nbr_selection = count($ss);
 																if ($nbr_selection>0) {
@@ -1497,8 +1495,8 @@ function confirme_commande(id) {
 																		if ($nbr_pp>0) {
 																			foreach ($pp as $rpp) {
 																				$sql = "select * from md_produits_photos where produit_num='" . $rpp["produit_num"] . "' and photo_pos=1";
-																				$ph = $base->query($sql);
-																				if ($rph=mysql_fetch_array($ph)) {
+																				$rph = $base->queryRow($sql);
+																				if ($rph) {
 																					$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
 																				} else 
 																					$image_pdt = "http://www.placehold.it/50x50/EFEFEF/AAAAAA&amp;text=no+image";
@@ -1530,10 +1528,10 @@ function confirme_commande(id) {
 																		echo '		</div>
 																				</td>
 																				<td>
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&selection_ajout=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-plus"></i> Ajouter</a> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&selection_envoi=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer</a> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&selection_devis=' . crypte($rss["selection_num"]) . '&tab=tab_1_3" onClick="return confirmeDevis()" class="btn btn-outline btn-circle dark btn-sm purple"><i class="fa fa-euro"></i> Devis</a> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&selection_suppr=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" onClick="return confirme()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>';
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_ajout=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-plus"></i> Ajouter</a> 
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_envoi=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer</a> 
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_devis=' . crypte($rss["selection_num"]) . '&tab=tab_1_3" onClick="return confirmeDevis()" class="btn btn-outline btn-circle dark btn-sm purple"><i class="fa fa-euro"></i> Devis</a> 
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_suppr=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" onClick="return confirme()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>';
 																		if ($rss["selection_envoye"]==1) echo "<hr><p><small>Envoyée par mail le : <strong>" . format_date($rss["selection_envoye_date"],0,1) . "</strong></small></p>";
 																		echo '	</td>';
 																	}
@@ -1550,7 +1548,7 @@ function confirme_commande(id) {
 																<h4><i class="fa fa-plus"></i> Ajouter des produits à la sélection</h4>
 																<div class="row">
 																	<div class="col-md-4">
-																		<form name="rechercher" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+																		<form name="rechercher" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 																			<input type="hidden" name="recherche_produit" value="ok">
 																			<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
 																			<input type="hidden" name="selection_ajout" value="<?php echo $selection_ajout ?>">
@@ -1674,8 +1672,7 @@ function confirme_commande(id) {
 														<!-- PRIVACY SETTINGS TAB -->
 														<div class="tab-pane<?php if ($tab=="tab_1_3") echo " active"?>" id="tab_1_3">
 															<h4><i class="fa fa-plus"></i> Liste des devis en cours</h4>
-															<?
-																$sql = "select * from commandes where devis_num!=0 and commande_num=0 and facture_num=0 and client_num='" . decrypte($client_num) . "' order by devis_date DESC";
+															<?php																$sql = "select * from commandes where devis_num!=0 and commande_num=0 and facture_num=0 and client_num='" . decrypte($client_num) . "' order by devis_date DESC";
 																$ss = $base->query($sql);
 																$nbr_devis = count($ss);
 																if ($nbr_devis>0) {
@@ -1700,16 +1697,16 @@ function confirme_commande(id) {
 																				<td>' . $nbr_produit . '</td>
 																				<td>' . number_format(montantCommandeTTC($rss["id"]),2) . ' €</td>
 																				<td class="text-center"> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&devis_modif=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-plus"></i> Modifier</a> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&devis_consulte=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm green"><i class="fa fa-book"></i> Consulter</a> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&devis_envoi=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer</a> 
-																					<a href="#" onClick="window.open(\'/devis/index.php?devis=' . crypte($rss["id"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm yellow"><i class="fa fa-print"></i> Imprimer</a> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&devis_suppr=' . crypte($rss["id"]) . '&tab=tab_1_3" onClick="return confirmeSupprDevis()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_modif=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-plus"></i> Modifier</a> 
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_consulte=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm green"><i class="fa fa-book"></i> Consulter</a> 
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_envoi=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer</a> 
+																					<a href="#" onClick="window.open(\'/devis/index?devis=' . crypte($rss["id"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm yellow"><i class="fa fa-print"></i> Imprimer</a> 
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_suppr=' . crypte($rss["id"]) . '&tab=tab_1_3" onClick="return confirmeSupprDevis()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>
 																				</td>
 																				<td>';
 																				$sql = "select * from commandes_mails where id='" . $rss["id"] . "' and devis_mail=1";
-																				$dm = $base->query($sql);
-																				if ($rdm = mysql_fetch_array($dm)) {
+																				$rdm = $base->queryRow($sql);
+																				if ($rdm) {
 																					echo '<small><strong>Devis envoyé le : </strong>' . format_date($rdm["devis_mail_date"],2,1) . '</small>';
 																				}
 																		echo '	</td>
@@ -1817,8 +1814,7 @@ if ($rcc) {
 																			<td colspan="6" align="right"><strong>Méthode de paiement</strong></td>
 																			<td><?php echo $rcc["paiement_titre"] ?></td>
 																		</tr>
-																		<?
-																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
+																		<?php																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
 																				$echeance = explode("/",$rcc["paiement_modele"]);
 																				$acompte_num = 1;
 																				foreach ($echeance as $val) {
@@ -1874,8 +1870,8 @@ if ($rcc) {
 																			
 																			// On verifie les stocke pour chaque produit
 																			$sql = "select * from stocks where taille_num=" . $rpp["taille_num"] . " and produit_num=" . $rpp["produit_num"] . " and showroom_num='" . $u->mShowroom . "'";
-																			$ss = $base->query($sql);
-																			if ($rss=mysql_fetch_array($ss)) {
+																			$rss = $base->queryRow($sql);
+if ($rss) {
 																				$stock = $rss["stock_virtuel"];
 																			}
 																			else { // Pour tester tant qu'il n'y a pas de stock, on met 10...
@@ -1963,8 +1959,7 @@ if ($rcc) {
 																			<td colspan="5" align="right"><strong>Méthode de paiement</strong></td>
 																			<td colspan="2">
 																				<select name="paiement_<?php echo $rcc["id"] ?>" id="paiement_<?php echo $rcc["id"] ?>" onChange="modifPaiement(<?php echo $rcc["id"] ?>)">
-																				<?
-																					$sql = "select * from paiements order by paiement_pos ASC";
+																				<?php																					$sql = "select * from paiements order by paiement_pos ASC";
 																					$pp = $base->query($sql);
 																					foreach ($pp as $rpp) {
 																						echo '<option value="' . $rpp["paiement_num"] . '"';
@@ -1987,8 +1982,7 @@ if ($rcc) {
 																			</td>
 																		</tr>
 																		<?php } ?>
-																		<?
-																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
+																		<?php																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
 																				$echeance = explode("/",$rcc["paiement_modele"]);
 																				$acompte_num = 1;
 																				foreach ($echeance as $val) {
@@ -2008,7 +2002,7 @@ if ($rcc) {
 																<h4><i class="fa fa-plus"></i> Ajouter des produits au devis</h4>
 																<div class="row">
 																	<div class="col-md-4">
-																		<form name="rechercher" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+																		<form name="rechercher" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 																			<input type="hidden" name="recherche_produit" value="ok">
 																			<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
 																			<input type="hidden" name="devis_modif" value="<?php echo $devis_modif ?>">
@@ -2131,8 +2125,7 @@ if ($rcc) {
 														<!-- CHANGE COMMANDE TAB -->
 														<div class="tab-pane<?php if ($tab=="tab_1_4") echo " active"?>" id="tab_1_4">
 															<h4><i class="fa fa-plus"></i> Liste des commandes</h4>
-															<?
-																$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and devis_num!=0 and commande_num!=0 and client_num='" . decrypte($client_num) . "' order by commande_date DESC";
+															<?php																$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and devis_num!=0 and commande_num!=0 and client_num='" . decrypte($client_num) . "' order by commande_date DESC";
 																$ss = $base->query($sql);
 																$nbr_commande = count($ss);
 																if ($nbr_commande>0) {
@@ -2182,23 +2175,23 @@ if ($rcc) {
 																				<td>' . $reste_a_paye . ' €</td>
 																				<td align="center">' . $facture_num . '</td>
 																				<td> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&commande_modif=' . crypte($rss["id"]) . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-euro"></i> Paiements</a> 
-																					<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&commande_consulte=' . crypte($rss["id"]) . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm green"><i class="fa fa-book"></i> Consulter</a>';
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&commande_modif=' . crypte($rss["id"]) . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-euro"></i> Paiements</a> 
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&commande_consulte=' . crypte($rss["id"]) . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm green"><i class="fa fa-book"></i> Consulter</a>';
 																		if ($rss["facture_num"]!=0) {
 																			// ON regarde si la facture a été envoyé par mail
 																			$sql = "select * from commandes_mails where id='" . $rss["id"] . "' and facture_mail=1";
-																			$ff = $base->query($sql);
+																			$rff = $base->queryRow($sql);
 																			$envoye = "";
-																			if ($rff = mysql_fetch_array($ff)) {
+																			if ($rff) {
 																				$envoye = " le " . format_date($rff["facture_mail_date"],11,1);
 																			}
 																			
-																			echo '<a href="#" onClick="window.open(\'/facture/index.php?facture=' . crypte($rss["id"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm yellow"><i class="fa fa-print"></i> Facture</a> ';
-																			echo '<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&facture_envoi=' . crypte($rss["id"]) . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer' . $envoye . '</a> ';
-																			echo '<a href="#" onClick="window.open(\'/bon-de-reception/index.php?facture=' . crypte($rss["id"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm"><i class="fa fa-print"></i> Bon de reception</a> ';
+																			echo '<a href="#" onClick="window.open(\'/facture/index?facture=' . crypte($rss["id"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm yellow"><i class="fa fa-print"></i> Facture</a> ';
+																			echo '<a href="' . current_path() . '?client_num=' . $client_num . '&facture_envoi=' . crypte($rss["id"]) . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer' . $envoye . '</a> ';
+																			echo '<a href="#" onClick="window.open(\'/bon-de-reception/index?facture=' . crypte($rss["id"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm"><i class="fa fa-print"></i> Bon de reception</a> ';
 																		}
 																		if ($rss["facture_num"]=="0")
-																			echo '		<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&commande_suppr=' . crypte($rss["id"]) . '&tab=tab_1_4" onClick="return confirmeSupprCommande()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Modifier</a>
+																			echo '		<a href="' . current_path() . '?client_num=' . $client_num . '&commande_suppr=' . crypte($rss["id"]) . '&tab=tab_1_4" onClick="return confirmeSupprCommande()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Modifier</a>
 																				</td>
 																			</tr>';
 																	}
@@ -2300,8 +2293,7 @@ if ($rcc) {
 																			<td colspan="6" align="right"><strong>Méthode de paiement</strong></td>
 																			<td><?php echo $rcc["paiement_titre"] ?></td>
 																		</tr>
-																		<?
-																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
+																		<?php																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
 																				// On regarde si il y a déjà eu des paiments
 																				$sql = "select * from commandes_paiements where id='" . $rcc["id"] . "'";
 																				$pa = $base->query($sql);
@@ -2343,7 +2335,7 @@ if ($rcc) {
 																			}
 																		?>
 																		<tr>
-																			<td colspan="7" align="right"><a href="/commandes/index.php?cde=<?php echo crypte($rcc["commande_num"]) ?>" class="btn blue" target="_blank">Imprimer</a> <a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_4" class="btn red">Fermer</a></td>
+																			<td colspan="7" align="right"><a href="/commandes/index?cde=<?php echo crypte($rcc["commande_num"]) ?>" class="btn blue" target="_blank">Imprimer</a> <a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_4" class="btn red">Fermer</a></td>
 																		</tr>
 																	</tbody>
 																</table>
@@ -2352,8 +2344,8 @@ if ($rcc) {
 															<?php if (isset($commande_modif)) { 
 																	// On recupere le nombre d'écheance
 																	$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($commande_modif) . "'";
-																	$pa = $base->query($sql);
-																	if ($rpa=mysql_fetch_array($pa)) {
+																	$rpa = $base->queryRow($sql);
+																	if ($rpa) {
 																		$nbr_echeance = $rpa["paiement_nombre"];
 																		
 																		// On regarde le nombre de paiement effectué
@@ -2379,8 +2371,7 @@ if ($rcc) {
 																		<th> </th>
 																	</thead>
 																	<tbody>
-																<?
-																	$echeance=1;
+																<?php																	$echeance=1;
 																	$sql = "select * from commandes_paiements c, paiements_modes m where c.mode_num=m.mode_num and id='" . decrypte($commande_modif) . "'";
 																	$pp = $base->query($sql);
 																	foreach ($pp as $rpp) {
@@ -2416,9 +2407,9 @@ if ($rcc) {
 																			if ($rpp["paiement_mail"]==1) {
 																				$envoye = " le " . format_date($rpp["paiement_mail_date"],11,1);
 																			}
-																			echo '		<a href="#" onClick="window.open(\'/acompte/index.php?id=' . $commande_modif . '&paiement=' . $rpp["paiement_num"] . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm yellow"><i class="fa fa-print"></i> Facture</a> 
-																			<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&acompte_envoi=' . crypte($rpp["id"]) . '&paiement=' . $rpp["paiement_num"] . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer ' . $envoye . '</a> 
-																						<a href="' . $_SERVER["PHP_SELF"] . '?client_num=' . $client_num . '&paiement_suppr=' . crypte($rpp["id"]) . '&echeance=' . $echeance . '&tab=tab_1_4" onClick="return confirmeSupprPaiement()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>';
+																			echo '		<a href="#" onClick="window.open(\'/acompte/index?id=' . $commande_modif . '&paiement=' . $rpp["paiement_num"] . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm yellow"><i class="fa fa-print"></i> Facture</a> 
+																			<a href="' . current_path() . '?client_num=' . $client_num . '&acompte_envoi=' . crypte($rpp["id"]) . '&paiement=' . $rpp["paiement_num"] . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer ' . $envoye . '</a> 
+																						<a href="' . current_path() . '?client_num=' . $client_num . '&paiement_suppr=' . crypte($rpp["id"]) . '&echeance=' . $echeance . '&tab=tab_1_4" onClick="return confirmeSupprPaiement()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>';
 																		}																					
 																		echo '		</td>
 																			  </tr>
@@ -2468,7 +2459,7 @@ if ($rcc) {
 														<!-- PERSONAL INFO TAB -->
 														<div class="tab-pane<?php if ($tab=="tab_1_6") echo " active"?>" id="tab_1_6">
 															<p> Modifier les informations personnelles du client </p>
-															<form name="ajouter" method="POST" action="<?php echo $PHP_SELF ?>" enctype="multipart/form-data">
+															<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 															<input type="hidden" name="modifier" value="ok">
 															<input type="hidden" name="tab" value="tab_1_6">
 															<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
@@ -2638,8 +2629,7 @@ if ($rcc) {
 																			<i class="fa fa-user"></i>
 																		</span>
 																		<select name="user_suivi" class="form-control">
-																			<?
-																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
+																			<?php																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
 																				$uu = $base->query($sql);
 																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["user_num"] . '"';
@@ -2659,8 +2649,7 @@ if ($rcc) {
 																		</span>
 																		<select name="couturiere" class="form-control">
 																		<option value="0">----------------------</option>
-																			<?
-																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
+																			<?php																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
 																				$uu = $base->query($sql);
 																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["user_num"] . '"';
@@ -2680,8 +2669,7 @@ if ($rcc) {
 																		</span>
 																		<select name="showroom_modif" class="form-control">
 																		<option value="0">-----------------------</option>
-																			<?
-																				$sql = "select * from showrooms";
+																			<?php																				$sql = "select * from showrooms";
 																				$uu = $base->query($sql);
 																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["showroom_num"] . '"';
@@ -2715,8 +2703,7 @@ if ($rcc) {
 																			</tr>
 																		</thead>
 																		<tbody>
-																		<?
-																			$sql = "select * from commandes c, commandes_produits cd where c.id=cd.id and commande_num>0 and client_num='" . decrypte($client_num) . "' order by commande_date ASC, c.id ASC";
+																		<?php																			$sql = "select * from commandes c, commandes_produits cd where c.id=cd.id and commande_num>0 and client_num='" . decrypte($client_num) . "' order by commande_date ASC, c.id ASC";
 																			$co = $base->query($sql);
 																			foreach ($co as $rco) {
 																				$checked = "";
@@ -2743,8 +2730,8 @@ if ($rcc) {
 																						$paiement2_date = "";
 																						$paiement3_date = "";
 																						$sql = "select * from commandes_fournisseurs_paiements where id='" . $rco["id"] . "' and produit_num='" . $rco["produit_num"] . "'";
-																						$pa = $base->query($sql);
-																						if ($rpa=mysql_fetch_array($pa)) {
+																						$rpa = $base->queryRow($sql);
+																						if ($rpa) {
 																							if ($rpa["paiement1"]!=0) {
 																								$paiement1 = $rpa["paiement1"];
 																								$paiement1_date = $rpa["paiement1_date"];
@@ -2773,9 +2760,9 @@ if ($rcc) {
 																				if ($checked!="")
 																						echo '<i class="fa fa-check-square-o"></i>';		
 																				echo '</td>
-																						<td><a href="client.php?client_num=' . $client_num . '&fournisseur=ok&id=' . crypte($rco["id"]) . '&produit=' . crypte($rco["produit_num"]) . '&tab=tab_1_6"  class="btn btn-outline btn-circle dark btn-sm black"> Commande Fournisseur</a>';
+																						<td><a href="client?client_num=' . $client_num . '&fournisseur=ok&id=' . crypte($rco["id"]) . '&produit=' . crypte($rco["produit_num"]) . '&tab=tab_1_6"  class="btn btn-outline btn-circle dark btn-sm black"> Commande Fournisseur</a>';
 																				if ($checked!="") {
-																					echo ' <a href="#" onClick="window.open(\'/clients/fournisseur.php?id=' . crypte($rco["id"]) . '&produit=' . crypte($rco["produit_num"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-print"></i> Bon de commande</a>';
+																					echo ' <a href="#" onClick="window.open(\'/clients/fournisseur?id=' . crypte($rco["id"]) . '&produit=' . crypte($rco["produit_num"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-print"></i> Bon de commande</a>';
 																				}
 																				echo '		
 																					</tr>';
@@ -2788,12 +2775,12 @@ if ($rcc) {
 															<?php if ($fournisseur=="ok") {
 																	// On recherche si il y a une robe à commander
 																	$sql = "select * from commandes c, commandes_produits cp, md_produits p, marques m where c.id=cp.id and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and c.id='" . decrypte($id) . "' and cp.produit_num='" . decrypte($produit) . "'";
-																	$mm = $base->query($sql);
-																	if ($rmm = mysql_fetch_array($mm)) {
+																	$rmm = $base->queryRow($sql);
+																	if ($rmm) {
 																		// On regarde si il y a déjà une commande forunisseur
 																		$sql = "select * from commandes_fournisseurs where id='" . decrypte($id) . "' and produit_num='" . decrypte($produit) . "'";
-																		$ff = $base->query($sql);
-																		if ($rff = mysql_fetch_array($ff)) {
+																		$rff = $base->queryRow($sql);
+																		if ($rff) {
 																			$livraison = $rff["livraison"];
 																			$reference = $rff["reference"];
 																			$remarques = $rff["remarques"];
@@ -2829,7 +2816,7 @@ if ($rcc) {
 																			$commande_date = Date("Y-m-d");
 																			$sql = "select * from prixachats where prixachat_num='" . $rmm["prixachat_num"] . "'";
 																			$rpp = $base->queryRow($sql);
- if ($rpp) {
+ 																			if ($rpp) {
 																				$montant = $rpp["prixachat_montant"];
 																				if ($montant!=0) {
 																					// On calcul le montant avec la TVA
@@ -2966,5 +2953,4 @@ if ($rcc) {
         </div>
          <?php include TEMPLATE_PATH . 'bottom.php'; ?>
     </body>
-
 </html>

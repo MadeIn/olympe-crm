@@ -1,7 +1,7 @@
 ﻿<?php include( $_SERVER['DOCUMENT_ROOT'] . "/param_invite.php"); 
 	$sql = "select * from commandes co, paiements p, showrooms sh, users u, clients c where co.paiement_num=p.paiement_num and co.client_num=c.client_num and co.showroom_num=sh.showroom_num and co.user_num=u.user_num and id='" . decrypte($facture) . "'";
 	$rcc = $base->queryRow($sql);
-if (!$rcc) {
+	if (!$rcc) {
 		echo "<script>document.location.href='http://www.olympe-mariage.com'</script>";
 	}
 
