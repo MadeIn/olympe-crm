@@ -27,7 +27,7 @@ if (!function_exists('h')) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="<?= h($desc_page) ?>" />
         <meta name="author" content="Made In SARL" />
-
+        <meta name="csrf-token" content="<?= h(Auth::generateCSRFToken()) ?>">
         <!-- BEGIN LAYOUT FIRST STYLES -->
         <link href="https://fonts.googleapis.com/css?family=Oswald:400,300,700" rel="stylesheet" type="text/css" />
         <!-- END LAYOUT FIRST STYLES -->
@@ -59,6 +59,7 @@ if (!function_exists('h')) {
         <!-- END THEME LAYOUT STYLES -->
 
         <link rel="icon" type="image/png" href="/favicon.png" />
+        <script src="/assets/js/olympe.js"></script>
     </head>
     <!-- END HEAD -->
 

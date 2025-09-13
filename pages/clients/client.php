@@ -837,398 +837,6 @@ $desc_page = "Client " . $rcl["client_nom"] . " " . $rcl["client_prenom"] . " - 
 <?php 
 $link_plugin = '<link href="/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />';
 include TEMPLATE_PATH . 'head.php'; ?>
-<script language="Javascript">
-function confirme_annulation_rdv() {
-	if (confirm("Etes vous sur de vouloir annuler ce rendez-vous ?"))
-		return true;
-	else 
-		return false;
-}
-
-function confirme() {
-	if (confirm("Etes vous sur de vouloir supprimer cette sélection ?"))
-		return true;
-	else 
-		return false;
-}
-
-function confirmeDevis() {
-	if (confirm("Etes vous sur de vouloir transformer cette sélection en devis ?"))
-		return true;
-	else 
-		return false;
-}
-
-function confirmeSupprDevis() {
-	if (confirm("Etes vous sur de vouloir supprimer ce devis ?"))
-		return true;
-	else 
-		return false;
-}
-
-function confirmeSupprCommande() {
-	if (confirm("Etes vous sur de vouloir modifier cette commande, celle-ci repassera en devis ?"))
-		return true;
-	else 
-		return false;
-}
-
-function confirmeSupprPaiement() {
-	if (confirm("Etes vous sur de vouloir supprimer ce paiement ?"))
-		return true;
-	else 
-		return false;
-}
-
-
-function displayReponse(sText, place) {
-	var info = document.getElementById(place);
-	info.innerHTML = sText;
-}
-
-function addWidget(selection,pdt,mode) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	affichage_retour = "select_" + selection;
-	
-	// Mode 1 : Insertion 2 : Delete
-	link = "display.php?pdt=" + pdt + "&selection=" + selection + "&mode=" + mode;
-
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, affichage_retour);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, affichage_retour);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function addPdtDevis(devis,pdt,mode) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	affichage_retour = "devis_" + devis;
-	
-	// Mode 1 : Insertion 2 : Delete
-	link = "display.php?pdt=" + pdt + "&devis=" + devis + "&mode=" + mode;
-
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, affichage_retour);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, affichage_retour);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function modifTaille(devis,pdt,taille) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	var select = 'taille_' + pdt + '_' + taille;
-	taille_new = document.getElementById(select).options[document.getElementById(select).selectedIndex].value;
-			
-	link = "display.php?pdt=" + pdt + "&devis=" + devis + "&taille=" + taille + "&taille_new=" + taille_new + "&mode=3";
-
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					//displayReponse(oXmlHttp.responseText, affichage_retour);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					//displayReponse("Erreur : " + oXmlHttp.statusText, affichage_retour);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function remiseCommande(devis) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	remise_montant = document.getElementById("remise_montant").value;
-	remise_type = document.getElementById("remise_type").options[document.getElementById("remise_type").selectedIndex].value;
-			
-	link = "display.php?devis=" + devis + "&remise_montant=" + remise_montant + "&remise_type=" + remise_type + "&mode=7";
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, "devis_" + devis);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, "devis_" + devis);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function remiseProduit(devis,produit,taille) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	remise_montant = document.getElementById("remise_produit_" + produit).value;
-	remise_type = document.getElementById("remise_type_produit_" + produit).options[document.getElementById("remise_type_produit_" + produit).selectedIndex].value;
-    taille = document.getElementById("taille_" + produit + "_" + taille).options[document.getElementById("taille_" + produit + "_" + taille).selectedIndex].value;
-	
-	link = "display.php?devis=" + devis + "&remise_montant=" + remise_montant + "&remise_type=" + remise_type + "&produit=" + produit + "&taille=" + taille + "&mode=8";
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, "devis_" + devis);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, "devis_" + devis);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function modifPaiement(devis) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	var select = 'paiement_' + devis;
-	paiement_new = document.getElementById(select).options[document.getElementById(select).selectedIndex].value;
-			
-	link = "display.php?devis=" + devis + "&paiement=" + paiement_new + "&mode=5";
-
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, "devis_" + devis);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, "devis_" + devis);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function modifDateCommande(devis) {
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	date_commande = document.getElementById("date_bdc").value;
-			
-	link = "display.php?devis=" + devis + "&date_commande=" + date_commande + "&mode=10";
-
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					//displayReponse(oXmlHttp.responseText, "devis_" + devis);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					//displayReponse("Erreur : " + oXmlHttp.statusText, "devis_" + devis);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function modifQte(devis,pdt,taille) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	var select = 'qte_' + pdt + '_' + taille;
-	var select_taille = 'taille_' + pdt + '_' + taille;
-	qte_new = document.getElementById(select).options[document.getElementById(select).selectedIndex].value;
-	taille = document.getElementById(select_taille).options[document.getElementById(select_taille).selectedIndex].value;
-	
-	link = "display.php?pdt=" + pdt + "&devis=" + devis + "&taille=" + taille + "&qte_new=" + qte_new + "&mode=4";
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, "devis_" + devis);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, "devis_" + devis);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function commandeFournisseur(id) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	var select = 'fournisseur_' + id;
-	var val = 0;
-	if (document.getElementById(select).checked==1)
-		val = 1;	
-	
-	link = "display.php?id=" + id + "&val=" + val + "&mode=9";
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, "fournisseur_date_" + id);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, "fournisseur_date_" + id);
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function confirme_commande(id) {
-   paiement = document.getElementById("paiement_" + id).options[document.getElementById("paiement_" + id).selectedIndex].text;
-   message = "Voulez vous passer le devis en commande avec le mode de paiement suivant : " + paiement + " ?";
-   if (confirm(message)) {
-	   return true;
-   } else
-		return false;
-}
-</script>
-
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">
@@ -2973,5 +2581,135 @@ function confirme_commande(id) {
             </div>
         </div>
          <?php include TEMPLATE_PATH . 'bottom.php'; ?>
+<script>
+// Confirmations (plus concis)
+function confirme_annulation_rdv() { return $ol.ask("Êtes-vous sûr de vouloir annuler ce rendez-vous ?"); }
+function confirme()                { return $ol.ask("Êtes-vous sûr de vouloir supprimer cette sélection ?"); }
+function confirmeDevis()           { return $ol.ask("Transformer cette sélection en devis ?"); }
+function confirmeSupprDevis()      { return $ol.ask("Supprimer ce devis ?"); }
+function confirmeSupprCommande()   { return $ol.ask("Modifier cette commande ? Elle repassera en devis."); }
+function confirmeSupprPaiement()   { return $ol.ask("Supprimer ce paiement ?"); }
+function confirme_commande(id) {
+  const p = document.getElementById("paiement_" + id);
+  const txt = p ? p.options[p.selectedIndex].text : '';
+  return $ol.ask("Passer le devis en commande avec le mode de paiement : " + txt + " ?");
+}
+
+// API calls
+async function addWidget(selection, pdt, mode) {
+  const placeId = "select_" + selection;
+  try {
+    $ol.loading(true);
+    const data = await $ol.apiPost('display', { mode: 'addWidget', selection, pdt, mode });
+    if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
+    else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
+  } catch(e) {
+    displayReponse("Erreur réseau", placeId);
+  } finally { $ol.loading(false); }
+}
+
+async function addPdtDevis(devis, pdt, mode) {
+  const placeId = "devis_" + devis;
+  try {
+    $ol.loading(true);
+    const data = await $ol.apiPost('display', { mode: 'addPdtDevis', devis, pdt, mode });
+    if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
+    else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
+  } catch(e) {
+    displayReponse("Erreur réseau", placeId);
+  } finally { $ol.loading(false); }
+}
+
+async function modifTaille(devis, pdt, tailleKey) {
+  const selId = 'taille_' + pdt + '_' + tailleKey;
+  const sel = document.getElementById(selId);
+  if (!sel) return;
+  const taille_new = sel.value;
+  try {
+    await $ol.apiPost('display', { mode:'modifTaille', devis, pdt, taille: tailleKey, taille_new });
+  } catch(e) { /* toast optionnel */ }
+}
+
+async function remiseCommande(devis) {
+  const montant = document.getElementById("remise_montant")?.value || '';
+  const type    = document.getElementById("remise_type")?.value || '';
+  const placeId = "devis_" + devis;
+  try {
+    $ol.loading(true);
+    const data = await $ol.apiPost('display', { mode:'remiseCommande', devis, remise_montant: montant, remise_type: type });
+    if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
+    else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
+  } catch(e) {
+    displayReponse("Erreur réseau", placeId);
+  } finally { $ol.loading(false); }
+}
+
+async function remiseProduit(devis, produit, tailleKey) {
+  const m = document.getElementById("remise_produit_" + produit)?.value || '';
+  const t = document.getElementById("remise_type_produit_" + produit)?.value || '';
+  const taille = document.getElementById("taille_" + produit + "_" + tailleKey)?.value || '';
+  const placeId = "devis_" + devis;
+  try {
+    $ol.loading(true);
+    const data = await $ol.apiPost('display', { mode:'remiseProduit', devis, produit, taille, remise_montant:m, remise_type:t });
+    if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
+    else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
+  } catch(e) {
+    displayReponse("Erreur réseau", placeId);
+  } finally { $ol.loading(false); }
+}
+
+async function modifPaiement(devis) {
+  const sel = document.getElementById('paiement_' + devis);
+  const paiement = sel ? sel.value : '';
+  const placeId = "devis_" + devis;
+  try {
+    $ol.loading(true);
+    const data = await $ol.apiPost('display', { mode:'modifPaiement', devis, paiement });
+    if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
+    else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
+  } catch(e) {
+    displayReponse("Erreur réseau", placeId);
+  } finally { $ol.loading(false); }
+}
+
+async function modifDateCommande(devis) {
+  const date = document.getElementById("date_bdc")?.value || '';
+  try {
+    await $ol.apiPost('display', { mode:'modifDateCommande', devis, date_commande: date });
+  } catch(e) { /* noop */ }
+}
+
+async function modifQte(devis, pdt, tailleKey) {
+  const qSelId = 'qte_' + pdt + '_' + tailleKey;
+  const tSelId = 'taille_' + pdt + '_' + tailleKey;
+  const qte_new = document.getElementById(qSelId)?.value || '';
+  const taille  = document.getElementById(tSelId)?.value || '';
+  const placeId = "devis_" + devis;
+  try {
+    $ol.loading(true);
+    const data = await $ol.apiPost('display', { mode:'modifQte', devis, pdt, taille, qte_new });
+    if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
+    else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
+  } catch(e) {
+    displayReponse("Erreur réseau", placeId);
+  } finally { $ol.loading(false); }
+}
+
+async function commandeFournisseur(id) {
+  const ck = document.getElementById('fournisseur_' + id);
+  const val = ck && ck.checked ? '1' : '0';
+  const placeId = "fournisseur_date_" + id;
+  try {
+    $ol.loading(true);
+    const data = await $ol.apiPost('display', { mode:'commandeFournisseur', id, val });
+    if (data.ok && data.html) displayReponse(data.html, data.place || placeId);
+    else displayReponse("Erreur: " + (data.error || 'inconnue'), placeId);
+  } catch(e) {
+    displayReponse("Erreur réseau", placeId);
+  } finally { $ol.loading(false); }
+}
+
+</script>
     </body>
 </html>
