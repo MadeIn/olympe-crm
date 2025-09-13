@@ -41,7 +41,7 @@ if (isset($ajout)) {
                     <div class="row">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<?php if ($message_erreur!="") { ?>
-								<h3 class="font-red-thunderbird"><strong><i class="fa fa-warning"></i> <?php echo $message_erreur ?></strong></h3>
+								<h3 class="font-red-thunderbird"><strong><i class="fa fa-warning"></i> <?= $message_erreur ?></strong></h3>
 							<?php } ?>
 							<div class="portlet light bordered">
 								<div class="portlet-title">
@@ -72,7 +72,7 @@ if (isset($ajout)) {
 												<span class="input-group-addon">
 													<i class="fa fa-user"></i>
 												</span>
-												<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?php echo $nom ?>" required> </div>
+												<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= $nom ?>" required> </div>
 										</div>
 										<div class="form-group">
 											<label>Prenom</label>
@@ -80,7 +80,7 @@ if (isset($ajout)) {
 												<span class="input-group-addon">
 													<i class="fa fa-user"></i>
 												</span>
-												<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?php echo $prenom ?>" required> </div>
+												<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?= $prenom ?>" required> </div>
 										</div>
 										<div class="form-group">
 											<label>Adresse</label>
@@ -88,7 +88,7 @@ if (isset($ajout)) {
 												<span class="input-group-addon">
 													<i class="fa fa-road"></i>
 												</span>
-												<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?php echo $adr1 ?>" required> </div>
+												<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?= $adr1 ?>" required> </div>
 										</div>
 										<div class="form-group">
 											<label>Complément d'adresse</label>
@@ -96,7 +96,7 @@ if (isset($ajout)) {
 												<span class="input-group-addon">
 													<i class="fa fa-road"></i>
 												</span>
-												<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?php echo $adr2 ?>"> </div>
+												<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?= $adr2 ?>"> </div>
 										</div>
 										<div class="form-group">
 											<label>CP</label>
@@ -104,7 +104,7 @@ if (isset($ajout)) {
 												<span class="input-group-addon">
 													<i class="fa fa-search"></i>
 												</span>
-												<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?php echo $cp ?>" required> </div>
+												<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?= $cp ?>" required> </div>
 										</div>
 										<div class="form-group">
 											<label>Ville</label>
@@ -112,7 +112,7 @@ if (isset($ajout)) {
 												<span class="input-group-addon">
 													<i class="fa fa-shield"></i>
 												</span>
-												<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?php echo $ville ?>" required> </div>
+												<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?= $ville ?>" required> </div>
 										</div>
 										<div class="form-group">
 											<label>Tel</label>
@@ -120,7 +120,7 @@ if (isset($ajout)) {
 												<span class="input-group-addon">
 													<i class="fa fa-mobile-phone"></i>
 												</span>
-												<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?php echo $tel ?>" required> </div>
+												<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= $tel ?>" required> </div>
 										</div>
 										<div class="form-group">
 											<label>Email</label>
@@ -128,7 +128,7 @@ if (isset($ajout)) {
 												<span class="input-group-addon">
 													<i class="fa fa-envelope"></i>
 												</span>
-												<input type="email" name="mail" class="form-control" placeholder="Email" value="<?php echo $mail ?>" required> </div>
+												<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= $mail ?>" required> </div>
 										</div>												
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">

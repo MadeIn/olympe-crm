@@ -97,8 +97,8 @@ else {
                     <!-- END BREADCRUMBS -->
                     <!-- BEGIN PAGE BASE CONTENT -->
                     <div class="row">
-					<div class="col-md-3"><a href="UPLOAD/<?php echo $nom_fic_facture ?>" target="_blank"><img src="excel.png" class="responsive" height="100"> Télécharger le fichier des factures</a></div>
-					<div class="col-md-3"><a href="UPLOAD/<?php echo $nom_fic_reglement ?>" target="_blank"><img src="excel.png" class="responsive" height="100"> Télécharger le fichier des reglements</a></div>
+					<div class="col-md-3"><a href="UPLOAD/<?= $nom_fic_facture ?>" target="_blank"><img src="excel.png" class="responsive" height="100"> Télécharger le fichier des factures</a></div>
+					<div class="col-md-3"><a href="UPLOAD/<?= $nom_fic_reglement ?>" target="_blank"><img src="excel.png" class="responsive" height="100"> Télécharger le fichier des reglements</a></div>
 					</div>
                     <!-- END PAGE BASE CONTENT -->
                 </div>

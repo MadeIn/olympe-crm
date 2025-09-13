@@ -56,7 +56,7 @@ if (isset($suppr))
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
 function confirme() {
-	if (confirm("<?php echo $alert ?>"))
+	if (confirm("<?= $alert ?>"))
 		return true;
 	else 
 		return false;
@@ -97,7 +97,7 @@ function confirme() {
 									<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 									<?php if (!isset($modif_num)) { ?>		
 									 <input type="hidden" name="ajout" value="ok">
-								 	 <input type="hidden" name="nbr_ligne" value="<?php echo $nbr_ligne ?>">
+								 	 <input type="hidden" name="nbr_ligne" value="<?= $nbr_ligne ?>">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<tbody>
 											<tr>
@@ -239,8 +239,8 @@ function confirme() {
 									</table>
 									<?php } else { ?>
 									<input type="hidden" name="modif" value="ok">
-									<input type="hidden" name="nbr_ligne" value="<?php echo $nbr_ligne ?>">
-									<input type="hidden" name="val_num" value="<?php echo $modif_num ?>">
+									<input type="hidden" name="nbr_ligne" value="<?= $nbr_ligne ?>">
+									<input type="hidden" name="val_num" value="<?= $modif_num ?>">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										 <tbody>
 										<?php 
@@ -257,7 +257,7 @@ function confirme() {
 												<span class="input-group-addon">
 													<i class="fa fa-fire"></i>
 												</span>
-												<input type="text" name="nom" class="form-control" value="<?php echo $rcc[$nom_champ . "_nom"] ?>" required></div></td>
+												<input type="text" name="nom" class="form-control" value="<?= $rcc[$nom_champ . "_nom"] ?>" required></div></td>
 										</tr>
 										<tr>
 												<td><hr></td>
@@ -268,7 +268,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-industry"></i>
 													</span>
-													<input type="text" name="raison_social" class="form-control" value="<?php echo $rcc[$nom_champ . "_raison_social"] ?>"></div></td>
+													<input type="text" name="raison_social" class="form-control" value="<?= $rcc[$nom_champ . "_raison_social"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Adresse</label>
@@ -276,7 +276,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-road"></i>
 													</span>
-													<input type="text" name="adr1" class="form-control" value="<?php echo $rcc[$nom_champ . "_adr1"] ?>"></div></td>
+													<input type="text" name="adr1" class="form-control" value="<?= $rcc[$nom_champ . "_adr1"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td>
@@ -284,7 +284,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-road"></i>
 													</span>
-													<input type="text" name="adr2" class="form-control" value="<?php echo $rcc[$nom_champ . "_adr2"] ?>"></div></td>
+													<input type="text" name="adr2" class="form-control" value="<?= $rcc[$nom_champ . "_adr2"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Code Postal</label>
@@ -292,7 +292,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-search"></i>
 													</span>
-													<input type="text" name="cp" class="form-control" value="<?php echo $rcc[$nom_champ . "_cp"] ?>"></div></td>
+													<input type="text" name="cp" class="form-control" value="<?= $rcc[$nom_champ . "_cp"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Ville</label>
@@ -300,7 +300,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-shield"></i>
 													</span>
-													<input type="text" name="ville" class="form-control" value="<?php echo $rcc[$nom_champ . "_ville"] ?>"></div></td>
+													<input type="text" name="ville" class="form-control" value="<?= $rcc[$nom_champ . "_ville"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>RCS</label>
@@ -308,7 +308,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-bank"></i>
 													</span>
-													<input type="text" name="rcs" class="form-control" value="<?php echo $rcc[$nom_champ . "_rcs"] ?>"></div></td>
+													<input type="text" name="rcs" class="form-control" value="<?= $rcc[$nom_champ . "_rcs"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>TVA</label>
@@ -316,7 +316,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-bank"></i>
 													</span>
-													<input type="text" name="tva" class="form-control" value="<?php echo $rcc[$nom_champ . "_tva"] ?>"></div></td>
+													<input type="text" name="tva" class="form-control" value="<?= $rcc[$nom_champ . "_tva"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Tel</label>
@@ -324,7 +324,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-mobile-phone"></i>
 													</span>
-													<input type="text" name="tel" class="form-control" value="<?php echo $rcc[$nom_champ . "_tel"] ?>"></div></td>
+													<input type="text" name="tel" class="form-control" value="<?= $rcc[$nom_champ . "_tel"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Mail</label>
@@ -332,7 +332,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-envelope"></i>
 													</span>
-													<input type="text" name="mail" class="form-control" value="<?php echo $rcc[$nom_champ . "_mail"] ?>"></div></td>
+													<input type="text" name="mail" class="form-control" value="<?= $rcc[$nom_champ . "_mail"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Site Web</label>
@@ -340,7 +340,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-globe"></i>
 													</span>
-													<input type="text" name="site" class="form-control" value="<?php echo $rcc[$nom_champ . "_site"] ?>"></div></td>
+													<input type="text" name="site" class="form-control" value="<?= $rcc[$nom_champ . "_site"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Contact Nom & Prenom</label>
@@ -348,7 +348,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-user"></i>
 													</span>
-													<input type="text" name="contact" class="form-control" value="<?php echo $rcc[$nom_champ . "_contact"] ?>"></div></td>
+													<input type="text" name="contact" class="form-control" value="<?= $rcc[$nom_champ . "_contact"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Contact mail</label>
@@ -356,7 +356,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-envelope"></i>
 													</span>
-													<input type="text" name="contact_mail" class="form-control" value="<?php echo $rcc[$nom_champ . "_contact_mail"] ?>"></div></td>
+													<input type="text" name="contact_mail" class="form-control" value="<?= $rcc[$nom_champ . "_contact_mail"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Contact Tel</label>
@@ -364,7 +364,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-mobile-phone"></i>
 													</span>
-													<input type="text" name="contact_tel" class="form-control" value="<?php echo $rcc[$nom_champ . "_contact_tel"] ?>"></div></td>
+													<input type="text" name="contact_tel" class="form-control" value="<?= $rcc[$nom_champ . "_contact_tel"] ?>"></div></td>
 											</tr>
 											<tr>
 												<td><label>Methode de paiement (Ex : 60/40 ou 100)</label>
@@ -372,7 +372,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-euro"></i>
 													</span>
-													<input type="text" name="paiement" class="form-control" value="<?php echo $rcc[$nom_champ . "_paiement"] ?>"></div></td>
+													<input type="text" name="paiement" class="form-control" value="<?= $rcc[$nom_champ . "_paiement"] ?>"></div></td>
 											</tr>
 										 <tr>
 											<td><label>Etat</label>
@@ -412,11 +412,11 @@ function confirme() {
 											?>
 											<tr>
 												<td class="highlight">
-													<div class="success"></div> <a href="<?php echo $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["marque_num"]) ?>"><?php echo $row[$nom_champ . "_nom"] ?></a></td>
+													<div class="success"></div> <a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["marque_num"]) ?>"><?= $row[$nom_champ . "_nom"] ?></a></td>
 												 <td>
-													<a href="<?php echo $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["marque_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
+													<a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["marque_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
 														<i class="fa fa-edit"></i> Edit </a> 
-													<!--<a href="<?php echo $_SERVER["PHP_SELF"] . '?suppr=' . crypte($row["marque_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
+													<!--<a href="<?= $_SERVER["PHP_SELF"] . '?suppr=' . crypte($row["marque_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
 														<i class="fa fa-trash-o"></i> Suppr </a>-->
 												</td>
 											</tr>

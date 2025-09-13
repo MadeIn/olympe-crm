@@ -98,10 +98,10 @@ function addWidget(id) {
 										   <tbody>
 											  <?php foreach ($cc as $rcc) {  ?>
 												<tr>
-													<td class="highlight"><a href="produit.php?modif_num=<?php echo crypte($rcc[$nom_champ . "_num"]) ?>"> <?php echo $rcc["produit_nom"] ?></a></td>
-													<td><?php echo $rcc["categorie_nom"] ?></td>
-													<td><?php echo $rcc["marque_nom"] ?></td>
-													<td><input type="text" name="ref_<?php echo $rcc["produit_num"] ?>" id="ref_<?php echo $rcc["produit_num"] ?>" value="<?php echo $rcc["produit_ref"] ?>" onChange="addWidget(<?php echo $rcc["produit_num"] ?>)"></td>
+													<td class="highlight"><a href="produit.php?modif_num=<?= crypte($rcc[$nom_champ . "_num"]) ?>"> <?= $rcc["produit_nom"] ?></a></td>
+													<td><?= $rcc["categorie_nom"] ?></td>
+													<td><?= $rcc["marque_nom"] ?></td>
+													<td><input type="text" name="ref_<?= $rcc["produit_num"] ?>" id="ref_<?= $rcc["produit_num"] ?>" value="<?= $rcc["produit_ref"] ?>" onChange="addWidget(<?= $rcc["produit_num"] ?>)"></td>
 												</tr>
 											  <?php } ?>
 												  

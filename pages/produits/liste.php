@@ -21,7 +21,7 @@ if (!isset($recherche)) {
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
 function confirme() {
-	if (confirm("<?php echo $alert ?>"))
+	if (confirm("<?= $alert ?>"))
 		return true;
 	else 
 		return false;
@@ -43,7 +43,7 @@ function changePrixAchat(id) {
 	
 	prix = document.getElementById("prixachat_" + id).value;
 	
-	link = "modif-prixachat.php?id=" + id + "&prix=" + prix + "&rand=<?php echo rand(0,1000000) ?>";
+	link = "modif-prixachat.php?id=" + id + "&prix=" + prix + "&rand=<?= rand(0,1000000) ?>";
 	//alert(link);
 	oXmlHttp.open("get",link, true);
 	oXmlHttp.onreadystatechange = function () {
@@ -100,7 +100,7 @@ function changePrixAchat(id) {
 														<span class="input-group-addon">
 															<i class="fa fa-list"></i>
 														</span>
-														<input type="text" name="nom" class="form-control" value="<?php echo $nom ?>"></div></td>
+														<input type="text" name="nom" class="form-control" value="<?= $nom ?>"></div></td>
 												</tr>
 												<tr>
 													<td><label>Categorie</label>
@@ -208,10 +208,10 @@ function changePrixAchat(id) {
 											  ?>
 												<tr>
 													<td class="highlight">
-														<div class="success"></div> <a href="produit.php?modif_num=<?php echo crypte($rcc[$nom_champ . "_num"]) ?>"> <?php echo $rcc["produit_nom"] ?></a> (<?php echo $nbr ?>)</td>
-													<td><?php echo $rcc["categorie_nom"] ?></td>
-													<td><?php echo $rcc["marque_nom"] ?></td>
-													<td><input type="text" name="prixachat" id="prixachat_<?php echo $rcc["prixachat_num"] ?>" value="<?php echo $prix_achat ?>" onBlur="changePrixAchat(<?php echo $rcc["prixachat_num"] ?>)" class="form-control"></td>
+														<div class="success"></div> <a href="produit.php?modif_num=<?= crypte($rcc[$nom_champ . "_num"]) ?>"> <?= $rcc["produit_nom"] ?></a> (<?= $nbr ?>)</td>
+													<td><?= $rcc["categorie_nom"] ?></td>
+													<td><?= $rcc["marque_nom"] ?></td>
+													<td><input type="text" name="prixachat" id="prixachat_<?= $rcc["prixachat_num"] ?>" value="<?= $prix_achat ?>" onBlur="changePrixAchat(<?= $rcc["prixachat_num"] ?>)" class="form-control"></td>
 													<td><?php 
 													if ($prix!=0)
 														echo number_format($prix,2,"."," ") . ' €';
@@ -225,9 +225,9 @@ function changePrixAchat(id) {
 															echo "Invisible"; ?>
 													</td>
 													<td>
-														<a href="produit.php?modif_num=<?php echo crypte($rcc["produit_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
+														<a href="produit.php?modif_num=<?= crypte($rcc["produit_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
 															<i class="fa fa-edit"></i> Edit </a> 
-														<a href="<?php echo $_SERVER["PHP_SELF"] . '?suppr=' . crypte($rcc["produit_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
+														<a href="<?= $_SERVER["PHP_SELF"] . '?suppr=' . crypte($rcc["produit_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
 															<i class="fa fa-trash-o"></i> Suppr </a>
 													</td>
 												</tr>

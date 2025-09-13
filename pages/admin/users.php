@@ -114,12 +114,12 @@ function confirme() {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form role="form" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST" enctype="multipart/form-data">
+									<form role="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST" enctype="multipart/form-data">
 									<?php if (!isset($edit)) { ?>
 										<input type="hidden" name="action" value="add">
 									<?php } else { ?>
 										<input type="hidden" name="action" value="update">
-										<input type="hidden" name="num" value="<?php echo crypte($num) ?>">
+										<input type="hidden" name="num" value="<?= crypte($num) ?>">
 									<?php } ?>
 										<div class="form-body">
 											<div class="form-group">
@@ -128,7 +128,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-user"></i>
 													</span>
-													<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?php echo $nom ?>" required> </div>
+													<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= $nom ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Prenom</label>
@@ -136,7 +136,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-user"></i>
 													</span>
-													<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?php echo $prenom ?>" required> </div>
+													<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?= $prenom ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Email</label>
@@ -144,7 +144,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-envelope"></i>
 													</span>
-													<input type="email" name="mail" class="form-control" placeholder="Email" value="<?php echo $mail ?>" required> </div>
+													<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= $mail ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Mot de passe</label>
@@ -152,7 +152,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-user-secret"></i>
 													</span>
-													<input type="text" name="mdp" class="form-control" placeholder="Mot de passe" value="<?php echo $mdp ?>" required> </div>
+													<input type="text" name="mdp" class="form-control" placeholder="Mot de passe" value="<?= $mdp ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Mot de passe de connexion email</label>
@@ -160,7 +160,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-user-secret"></i>
 													</span>
-													<input type="text" name="mail_mdp" class="form-control" placeholder="Mot de passe de connexion email" value="<?php echo $mail_mdp ?>" required> </div>
+													<input type="text" name="mail_mdp" class="form-control" placeholder="Mot de passe de connexion email" value="<?= $mail_mdp ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Tel</label>
@@ -168,7 +168,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-mobile-phone"></i>
 													</span>
-													<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?php echo $tel ?>" required> </div>
+													<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= $tel ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Groupe</label>
@@ -212,9 +212,9 @@ function confirme() {
 												<div class="fileinput fileinput-new" data-provides="fileinput">
 													<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">
 													<?php if ($photo=="") { ?>
-														<img src="http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> </div>
+														<img src="https://placehold.co/200x200?text=No+image" alt="" /> </div>
 													<?php } else { ?>
-														<img src="/photos/users/<?php echo $photo ?>" alt="" /> </div>
+														<img src="/photos/users/<?= $photo ?>" alt="" /> </div>
 													<?php } ?>
 													<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"> </div>
 													<div>

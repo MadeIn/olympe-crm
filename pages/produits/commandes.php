@@ -103,7 +103,7 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 										</thead>
 										<tbody>
 											<tr>
-												<td><input id="produitauto" name="produitauto"  class="form-control" value="<?php echo $produitauto ?>"></td>
+												<td><input id="produitauto" name="produitauto"  class="form-control" value="<?= $produitauto ?>"></td>
 												<td>
 													<select name="categorie" class="form-control">
 														<option value="-1">------------</option>
@@ -232,26 +232,26 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 												 $reste_total += $reste;
 											?>
 												<tr>
-													<td><?php echo format_date($row["commande_fournisseur_date"],11,1) ?></td>
-													<td><?php echo $row["marque_nom"] ?></td>
-													<td><?php echo $row["categorie_nom"] ?></td>
-													<td><?php echo $row["produit_nom"] ?></td>
-													<td><?php echo number_format($row["commande_montant"],2,'.',' ') ?></td>
-													<td><?php echo number_format($paiement,2,'.',' ') ?></td>
-													<td><?php echo number_format($reste,2,'.',' ') ?></td>
-													<td><a href="/clients/client?client_num=<?php echo crypte($row["client_num"]) ?>&tab=tab_1_6"><?php echo $row["client_nom"] . " " . $row["client_prenom"] ?></a></td>
-													<td><?php echo $row["commande_num"] ?></td>
-													<td><?php echo format_date($row["commande_date"],11,1) ?></td>
+													<td><?= format_date($row["commande_fournisseur_date"],11,1) ?></td>
+													<td><?= $row["marque_nom"] ?></td>
+													<td><?= $row["categorie_nom"] ?></td>
+													<td><?= $row["produit_nom"] ?></td>
+													<td><?= number_format($row["commande_montant"],2,'.',' ') ?></td>
+													<td><?= number_format($paiement,2,'.',' ') ?></td>
+													<td><?= number_format($reste,2,'.',' ') ?></td>
+													<td><a href="/clients/client?client_num=<?= crypte($row["client_num"]) ?>&tab=tab_1_6"><?= $row["client_nom"] . " " . $row["client_prenom"] ?></a></td>
+													<td><?= $row["commande_num"] ?></td>
+													<td><?= format_date($row["commande_date"],11,1) ?></td>
 												</tr>
 											<?php } ?>	
 											</tbody>
 											<tr>
 												<td><b>Total</b></td>
-												<td><?php echo $nbr ?></td>
+												<td><?= $nbr ?></td>
 												<td colspan="2"></td>
-												<td><?php echo number_format($montant_total_ttc,2,'.',' ') ?> €</td>
-												<td><?php echo number_format($paiement_total,2,'.',' ') ?> €</td>
-												<td><?php echo number_format($reste_total,2,'.',' ') ?> €</td>
+												<td><?= number_format($montant_total_ttc,2,'.',' ') ?> €</td>
+												<td><?= number_format($paiement_total,2,'.',' ') ?> €</td>
+												<td><?= number_format($reste_total,2,'.',' ') ?> €</td>
 												<td></td>
 												<td></td>
 												<td></td>

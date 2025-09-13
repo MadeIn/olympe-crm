@@ -35,11 +35,11 @@ if ($rss) {
             <div class="container-fluid">
                 <div class="page-content">
                     <!-- BEGIN BREADCRUMBS -->
-                   <form name="choix" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+                   <form name="choix" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
 					<div class="breadcrumbs">
 					<?php if ($u->mGroupe!=0) { ?>
 						<div class="breadcrumbs">
-							<h1>Olympe Mariage - <?php echo htmlentities(format_date(Date("Y-m-d"),13,1)) ?></h1>
+							<h1>Olympe Mariage - <?= htmlentities(format_date(Date("Y-m-d"),13,1)) ?></h1>
 							<ol class="breadcrumb">
 								<li>
 									<a href="#">Accueil</a>
@@ -125,10 +125,10 @@ if ($rss) {
 													}
 											?>
 												<tr>
-													<td><?php echo $rcc["user_nom"] . " " . $rcc["user_prenom"] ?></td>
-													<td><?php echo $nbr_rdv ?></td>
-													<td><?php echo $nbr_commande ?></td>
-													<td><?php echo $transformation ?>%</td>
+													<td><?= $rcc["user_nom"] . " " . $rcc["user_prenom"] ?></td>
+													<td><?= $nbr_rdv ?></td>
+													<td><?= $nbr_commande ?></td>
+													<td><?= $transformation ?>%</td>
 												</tr>
 											<?php } 
 												if ($nbr_total_rdv>0) 
@@ -139,9 +139,9 @@ if ($rss) {
 											?>	
 											<tr>
 												<td><strong>Total</strong></td>
-												<td><strong><?php echo $nbr_total_rdv ?></strong></td>
-												<td><strong><?php echo $nbr_total_commande ?></strong></td>
-												<td><strong><?php echo $total_transformation ?>%</strong></td>
+												<td><strong><?= $nbr_total_rdv ?></strong></td>
+												<td><strong><?= $nbr_total_commande ?></strong></td>
+												<td><strong><?= $total_transformation ?>%</strong></td>
 											</tr>
 											</tbody>
 										</table>

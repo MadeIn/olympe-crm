@@ -53,8 +53,8 @@ function confirme() {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form role="form" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
-									<input type="hidden" name="genre" value="<?php echo $genre ?>">
+									<form role="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
+									<input type="hidden" name="genre" value="<?= $genre ?>">
 									<div class="form-group">
 										<label>Showroom</label>
 										<div class="input-group">
@@ -90,9 +90,9 @@ function confirme() {
 										</div>
 									</div>
 									<div class="portlet-body form">
-										<form role="form" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
-										<input type="hidden" name="showroom_choix" value="<?php echo $showroom_choix ?>">
-										<input type="hidden" name="genre" value="<?php echo $genre ?>">
+										<form role="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
+										<input type="hidden" name="showroom_choix" value="<?= $showroom_choix ?>">
+										<input type="hidden" name="genre" value="<?= $genre ?>">
 										<input type="hidden" name="objectif" value="ok">
 										<div class="form-group">
 											<label>Date</label>

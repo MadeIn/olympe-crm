@@ -37,8 +37,8 @@
 <section class="container selections" id="showroom">
 	<div class="text-center">
 		<img src="img/olympe-mariage-logo.jpg">
-		<p><strong><?php echo $genre ?> <?php echo $rcc["client_prenom"] ?></strong>,<br>
-		vous trouverez votre sélection de produits proposés par Olympe Mariage <?php echo $rcc["showroom_ville"] ?> ci-dessous</p>
+		<p><strong><?= $genre ?> <?= $rcc["client_prenom"] ?></strong>,<br>
+		vous trouverez votre sélection de produits proposés par Olympe Mariage <?= $rcc["showroom_ville"] ?> ci-dessous</p>
 		<hr style="width: 30%; border: none; border-top: solid 1px #EAEAEA; margin: 25px 35%;">
 	</div>
 <?php 
@@ -68,9 +68,9 @@
 	}
 ?>	<div style="clear: both;"></div>
 	<p class="text-center" style="font-family: 'nimbus', sans-serif;">
-		<strong class="nomproprietaire"><?php echo $rcc["user_prenom"] ?></strong>
-		Olympe Mariage <?php echo $rcc["showroom_ville"] ?><br>
-		<small><?php echo $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?php echo $rcc["showroom_cp"] ?> <?php echo $rcc["showroom_ville"] ?> - </small><a href="tel:<?php echo $rcc["showroom_tel"] ?>"><small><?php echo $rcc["showroom_tel"] ?></small></a><small> - </small><a href="http://www.olympe-mariage.com"><small>www.olympe-mariage.com</small></a>
+		<strong class="nomproprietaire"><?= $rcc["user_prenom"] ?></strong>
+		Olympe Mariage <?= $rcc["showroom_ville"] ?><br>
+		<small><?= $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?= $rcc["showroom_cp"] ?> <?= $rcc["showroom_ville"] ?> - </small><a href="tel:<?= $rcc["showroom_tel"] ?>"><small><?= $rcc["showroom_tel"] ?></small></a><small> - </small><a href="http://www.olympe-mariage.com"><small>www.olympe-mariage.com</small></a>
 	</center>
 </section>
 

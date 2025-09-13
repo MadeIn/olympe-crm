@@ -155,8 +155,8 @@ function initDate() {
 														<option value="4"<?php if ($periode==4) echo " SELECTED" ?>>Le mois dernier</option>
 													</select>
 												</td>
-												<td><input type="date" name="date_deb" id="date_deb" class="form-control input-medium" value="<?php echo $date_deb ?>"></td>
-												<td><input type="date" name="date_fin" id="date_fin" class="form-control input-medium" value="<?php echo $date_fin ?>"></td>
+												<td><input type="date" name="date_deb" id="date_deb" class="form-control input-medium" value="<?= $date_deb ?>"></td>
+												<td><input type="date" name="date_fin" id="date_fin" class="form-control input-medium" value="<?= $date_fin ?>"></td>
 												<td>
 													<select name="etat" class="form-control input-medium">
 														<option value="1" <?php if ($etat==1) echo " SELECTED"; ?>>Commandes en cours</option>
@@ -164,7 +164,7 @@ function initDate() {
 														<option value="3" <?php if ($etat==3) echo " SELECTED"; ?>>Commandes passées</option>
 													</select>
 												</td>
-												<td><input type="text" name="facture" id="facture" class="form-control input-medium" value="<?php echo $facture ?>"></td>
+												<td><input type="text" name="facture" id="facture" class="form-control input-medium" value="<?= $facture ?>"></td>
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
@@ -195,7 +195,7 @@ function initDate() {
 								<div class="portlet-title">
 									<div class="caption font-red-sunglo">
 										<i class="icon-pie-chart font-red-sunglo"></i>
-											<span class="caption-subject bold uppercase"> Statistique du <?php echo format_date($date_deb,11,1) ?> au <?php echo format_date($date_fin,11,1) ?></span>
+											<span class="caption-subject bold uppercase"> Statistique du <?= format_date($date_deb,11,1) ?> au <?= format_date($date_fin,11,1) ?></span>
 									</div>
 								</div>
 								<div class="portlet-body">
@@ -299,14 +299,14 @@ function initDate() {
 											<td colspan="13"><hr></td>
 										</tr>
 										<tr>
-											<td><?php if ($etat==2) { ?><a href="#" class="btn blue" onClick="window.open('/facture/all.php?date_deb=<?php echo $date_deb ?>&date_fin=<?php echo $date_fin ?>&showroom=<?php echo $showroom ?>','print','toolbars=no,menubar=no,width=1000,height=600');">Imprimer</a><?php } ?></td>
-											<td><strong>Total commande : <?php echo $nbr_commande ?></strong></td>
+											<td><?php if ($etat==2) { ?><a href="#" class="btn blue" onClick="window.open('/facture/all.php?date_deb=<?= $date_deb ?>&date_fin=<?= $date_fin ?>&showroom=<?= $showroom ?>','print','toolbars=no,menubar=no,width=1000,height=600');">Imprimer</a><?php } ?></td>
+											<td><strong>Total commande : <?= $nbr_commande ?></strong></td>
 											<td colspan="4" align="right"><strong>Total</strong> : </td>
-											<td><strong><?php echo number_format($total_ht,2,"."," ") ?> €</strong></td>
-											<td><strong><?php echo number_format($total_tva,2,"."," ") ?> €</strong></td>
-											<td><strong><?php echo number_format($total_ttc,2,"."," ") ?> €</strong></td>
-											<td><strong><?php echo number_format($total_encaisse,2,"."," ") ?> €</strong></td>
-											<td><strong><?php echo number_format($total_reste_a_payer,2,"."," ") ?> €</strong></td>
+											<td><strong><?= number_format($total_ht,2,"."," ") ?> €</strong></td>
+											<td><strong><?= number_format($total_tva,2,"."," ") ?> €</strong></td>
+											<td><strong><?= number_format($total_ttc,2,"."," ") ?> €</strong></td>
+											<td><strong><?= number_format($total_encaisse,2,"."," ") ?> €</strong></td>
+											<td><strong><?= number_format($total_reste_a_payer,2,"."," ") ?> €</strong></td>
 										</tr>
 									</tbody>
 									</table>
@@ -316,9 +316,9 @@ function initDate() {
 						<?php if ($etat==2) { ?>
 							<hr>
 							<form name="extract" action="extract.php" method="POST">
-							<input type="hidden" name="date_debut" value="<?php echo $date_deb ?>">
-							<input type="hidden" name="date_fin" value="<?php echo $date_fin ?>">
-							<input type="hidden" name="showroom" value="<?php echo $showroom ?>">
+							<input type="hidden" name="date_debut" value="<?= $date_deb ?>">
+							<input type="hidden" name="date_fin" value="<?= $date_fin ?>">
+							<input type="hidden" name="showroom" value="<?= $showroom ?>">
 							<input type="submit" value="Export comptabilité" class="btn green">
 							</form>
 						<?php } ?>

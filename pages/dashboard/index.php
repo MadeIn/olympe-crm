@@ -123,7 +123,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 														</select>
 													</td>
 												<?php } else { ?>
-												<input type="hidden" name="showroom" value="<?php echo $u->mShowroom ?>">
+												<input type="hidden" name="showroom" value="<?= $u->mShowroom ?>">
 												<?php } ?>
 												<td><input type="submit" value="Rechercher" class="btn blue"></td>
 											</tr>
@@ -274,39 +274,39 @@ if ($rrv) {
 												 }
 											?>
 												<tr>
-													<td><small><?php echo format_date($row["client_date_mariage"],11,1) ?></small></td>
-													<td><small><a href="/clients/client?client_num=<?php echo crypte($row["client_num"]) ?>"><?php echo $row["client_prenom"] . " " . $row["client_nom"] ?></a></small></td>
-													<td><small><?php echo $createur ?></small></td>
-													<td><small><?php echo implode(",",$produits) ?></small></td>
-													<td><small><?php echo implode(",",$accessoires) ?></small></td>
-													<td class="text-center"><strong><?php echo $cde_fournisseur ?></strong></td>
-													<td><small><?php echo $date_livraison ?></small></td>
-													<td><small><?php echo $date_reception  ?></small></td>
-													<td><small><?php echo $date_retouche  ?></small></td>
-													<td><small><?php echo $date_remise ?></small></td>
-													<td><small><nobr><?php echo $acompte1 ?></nobr></small></td>
-													<td><small><nobr><?php echo $acompte2 ?></nobr></small></td>
-													<td><small><nobr><?php echo $acompte3 ?></nobr></small></td>
-													<td><small><nobr><?php echo $acompte4 ?></nobr></small></td>
-													<td><small><?php echo $row["client_remarque"] ?></small></td>
-													<td><small><nobr><?php echo number_format($montant_ht,2,'.',' ') ?>€</small><nobr></td>
-													<td><small><nobr><?php echo number_format($montant_ttc,2,'.',' ') ?>€</small><nobr></td>
+													<td><small><?= format_date($row["client_date_mariage"],11,1) ?></small></td>
+													<td><small><a href="/clients/client?client_num=<?= crypte($row["client_num"]) ?>"><?= $row["client_prenom"] . " " . $row["client_nom"] ?></a></small></td>
+													<td><small><?= $createur ?></small></td>
+													<td><small><?= implode(",",$produits) ?></small></td>
+													<td><small><?= implode(",",$accessoires) ?></small></td>
+													<td class="text-center"><strong><?= $cde_fournisseur ?></strong></td>
+													<td><small><?= $date_livraison ?></small></td>
+													<td><small><?= $date_reception  ?></small></td>
+													<td><small><?= $date_retouche  ?></small></td>
+													<td><small><?= $date_remise ?></small></td>
+													<td><small><nobr><?= $acompte1 ?></nobr></small></td>
+													<td><small><nobr><?= $acompte2 ?></nobr></small></td>
+													<td><small><nobr><?= $acompte3 ?></nobr></small></td>
+													<td><small><nobr><?= $acompte4 ?></nobr></small></td>
+													<td><small><?= $row["client_remarque"] ?></small></td>
+													<td><small><nobr><?= number_format($montant_ht,2,'.',' ') ?>€</small><nobr></td>
+													<td><small><nobr><?= number_format($montant_ttc,2,'.',' ') ?>€</small><nobr></td>
 												</tr>
 											<?php 
 											 }
 											} ?>
 											<tr>
 												<td><b>Total : </b></td>
-												<td><small><?php echo $nbr ?></small></td>
-												<td><small><?php echo $createur ?></small></td>
+												<td><small><?= $nbr ?></small></td>
+												<td><small><?= $createur ?></small></td>
 												<td colspan="7"></td>
-												<td><small><nobr><?php echo number_format($montant_acompte1,2,'.',' ') ?>€</nobr></small></td>
-												<td><small><nobr><?php echo number_format($montant_acompte2,2,'.',' ') ?>€</nobr></small></td>
-												<td><small><nobr><?php echo number_format($montant_acompte3,2,'.',' ') ?>€</nobr></small></td>
-												<td><small><nobr><?php echo number_format($montant_acompte4,2,'.',' ') ?>€</nobr></small></td>
+												<td><small><nobr><?= number_format($montant_acompte1,2,'.',' ') ?>€</nobr></small></td>
+												<td><small><nobr><?= number_format($montant_acompte2,2,'.',' ') ?>€</nobr></small></td>
+												<td><small><nobr><?= number_format($montant_acompte3,2,'.',' ') ?>€</nobr></small></td>
+												<td><small><nobr><?= number_format($montant_acompte4,2,'.',' ') ?>€</nobr></small></td>
 												<td></td>
-												<td><small><nobr><?php echo number_format($montant_total_ht,2,'.',' ') ?>€</small><nobr></td>
-												<td><small><nobr><?php echo number_format($montant_total_ttc,2,'.',' ') ?>€</small><nobr></td>
+												<td><small><nobr><?= number_format($montant_total_ht,2,'.',' ') ?>€</small><nobr></td>
+												<td><small><nobr><?= number_format($montant_total_ttc,2,'.',' ') ?>€</small><nobr></td>
 											</tr>
 										</tbody>
 									</table>

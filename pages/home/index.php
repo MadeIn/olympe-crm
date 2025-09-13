@@ -157,15 +157,15 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                 <!-- BEGIN BREADCRUMBS -->
                 <?php if ($u->mGroupe != 0) { ?>
                     <div class="breadcrumbs">
-                        <h1>Olympe Mariage - <?php echo h(format_date(date("Y-m-d"), 13)); ?></h1>
+                        <h1>Olympe Mariage - <?= h(format_date(date("Y-m-d"), 13)); ?></h1>
                         <ol class="breadcrumb">
                             <li><a href="#">Accueil</a></li>
                             <li class="active">Dashboard</li>
                         </ol>
                     </div>
                 <?php } else { ?>
-                    <form name="choix" action="<?php echo h($_SERVER["PHP_SELF"]); ?>" method="POST">
-                        <?php echo csrf_field(); ?>
+                    <form name="choix" action="<?= h($_SERVER["PHP_SELF"]); ?>" method="POST">
+                        <?= csrf_field(); ?>
                         <div class="breadcrumbs">
                             <h1>Olympe Mariage 
                                 <select name="showroom_choix" onChange="this.form.submit()" class="form-inline">
@@ -179,7 +179,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                     }
                                     ?>
                                 </select>
-                                - <?php echo h(format_date(date("Y-m-d"), 13)); ?>
+                                - <?= h(format_date(date("Y-m-d"), 13)); ?>
                             </h1>
                             <ol class="breadcrumb">
                                 <li><a href="#">Accueil</a></li>
@@ -197,7 +197,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-green-sharp">
-                                        <span data-counter="counterup" data-value="<?php echo number_format($ca_mois, 2); ?>">0</span>
+                                        <span data-counter="counterup" data-value="<?= number_format($ca_mois, 2); ?>">0</span>
                                         <small class="font-green-sharp">€</small>
                                     </h3>
                                     <small>CA HT du mois</small>
@@ -214,7 +214,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-red-haze">
-                                        <span data-counter="counterup" data-value="<?php echo $nbr_commande_mois; ?>">0</span>
+                                        <span data-counter="counterup" data-value="<?= $nbr_commande_mois; ?>">0</span>
                                     </h3>
                                     <small>Nombre de commande du mois</small>
                                 </div>
@@ -230,7 +230,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-blue-sharp">
-                                        <span data-counter="counterup" data-value="<?php echo number_format($ca_mois_robe, 2); ?>">0</span>
+                                        <span data-counter="counterup" data-value="<?= number_format($ca_mois_robe, 2); ?>">0</span>
                                         <small class="font-blue-sharp">€</small>
                                     </h3>
                                     <small>CA HT Vente de robes du mois</small>
@@ -241,13 +241,13 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             </div>
                             <div class="progress-info">
                                 <div class="progress">
-                                    <span style="width: <?php echo $objectif_ca; ?>%;" class="progress-bar progress-bar-success blue-sharp">
-                                        <span class="sr-only"><?php echo $objectif_ca; ?>% objectif</span>
+                                    <span style="width: <?= $objectif_ca; ?>%;" class="progress-bar progress-bar-success blue-sharp">
+                                        <span class="sr-only"><?= $objectif_ca; ?>% objectif</span>
                                     </span>
                                 </div>
                                 <div class="status">
                                     <div class="status-title">objectif</div>
-                                    <div class="status-number"><?php echo $objectif_ca; ?>%</div>
+                                    <div class="status-number"><?= $objectif_ca; ?>%</div>
                                 </div>
                             </div>
                         </div>
@@ -258,7 +258,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-purple-soft">
-                                        <span data-counter="counterup" data-value="<?php echo $nbr_mois_robe; ?>">0</span>
+                                        <span data-counter="counterup" data-value="<?= $nbr_mois_robe; ?>">0</span>
                                     </h3>
                                     <small>Nbr de robes vendues du mois</small>
                                 </div>
@@ -268,13 +268,13 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                             </div>
                             <div class="progress-info">
                                 <div class="progress">
-                                    <span style="width: <?php echo $objectif_nbr_robe; ?>%;" class="progress-bar progress-bar-success purple-soft">
-                                        <span class="sr-only"><?php echo $objectif_nbr_robe; ?>% objectif</span>
+                                    <span style="width: <?= $objectif_nbr_robe; ?>%;" class="progress-bar progress-bar-success purple-soft">
+                                        <span class="sr-only"><?= $objectif_nbr_robe; ?>% objectif</span>
                                     </span>
                                 </div>
                                 <div class="status">
                                     <div class="status-title">objectif</div>
-                                    <div class="status-number"><?php echo $objectif_nbr_robe; ?>%</div>
+                                    <div class="status-number"><?= $objectif_nbr_robe; ?>%</div>
                                 </div>
                             </div>
                         </div>
@@ -352,7 +352,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         <div class="display">
                                             <div class="number">
                                                 <h3 class="font-green-sharp">
-                                                    <span data-counter="counterup" data-value="<?php echo number_format($ca_annee_robe, 2); ?>">0</span>
+                                                    <span data-counter="counterup" data-value="<?= number_format($ca_annee_robe, 2); ?>">0</span>
                                                     <small class="font-green-sharp">€</small>
                                                 </h3>
                                                 <small>CA HT Robes de l'année</small>
@@ -360,7 +360,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                             <div class="number">
                                                 <h3 class="font-red-soft">
                                                     <span style="margin-left:30px;margin-right:30px;">/</span> 
-                                                    <span data-counter="counterup" data-value="<?php echo number_format($u->mShowroomInfo["ca_annee"], 2); ?>">0</span>
+                                                    <span data-counter="counterup" data-value="<?= number_format($u->mShowroomInfo["ca_annee"], 2); ?>">0</span>
                                                     <small class="font-red-soft">€</small>
                                                 </h3>
                                                 <span style="margin-left:50px;margin-right:30px;"></span><small>Objectif annuel</small>
@@ -371,13 +371,13 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         </div>
                                         <div class="progress-info">
                                             <div class="progress">
-                                                <span style="width: <?php echo $objectif_ca_annee; ?>%;" class="progress-bar progress-bar-success blue-sharp">
-                                                    <span class="sr-only"><?php echo $objectif_ca_annee; ?>% objectif</span>
+                                                <span style="width: <?= $objectif_ca_annee; ?>%;" class="progress-bar progress-bar-success blue-sharp">
+                                                    <span class="sr-only"><?= $objectif_ca_annee; ?>% objectif</span>
                                                 </span>
                                             </div>
                                             <div class="status">
                                                 <div class="status-title">objectif</div>
-                                                <div class="status-number"><?php echo $objectif_ca_annee; ?>%</div>
+                                                <div class="status-number"><?= $objectif_ca_annee; ?>%</div>
                                             </div>
                                         </div>
                                     </div>
@@ -406,9 +406,9 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         <div class="display">
                                             <div class="number">
                                                 <h3 class="font-red-haze">
-                                                    <span data-counter="counterup" data-value="<?php echo $nbr_rdv ?>">0</span>
+                                                    <span data-counter="counterup" data-value="<?= $nbr_rdv ?>">0</span>
                                                 </h3>
-                                                <small>Rendez-vous sur l'année dont <font color="red"><?php echo $nbr_rdv_a_venir ?></font> à venir</small>
+                                                <small>Rendez-vous sur l'année dont <font color="red"><?= $nbr_rdv_a_venir ?></font> à venir</small>
                                             </div>
                                             <div class="icon">
                                                 <i class="icon-user-female"></i>
@@ -416,13 +416,13 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         </div>
                                         <div class="progress-info">
                                             <div class="progress">
-                                                <span style="width: <?php echo $transformation ?>%;" class="progress-bar progress-bar-success blue-sharp">
-                                                    <span class="sr-only"><?php echo $transformation ?>% taux de transformation</span>
+                                                <span style="width: <?= $transformation ?>%;" class="progress-bar progress-bar-success blue-sharp">
+                                                    <span class="sr-only"><?= $transformation ?>% taux de transformation</span>
                                                 </span>
                                             </div>
                                             <div class="status">
                                                 <div class="status-title"> taux de transformation </div>
-                                                <div class="status-number"> <?php echo $transformation ?>% </div>
+                                                <div class="status-number"> <?= $transformation ?>% </div>
                                             </div>
                                         </div>
                                     </div>
@@ -444,7 +444,7 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         <div class="display">
                                             <div class="number">
                                                 <h3 class="font-red-haze">
-                                                    <span data-counter="counterup" data-value="<?php echo $ca_annee ?>">0</span>
+                                                    <span data-counter="counterup" data-value="<?= $ca_annee ?>">0</span>
                                                     <small class="font-red-sharp">€</small>
                                                 </h3>
                                                 <small>CA HT Annuel</small>
@@ -482,13 +482,13 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         <div class="display">
                                             <div class="number">
                                                 <h3 class="font-red-sharp">
-                                                    <span data-counter="counterup" data-value="<?php echo $montant_commande ?>">0</span>
+                                                    <span data-counter="counterup" data-value="<?= $montant_commande ?>">0</span>
                                                     <small class="font-red-sharp">€</small>
                                                 </h3>
                                                 <small>CA TTC</small>
                                             </div>  <div class="number">
                                                 <h3 class="font-purple-soft">
-                                                        <span style="margin-left:30px;margin-right:30px;">/</span> <span data-counter="counterup" data-value="<?php echo round($encaissement,2) ?>">0</span>
+                                                        <span style="margin-left:30px;margin-right:30px;">/</span> <span data-counter="counterup" data-value="<?= round($encaissement,2) ?>">0</span>
                                                     <small class="font-purple-soft">€</small>
                                                 </h3>
                                                     <span style="margin-left:50px;margin-right:30px;"></span><small>Encaissement</small>
@@ -499,13 +499,13 @@ $objectif_nbr_robe = number_format($objectif_nbr_robe * 100, 0);
                                         </div>
                                         <div class="progress-info">
                                             <div class="progress">
-                                                <span style="width: <?php echo $taux_dette ?>%;" class="progress-bar progress-bar-success purple-soft">
-                                                    <span class="sr-only"><?php echo $taux_dette ?>% paiement</span>
+                                                <span style="width: <?= $taux_dette ?>%;" class="progress-bar progress-bar-success purple-soft">
+                                                    <span class="sr-only"><?= $taux_dette ?>% paiement</span>
                                                 </span>
                                             </div>
                                             <div class="status">
                                                 <div class="status-title"> paiement </div>
-                                                <div class="status-number"> <?php echo $taux_dette ?>% </div>
+                                                <div class="status-number"> <?= $taux_dette ?>% </div>
                                             </div>
                                         </div>
                                     </div>

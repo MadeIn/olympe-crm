@@ -1237,12 +1237,12 @@ function confirme_commande(id) {
                 <div class="page-content">
                     <!-- BEGIN BREADCRUMBS -->
                     <div class="breadcrumbs">
-                        <h1><?php echo $rcl["client_nom"] . " " . $rcl["client_prenom"] ?></h1>
+                        <h1><?= $rcl["client_nom"] . " " . $rcl["client_prenom"] ?></h1>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="#">Accueil</a>
                             </li>
-                            <li class="active">Client <?php echo $rcl["client_nom"] . " " . $rcl["client_prenom"] ?></li>
+                            <li class="active">Client <?= $rcl["client_nom"] . " " . $rcl["client_prenom"] ?></li>
                         </ol>
                     </div>
                     <!-- END BREADCRUMBS -->
@@ -1255,32 +1255,32 @@ function confirme_commande(id) {
 									<div class="portlet light profile-sidebar-portlet bordered">
 										<!-- SIDEBAR USER TITLE -->
 										<div class="profile-usertitle">
-											<div class="profile-usertitle-name"> <?php echo $rcl["client_nom"] . " " . $rcl["client_prenom"] ?> </div>
+											<div class="profile-usertitle-name"> <?= $rcl["client_nom"] . " " . $rcl["client_prenom"] ?> </div>
 											<div class="profile-usertitle-job"> <?php if ($rcl["client_genre"]==0) echo "Femme"; else echo "Homme"; ?> </div>
 										</div>
 										<!-- SIDEBAR MENU -->
 										<div class="profile-usermenu">
 											<ul class="nav">
 												<li>
-													<a href="mailto:<?php echo $rcl["client_email"] ?>">
-														<i class="fa fa-envelope"></i> <?php echo $rcl["client_mail"] ?> </a>
+													<a href="mailto:<?= $rcl["client_mail"] ?>">
+														<i class="fa fa-envelope"></i> <?= $rcl["client_mail"] ?> </a>
 												</li>
 												<li>
-													<a href="tel:<?php echo $rcl["client_tel"] ?>">
-														<i class="fa fa-phone"></i> <?php echo $rcl["client_tel"] ?> </a>
-												</li>
-												<li>
-													<a href="#">
-														<i class="fa fa-heart"></i> <?php echo format_date($rcl["client_date_mariage"],11,1) ?> </a>
+													<a href="tel:<?= $rcl["client_tel"] ?>">
+														<i class="fa fa-phone"></i> <?= $rcl["client_tel"] ?> </a>
 												</li>
 												<li>
 													<a href="#">
-														<i class="fa fa-map-marker"></i> <?php echo $rcl["client_lieu_mariage"]  ?> </a>
+														<i class="fa fa-heart"></i> <?= format_date($rcl["client_date_mariage"],11,1) ?> </a>
+												</li>
+												<li>
+													<a href="#">
+														<i class="fa fa-map-marker"></i> <?= $rcl["client_lieu_mariage"]  ?> </a>
 												</li>
 												<?php 
 													$sql = "select * from users where user_num='" . $rcl["user_num"] . "'";
 													$rtt = $base->queryRow($sql);
- if ($rtt) {
+ 													if ($rtt) {
 														echo '<li>
 															<a href="#">
 																<i class="fa fa-eye"></i> Suivi par : ' . $rtt["user_prenom"] . ' ' . $rtt["user_nom"]  . '</a>
@@ -1290,7 +1290,7 @@ function confirme_commande(id) {
 												<?php 
 													$sql = "select * from users where user_num='" . $rcl["couturiere_num"] . "'";
 													$rtt = $base->queryRow($sql);
- if ($rtt) {
+ 													if ($rtt) {
 														echo '<li>
 															<a href="#">
 																<i class="fa fa-odnoklassniki"></i> Couturière : ' . $rtt["user_prenom"] . ' ' . $rtt["user_nom"]  . '</a>
@@ -1304,7 +1304,8 @@ function confirme_commande(id) {
 									</div>
 									<!-- END PORTLET MAIN -->
 									<!-- PORTLET MAIN -->
-									<?php											$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
+									<?php											
+											$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
 											$ss = $base->query($sql);
 											$nbr_selection = count($ss);
 											
@@ -1326,19 +1327,19 @@ function confirme_commande(id) {
 										<!-- STAT -->
 										<div class="row list-separated profile-stat">
 											<div class="col-md-6 col-sm-6 col-xs-6">
-												<div class="uppercase profile-stat-title"> <?php echo $nbr_selection ?> </div>
+												<div class="uppercase profile-stat-title"> <?= $nbr_selection ?> </div>
 												<div class="uppercase profile-stat-text"> Sél. </div>
 											</div>
 											<div class="col-md-6 col-sm-6 col-xs-6">
-												<div class="uppercase profile-stat-title"> <?php echo $nbr_devis ?> </div>
+												<div class="uppercase profile-stat-title"> <?= $nbr_devis ?> </div>
 												<div class="uppercase profile-stat-text"> Devis </div>
 											</div>
 											<div class="col-md-6 col-sm-6 col-xs-6">
-												<div class="uppercase profile-stat-title"> <?php echo $nbr_commande ?> </div>
+												<div class="uppercase profile-stat-title"> <?= $nbr_commande ?> </div>
 												<div class="uppercase profile-stat-text"> Com. </div>
 											</div>
 											<div class="col-md-6 col-sm-6 col-xs-6">
-												<div class="uppercase profile-stat-title"> <?php echo $commande_ttc ?>€ </div>
+												<div class="uppercase profile-stat-title"> <?= $commande_ttc ?>€ </div>
 												<div class="uppercase profile-stat-text"> C.A. </div>
 											</div>
 										</div>
@@ -1405,13 +1406,13 @@ function confirme_commande(id) {
 															?>
 																<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 																<input type="hidden" name="tab" value="tab_1_1">
-																<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
-																<input type="hidden" name="type_num" value="<?php echo $rtt["type_num"] ?>">
-																<input type="hidden" name="rdv_num" value="<?php echo crypte($num) ?>">
+																<input type="hidden" name="client_num" value="<?= $client_num ?>">
+																<input type="hidden" name="type_num" value="<?= $rtt["type_num"] ?>">
+																<input type="hidden" name="rdv_num" value="<?= crypte($num) ?>">
 																<table class="table table-hover table-advance table-striped">
 																	<thead>
 																		<tr>
-																			<th class="font-blue-steel"><strong><?php echo $rtt["type_nom"] ?></strong></th>
+																			<th class="font-blue-steel"><strong><?= $rtt["type_nom"] ?></strong></th>
 																			<th> </th>
 																			<th> </th>
 																			<th> </th>
@@ -1419,11 +1420,11 @@ function confirme_commande(id) {
 																	</thead>
 																	<tbody>
 																	<tr>
-																		<td><input type="date" name="date" class="form-inline" placeholder="" value="<?php echo $date ?>">
-																			<input type="time" name="time" class="form-inline" placeholder="" value="<?php echo $heure ?>">
+																		<td><input type="date" name="date" class="form-inline" placeholder="" value="<?= $date ?>">
+																			<input type="time" name="time" class="form-inline" placeholder="" value="<?= $heure ?>">
 																		</td>
 																		<td>
-																			<?	
+																			<?php 
 																				if ($rtt["type_num"]==2) {
 																					echo 'Atelier de <input type="text" name="remarque" value="' . $remarque . '" class="form-inline">';
 																					echo '<input type="hidden" name="dernier_acompte" value="0">';
@@ -1453,7 +1454,7 @@ function confirme_commande(id) {
 																				<input type="submit" value="Ok" class="btn btn-outline btn-circle btn-sm purple">
 																			<?php } else { ?>
 																				<input type="submit" value="Modifier" class="btn btn-outline btn-circle btn-sm purple"> 
-																				<a href="client?client_num=<?php echo crypte($rcc["client_num"]) ?>&suppr_rdv_num=<?php echo crypte($num) ?>"  class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme_annulation_rdv()"> Annuler</a>
+																				<a href="client?client_num=<?= crypte($rcc["client_num"]) ?>&suppr_rdv_num=<?= crypte($num) ?>"  class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme_annulation_rdv()"> Annuler</a>
 																			<?php } ?>
 																		</td>
 																		<td>
@@ -1466,13 +1467,14 @@ function confirme_commande(id) {
 																	</tbody>
 																</table>
 																</form>
-														<?	} ?>
+														<?php } ?>
 														</div>
 														<!-- END CHANGE AVATAR TAB -->
 														<!-- CHANGE PASSWORD TAB -->
 														<div class="tab-pane<?php if ($tab=="tab_1_2") echo " active"?>" id="tab_1_2">
 															<h4><i class="fa fa-plus"></i> Liste des sélections</h4>
-															<?php																$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
+															<?php																
+																$sql = "select * from selections where client_num='" . decrypte($client_num) . "' order by selection_date DESC";
 																$ss = $base->query($sql);
 																$nbr_selection = count($ss);
 																if ($nbr_selection>0) {
@@ -1499,28 +1501,28 @@ function confirme_commande(id) {
 																				if ($rph) {
 																					$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
 																				} else 
-																					$image_pdt = "http://www.placehold.it/50x50/EFEFEF/AAAAAA&amp;text=no+image";
-																				echo '<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
-																						<div class="mt-card-item">
-																							<div class="mt-card-avatar mt-overlay-1">
-																								<figure style="height:100px;overflow:hidden;position:relative;line-height:100px;">
-																									<img src="' . $image_pdt . '" />
-																								</figure>
-																								<div class="mt-overlay">
-																									<ul class="mt-info">
-																										<li>
-																											<a class="btn default btn-outline" href="javascript:addWidget(' . $rss["selection_num"] . ',' . $rpp["produit_num"] . ',2)">
-																												<i class="fa fa-trash"></i>
-																											</a>
-																										</li>
-																									</ul>
+																					$image_pdt = "https://placehold.co/50x50?text=No+image";
+																					echo '<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+																							<div class="mt-card-item">
+																								<div class="mt-card-avatar mt-overlay-1">
+																									<figure style="height:100px;overflow:hidden;position:relative;line-height:100px;">
+																										<img src="' . $image_pdt . '" />
+																									</figure>
+																									<div class="mt-overlay">
+																										<ul class="mt-info">
+																											<li>
+																												<a class="btn default btn-outline" href="javascript:addWidget(' . $rss["selection_num"] . ',' . $rpp["produit_num"] . ',2)">
+																													<i class="fa fa-trash"></i>
+																												</a>
+																											</li>
+																										</ul>
+																									</div>
+																								</div>
+																								<div class="mt-card-content">
+																									<h5><small>' . $rpp["produit_nom"] . '</small></h5>
 																								</div>
 																							</div>
-																							<div class="mt-card-content">
-																								<h5><small>' . $rpp["produit_nom"] . '</small></h5>
-																							</div>
-																						</div>
-																					</div>';
+																						</div>';
 																			}
 																		} else {
 																			echo '<p><i>Aucun produit dans votre sélection</i></p>';
@@ -1543,15 +1545,15 @@ function confirme_commande(id) {
 															?>
 															<hr>
 															<?php if (!isset($selection_ajout)) { ?>
-																<center><a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&selection=ok&tab=tab_1_2" class="btn btn-lg red"> <i class="fa fa-plus"></i> Créer une sélection</a></center>
+																<center><a href="<?= current_path() ?>?client_num=<?= $client_num ?>&selection=ok&tab=tab_1_2" class="btn btn-lg red"> <i class="fa fa-plus"></i> Créer une sélection</a></center>
 															<?php } else { ?>
 																<h4><i class="fa fa-plus"></i> Ajouter des produits à la sélection</h4>
 																<div class="row">
 																	<div class="col-md-4">
 																		<form name="rechercher" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 																			<input type="hidden" name="recherche_produit" value="ok">
-																			<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
-																			<input type="hidden" name="selection_ajout" value="<?php echo $selection_ajout ?>">
+																			<input type="hidden" name="client_num" value="<?= $client_num ?>">
+																			<input type="hidden" name="selection_ajout" value="<?= $selection_ajout ?>">
 																			<input type="hidden" name="tab" value="tab_1_2">
 																			<table class="table table-striped table-bordered table-advance table-hover">
 																				<tbody>
@@ -1561,7 +1563,7 @@ function confirme_commande(id) {
 																							<span class="input-group-addon">
 																								<i class="fa fa-list"></i>
 																							</span>
-																							<input type="text" name="nom" class="form-control" value="<?php echo $nom ?>"></div></td>
+																							<input type="text" name="nom" class="form-control" value="<?= $nom ?>"></div></td>
 																					</tr>
 																					<tr>
 																						<td><label>Categorie</label>
@@ -1604,7 +1606,7 @@ function confirme_commande(id) {
 																						</td>
 																					</tr>
 																					<tr>
-																						<td><input type="submit" value="Rechercher" class="btn blue"> <a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_2" class="btn red">Annuler</a></td>
+																						<td><input type="submit" value="Rechercher" class="btn blue"> <a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_2" class="btn red">Annuler</a></td>
 																					</tr>
 																				</tbody>
 																			</table>									
@@ -1630,10 +1632,10 @@ function confirme_commande(id) {
 																						foreach ($cc as $rcc) { 
 																							$sql = "select * from md_produits_photos where produit_num='" . $rcc["produit_num"] . "' and photo_pos=1";
 																							$rpp = $base->queryRow($sql);
- if ($rpp) {
+ 																							if ($rpp) {
 																								$image_pdt = "/photos/produits/min/" . $rpp["photo_chemin"];
 																							} else 
-																								$image_pdt = "http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image";
+																								$image_pdt = "https://placehold.co/200x200?text=No+image";
 																							//echo '<div class="col-md-3"><a href=""><figure><figcaption>' . $rcc["produit_nom"] . '</figcaption><img src="' . $image_pdt . '" class="img-responsive"></figure></div>';
 																							echo '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 																								<div class="mt-card-item">
@@ -1672,7 +1674,8 @@ function confirme_commande(id) {
 														<!-- PRIVACY SETTINGS TAB -->
 														<div class="tab-pane<?php if ($tab=="tab_1_3") echo " active"?>" id="tab_1_3">
 															<h4><i class="fa fa-plus"></i> Liste des devis en cours</h4>
-															<?php																$sql = "select * from commandes where devis_num!=0 and commande_num=0 and facture_num=0 and client_num='" . decrypte($client_num) . "' order by devis_date DESC";
+															<?php																
+																$sql = "select * from commandes where devis_num!=0 and commande_num=0 and facture_num=0 and client_num='" . decrypte($client_num) . "' order by devis_date DESC";
 																$ss = $base->query($sql);
 																$nbr_devis = count($ss);
 																if ($nbr_devis>0) {
@@ -1719,16 +1722,16 @@ function confirme_commande(id) {
 																}
 															?>
 															<?php if ((!isset($devis_ajout)) && (!isset($devis_modif)) && (!isset($devis_consulte)))  { ?>
-																<center><a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&devis=ok&tab=tab_1_3" class="btn btn-lg red"> <i class="fa fa-plus"></i> Créer un devis</a></center>
+																<center><a href="<?= current_path() ?>?client_num=<?= $client_num ?>&devis=ok&tab=tab_1_3" class="btn btn-lg red"> <i class="fa fa-plus"></i> Créer un devis</a></center>
 															<?php } ?>
 															
 															<?php if (isset($devis_consulte)) { 
 																	$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($devis_consulte) . "'";
 																	$rcc = $base->queryRow($sql);
-if ($rcc) {
+																	if ($rcc) {
 																		$commande = montantCommande($rcc["id"]);
 															?>
-																<h4><i class="fa fa-plus"></i> Devis n° : <?php echo $rcc["devis_num"] ?></h4>
+																<h4><i class="fa fa-plus"></i> Devis n° : <?= $rcc["devis_num"] ?></h4>
 																<table class="table table-bordered table-striped">
 																	<thead>
 																		<th colspan="2">Produit</th>
@@ -1781,38 +1784,38 @@ if ($rcc) {
 																		} ?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total HT</strong></td>
-																			<td><?php echo number_format($commande["commande_ht"],2,"."," ") ?> €</td>
+																			<td><?= number_format($commande["commande_ht"],2,"."," ") ?> €</td>
 																		</tr>
 																		<tr>
 																			<td colspan="6" align="right"><strong>TVA (20%)</strong></td>
-																			<td><?php echo number_format($commande["commande_tva"],2,"."," ") ?> €</td>
+																			<td><?= number_format($commande["commande_tva"],2,"."," ") ?> €</td>
 																		</tr>
 																		<?php if ($commande["remise"]==0) { 
 																				$montant_a_payer = number_format($commande["commande_ttc"],2,".","");
 																		?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total TTC</strong></td>
-																			<td><?php echo number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
+																			<td><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
 																		</tr>	
 																		<?php } else { 
 																				$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".","");
 																		?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total TTC</strong></td>
-																			<td><?php echo number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
+																			<td><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
 																		</tr>	
 																		<tr>
 																			<td colspan="6" align="right"><strong>Remise</strong></td>
-																			<td><?php echo $commande["remise"] ?></td>
+																			<td><?= $commande["remise"] ?></td>
 																		</tr>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total à payer</strong></td>
-																			<td><?php echo number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</td>
+																			<td><?= number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</td>
 																		</tr>	
 																		<?php } ?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Méthode de paiement</strong></td>
-																			<td><?php echo $rcc["paiement_titre"] ?></td>
+																			<td><?= $rcc["paiement_titre"] ?></td>
 																		</tr>
 																		<?php																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
 																				$echeance = explode("/",$rcc["paiement_modele"]);
@@ -1827,19 +1830,19 @@ if ($rcc) {
 																				}
 																			}
 																		?>																		
-																		<tr><td colspan="7" align="right"><a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_3" class="btn red">Fermer</a></td></tr>
+																		<tr><td colspan="7" align="right"><a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_3" class="btn red">Fermer</a></td></tr>
 																	</tbody>
 																</table>
-															<?		}
+															<?php 	}
 																} ?>
 															
 															<?php if (isset($devis_modif)) { 
 																	$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($devis_modif) . "'";
 																	$rcc = $base->queryRow($sql);
-if ($rcc) {
+																	if ($rcc) {
 																		$commande = montantCommande($rcc["id"]);
 															?>
-																<h4><i class="fa fa-plus"></i> Devis n° : <?php echo $rcc["devis_num"] ?> <?php if ($message_erreur_devis!="") echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_devis . '</strong></font>'; ?></h4>
+																<h4><i class="fa fa-plus"></i> Devis n° : <?= $rcc["devis_num"] ?> <?php if ($message_erreur_devis!="") echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_devis . '</strong></font>'; ?></h4>
 																<table class="table table-bordered table-striped">
 																	<thead>
 																		<th colspan="2">Produit</th>
@@ -1849,8 +1852,8 @@ if ($rcc) {
 																		<th>Montant</th>
 																		<th>Remise</th>
 																	</thead>
-																	<tbody id="devis_<?php echo $rcc["id"] ?>">
-															<?php 																
+																	<tbody id="devis_<?= $rcc["id"] ?>">
+																	<?php 																
 																		$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . decrypte($devis_modif) . "'";
 																		$pp = $base->query($sql);
 																		foreach ($pp as $rpp) {
@@ -1871,7 +1874,7 @@ if ($rcc) {
 																			// On verifie les stocke pour chaque produit
 																			$sql = "select * from stocks where taille_num=" . $rpp["taille_num"] . " and produit_num=" . $rpp["produit_num"] . " and showroom_num='" . $u->mShowroom . "'";
 																			$rss = $base->queryRow($sql);
-if ($rss) {
+																			if ($rss) {
 																				$stock = $rss["stock_virtuel"];
 																			}
 																			else { // Pour tester tant qu'il n'y a pas de stock, on met 10...
@@ -1921,20 +1924,20 @@ if ($rss) {
 																		} ?>
 																		<tr>
 																			<td colspan="5" align="right"><strong>Total HT</strong></td>
-																			<td colspan="2"><?php echo number_format($commande["commande_ht"],2,"."," ") ?> €</td>
+																			<td colspan="2"><?= number_format($commande["commande_ht"],2,"."," ") ?> €</td>
 																		</tr>
 																		<tr>
 																			<td colspan="5" align="right"><strong>TVA (20%)</strong></td>
-																			<td colspan="2"><?php echo number_format($commande["commande_tva"],2,"."," ") ?> €</td>
+																			<td colspan="2"><?= number_format($commande["commande_tva"],2,"."," ") ?> €</td>
 																		</tr>
 																		<tr>
 																			<td colspan="5" align="right"><strong>Total TTC</strong></td>
-																			<td colspan="2"><?php echo number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
+																			<td colspan="2"><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</td>
 																		</tr>	
 																		<tr>
 																			<td colspan="5" align="right"><strong>Remise</strong></td>
-																			<td colspan="2"><input type="text" name="remise_montant" id="remise_montant" value="<?php echo $commande["commande_remise"] ?>" class="form-inline input-xsmall"> 
-																				<select name="remise_type" id="remise_type" class="form-inline input-xsmall" onChange="remiseCommande(<?php echo $rcc["id"]?>)">
+																			<td colspan="2"><input type="text" name="remise_montant" id="remise_montant" value="<?= $commande["commande_remise"] ?>" class="form-inline input-xsmall"> 
+																				<select name="remise_type" id="remise_type" class="form-inline input-xsmall" onChange="remiseCommande(<?= $rcc["id"]?>)">
 																					<option value="0">--</option>
 																					<option value="1"<?php if ($commande["commande_remise_type"]==1) echo " SELECTED"; ?>>%</option>
 																					<option value="2"<?php if ($commande["commande_remise_type"]==2) echo " SELECTED"; ?>>€</option>
@@ -1958,7 +1961,7 @@ if ($rss) {
 																		<tr>
 																			<td colspan="5" align="right"><strong>Méthode de paiement</strong></td>
 																			<td colspan="2">
-																				<select name="paiement_<?php echo $rcc["id"] ?>" id="paiement_<?php echo $rcc["id"] ?>" onChange="modifPaiement(<?php echo $rcc["id"] ?>)">
+																				<select name="paiement_<?= $rcc["id"] ?>" id="paiement_<?= $rcc["id"] ?>" onChange="modifPaiement(<?= $rcc["id"] ?>)">
 																				<?php																					$sql = "select * from paiements order by paiement_pos ASC";
 																					$pp = $base->query($sql);
 																					foreach ($pp as $rpp) {
@@ -1978,11 +1981,12 @@ if ($rss) {
 																		<tr>
 																			<td colspan="5" align="right"><strong>Date de commande</strong></td>
 																			<td colspan="2">
-																				<input type="date" name="date_bdc" id="date_bdc" value="<?php echo $date_bdc_commande ?>" onChange="modifDateCommande(<?php echo $rcc["id"]?>)">
+																				<input type="date" name="date_bdc" id="date_bdc" value="<?= $date_bdc_commande ?>" onChange="modifDateCommande(<?= $rcc["id"]?>)">
 																			</td>
 																		</tr>
 																		<?php } ?>
-																		<?php																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
+																		<?php																			
+																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
 																				$echeance = explode("/",$rcc["paiement_modele"]);
 																				$acompte_num = 1;
 																				foreach ($echeance as $val) {
@@ -1995,17 +1999,17 @@ if ($rss) {
 																				}
 																			}
 																		?>
-																		<tr><td colspan="7" align="right"><a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_3" class="btn red">Fermer</a> <a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_4&commande_passage=<?php echo crypte($rcc["id"]) ?>" class="btn blue" onClick="return confirme_commande(<?php echo $rcc["id"] ?>)">Passer la commande</a></td></tr>
+																		<tr><td colspan="7" align="right"><a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_3" class="btn red">Fermer</a> <a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_4&commande_passage=<?= crypte($rcc["id"]) ?>" class="btn blue" onClick="return confirme_commande(<?= $rcc["id"] ?>)">Passer la commande</a></td></tr>
 																	</tbody>
 																</table>
-															<?		} ?>
+															<?php 	} ?>
 																<h4><i class="fa fa-plus"></i> Ajouter des produits au devis</h4>
 																<div class="row">
 																	<div class="col-md-4">
 																		<form name="rechercher" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 																			<input type="hidden" name="recherche_produit" value="ok">
-																			<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
-																			<input type="hidden" name="devis_modif" value="<?php echo $devis_modif ?>">
+																			<input type="hidden" name="client_num" value="<?= $client_num ?>">
+																			<input type="hidden" name="devis_modif" value="<?= $devis_modif ?>">
 																			<input type="hidden" name="tab" value="tab_1_3">
 																			<table class="table table-striped table-bordered table-advance table-hover">
 																				<tbody>
@@ -2015,7 +2019,7 @@ if ($rss) {
 																							<span class="input-group-addon">
 																								<i class="fa fa-list"></i>
 																							</span>
-																							<input type="text" name="nom" class="form-control" value="<?php echo $nom ?>"></div></td>
+																							<input type="text" name="nom" class="form-control" value="<?= $nom ?>"></div></td>
 																					</tr>
 																					<tr>
 																						<td><label>Categorie</label>
@@ -2058,7 +2062,7 @@ if ($rss) {
 																						</td>
 																					</tr>
 																					<tr>
-																						<td><input type="submit" value="Rechercher" class="btn blue"> <a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_3" class="btn red">Annuler</a></td>
+																						<td><input type="submit" value="Rechercher" class="btn blue"> <a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_3" class="btn red">Annuler</a></td>
 																					</tr>
 																				</tbody>
 																			</table>									
@@ -2084,10 +2088,10 @@ if ($rss) {
 																						foreach ($cc as $rcc) { 
 																							$sql = "select * from md_produits_photos where produit_num='" . $rcc["produit_num"] . "' and photo_pos=1";
 																							$rpp = $base->queryRow($sql);
- if ($rpp) {
+ 																							if ($rpp) {
 																								$image_pdt = "/photos/produits/min/" . $rpp["photo_chemin"];
 																							} else 
-																								$image_pdt = "http://www.placehold.it/200x200/EFEFEF/AAAAAA&amp;text=no+image";
+																								$image_pdt = "https://placehold.co/200x200?text=No+image";
 																							//echo '<div class="col-md-3"><a href=""><figure><figcaption>' . $rcc["produit_nom"] . '</figcaption><img src="' . $image_pdt . '" class="img-responsive"></figure></div>';
 																							echo '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 																								<div class="mt-card-item">
@@ -2120,12 +2124,13 @@ if ($rss) {
 																		</div>
 																	</div>
 																</div>
-															<?	} ?>
+															<?php } ?>
 														</div>
 														<!-- CHANGE COMMANDE TAB -->
 														<div class="tab-pane<?php if ($tab=="tab_1_4") echo " active"?>" id="tab_1_4">
 															<h4><i class="fa fa-plus"></i> Liste des commandes</h4>
-															<?php																$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and devis_num!=0 and commande_num!=0 and client_num='" . decrypte($client_num) . "' order by commande_date DESC";
+															<?php																
+																$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and devis_num!=0 and commande_num!=0 and client_num='" . decrypte($client_num) . "' order by commande_date DESC";
 																$ss = $base->query($sql);
 																$nbr_commande = count($ss);
 																if ($nbr_commande>0) {
@@ -2204,10 +2209,10 @@ if ($rss) {
 															<?php if (isset($commande_consulte)) { 
 																	$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($commande_consulte) . "'";
 																	$rcc = $base->queryRow($sql);
-if ($rcc) {
+																	if ($rcc) {
 																		$commande = montantCommande($rcc["id"]);
 															?>
-																<h4><i class="fa fa-plus"></i> Commande n° : <?php echo $rcc["commande_num"] ?></h4>
+																<h4><i class="fa fa-plus"></i> Commande n° : <?= $rcc["commande_num"] ?></h4>
 																<table class="table table-bordered table-striped">
 																	<thead>
 																		<th colspan="2">Produit</th>
@@ -2218,7 +2223,7 @@ if ($rcc) {
 																		<th>Montant</th>
 																	</thead>
 																	<tbody>
-															<?php 																
+																	<?php 																
 																		$sql = "select * from commandes_produits cp, md_produits p, tailles t, marques m, categories c where cp.taille_num=t.taille_num and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and p.categorie_num=c.categorie_num and id='" . decrypte($commande_consulte) . "'";
 																		$pp = $base->query($sql);
 																		foreach ($pp as $rpp) {
@@ -2260,40 +2265,41 @@ if ($rcc) {
 																		} ?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total HT</strong></td>
-																			<td><?php echo number_format($commande["commande_ht"],2,".", " ") ?> €</td>
+																			<td><?= number_format($commande["commande_ht"],2,".", " ") ?> €</td>
 																		</tr>
 																		<tr>
 																			<td colspan="6" align="right"><strong>TVA (20%)</strong></td>
-																			<td><?php echo number_format($commande["commande_tva"],2,".", " ") ?> €</td>
+																			<td><?= number_format($commande["commande_tva"],2,".", " ") ?> €</td>
 																		</tr>
 																		<?php if ($commande["remise"]==0) { 
 																				$montant_a_payer = number_format($commande["commande_ttc"],2,".", "");
 																		?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total TTC</strong></td>
-																			<td><?php echo number_format($commande["commande_ttc"],2,".", " ") ?> €</td>
+																			<td><?= number_format($commande["commande_ttc"],2,".", " ") ?> €</td>
 																		</tr>	
 																		<?php } else { 
 																				$montant_a_payer = number_format($commande["commande_remise_ttc"],2,".", "");
 																		?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total TTC</strong></td>
-																			<td><?php echo number_format($commande["commande_ttc"],2,".", " ") ?> €</td>
+																			<td><?= number_format($commande["commande_ttc"],2,".", " ") ?> €</td>
 																		</tr>	
 																		<tr>
 																			<td colspan="6" align="right"><strong>Remise</strong></td>
-																			<td><?php echo $commande["remise"] ?></td>
+																			<td><?= $commande["remise"] ?></td>
 																		</tr>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Total à payer</strong></td>
-																			<td><?php echo number_format($commande["commande_remise_ttc"],2,".", " ") ?> €</td>
+																			<td><?= number_format($commande["commande_remise_ttc"],2,".", " ") ?> €</td>
 																		</tr>	
 																		<?php } ?>
 																		<tr>
 																			<td colspan="6" align="right"><strong>Méthode de paiement</strong></td>
-																			<td><?php echo $rcc["paiement_titre"] ?></td>
+																			<td><?= $rcc["paiement_titre"] ?></td>
 																		</tr>
-																		<?php																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
+																		<?php																			
+																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
 																				// On regarde si il y a déjà eu des paiments
 																				$sql = "select * from commandes_paiements where id='" . $rcc["id"] . "'";
 																				$pa = $base->query($sql);
@@ -2335,11 +2341,11 @@ if ($rcc) {
 																			}
 																		?>
 																		<tr>
-																			<td colspan="7" align="right"><a href="/commandes/index?cde=<?php echo crypte($rcc["commande_num"]) ?>" class="btn blue" target="_blank">Imprimer</a> <a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_4" class="btn red">Fermer</a></td>
+																			<td colspan="7" align="right"><a href="/commandes/index?cde=<?= crypte($rcc["commande_num"]) ?>" class="btn blue" target="_blank">Imprimer</a> <a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_4" class="btn red">Fermer</a></td>
 																		</tr>
 																	</tbody>
 																</table>
-															<?		}
+															<?php		}
 																} ?>
 															<?php if (isset($commande_modif)) { 
 																	// On recupere le nombre d'écheance
@@ -2360,7 +2366,7 @@ if ($rcc) {
 																		
 																		$reste_a_paye = number_format(abs(montantCommandeTTC($rpa["id"]) - $montant_paye),2,".","");
 															?>
-																<h4><i class="fa fa-plus"></i> Paiement commande : <?php echo $rpa["commande_num"] ?> <?php if ($message_erreur_paiement!="") echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_paiement . '</strong></font>'; ?></h4>
+																<h4><i class="fa fa-plus"></i> Paiement commande : <?= $rpa["commande_num"] ?> <?php if ($message_erreur_paiement!="") echo ' - <i class="fa fa-warning"></i> <font class="font-red-thunderbird"><strong>' . $message_erreur_paiement . '</strong></font>'; ?></h4>
 																<table class="table table-bordered table-striped">
 																	<thead>
 																		<th>Echéance</th>
@@ -2371,11 +2377,12 @@ if ($rcc) {
 																		<th> </th>
 																	</thead>
 																	<tbody>
-																<?php																	$echeance=1;
+																<?php																	
+																	$echeance=1;
 																	$sql = "select * from commandes_paiements c, paiements_modes m where c.mode_num=m.mode_num and id='" . decrypte($commande_modif) . "'";
 																	$pp = $base->query($sql);
 																	foreach ($pp as $rpp) {
-																		echo '<form name="paiement_' . $e . '" action="' . $_SERVER["PHP_SELF"] . '" method="POST">
+																		echo '<form name="paiement_' . $e . '" action="' . form_action_same() . '" method="POST">
 																			<input type="hidden" name="paiement" value="ok">
 																			<input type="hidden" name="modif" value="ok">
 																			<input type="hidden" name="echeance" value="' . $echeance . '">
@@ -2418,7 +2425,7 @@ if ($rcc) {
 																	}
 																	// On complete les echeances
 																	for ($e=$echeance;$e<=$nbr_echeance;$e++) {
-																		echo '<form name="paiement_' . $e . '" action="' . $_SERVER["PHP_SELF"] . '" method="POST">
+																		echo '<form name="paiement_' . $e . '" action="' . form_action_same() . '" method="POST">
 																			<input type="hidden" name="paiement" value="ok">
 																			<input type="hidden" name="ajout" value="ok">
 																			<input type="hidden" name="echeance" value="' . $e . '">
@@ -2447,7 +2454,7 @@ if ($rcc) {
 																			  </form>';
 																	}
 																?>
-																	<tr><td colspan="6" align="right"><a href="<?php echo $_SERVER["PHP_SELF"] ?>?client_num=<?php echo $client_num ?>&tab=tab_1_4" class="btn red">Fermer</a></td></tr>
+																	<tr><td colspan="6" align="right"><a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_4" class="btn red">Fermer</a></td></tr>
 																	</tbody>
 																</table>
 															<?php 
@@ -2462,7 +2469,7 @@ if ($rcc) {
 															<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 															<input type="hidden" name="modifier" value="ok">
 															<input type="hidden" name="tab" value="tab_1_6">
-															<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
+															<input type="hidden" name="client_num" value="<?= $client_num ?>">
 															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 																<div class="form-group">
 																	<label>Genre</label>
@@ -2482,7 +2489,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-user"></i>
 																		</span>
-																		<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?php echo $rcl["client_nom"] ?>" required> </div>
+																		<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= $rcl["client_nom"] ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Prenom</label>
@@ -2490,7 +2497,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-user"></i>
 																		</span>
-																		<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?php echo $rcl["client_prenom"] ?>" required> </div>
+																		<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?= $rcl["client_prenom"] ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Adresse</label>
@@ -2498,7 +2505,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-road"></i>
 																		</span>
-																		<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?php echo $rcl["client_adr1"] ?>" required> </div>
+																		<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?= $rcl["client_adr1"] ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Complément d'adresse</label>
@@ -2506,7 +2513,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-road"></i>
 																		</span>
-																		<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?php echo $rcl["client_adr2"] ?>"> </div>
+																		<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?= $rcl["client_adr2"] ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>CP</label>
@@ -2514,7 +2521,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-search"></i>
 																		</span>
-																		<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?php echo $rcl["client_cp"] ?>" required> </div>
+																		<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?= $rcl["client_cp"] ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Ville</label>
@@ -2522,7 +2529,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-shield"></i>
 																		</span>
-																		<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?php echo $rcl["client_ville"] ?>" required> </div>
+																		<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?= $rcl["client_ville"] ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Tel</label>
@@ -2530,7 +2537,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-mobile-phone"></i>
 																		</span>
-																		<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?php echo $rcl["client_tel"] ?>" required> </div>
+																		<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= $rcl["client_tel"] ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Email</label>
@@ -2538,7 +2545,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-envelope"></i>
 																		</span>
-																		<input type="email" name="mail" class="form-control" placeholder="Email" value="<?php echo $rcl["client_mail"] ?>" required> </div>
+																		<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= $rcl["client_mail"] ?>" required> </div>
 																</div>												
 															</div>
 															<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -2550,20 +2557,20 @@ if ($rcc) {
 																		</span>
 																		<table>
 																			<tr>
-																				<td>Tour Taille<br><input type="text" name="taille" class="form-control" value="<?php echo $rcl["taille"] ?>"></td>
-																				<td>Poitrine<br><input type="text" name="poitrine" class="form-control" value="<?php echo $rcl["poitrine"] ?>"></td>
-																				<td>Ss poitrine<br><input type="text" name="sous_poitrine" class="form-control" value="<?php echo $rcl["sous_poitrine"] ?>"></td>
-																				<td>Lg Dos<br><input type="text" name="longueur_dos" class="form-control" value="<?php echo $rcl["longueur_dos"] ?>"></td>
-																				<td>Biceps<br><input type="text" name="biceps" class="form-control" value="<?php echo $rcl["biceps"] ?>"></td>
-																				<td>Taille-sol talons<br><input type="text" name="taille_sol" class="form-control" value="<?php echo $rcl["taille_sol"] ?>"></td>
+																				<td>Tour Taille<br><input type="text" name="taille" class="form-control" value="<?= $rcl["taille"] ?>"></td>
+																				<td>Poitrine<br><input type="text" name="poitrine" class="form-control" value="<?= $rcl["poitrine"] ?>"></td>
+																				<td>Ss poitrine<br><input type="text" name="sous_poitrine" class="form-control" value="<?= $rcl["sous_poitrine"] ?>"></td>
+																				<td>Lg Dos<br><input type="text" name="longueur_dos" class="form-control" value="<?= $rcl["longueur_dos"] ?>"></td>
+																				<td>Biceps<br><input type="text" name="biceps" class="form-control" value="<?= $rcl["biceps"] ?>"></td>
+																				<td>Taille-sol talons<br><input type="text" name="taille_sol" class="form-control" value="<?= $rcl["taille_sol"] ?>"></td>
 																			</tr>
 																			<tr>
-																				<td>Hanche 1<br><input type="text" name="hanche1" class="form-control" value="<?php echo $rcl["hanche1"] ?>"></td>
-																				<td>Hanche 2<br><input type="text" name="hanche2" class="form-control" value="<?php echo $rcl["hanche2"] ?>"></td>
-																				<td>Carrure Av<br><input type="text" name="carrure_avant" class="form-control" value="<?php echo $rcl["carrure_avant"] ?>"></td>
-																				<td>Carrure Dos<br><input type="text" name="carrure_dos" class="form-control" value="<?php echo $rcl["carrure_dos"] ?>"></td>
-																				<td>Pointure<br><input type="text" name="pointure" class="form-control" value="<?php echo $rcl["pointure"] ?>"></td>
-																				<td>Taille<br><input type="text" name="tour_taille" class="form-control" value="<?php echo $rcl["tour_taille"] ?>"></td>
+																				<td>Hanche 1<br><input type="text" name="hanche1" class="form-control" value="<?= $rcl["hanche1"] ?>"></td>
+																				<td>Hanche 2<br><input type="text" name="hanche2" class="form-control" value="<?= $rcl["hanche2"] ?>"></td>
+																				<td>Carrure Av<br><input type="text" name="carrure_avant" class="form-control" value="<?= $rcl["carrure_avant"] ?>"></td>
+																				<td>Carrure Dos<br><input type="text" name="carrure_dos" class="form-control" value="<?= $rcl["carrure_dos"] ?>"></td>
+																				<td>Pointure<br><input type="text" name="pointure" class="form-control" value="<?= $rcl["pointure"] ?>"></td>
+																				<td>Taille<br><input type="text" name="tour_taille" class="form-control" value="<?= $rcl["tour_taille"] ?>"></td>
 																			</tr>
 																		</table>
 																	</div>
@@ -2574,7 +2581,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-calendar-check-o"></i>
 																		</span>
-																		<input type="date" name="date" class="form-control" placeholder="Date du mariage" value="<?php echo $rcl["client_date_mariage"] ?>"> </div>
+																		<input type="date" name="date" class="form-control" placeholder="Date du mariage" value="<?= $rcl["client_date_mariage"] ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>Lieu de mariage</label>
@@ -2582,7 +2589,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-black-tie"></i>
 																		</span>
-																		<input type="text" name="lieu" class="form-control" placeholder="Lieu du mariage"  value="<?php echo $rcl["client_lieu_mariage"] ?>"> </div>
+																		<input type="text" name="lieu" class="form-control" placeholder="Lieu du mariage"  value="<?= $rcl["client_lieu_mariage"] ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>Remarques</label>
@@ -2590,7 +2597,7 @@ if ($rcc) {
 																		<span class="input-group-addon">
 																			<i class="fa fa-book"></i>
 																		</span>
-																		<textarea class="form-control" rows="4" name="remarques"><?php echo $rcl["client_remarque"] ?></textarea> </div>
+																		<textarea class="form-control" rows="4" name="remarques"><?= $rcl["client_remarque"] ?></textarea> </div>
 																</div>
 																<div class="form-group">
 																	<label>Comment avez vous connu Olympe ?</label>
@@ -2629,7 +2636,8 @@ if ($rcc) {
 																			<i class="fa fa-user"></i>
 																		</span>
 																		<select name="user_suivi" class="form-control">
-																			<?php																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
+																			<?php																				
+																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
 																				$uu = $base->query($sql);
 																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["user_num"] . '"';
@@ -2649,7 +2657,8 @@ if ($rcc) {
 																		</span>
 																		<select name="couturiere" class="form-control">
 																		<option value="0">----------------------</option>
-																			<?php																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
+																			<?php																				
+																				$sql = "select * from users where showroom_num='" . $rcl["showroom_num"] . "' and user_etat=1";
 																				$uu = $base->query($sql);
 																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["user_num"] . '"';
@@ -2669,7 +2678,8 @@ if ($rcc) {
 																		</span>
 																		<select name="showroom_modif" class="form-control">
 																		<option value="0">-----------------------</option>
-																			<?php																				$sql = "select * from showrooms";
+																			<?php																				
+																				$sql = "select * from showrooms";
 																				$uu = $base->query($sql);
 																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["showroom_num"] . '"';
@@ -2703,7 +2713,8 @@ if ($rcc) {
 																			</tr>
 																		</thead>
 																		<tbody>
-																		<?php																			$sql = "select * from commandes c, commandes_produits cd where c.id=cd.id and commande_num>0 and client_num='" . decrypte($client_num) . "' order by commande_date ASC, c.id ASC";
+																		<?php																			
+																			$sql = "select * from commandes c, commandes_produits cd where c.id=cd.id and commande_num>0 and client_num='" . decrypte($client_num) . "' order by commande_date ASC, c.id ASC";
 																			$co = $base->query($sql);
 																			foreach ($co as $rco) {
 																				$checked = "";
@@ -2711,7 +2722,7 @@ if ($rcc) {
 																				$montant = 0;
 																				$sql = "select * from commandes_fournisseurs where id='" . $rco["id"] . "' and produit_num='" . $rco["produit_num"] . "'";
 																				$rtt = $base->queryRow($sql);
- if ($rtt) {
+ 																				if ($rtt) {
 																					$checked = " CHECKED";
 																					$date_fournisseur = format_date($rtt["commande_fournisseur_date"],11,1);
 																					$montant = number_format($rtt["commande_montant"],2,"."," ");
@@ -2745,7 +2756,7 @@ if ($rcc) {
 																								$paiement3_date = $rpa["paiement3_date"];																								
 																							}
 																						}
-																						echo '<form name="paiement_fournisseur_' . $rtt["id"] . '_' . $rtt["produit_num"] . '" method="POST" action="' . $_SERVER["PHP_SELF"] . '">
+																						echo '<form name="paiement_fournisseur_' . $rtt["id"] . '_' . $rtt["produit_num"] . '" method="POST" action="' . form_action_same() . '">
 																						<input type="hidden" name="tab" value="tab_1_6">
 																						<input type="hidden" name="client_num" value="' . $client_num . '">
 																						<input type="hidden" name="id" value="' .crypte($rco["id"]) . '">
@@ -2772,7 +2783,7 @@ if ($rcc) {
 																	</table>
 																</div>
 															</div>
-															<?php if ($fournisseur=="ok") {
+															<?php if (isset($fournisseur) && $fournisseur === "ok") {
 																	// On recherche si il y a une robe à commander
 																	$sql = "select * from commandes c, commandes_produits cp, md_produits p, marques m where c.id=cp.id and cp.produit_num=p.produit_num and p.marque_num=m.marque_num and c.id='" . decrypte($id) . "' and cp.produit_num='" . decrypte($produit) . "'";
 																	$rmm = $base->queryRow($sql);
@@ -2827,44 +2838,44 @@ if ($rcc) {
 																			}
 																		}
 															?>
-															<hr><center><h4>Commande Fournisseur de la commande :  <?php echo $rmm["commande_num"] ?></h4></center><hr>
+															<hr><center><h4>Commande Fournisseur de la commande :  <?= $rmm["commande_num"] ?></h4></center><hr>
 															<div class="row">
-																<form name="forunisseur" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+																<form name="forunisseur" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
 																<input type="hidden" name="tab" value="tab_1_6">
-																<input type="hidden" name="client_num" value="<?php echo $client_num ?>">
-																<input type="hidden" name="id" value="<?php echo $id ?>">
-																<input type="hidden" name="produit" value="<?php echo $produit ?>">
-																<input type="hidden" name="marque" value="<?php echo $rmm["marque_num"] ?>">
+																<input type="hidden" name="client_num" value="<?= $client_num ?>">
+																<input type="hidden" name="id" value="<?= $id ?>">
+																<input type="hidden" name="produit" value="<?= $produit ?>">
+																<input type="hidden" name="marque" value="<?= $rmm["marque_num"] ?>">
 																<input type="hidden" name="cdefournisseur" value="ok">
 																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 																	<p>
-																		<strong><?php if ($rcl["client_genre"]==0) echo 'Nom de la future mariée'; else echo 'Nom du futur marié'; ?></strong> : <?php echo $rcl["client_prenom"] . ' ' . $rcl["client_nom"] ?><br>
-																		<strong>Tel : </strong> <?php echo $rcl["client_tel"] ?><br>
-																		<strong>Mail : </strong> <?php echo $rcl["client_mail"] ?><br>
-																		<strong>Date de mariage : </strong> <?php echo format_date($rcl["client_date_mariage"],11,1) ?><br>
-																		<strong>Livraison avant : </strong> <input type="text" name="livraison" placeholder="JJ/MM/AAAA" value="<?php echo $livraison ?>">
+																		<strong><?php if ($rcl["client_genre"]==0) echo 'Nom de la future mariée'; else echo 'Nom du futur marié'; ?></strong> : <?= $rcl["client_prenom"] . ' ' . $rcl["client_nom"] ?><br>
+																		<strong>Tel : </strong> <?= $rcl["client_tel"] ?><br>
+																		<strong>Mail : </strong> <?= $rcl["client_mail"] ?><br>
+																		<strong>Date de mariage : </strong> <?= format_date($rcl["client_date_mariage"],11,1) ?><br>
+																		<strong>Livraison avant : </strong> <input type="text" name="livraison" placeholder="JJ/MM/AAAA" value="<?= $livraison ?>">
 																	</p>
 																</div>
 																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 																	<p><strong>Fournisseur</strong><br>
-																	<?php echo $rmm["marque_raison_social"] ?><br>
-																	<?php echo $rmm["marque_adr1"] ?><br>
+																	<?= $rmm["marque_raison_social"] ?><br>
+																	<?= $rmm["marque_adr1"] ?><br>
 																	<?php if ($rmm["marque_adr2"]!="") echo $rmm["marque_adr2"] . "<br>"; ?>
-																	<?php echo $rmm["marque_cp"] ?> <?php echo $rmm["marque_ville"] ?><br>
-																	<?php echo $rmm["marque_tel"] ?>
+																	<?= $rmm["marque_cp"] ?> <?= $rmm["marque_ville"] ?><br>
+																	<?= $rmm["marque_tel"] ?>
 																	</p>
 																</div>
 																<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-																	<p><strong>Nom du magasin : </strong><?php echo 'Olympe ' . $u->mShowroomInfo["showroom_ville"] ?><br>
-																	<strong>Date de commande : </strong><input type="date" name="fournisseur_commande_date" value="<?php echo $commande_date ?>"><br>
-																	<strong>Référence : </strong><input type="text" name="fournisseur_commande_ref" value="<?php echo $reference ?>"></p>
+																	<p><strong>Nom du magasin : </strong><?= 'Olympe ' . $u->mShowroomInfo["showroom_ville"] ?><br>
+																	<strong>Date de commande : </strong><input type="date" name="fournisseur_commande_date" value="<?= $commande_date ?>"><br>
+																	<strong>Référence : </strong><input type="text" name="fournisseur_commande_ref" value="<?= $reference ?>"></p>
 																</div>
 																<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-																	<hr><p><strong>Référence modèle</strong> : <?php echo $rmm["produit_nom"] ?></p><hr>
+																	<hr><p><strong>Référence modèle</strong> : <?= $rmm["produit_nom"] ?></p><hr>
 																</div>
 																<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
 																	<p><strong>Remarques</strong> :<br> 
-																	<textarea class="form-control" name="fournisseur_remarque" rows="3"><?php echo $remarques ?></textarea>
+																	<textarea class="form-control" name="fournisseur_remarque" rows="3"><?= $remarques ?></textarea>
 																	</p><hr>
 																</div>
 																<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -2872,54 +2883,54 @@ if ($rcc) {
 																	<table class="table table-bordered table-striped table-condensed flip-content">
 																	<tr>
 																		<td><strong>Tour de poitrine</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_poitrine" class="input-xsmall" value="<?php echo $poitrine ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_poitrine" class="input-xsmall" value="<?= $poitrine ?>" ></td>
 																	</tr> 
 																	<tr>
 																		<td><strong>Tour de sous poitrine</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_sous_poitrine" class="input-xsmall" value="<?php echo $sous_poitrine ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_sous_poitrine" class="input-xsmall" value="<?= $sous_poitrine ?>" ></td>
 																	</tr> 
 																	<tr>
 																		<td><strong>Tour de taille</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_taille" class="input-xsmall" value="<?php echo $taille ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_taille" class="input-xsmall" value="<?= $taille ?>" ></td>
 																	</tr> 
 																	<tr>
 																		<td><strong>Tour de petite hanche</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_hanche1" class="input-xsmall" value="<?php echo $hanche1 ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_hanche1" class="input-xsmall" value="<?= $hanche1 ?>" ></td>
 																	</tr> 
 																	<tr>
 																		<td><strong>Tour de grande hanche</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_hanche2" class="input-xsmall" value="<?php echo $hanche2 ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_hanche2" class="input-xsmall" value="<?= $hanche2 ?>" ></td>
 																	</tr>
 																	<tr>
 																		<td><strong>Tour de biceps</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_biceps" class="input-xsmall" value="<?php echo $biceps ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_biceps" class="input-xsmall" value="<?= $biceps ?>" ></td>
 																	</tr> 
 																	<tr>
 																		<td><strong>Carrure Avant</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_carrure_avant" class="input-xsmall" value="<?php echo $carrure_avant ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_carrure_avant" class="input-xsmall" value="<?= $carrure_avant ?>" ></td>
 																	</tr>
 																	<tr>
 																		<td><strong>Carrure dos</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_carrure_dos" class="input-xsmall" value="<?php echo $carrure_dos ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_carrure_dos" class="input-xsmall" value="<?= $carrure_dos ?>" ></td>
 																	</tr> 
 																	<tr>
 																		<td><strong>Longueur dos</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_longueur_dos" class="input-xsmall" value="<?php echo $longueur_dos ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_longueur_dos" class="input-xsmall" value="<?= $longueur_dos ?>" ></td>
 																	</tr> 
 																	<tr>
 																		<td><strong>Hauteur taille-sol avec talons</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_taille_sol" class="input-xsmall" value="<?php echo $taille_sol ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_taille_sol" class="input-xsmall" value="<?= $taille_sol ?>" ></td>
 																	</tr> 
 																	<tr class="danger">
 																		<td><strong>Taille choisie</strong></td>
-																		<td align="center"><input type="text" name="fournisseur_taille_choisie" class="input-xsmall" value="<?php echo $taille_choisie ?>" ></td>
+																		<td align="center"><input type="text" name="fournisseur_taille_choisie" class="input-xsmall" value="<?= $taille_choisie ?>" ></td>
 																	</tr> 
 																	<tr>
 																		<td colspan="2"></td>
 																	</tr>
 																	<tr class="success">
 																			<td class="text-right">Montant de la commande :</td>
-																			<td class="text-center"><input type="text" name="fournisseur_montant" class="input-xsmall" value="<?php echo $montant ?>" > € TTC</td>
+																			<td class="text-center"><input type="text" name="fournisseur_montant" class="input-xsmall" value="<?= $montant ?>" > € TTC</td>
 																		</tr>
 																	</table>
 																</div>

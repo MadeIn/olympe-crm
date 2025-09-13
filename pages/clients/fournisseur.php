@@ -29,25 +29,25 @@ if (!$rcc) {
 			<td class="col-sm-8">
 				<figure style="display: inline-grid">
 					<img src="img/olympe-mariage-logo.jpg">
-					<figcaption class="text-center"><h5 style="display: inline-block;"><?php echo str_replace("-","",$rcc["showroom_nom"]) ?><br>Bon de commande fournisseur</h5></figcaption>
+					<figcaption class="text-center"><h5 style="display: inline-block;"><?= str_replace("-","",$rcc["showroom_nom"]) ?><br>Bon de commande fournisseur</h5></figcaption>
 				</figure>
 			</td>
 			<td class="col-sm-4 tabcontour text-center">
 				<table class="table infofac">
 					<tr>
-						<td>Date de commande : <?php echo format_date($rcc["commande_fournisseur_date"],11,1) ?></td>
+						<td>Date de commande : <?= format_date($rcc["commande_fournisseur_date"],11,1) ?></td>
 					</tr>
 					<tr>
-						<td>Référence : <?php echo $rcc["reference"] ?></td>
+						<td>Référence : <?= $rcc["reference"] ?></td>
 					</tr>
 					<tr>
 						<td><strong>Fournisseur :</strong><br>
-						<?php echo $rcc["marque_raison_social"] ?><br>
-						<?php echo $rcc["marque_adr1"] ?><br>
+						<?= $rcc["marque_raison_social"] ?><br>
+						<?= $rcc["marque_adr1"] ?><br>
 						<?php if ($rcc["marque_adr2"]!="") echo $rcc["marque_adr2"] . "<br>" ?>
-						<?php echo $rcc["marque_cp"] . " " . $rcc["marque_ville"] ?><br>
-						RCS : <?php echo $rcc["marque_rcs"] ?><br>
-						TVA : <?php echo $rcc["marque_tva"] ?><br>
+						<?= $rcc["marque_cp"] . " " . $rcc["marque_ville"] ?><br>
+						RCS : <?= $rcc["marque_rcs"] ?><br>
+						TVA : <?= $rcc["marque_tva"] ?><br>
 						</td>
 					</tr>
 				</table>
@@ -57,13 +57,13 @@ if (!$rcc) {
 	
 	<table class="table tablesansbordure">
 		<tr>
-			<td class="col-md-4"><strong><?php if ($rcc["client_genre"]==0) echo 'Nom de la future mariée'; else echo 'Nom du futur marié'; ?></strong> : <?php echo $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
-			<strong>Tel : </strong><?php echo $rcc["client_tel"] ?><br>
-			<strong>Mail : </strong><?php echo $rcc["client_mail"] ?><br>
-			<strong>Date de mariage : </strong><?php echo format_date($rcc["client_date_mariage"],11,1) ?><br>
-			<strong>Livraison avant : </strong><?php echo $rcc["livraison"] ?></td>
-			<td class="col-md-8"><strong>Référence modèle</strong> : <?php echo $rcc["produit_nom"] ?>
-			<hr><strong>Remarques</strong> :<br> <?php echo $rcc["remarques"] ?></td>
+			<td class="col-md-4"><strong><?php if ($rcc["client_genre"]==0) echo 'Nom de la future mariée'; else echo 'Nom du futur marié'; ?></strong> : <?= $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
+			<strong>Tel : </strong><?= $rcc["client_tel"] ?><br>
+			<strong>Mail : </strong><?= $rcc["client_mail"] ?><br>
+			<strong>Date de mariage : </strong><?= format_date($rcc["client_date_mariage"],11,1) ?><br>
+			<strong>Livraison avant : </strong><?= $rcc["livraison"] ?></td>
+			<td class="col-md-8"><strong>Référence modèle</strong> : <?= $rcc["produit_nom"] ?>
+			<hr><strong>Remarques</strong> :<br> <?= $rcc["remarques"] ?></td>
 		</tr>
 	</table>
 	
@@ -76,61 +76,61 @@ if (!$rcc) {
 				<?php if ($rcc["poitrine"]!=0) { ?>
 				<tr>
 					<td><strong>Tour de poitrine</strong></td>
-					<td align="center"><?php echo $rcc["poitrine"] ?></td>
+					<td align="center"><?= $rcc["poitrine"] ?></td>
 				</tr> 
 				<?php } ?>
 				<?php if ($rcc["sous_poitrine"]!=0) { ?>
 				<tr>
 					<td><strong>Tour de sous poitrine</strong></td>
-					<td align="center"><?php echo $rcc["sous_poitrine"] ?></td>
+					<td align="center"><?= $rcc["sous_poitrine"] ?></td>
 				</tr> 
 				<?php } ?>
 				<?php if ($rcc["taille"]!=0) { ?>
 				<tr>
 					<td><strong>Tour de taille</strong></td>
-					<td align="center"><?php echo $rcc["taille"] ?></td>
+					<td align="center"><?= $rcc["taille"] ?></td>
 				</tr> 
 				<?php } ?>
 				<?php if ($rcc["hanche1"]!=0) { ?>
 				<tr>
 					<td><strong>Tour de petite hanche</strong></td>
-					<td align="center"><?php echo $rcc["hanche1"] ?></td>
+					<td align="center"><?= $rcc["hanche1"] ?></td>
 				</tr> 
 				<?php } ?>
 				<?php if ($rcc["hanche2"]!=0) { ?>
 				<tr>
 					<td><strong>Tour de grande hanche</strong></td>
-					<td align="center"><?php echo $rcc["hanche2"] ?></td>
+					<td align="center"><?= $rcc["hanche2"] ?></td>
 				</tr>
 				<?php } ?>
 				<?php if ($rcc["biceps"]!=0) { ?>
 				<tr>
 					<td><strong>Tour de biceps</strong></td>
-					<td align="center"><?php echo $rcc["biceps"] ?></td>
+					<td align="center"><?= $rcc["biceps"] ?></td>
 				</tr> 
 				<?php } ?>
 				<?php if ($rcc["carrure_avant"]!=0) { ?>
 				<tr>
 					<td><strong>Carrure Avant</strong></td>
-					<td align="center"><?php echo $rcc["carrure_avant"] ?></td>
+					<td align="center"><?= $rcc["carrure_avant"] ?></td>
 				</tr>
 				<?php } ?>
 				<?php if ($rcc["carrure_dos"]!=0) { ?>
 				<tr>
 					<td><strong>Carrure dos</strong></td>
-					<td align="center"><?php echo $rcc["carrure_dos"] ?></td>
+					<td align="center"><?= $rcc["carrure_dos"] ?></td>
 				</tr> 
 				<?php } ?>
 				<?php if ($rcc["longueur_dos"]!=0) { ?>
 				<tr>
 					<td><strong>Longueur dos</strong></td>
-					<td align="center"><?php echo $rcc["longueur_dos"] ?></td>
+					<td align="center"><?= $rcc["longueur_dos"] ?></td>
 				</tr> 
 				<?php } ?>
 				<?php if ($rcc["taille_sol"]!=0) { ?>
 				<tr>
 					<td><strong>Hauteur taille-sol avec talons</strong></td>
-					<td align="center"><?php echo $rcc["taille_sol"] ?></td>
+					<td align="center"><?= $rcc["taille_sol"] ?></td>
 				</tr> 
 				<?php } ?>
 				<tr>
@@ -138,14 +138,14 @@ if (!$rcc) {
 				</tr>
 				<tr>
 					<td style="background-color: #DEDEDE!important;"><strong style="font-size: 22px;">Taille choisie</strong></td>
-					<td align="center" style="background-color: #DEDEDE!important;"><strong style="font-size: 22px"><?php echo $rcc["taille_choisie"] ?></strong></td>
+					<td align="center" style="background-color: #DEDEDE!important;"><strong style="font-size: 22px"><?= $rcc["taille_choisie"] ?></strong></td>
 				</tr>
 			</table>
 		</div>
 	</div>
 	<footer class="text-center footerfournisseur">
-		<span style="display: block;"><?php echo str_replace("-","",$rcc["showroom_nom"]) ?> - <?php echo $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?php echo $rcc["showroom_cp"] ?> <?php echo $rcc["showroom_ville"] ?> - <?php echo $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
-		<small style="margin-bottom: 0;">N° <?php echo $rcc["showroom_rcs"] ?></small>
+		<span style="display: block;"><?= str_replace("-","",$rcc["showroom_nom"]) ?> - <?= $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?= $rcc["showroom_cp"] ?> <?= $rcc["showroom_ville"] ?> - <?= $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
+		<small style="margin-bottom: 0;">N° <?= $rcc["showroom_rcs"] ?></small>
 	</footer>
 </div>
 <?php if ($print=="auto") { ?>

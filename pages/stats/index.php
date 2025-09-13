@@ -81,7 +81,7 @@ $desc_page = "Statistiques - Olympe Mariage";
 										</thead>
 										<tbody>
 											<tr>
-												<td><input id="produitauto" name="produitauto"  class="form-control" value="<?php echo $produitauto ?>"></td>
+												<td><input id="produitauto" name="produitauto"  class="form-control" value="<?= $produitauto ?>"></td>
 												<td>
 													<select name="categorie" class="form-control">
 														<option value="0">------------</option>
@@ -111,10 +111,10 @@ $desc_page = "Statistiques - Olympe Mariage";
 													</select>
 												</td>
 												<td>
-													<input type="date" name="date_deb" class="form-control" value="<?php echo $date_deb ?>">
+													<input type="date" name="date_deb" class="form-control" value="<?= $date_deb ?>">
 												</td>
 												<td>
-													<input type="date" name="date_fin" class="form-control" value="<?php echo $date_fin ?>">
+													<input type="date" name="date_fin" class="form-control" value="<?= $date_fin ?>">
 												</td>
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
@@ -202,16 +202,16 @@ $desc_page = "Statistiques - Olympe Mariage";
 													 $montant += $row["total"];
 												?>
 													<tr>
-														<td><?php echo $nbr ?>.</td>
-														<td><?php echo $row["categorie_nom"] ?></td>
-														<td><?php echo $row["val"] ?></td>
-														<td><?php echo number_format($row["total"],2,'.',' ') ?></td>
+														<td><?= $nbr ?>.</td>
+														<td><?= $row["categorie_nom"] ?></td>
+														<td><?= $row["val"] ?></td>
+														<td><?= number_format($row["total"],2,'.',' ') ?></td>
 													</tr>
 												<?php } ?>	
 												<tr>
 													<td colspan="2"></td>
-													<td><?php echo $nbr_total ?></td>
-													<td><?php echo number_format($montant,2,'.',' ') ?></td>
+													<td><?= $nbr_total ?></td>
+													<td><?= number_format($montant,2,'.',' ') ?></td>
 												</tr>
 												</tbody>
 											</table>
@@ -256,16 +256,16 @@ $desc_page = "Statistiques - Olympe Mariage";
 													 $montant += $row["total"];
 												?>
 													<tr>
-														<td><?php echo $nbr ?>.</td>
-														<td><?php echo $row["marque_nom"] ?></td>
-														<td><?php echo $row["val"] ?></td>
-														<td><?php echo number_format($row["total"],2,',',' ') ?></td>
+														<td><?= $nbr ?>.</td>
+														<td><?= $row["marque_nom"] ?></td>
+														<td><?= $row["val"] ?></td>
+														<td><?= number_format($row["total"],2,',',' ') ?></td>
 													</tr>
 												<?php } ?>	
 												<tr>
 													<td colspan="2"></td>
-													<td><?php echo $nbr_total ?></td>
-													<td><?php echo number_format($montant,2,'.',' ') ?></td>
+													<td><?= $nbr_total ?></td>
+													<td><?= number_format($montant,2,'.',' ') ?></td>
 												</tr>
 												</tbody>
 											</table>
@@ -316,19 +316,19 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $montant += $row["total"];
 											?>
 												<tr>
-													<td><?php echo $nbr ?>.</td>
-													<td><?php echo $row["produit_nom"] ?></td>
-													<td><?php echo $row["categorie_nom"] ?></td>
-													<td><?php echo $row["marque_nom"] ?></td>
-													<td><?php echo $row["taille_nom"] ?></td>
-													<td><?php echo $row["val"] ?></td>
-													<td><?php echo number_format($row["total"],2,',',' ') ?></td>
+													<td><?= $nbr ?>.</td>
+													<td><?= $row["produit_nom"] ?></td>
+													<td><?= $row["categorie_nom"] ?></td>
+													<td><?= $row["marque_nom"] ?></td>
+													<td><?= $row["taille_nom"] ?></td>
+													<td><?= $row["val"] ?></td>
+													<td><?= number_format($row["total"],2,',',' ') ?></td>
 												</tr>
 											<?php } ?>	
 											<tr>
 													<td colspan="5"></td>
-													<td><?php echo $nbr_total ?></td>
-													<td><?php echo number_format($montant,2,'.',' ') ?></td>
+													<td><?= $nbr_total ?></td>
+													<td><?= number_format($montant,2,'.',' ') ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -378,20 +378,20 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $montant += ($row["qte"]*$row["montant_ht"]);
 											?>
 												<tr>
-													<td><?php echo $row["commande_num"] ?></td>
-													<td><?php echo format_date($row["commande_date"],11,1) ?></td>
-													<td><?php echo $row["produit_nom"] ?></td>
-													<td><?php echo $row["categorie_nom"] ?></td>
-													<td><?php echo $row["marque_nom"] ?></td>
-													<td><?php echo $row["taille_nom"] ?></td>
-													<td><?php echo $row["qte"] ?></td>
-													<td><?php echo number_format($row["qte"]*$row["montant_ht"],2,',',' ') ?></td>
+													<td><?= $row["commande_num"] ?></td>
+													<td><?= format_date($row["commande_date"],11,1) ?></td>
+													<td><?= $row["produit_nom"] ?></td>
+													<td><?= $row["categorie_nom"] ?></td>
+													<td><?= $row["marque_nom"] ?></td>
+													<td><?= $row["taille_nom"] ?></td>
+													<td><?= $row["qte"] ?></td>
+													<td><?= number_format($row["qte"]*$row["montant_ht"],2,',',' ') ?></td>
 												</tr>
 											<?php } ?>	
 											<tr>
 													<td colspan="6"></td>
-													<td><?php echo $nbr_total ?></td>
-													<td><?php echo number_format($montant,2,'.',' ') ?></td>
+													<td><?= $nbr_total ?></td>
+													<td><?= number_format($montant,2,'.',' ') ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -440,16 +440,16 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $montant += $row["total"];
 											?>
 												<tr>
-													<td><?php echo $nbr ?>.</td>
-													<td><?php echo $row["produit_nom"] ?></td>
-													<td><?php echo $row["val"] ?></td>
-													<td><?php echo number_format($row["total"],2,',',' ') ?></td>
+													<td><?= $nbr ?>.</td>
+													<td><?= $row["produit_nom"] ?></td>
+													<td><?= $row["val"] ?></td>
+													<td><?= number_format($row["total"],2,',',' ') ?></td>
 												</tr>
 											<?php } ?>	
 											<tr>
 													<td colspan="2"></td>
-													<td><?php echo $nbr_total ?></td>
-													<td><?php echo number_format($montant,2,'.',' ') ?></td>
+													<td><?= $nbr_total ?></td>
+													<td><?= number_format($montant,2,'.',' ') ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -496,16 +496,16 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  $montant += $row["total"];
 											?>
 												<tr>
-													<td><?php echo $nbr ?>.</td>
-													<td><?php echo $row["taille_nom"] ?></td>
-													<td><?php echo $row["val"] ?></td>
-													<td><?php echo number_format($row["total"],2,',',' ') ?></td>
+													<td><?= $nbr ?>.</td>
+													<td><?= $row["taille_nom"] ?></td>
+													<td><?= $row["val"] ?></td>
+													<td><?= number_format($row["total"],2,',',' ') ?></td>
 												</tr>
 											<?php } ?>
 											<tr>
 													<td colspan="2"></td>
-													<td><?php echo $nbr_total ?></td>
-													<td><?php echo number_format($montant,2,'.',' ') ?></td>
+													<td><?= $nbr_total ?></td>
+													<td><?= number_format($montant,2,'.',' ') ?></td>
 												</tr>
 											</tbody>
 										</table>
@@ -540,9 +540,9 @@ $desc_page = "Statistiques - Olympe Mariage";
 												 $nbr++;
 											?>
 												<tr>
-													<td><?php echo $nbr ?>.</td>
-													<td><?php echo $row["client_ville"] ?></td>
-													<td><?php echo $row["val"] ?></td>
+													<td><?= $nbr ?>.</td>
+													<td><?= $row["client_ville"] ?></td>
+													<td><?= $row["val"] ?></td>
 												</tr>
 											<?php } ?>
 											</tbody>

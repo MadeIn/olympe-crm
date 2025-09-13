@@ -263,7 +263,7 @@ $link_plugin = '<link href="/assets/global/plugins/bootstrap-markdown/css/bootst
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
 function confirme() {
-	if (confirm("<?php echo $alert ?>"))
+	if (confirm("<?= $alert ?>"))
 		return true;
 	else 
 		return false;
@@ -405,7 +405,7 @@ function confirme() {
 											<tr>
 												<td><label>Remise</label>
 												<div class="input-group">
-													<input type="text" name="remise" value="<?php echo $remise ?>" class="form-control" placeholder="Remise en %"> 
+													<input type="text" name="remise" value="<?= $remise ?>" class="form-control" placeholder="Remise en %"> 
 													<select name="remise_type">
 														<option value="0" SELECTED>--</option>
 														<option value="1">%</option>
@@ -428,8 +428,8 @@ function confirme() {
 									</table>
 									<?php } else { ?>
 									<input type="hidden" name="modif" value="ok">
-									<input type="hidden" name="nbr_ligne" value="<?php echo $nbr_ligne ?>">
-									<input type="hidden" name="val_num" value="<?php echo $modif_num ?>">
+									<input type="hidden" name="nbr_ligne" value="<?= $nbr_ligne ?>">
+									<input type="hidden" name="val_num" value="<?= $modif_num ?>">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										 <tbody>
 										<?php 
@@ -469,7 +469,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-bookmark-o"></i>
 													</span>
-													<input type="text" name="ref" class="form-control" value="<?php echo $ref ?>" required></div></td>
+													<input type="text" name="ref" class="form-control" value="<?= $ref ?>" required></div></td>
 											</tr>
 											<tr>
 												<td><label>Nom</label>
@@ -477,12 +477,12 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-bookmark-o"></i>
 													</span>
-													<input type="text" name="nom" class="form-control" value="<?php echo $nom ?>" required></div></td>
+													<input type="text" name="nom" class="form-control" value="<?= $nom ?>" required></div></td>
 											</tr>
 											<tr>
 												<td><label>Description</label>
 												<div class="input-group">
-													<textarea class="wysihtml5 form-control" rows="4" name="desc"><?php echo $desc ?></textarea>
+													<textarea class="wysihtml5 form-control" rows="4" name="desc"><?= $desc ?></textarea>
 												</div></td>
 											</tr>
 											<tr>
@@ -524,21 +524,21 @@ function confirme() {
 											<tr>
 												<td><label>Poids (g)</label>
 												<div class="input-group">
-													<input type="text" name="poids" class="form-control" value="<?php echo $poids ?>" placeholder="Poids (g)">
+													<input type="text" name="poids" class="form-control" value="<?= $poids ?>" placeholder="Poids (g)">
 												</div>
 												</td>
 											</tr>
 											<tr>
 												<td><label>Prix € (HT)</label>
 												<div class="input-group">
-													<input type="text" name="prix" class="form-control" value="<?php echo $prix ?>" placeholder="Prix de vente € HT">
+													<input type="text" name="prix" class="form-control" value="<?= $prix ?>" placeholder="Prix de vente € HT">
 												</div>
 												</td>
 											</tr>
 											<tr>
 												<td><label>Prix d'achat € (HT)</label>
 												<div class="input-group">
-													<input type="text" name="prixachat" class="form-control" value="<?php echo $prixachat ?>"  placeholder="Prix d'achat € HT">
+													<input type="text" name="prixachat" class="form-control" value="<?= $prixachat ?>"  placeholder="Prix d'achat € HT">
 												</div>
 												</td>
 											</tr>
@@ -563,7 +563,7 @@ function confirme() {
 											<tr>
 												<td><label>Remise</label>
 												<div class="input-group">
-													<input type="text" name="remise" value="<?php echo $remise ?>" class="m-wrap small">
+													<input type="text" name="remise" value="<?= $remise ?>" class="m-wrap small">
 													<select name="remise_type">
 														<option value="0"<?php if ($remise_type==0) echo " SELECTED"; ?>>--</option>
 														<option value="1"<?php if ($remise_type==1) echo " SELECTED"; ?>>%</option>
@@ -629,8 +629,8 @@ function confirme() {
 											<label class="control-label"><b>Photo : </b></label>
 											<form name="ajouter_photo" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 											<input type="hidden" name="add_photo" value="ok">
-											<input type="hidden" name="modif_num" value="<?php echo $modif_num ?>">
-											<input type="hidden" name="nbr_ligne" value="<?php echo $nbr_ligne ?>">
+											<input type="hidden" name="modif_num" value="<?= $modif_num ?>">
+											<input type="hidden" name="nbr_ligne" value="<?= $nbr_ligne ?>">
 											<div class="controls">
 												<input name="userfile_acc_1" type="file" size=50 style="margin:5px 0;" /><br />
 												<textarea id="leg_1" name="leg_1" style="height:50px;width:90%;"></textarea><br />
@@ -672,8 +672,8 @@ function confirme() {
 														$couv = " (c)";
 											?>
 												<tr>
-													<td><?php echo $rcc["photo_pos"] . $couv ?></td>
-													<td class="span2"><img src="/photos/produits/norm/<?php echo $rcc["photo_chemin"] ?>" height="30" /><br /><?php echo $rcc["photo_legende"] ?></td>
+													<td><?= $rcc["photo_pos"] . $couv ?></td>
+													<td class="span2"><img src="/photos/produits/norm/<?= $rcc["photo_chemin"] ?>" height="30" /><br /><?= $rcc["photo_legende"] ?></td>
 													<td> 
 													<?php 	
 														if ($nbr_ligne>1)
@@ -691,7 +691,7 @@ function confirme() {
 														}
 													?>
 													</td>
-													<td><a href="<?php echo $PHP_SELF ?>?suppr_photo=<?php echo crypte($rcc["photo_num"]) ?>&modif_num=<?php echo $modif_num ?>" onClick="return confirme();" class="btn red mini">Supprimer</a></td>
+													<td><a href="<?= $PHP_SELF ?>?suppr_photo=<?= crypte($rcc["photo_num"]) ?>&modif_num=<?= $modif_num ?>" onClick="return confirme();" class="btn red mini">Supprimer</a></td>
 												</tr>
 											<?php													$i++;
 												}
@@ -740,15 +740,15 @@ function confirme() {
 													$reappro = "";
 												}
 											?>
-											<form name="modification_stock_<?php echo $st["taille_num"] ?>" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+											<form name="modification_stock_<?= $st["taille_num"] ?>" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
 											<tr>
-												<input type="hidden" name="modif_num" value="<?php echo $modif_num ?>">
-												<input type="hidden" name="taille_num" value="<?php echo $st["taille_num"] ?>">
+												<input type="hidden" name="modif_num" value="<?= $modif_num ?>">
+												<input type="hidden" name="taille_num" value="<?= $st["taille_num"] ?>">
 												<input type="hidden" name="modif_stock" value="ok">
-												<td align="right" id="a11gnoir"><?php echo $st["taille_nom"] ?></td>
-												<td align=center><input type=text name=st_virtuel value="<?php echo $stock_virtuel ?>" class="form-control"></td>
-												<td align=center><input type=text name=st_reel value="<?php echo $stock_reel ?>" class="form-control"></td>
-												<td align=center><input type=date name=date_reappro value="<?php echo $reappro ?>"  class="form-control"></td>
+												<td align="right" id="a11gnoir"><?= $st["taille_nom"] ?></td>
+												<td align=center><input type=text name=st_virtuel value="<?= $stock_virtuel ?>" class="form-control"></td>
+												<td align=center><input type=text name=st_reel value="<?= $stock_reel ?>" class="form-control"></td>
+												<td align=center><input type=date name=date_reappro value="<?= $reappro ?>"  class="form-control"></td>
 												<td align="center"><input type="submit" name="stock" value="OK" class="btn black mini"></td>
 											</tr>
 											</form>

@@ -21,7 +21,7 @@ if ($rss) {
             <div class="container-fluid">
                 <div class="page-content">
                     <!-- BEGIN BREADCRUMBS -->
-                   <form name="choix" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+                   <form name="choix" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
 					<div class="breadcrumbs">
 						<h1>Olympe Mariage <select name="showroom_choix" onChange="this.form.submit()" class="form-inline">
 						<?php							$sql = "select * from showrooms order by showroom_num ASC";

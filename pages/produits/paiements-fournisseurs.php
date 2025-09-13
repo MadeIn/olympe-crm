@@ -89,7 +89,7 @@ function changeEtat(id,produit,val,paiement) {
 	affichage_retour = "reste_" + id;
 	
 	// Mode 1 : Insertion 2 : Delete
-	link = "display-paiements.php?id=" + id + "&produit=" + produit + "&val=" + val + "&paiement=" + paiement + "&rand=<?php echo rand(0,1000000) ?>";
+	link = "display-paiements.php?id=" + id + "&produit=" + produit + "&val=" + val + "&paiement=" + paiement + "&rand=<?= rand(0,1000000) ?>";
 	oXmlHttp.open("get",link, true);
 	oXmlHttp.onreadystatechange = function () {
 		if (oXmlHttp.readyState == 4) {
@@ -152,7 +152,7 @@ function changeEtat(id,produit,val,paiement) {
 										</thead>
 										<tbody>
 											<tr>
-												<td><input id="produitauto" name="produitauto"  class="form-control" value="<?php echo $produitauto ?>"></td>
+												<td><input id="produitauto" name="produitauto"  class="form-control" value="<?= $produitauto ?>"></td>
 												<td>
 													<select name="categorie" class="form-control">
 														<option value="-1">------------</option>
@@ -344,11 +344,11 @@ if ($rrr) {
 											  	 $reste_total += $reste;
 											?>
 												<tr>
-													<td><small><?php echo format_date($row["commande_fournisseur_date"],11,1) ?></small></td>
-													<td><small><?php echo $row["marque_nom"] ?></small></td>
-													<td><small><?php echo $row["categorie_nom"] ?></small></td>
-													<td><small><?php echo $row["produit_nom"] ?></small></td>
-													<td><small><?php echo number_format($row["commande_montant"],2,'.',' ') ?>€</small></td>
+													<td><small><?= format_date($row["commande_fournisseur_date"],11,1) ?></small></td>
+													<td><small><?= $row["marque_nom"] ?></small></td>
+													<td><small><?= $row["categorie_nom"] ?></small></td>
+													<td><small><?= $row["produit_nom"] ?></small></td>
+													<td><small><?= number_format($row["commande_montant"],2,'.',' ') ?>€</small></td>
 													<td><small><?php 
 														if ($paiement_commande==1) { 
 															if ($paiement1_payer==0)
@@ -393,23 +393,23 @@ if ($rrr) {
 														}
 													?>
 													</small></td>
-													<td><small id="reste_<?php echo $row["id"] ?>"><?php echo number_format($reste,2,'.',' ') ?>€</small></td>
-													<td><a href="/clients/client?client_num=<?php echo crypte($row["client_num"]) ?>&tab=tab_1_6"><small><?php echo $row["client_nom"] . " " . $row["client_prenom"] ?></small></a></td>
-													<td><small><?php echo $row["commande_num"] ?></small></td>
-													<td><small><?php echo format_date($row["commande_date"],11,1) ?></small></td>
+													<td><small id="reste_<?= $row["id"] ?>"><?= number_format($reste,2,'.',' ') ?>€</small></td>
+													<td><a href="/clients/client?client_num=<?= crypte($row["client_num"]) ?>&tab=tab_1_6"><small><?= $row["client_nom"] . " " . $row["client_prenom"] ?></small></a></td>
+													<td><small><?= $row["commande_num"] ?></small></td>
+													<td><small><?= format_date($row["commande_date"],11,1) ?></small></td>
 												</tr>
 											<?php } ?>	
 											</tbody>
 											<tr>
 												<td><b>Total</b></td>
-												<td><?php echo $nbr ?></td>
+												<td><?= $nbr ?></td>
 												<td colspan="2"></td>
-												<td><?php echo number_format($montant_total_ttc,2,'.',' ') ?> €</td>
+												<td><?= number_format($montant_total_ttc,2,'.',' ') ?> €</td>
 												<td></td>
-												<td><small>Reste <?php echo number_format($reste_total1,2,'.','') ?>€<br>sur <?php echo number_format($paiement_total1,2,'.',' ') ?>€</small></td>
+												<td><small>Reste <?= number_format($reste_total1,2,'.','') ?>€<br>sur <?= number_format($paiement_total1,2,'.',' ') ?>€</small></td>
 												<td></td>
-												<td><small>Reste <?php echo number_format($reste_total2,2,'.','') ?>€<br>sur <?php echo number_format($paiement_total2,2,'.',' ') ?>€</small></td>
-												<td><?php echo number_format($reste_total,2,'.',' ') ?> €</td>
+												<td><small>Reste <?= number_format($reste_total2,2,'.','') ?>€<br>sur <?= number_format($paiement_total2,2,'.',' ') ?>€</small></td>
+												<td><?= number_format($reste_total,2,'.',' ') ?> €</td>
 												<td colspan="3"></td>
 											</tr>
 										</table>

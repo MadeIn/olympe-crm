@@ -35,19 +35,19 @@
 					<img src="img/olympe-mariage-logo.jpg" style="width: 90%;">
 					<h3>bon de réception</h3>
 				</td>
-				<td class="col-sm-6 text-center idclient"><?php echo $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
-				<?php echo $rcc["client_tel"] ?><br>
-				<?php echo $rcc["client_mail"] ?></td>
+				<td class="col-sm-6 text-center idclient"><?= $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
+				<?= $rcc["client_tel"] ?><br>
+				<?= $rcc["client_mail"] ?></td>
 				<td class="col-sm-2 tabcontour text-center">
 					<table class="table infofac">
 						<tr>
-							<td>Facture : <?php echo $rcc["facture_num"] ?></td>
+							<td>Facture : <?= $rcc["facture_num"] ?></td>
 						</tr>
 						<tr>
-							<td>DATE : <?php echo format_date($rcc["facture_date"],11,1) ?></td>
+							<td>DATE : <?= format_date($rcc["facture_date"],11,1) ?></td>
 						</tr>
 						<tr>
-							<td>N° CLIENT : <?php echo $rcc["client_num"] ?></td>
+							<td>N° CLIENT : <?= $rcc["client_num"] ?></td>
 						</tr>
 					</table>
 				</td>
@@ -97,8 +97,8 @@
 		</table>
 		
 		<footer class="text-center ">
-			<span>OLYMPE - <?php echo $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?php echo $rcc["showroom_cp"] ?> <?php echo $rcc["showroom_ville"] ?> - <?php echo $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
-			<small>N° <?php echo $rcc["showroom_rcs"] ?></small>
+			<span>OLYMPE - <?= $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?= $rcc["showroom_cp"] ?> <?= $rcc["showroom_ville"] ?> - <?= $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
+			<small>N° <?= $rcc["showroom_rcs"] ?></small>
 		</footer>
 	</div>
 <?php if ($print=="auto") { ?>

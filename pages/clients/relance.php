@@ -57,10 +57,10 @@ $desc_page = "Extraction email - Olympe Mariage";
 										<tbody>
 											<tr>
 												<td>
-													<input type="date" name="date_debut" value="<?php echo $date_debut ?>">
+													<input type="date" name="date_debut" value="<?= $date_debut ?>">
 												</td>
 												<td>
-													<input type="date" name="date_fin" value="<?php echo $date_fin ?>">
+													<input type="date" name="date_fin" value="<?= $date_fin ?>">
 												</td>
 												<td>
 													<select name="genre" class="form-control">
@@ -189,7 +189,7 @@ $desc_page = "Extraction email - Olympe Mariage";
 						?>						
 						
 						<hr>
-						<p>Nombre d'email : <strong><?php echo $nbr_email ?></strong></p>
+						<p>Nombre d'email : <strong><?= $nbr_email ?></strong></p>
 						</div>
 						<?php } ?>
 					</div>

@@ -54,7 +54,7 @@ $nbr_ligne = count($cdr);
 <?php include TEMPLATE_PATH . 'head.php'; ?>
 <script language="Javascript">
 function confirme() {
-	if (confirm("<?php echo $alert ?>"))
+	if (confirm("<?= $alert ?>"))
 		return true;
 	else 
 		return false;
@@ -95,9 +95,9 @@ function confirme() {
 									<form name="ajouter" method="POST" action="<?= form_action_same() ?>" enctype="multipart/form-data">
 									<?php if (!isset($modif_num)) { ?>		
 									<input type="hidden" name="ajout" value="ok">
-									<input type="hidden" name="nbr_ligne" value="<?php echo $nbr_ligne ?>">
-									<input type="hidden" name="mnum" value="<?php echo $mnum ?>">
-									<input type="hidden" name="mpere" value="<?php echo $mpere ?>">
+									<input type="hidden" name="nbr_ligne" value="<?= $nbr_ligne ?>">
+									<input type="hidden" name="mnum" value="<?= $mnum ?>">
+									<input type="hidden" name="mpere" value="<?= $mpere ?>">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<tbody>
 											<tr>
@@ -115,10 +115,10 @@ function confirme() {
 									</table>
 									<?php } else { ?>
 									<input type="hidden" name="modif" value="ok">
-									<input type="hidden" name="nbr_ligne" value="<?php echo $nbr_ligne ?>">
-									<input type="hidden" name="val_num" value="<?php echo $modif_num ?>">
-									<input type="hidden" name="mnum" value="<?php echo $mnum ?>">
-									<input type="hidden" name="mpere" value="<?php echo $mpere ?>">
+									<input type="hidden" name="nbr_ligne" value="<?= $nbr_ligne ?>">
+									<input type="hidden" name="val_num" value="<?= $modif_num ?>">
+									<input type="hidden" name="mnum" value="<?= $mnum ?>">
+									<input type="hidden" name="mpere" value="<?= $mpere ?>">
 									<table class="table table-striped table-bordered table-advance table-hover">
 										<tbody>
 											<?php 
@@ -135,7 +135,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-black-tie"></i>
 													</span>
-													<input type="text" name="nom" class="form-control" value="<?php echo $rcc[$nom_champ . "_nom"] ?>" required></div></td>
+													<input type="text" name="nom" class="form-control" value="<?= $rcc[$nom_champ . "_nom"] ?>" required></div></td>
 											</tr>
 											<?php												}
 											?>
@@ -167,7 +167,7 @@ function confirme() {
 											?>
 											<tr>
 												<td class="highlight">
-													<div class="success"></div> <a href="<?php echo $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["taille_num"]) ?>"><?php echo $row[$nom_champ . "_nom"] ?></a></td>
+													<div class="success"></div> <a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["taille_num"]) ?>"><?= $row[$nom_champ . "_nom"] ?></a></td>
 												<td align="center">
 												<?php 	
 													if ($nbr_ligne>1)
@@ -189,9 +189,9 @@ function confirme() {
 												?>
 												</td>
 												 <td>
-													<a href="<?php echo $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["taille_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
+													<a href="<?= $_SERVER["PHP_SELF"] . '?modif_num=' . crypte($row["taille_num"]) ?>" class="btn btn-outline btn-circle btn-sm purple">
 														<i class="fa fa-edit"></i> Edit </a> 
-													<!--<a href="<?php echo $_SERVER["PHP_SELF"] . '?suppr=' . crypte($row["taille_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
+													<!--<a href="<?= $_SERVER["PHP_SELF"] . '?suppr=' . crypte($row["taille_num"]) ?>" class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme()">
 														<i class="fa fa-trash-o"></i> Suppr </a>-->
 												</td>
 											</tr>

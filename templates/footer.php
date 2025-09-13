@@ -1,5 +1,5 @@
  <!-- BEGIN FOOTER -->
-<p class="copyright"> <?php echo Date("Y") ?> &copy; <a target="_blank" href="http://www.madein.net">Made In SARL</a> &nbsp;|&nbsp;<a href="http://www.olympe-mariage.com" title="" target="_blank">Olympe Mariage</a>
+<p class="copyright"> <?= Date("Y") ?> &copy; <a target="_blank" href="http://www.madein.net">Made In SARL</a> &nbsp;|&nbsp;<a href="http://www.olympe-mariage.com" title="" target="_blank">Olympe Mariage</a>
 </p>
 <a href="#index" class="go2top">
 	<i class="icon-arrow-up"></i>

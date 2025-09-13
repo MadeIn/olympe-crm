@@ -505,7 +505,7 @@ function changeHeureFin() {
 										<div class="col-md-3 col-sm-12">
 											<div class="portlet light bordered">
 												<?php if ($message_erreur!="") { ?>
-													<h3 class="font-red-thunderbird"><strong><i class="fa fa-warning"></i> <?php echo $message_erreur ?></strong></h3>
+													<h3 class="font-red-thunderbird"><strong><i class="fa fa-warning"></i> <?= $message_erreur ?></strong></h3>
 												<?php } ?>
 												<div class="portlet-title tabbable-line">
 													<ul class="nav nav-tabs">
@@ -583,8 +583,8 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-calendar-check-o"></i>
 																		</span>
-																		<input type="date" name="date_deb" id="date_deb" class="form-control" placeholder="Date du mariage" value="<?php echo Date("Y-m-d") ?>" onChange="changeDateFin();">
-																		<input type="time" name="time_deb" id="time_deb" class="form-control" placeholder="heure du mariage" value="<?php echo Date("H") ?>:00" onChange="changeHeureFin();">
+																		<input type="date" name="date_deb" id="date_deb" class="form-control" placeholder="Date du mariage" value="<?= Date("Y-m-d") ?>" onChange="changeDateFin();">
+																		<input type="time" name="time_deb" id="time_deb" class="form-control" placeholder="heure du mariage" value="<?= Date("H") ?>:00" onChange="changeHeureFin();">
 																	</div>
 																</div>
 																<div class="form-group">
@@ -593,8 +593,8 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-calendar-check-o"></i>
 																		</span>
-																		<input type="date" name="date_fin" id="date_fin" class="form-control" placeholder="Date du mariage" value="<?php echo Date("Y-m-d") ?>">
-																		<input type="time" name="time_fin" id="time_fin" class="form-control" placeholder="heure du mariage" value="<?php echo intval(Date("H")+1) ?>:00">
+																		<input type="date" name="date_fin" id="date_fin" class="form-control" placeholder="Date du mariage" value="<?= Date("Y-m-d") ?>">
+																		<input type="time" name="time_fin" id="time_fin" class="form-control" placeholder="heure du mariage" value="<?= intval(Date("H")+1) ?>:00">
 																	</div>
 																</div>
 																<div class="form-group">
@@ -635,7 +635,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-user"></i>
 																		</span>
-																		<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?php echo $nom ?>" required> </div>
+																		<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= $nom ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Prenom</label>
@@ -643,7 +643,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-user"></i>
 																		</span>
-																		<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?php echo $prenom ?>" required> </div>
+																		<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?= $prenom ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Tel</label>
@@ -651,7 +651,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-mobile-phone"></i>
 																		</span>
-																		<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?php echo $tel ?>" required> </div>
+																		<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= $tel ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Email</label>
@@ -659,7 +659,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-envelope"></i>
 																		</span>
-																		<input type="email" name="mail" class="form-control" placeholder="Email" value="<?php echo $mail ?>" required> </div>
+																		<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= $mail ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Adresse</label>
@@ -667,7 +667,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-road"></i>
 																		</span>
-																		<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?php echo $adr1 ?>"> </div>
+																		<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?= $adr1 ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>Complément d'adresse</label>
@@ -675,7 +675,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-road"></i>
 																		</span>
-																		<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?php echo $adr2 ?>"> </div>
+																		<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?= $adr2 ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>CP</label>
@@ -683,7 +683,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-search"></i>
 																		</span>
-																		<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?php echo $cp ?>"> </div>
+																		<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?= $cp ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>Ville</label>
@@ -691,7 +691,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-shield"></i>
 																		</span>
-																		<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?php echo $ville ?>"> </div>
+																		<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?= $ville ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>Date du mariage</label>

@@ -296,7 +296,7 @@ if ($rss) {
 					if ($rph) {
 						$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
 					} else 
-						$image_pdt = "http://www.placehold.it/50x50/EFEFEF/AAAAAA&amp;text=no+image";
+						$image_pdt = "https://placehold.co/50x50?text=No+image";
 					echo '<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
 								<div class="mt-card-item">
 									<div class="mt-card-avatar mt-overlay-1">
@@ -341,7 +341,7 @@ if ($rss) {
 					if ($rph) {
 						$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
 					} else 
-						$image_pdt = "http://www.placehold.it/50x50/EFEFEF/AAAAAA&amp;text=no+image";
+						$image_pdt = "https://placehold.co/50x50?text=No+image";
 					echo '<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
 							<div class="mt-card-item">
 								<div class="mt-card-avatar mt-overlay-1">

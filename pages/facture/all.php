@@ -36,23 +36,23 @@
 			<tr>
 				<td class="col-sm-4 text-center">
 					<img src="img/olympe-mariage-logo.jpg" style="width: 90%;">
-					<h5><?php echo $rcc["showroom_raison"] ?><br>
-						SIRET : <?php echo $rcc["showroom_siret"] ?><br>
-						TVA : <?php echo $rcc["showroom_tva"] ?></h5>
+					<h5><?= $rcc["showroom_raison"] ?><br>
+						SIRET : <?= $rcc["showroom_siret"] ?><br>
+						TVA : <?= $rcc["showroom_tva"] ?></h5>
 				</td>
-				<td class="col-sm-6 text-center idclient"><h3>facture</h3><br><?php echo $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
-				<?php echo $rcc["client_tel"] ?><br>
-				<?php echo $rcc["client_mail"] ?></td>
+				<td class="col-sm-6 text-center idclient"><h3>facture</h3><br><?= $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
+				<?= $rcc["client_tel"] ?><br>
+				<?= $rcc["client_mail"] ?></td>
 				<td class="col-sm-2 tabcontour text-center">
 					<table class="table infofac">
 						<tr>
-							<td>Facture : <?php echo $rcc["facture_num"] ?></td>
+							<td>Facture : <?= $rcc["facture_num"] ?></td>
 						</tr>
 						<tr>
-							<td>DATE : <?php echo format_date($rcc["facture_date"],11,1) ?></td>
+							<td>DATE : <?= format_date($rcc["facture_date"],11,1) ?></td>
 						</tr>
 						<tr>
-							<td>N° CLIENT : <?php echo $rcc["client_num"] ?></td>
+							<td>N° CLIENT : <?= $rcc["client_num"] ?></td>
 						</tr>
 					</table>
 				</td>
@@ -122,9 +122,9 @@
 					<td class="text-center">Total TTC : </td>
 				</tr>
 				<tr>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_ht"],2,"."," ") ?> &euro;</strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_tva"],2,"."," ") ?> &euro;</strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_ttc"],2,"."," ") ?> &euro;</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_ht"],2,"."," ") ?> &euro;</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_tva"],2,"."," ") ?> &euro;</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_ttc"],2,"."," ") ?> &euro;</strong></td>
 				</tr>
 			</table>		
 		<?php } else { ?>
@@ -137,18 +137,18 @@
 					<td class="text-center">Total à Payer : </td>
 				</tr>
 				<tr>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_ht"],2,"."," ") ?> &euro;</strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_tva"],2,"."," ") ?> &euro;</strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_ttc"],2,"."," ") ?> &euro;</strong></td>
-					<td class="text-center"><strong><?php echo $commande["remise"] ?></strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_remise_ttc"],2,"."," ") ?> &euro;</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_ht"],2,"."," ") ?> &euro;</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_tva"],2,"."," ") ?> &euro;</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_ttc"],2,"."," ") ?> &euro;</strong></td>
+					<td class="text-center"><strong><?= $commande["remise"] ?></strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_remise_ttc"],2,"."," ") ?> &euro;</strong></td>
 				</tr>
 			</table>		
 		<?php } ?>
 		<table class="table tablepaiement">
 			<tr>
 				<td><em><strong>Mode de Règlement</strong></em><br>
-				<?php echo $rcc["paiement_titre"] ?></td>
+				<?= $rcc["paiement_titre"] ?></td>
 				<td>
 				<?php if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes 
 					echo '<table class="table table-bordered pull-right">';
@@ -171,32 +171,32 @@
 					<td colspan="4" style="border-top: none!important;">Référence Bancaire<br></td>
 				</tr>
 				<tr>
-					<td colspan="4"><?php echo $rcc["banque_nom"] ?></td>
+					<td colspan="4"><?= $rcc["banque_nom"] ?></td>
 				</tr>
 				<tr>
 					<td>Code établissement<br>
-					<?php echo $rcc["banque_code_etablissement"] ?></td>
+					<?= $rcc["banque_code_etablissement"] ?></td>
 					<td>Code guichet<br>
-					<?php echo $rcc["banque_code_guichet"] ?></td>
+					<?= $rcc["banque_code_guichet"] ?></td>
 					<td>Numéro de compte<br>
-					<?php echo $rcc["banque_compte"] ?></td>
+					<?= $rcc["banque_compte"] ?></td>
 					<td>Clé RIB<br>
-					<?php echo $rcc["banque_cle_rib"] ?></td>
+					<?= $rcc["banque_cle_rib"] ?></td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						Code BIC (Bank Identification Code) - Code swift<br><?php echo $rcc["banque_swift"] ?>						
+						Code BIC (Bank Identification Code) - Code swift<br><?= $rcc["banque_swift"] ?>						
 					</td>
 					<td colspan="2">
-						IBAN (International Bank Account Number)<br><?php echo $rcc["banque_iban"] ?>
+						IBAN (International Bank Account Number)<br><?= $rcc["banque_iban"] ?>
 					</td>
 			</tbody>
 		</table>
 		<p><small>Tout retard de paiement fera l'objet d'une pénalité de retard, exigible de plein droit, égale au taux de refinancement de la Banque Centrale Européenne (BCE) majorée de 10 points, et ce sans qu'un rappel soit nécessaire. Le débiteur des sommes dues qui ne seraient pas réglées à bonne date est redevable d'une indemnité forfaitaire pour frais de recouvrement d'un montant de 40  (article D.441-5 du Code de Commerce).<br>
 		Réserve de propriété : les produits restent la propriété du vendeur jusqu'au paiement complet du prix.</small></p>
 		<footer class="text-center ">
-			<span>OLYMPE - <?php echo $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?php echo $rcc["showroom_cp"] ?> <?php echo $rcc["showroom_ville"] ?> - <?php echo $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
-			<small>N° <?php echo $rcc["showroom_rcs"] ?></small>
+			<span>OLYMPE - <?= $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?= $rcc["showroom_cp"] ?> <?= $rcc["showroom_ville"] ?> - <?= $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
+			<small>N° <?= $rcc["showroom_rcs"] ?></small>
 		</footer>
 	</div>
 <?php } ?>

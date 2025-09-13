@@ -176,12 +176,12 @@ function confirme() {
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form role="form" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="POST">
+									<form role="form" action="<?= $_SERVER["PHP_SELF"] ?>" method="POST">
 									<?php if (!isset($edit)) { ?>
 										<input type="hidden" name="action" value="add">
 									<?php } else { ?>
 										<input type="hidden" name="action" value="update">
-										<input type="hidden" name="num" value="<?php echo crypte($num) ?>">
+										<input type="hidden" name="num" value="<?= crypte($num) ?>">
 									<?php } ?>
 										<div class="form-body">
 											<div class="form-group">
@@ -190,7 +190,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-industry"></i>
 													</span>
-													<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?php echo $nom ?>" required> </div>
+													<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= $nom ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Adresse</label>
@@ -198,7 +198,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-road"></i>
 													</span>
-													<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?php echo $adr1 ?>" required> </div>
+													<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?= $adr1 ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Complément d'adresse</label>
@@ -206,7 +206,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-road"></i>
 													</span>
-													<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?php echo $adr2 ?>"> </div>
+													<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?= $adr2 ?>"> </div>
 											</div>
 											<div class="form-group">
 												<label>CP</label>
@@ -214,7 +214,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-search"></i>
 													</span>
-													<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?php echo $cp ?>" required> </div>
+													<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?= $cp ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Ville</label>
@@ -222,7 +222,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-shield"></i>
 													</span>
-													<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?php echo $ville ?>" required> </div>
+													<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?= $ville ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Accès</label>
@@ -230,7 +230,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-map"></i>
 													</span>
-													<textarea name="acces" class="form-control" rows="4"><?php echo $acces ?></textarea>
+													<textarea name="acces" class="form-control" rows="4"><?= $acces ?></textarea>
 													</div>
 											</div>
 											<div class="form-group">
@@ -239,7 +239,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-mobile-phone"></i>
 													</span>
-													<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?php echo $tel ?>" required> </div>
+													<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= $tel ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Email</label>
@@ -247,7 +247,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-envelope"></i>
 													</span>
-													<input type="email" name="mail" class="form-control" placeholder="Email" value="<?php echo $mail ?>" required> </div>
+													<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= $mail ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>RCS</label>
@@ -255,7 +255,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-barcode"></i>
 													</span>
-													<input type="text" name="rcs" class="form-control" placeholder="RCS" value="<?php echo $rcs ?>" > </div>
+													<input type="text" name="rcs" class="form-control" placeholder="RCS" value="<?= $rcs ?>" > </div>
 											</div>
 											<div class="form-group">
 												<label>Raison Social</label>
@@ -263,7 +263,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-barcode"></i>
 													</span>
-													<input type="text" name="raison" class="form-control" placeholder="Raison social" value="<?php echo $raison ?>" > </div>
+													<input type="text" name="raison" class="form-control" placeholder="Raison social" value="<?= $raison ?>" > </div>
 											</div>
 											<div class="form-group">
 												<label>SIRET</label>
@@ -271,7 +271,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-barcode"></i>
 													</span>
-													<input type="text" name="siret" class="form-control" placeholder="SIRET" value="<?php echo $siret ?>" > </div>
+													<input type="text" name="siret" class="form-control" placeholder="SIRET" value="<?= $siret ?>" > </div>
 											</div>
 											<div class="form-group">
 												<label>TVA</label>
@@ -279,7 +279,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-barcode"></i>
 													</span>
-													<input type="text" name="tva" class="form-control" placeholder="TVA Intra" value="<?php echo $tva ?>" > </div>
+													<input type="text" name="tva" class="form-control" placeholder="TVA Intra" value="<?= $tva ?>" > </div>
 											</div>
 											<div class="form-group">
 												<label>Coordonnées bancaires</label>
@@ -289,25 +289,25 @@ function confirme() {
 													</span>
 													<table class="table">
 														<tr>
-															<td>Nom :</td><td><input type="text" name="banque_nom" class="form-control" placeholder="Nom de la banque" value="<?php echo $banque_nom ?>">
+															<td>Nom :</td><td><input type="text" name="banque_nom" class="form-control" placeholder="Nom de la banque" value="<?= $banque_nom ?>">
 														</tr>
 														<tr>
-															<td>Code établissement :</td><td><input type="text" name="banque_code_etablissement" class="form-control" placeholder="Code établissement" value="<?php echo $banque_code_etablissement ?>">
+															<td>Code établissement :</td><td><input type="text" name="banque_code_etablissement" class="form-control" placeholder="Code établissement" value="<?= $banque_code_etablissement ?>">
 														</tr>
 														<tr>
-															<td>Code guichet :</td><td><input type="text" name="banque_code_guichet" class="form-control" placeholder="Code guichet" value="<?php echo $banque_code_guichet ?>">
+															<td>Code guichet :</td><td><input type="text" name="banque_code_guichet" class="form-control" placeholder="Code guichet" value="<?= $banque_code_guichet ?>">
 														</tr>
 														<tr>
-															<td>N° de compte :</td><td><input type="text" name="banque_compte" class="form-control" placeholder="N° de compte" value="<?php echo $banque_compte ?>">
+															<td>N° de compte :</td><td><input type="text" name="banque_compte" class="form-control" placeholder="N° de compte" value="<?= $banque_compte ?>">
 														</tr>
 														<tr>
-															<td>Clé RIB :</td><td><input type="text" name="banque_cle_rib" class="form-control" placeholder="Clé RIB" value="<?php echo $banque_cle_rib ?>">
+															<td>Clé RIB :</td><td><input type="text" name="banque_cle_rib" class="form-control" placeholder="Clé RIB" value="<?= $banque_cle_rib ?>">
 														</tr>
 														<tr>
-															<td>Code SWIFT :</td><td><input type="text" name="banque_swift" class="form-control" placeholder="Code SWIFT" value="<?php echo $banque_swift ?>">
+															<td>Code SWIFT :</td><td><input type="text" name="banque_swift" class="form-control" placeholder="Code SWIFT" value="<?= $banque_swift ?>">
 														</tr>
 														<tr>
-															<td>IBAN :</td><td><input type="text" name="banque_iban" class="form-control" placeholder="IBAN" value="<?php echo $banque_iban ?>">
+															<td>IBAN :</td><td><input type="text" name="banque_iban" class="form-control" placeholder="IBAN" value="<?= $banque_iban ?>">
 														</tr>
 													</table>
 												</div>
@@ -341,7 +341,7 @@ function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-eur"></i>
 													</span>
-													<input type="text" name="ca_annee" class="form-control" placeholder="Ca Annuel" value="<?php echo $ca_annee ?>" size="5"> </div>
+													<input type="text" name="ca_annee" class="form-control" placeholder="Ca Annuel" value="<?= $ca_annee ?>" size="5"> </div>
 											</div>
 											<div class="form-group">
 												<label>Objectif Nbr mensuel robes</label>
@@ -351,20 +351,20 @@ function confirme() {
 													</span>
 													<table class="table">
 														<tr>
-															<td>Jan.<br><input type="text" name="nbr_janvier" class="form-control" placeholder="01" value="<?php echo $nbr_janvier ?>"></td>
-															<td>Fev.<br><input type="text" name="nbr_fevrier" class="form-control" placeholder="02" value="<?php echo $nbr_fevrier ?>"></td>
-															<td>Mars<br><input type="text" name="nbr_mars" class="form-control" placeholder="03" value="<?php echo $nbr_mars ?>"></td>
-															<td>Avr.<br><input type="text" name="nbr_avril" class="form-control" placeholder="04" value="<?php echo $nbr_avril ?>"></td>
-															<td>Mai<br><input type="text" name="nbr_mai" class="form-control" placeholder="05" value="<?php echo $nbr_mai ?>"></td>
-															<td>Juin<br><input type="text" name="nbr_juin" class="form-control" placeholder="06" value="<?php echo $nbr_juin ?>"></td>
+															<td>Jan.<br><input type="text" name="nbr_janvier" class="form-control" placeholder="01" value="<?= $nbr_janvier ?>"></td>
+															<td>Fev.<br><input type="text" name="nbr_fevrier" class="form-control" placeholder="02" value="<?= $nbr_fevrier ?>"></td>
+															<td>Mars<br><input type="text" name="nbr_mars" class="form-control" placeholder="03" value="<?= $nbr_mars ?>"></td>
+															<td>Avr.<br><input type="text" name="nbr_avril" class="form-control" placeholder="04" value="<?= $nbr_avril ?>"></td>
+															<td>Mai<br><input type="text" name="nbr_mai" class="form-control" placeholder="05" value="<?= $nbr_mai ?>"></td>
+															<td>Juin<br><input type="text" name="nbr_juin" class="form-control" placeholder="06" value="<?= $nbr_juin ?>"></td>
 														</tr>
 														<tr>
-															<td>Jui.<br><input type="text" name="nbr_juillet" class="form-control" placeholder="07" value="<?php echo $nbr_juillet ?>"></td>
-															<td>Aout<br><input type="text" name="nbr_aout" class="form-control" placeholder="08" value="<?php echo $nbr_aout ?>"></td>
-															<td>Sep.<br><input type="text" name="nbr_septembre" class="form-control" placeholder="09" value="<?php echo $nbr_septembre ?>"></td>
-															<td>Oct.<br><input type="text" name="nbr_octobre" class="form-control" placeholder="10" value="<?php echo $nbr_octobre ?>"></td>
-															<td>Nov.<br><input type="text" name="nbr_novembre" class="form-control" placeholder="11" value="<?php echo $nbr_novembre ?>"></td>
-															<td>Dec.<br><input type="text" name="nbr_decembre" class="form-control" placeholder="12" value="<?php echo $nbr_decembre ?>"></td>
+															<td>Jui.<br><input type="text" name="nbr_juillet" class="form-control" placeholder="07" value="<?= $nbr_juillet ?>"></td>
+															<td>Aout<br><input type="text" name="nbr_aout" class="form-control" placeholder="08" value="<?= $nbr_aout ?>"></td>
+															<td>Sep.<br><input type="text" name="nbr_septembre" class="form-control" placeholder="09" value="<?= $nbr_septembre ?>"></td>
+															<td>Oct.<br><input type="text" name="nbr_octobre" class="form-control" placeholder="10" value="<?= $nbr_octobre ?>"></td>
+															<td>Nov.<br><input type="text" name="nbr_novembre" class="form-control" placeholder="11" value="<?= $nbr_novembre ?>"></td>
+															<td>Dec.<br><input type="text" name="nbr_decembre" class="form-control" placeholder="12" value="<?= $nbr_decembre ?>"></td>
 														</tr>
 													</table>
 												</div>
@@ -377,20 +377,20 @@ function confirme() {
 													</span>
 													<table class="table">
 														<tr>
-															<td>Jan.<br><input type="text" name="ca_janvier" class="form-control" placeholder="01" value="<?php echo $ca_janvier ?>"></td>
-															<td>Fev.<br><input type="text" name="ca_fevrier" class="form-control" placeholder="02" value="<?php echo $ca_fevrier ?>"></td>
-															<td>Mars<br><input type="text" name="ca_mars" class="form-control" placeholder="03" value="<?php echo $ca_mars ?>"></td>
-															<td>Avr.<br><input type="text" name="ca_avril" class="form-control" placeholder="04" value="<?php echo $ca_avril ?>"></td>
-															<td>Mai<br><input type="text" name="ca_mai" class="form-control" placeholder="05" value="<?php echo $ca_mai ?>"></td>
-															<td>Juin<br><input type="text" name="ca_juin" class="form-control" placeholder="06" value="<?php echo $ca_juin ?>"></td>
+															<td>Jan.<br><input type="text" name="ca_janvier" class="form-control" placeholder="01" value="<?= $ca_janvier ?>"></td>
+															<td>Fev.<br><input type="text" name="ca_fevrier" class="form-control" placeholder="02" value="<?= $ca_fevrier ?>"></td>
+															<td>Mars<br><input type="text" name="ca_mars" class="form-control" placeholder="03" value="<?= $ca_mars ?>"></td>
+															<td>Avr.<br><input type="text" name="ca_avril" class="form-control" placeholder="04" value="<?= $ca_avril ?>"></td>
+															<td>Mai<br><input type="text" name="ca_mai" class="form-control" placeholder="05" value="<?= $ca_mai ?>"></td>
+															<td>Juin<br><input type="text" name="ca_juin" class="form-control" placeholder="06" value="<?= $ca_juin ?>"></td>
 														</tr>
 														<tr>
-															<td>Jui.<br><input type="text" name="ca_juillet" class="form-control" placeholder="07" value="<?php echo $ca_juillet ?>"></td>
-															<td>Aout<br><input type="text" name="ca_aout" class="form-control" placeholder="08" value="<?php echo $ca_aout ?>"></td>
-															<td>Sep.<br><input type="text" name="ca_septembre" class="form-control" placeholder="09" value="<?php echo $ca_septembre ?>"></td>
-															<td>Oct.<br><input type="text" name="ca_octobre" class="form-control" placeholder="10" value="<?php echo $ca_octobre ?>"></td>
-															<td>Nov.<br><input type="text" name="ca_novembre" class="form-control" placeholder="11" value="<?php echo $ca_novembre ?>"></td>
-															<td>Dec.<br><input type="text" name="ca_decembre" class="form-control" placeholder="12" value="<?php echo $ca_decembre ?>"></td>
+															<td>Jui.<br><input type="text" name="ca_juillet" class="form-control" placeholder="07" value="<?= $ca_juillet ?>"></td>
+															<td>Aout<br><input type="text" name="ca_aout" class="form-control" placeholder="08" value="<?= $ca_aout ?>"></td>
+															<td>Sep.<br><input type="text" name="ca_septembre" class="form-control" placeholder="09" value="<?= $ca_septembre ?>"></td>
+															<td>Oct.<br><input type="text" name="ca_octobre" class="form-control" placeholder="10" value="<?= $ca_octobre ?>"></td>
+															<td>Nov.<br><input type="text" name="ca_novembre" class="form-control" placeholder="11" value="<?= $ca_novembre ?>"></td>
+															<td>Dec.<br><input type="text" name="ca_decembre" class="form-control" placeholder="12" value="<?= $ca_decembre ?>"></td>
 														</tr>
 													</table>
 												</div>

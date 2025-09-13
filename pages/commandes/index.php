@@ -39,20 +39,20 @@
 					<img src="img/olympe-mariage-logo.jpg" style="width: 90%;">
 					<h3>COMMANDE</h3>
 				</td>
-				<td class="col-sm-6 text-center idclient"><?php echo $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
-				<?php echo $rcc["client_tel"] ?><br>
-				<?php echo $rcc["client_mail"] ?></td>
+				<td class="col-sm-6 text-center idclient"><?= $rcc["client_prenom"] . ' ' . $rcc["client_nom"] ?><br>
+				<?= $rcc["client_tel"] ?><br>
+				<?= $rcc["client_mail"] ?></td>
 				<td class="col-sm-2 tabcontour text-center">
-					<small>Date Mariage : <?php echo format_date($rcc["client_date_mariage"],11,1) ?></small>
+					<small>Date Mariage : <?= format_date($rcc["client_date_mariage"],11,1) ?></small>
 					<table class="table infofac">
 						<tr>
-							<td>Commande : <?php echo $rcc["commande_num"] ?></td>
+							<td>Commande : <?= $rcc["commande_num"] ?></td>
 						</tr>
 						<tr>
-							<td>DATE : <?php echo format_date($rcc["devis_date"],11,1) ?></td>
+							<td>DATE : <?= format_date($rcc["devis_date"],11,1) ?></td>
 						</tr>
 						<tr>
-							<td>N° CLIENT : <?php echo $rcc["client_num"] ?></td>
+							<td>N° CLIENT : <?= $rcc["client_num"] ?></td>
 						</tr>
 					</table>
 				</td>
@@ -124,15 +124,15 @@
 					<td class="text-center">TVA 20% : </td>
 					<td class="text-center">Total TTC : </td>
 					<?php if ($rcc["paiement_nombre"]>1) { ?>
-						<td class="text-center">Acompte demandé <?php echo $echeance[0] ?>% : </td>
+						<td class="text-center">Acompte demandé <?= $echeance[0] ?>% : </td>
 					<?php } ?>
 				</tr>
 				<tr>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
 					<?php if ($rcc["paiement_nombre"]>1) { ?>
-						<td class="text-center"><strong><?php echo $acompte ?> €</strong></td>
+						<td class="text-center"><strong><?= $acompte ?> €</strong></td>
 					<?php } ?>
 				</tr>
 			</table>		
@@ -151,17 +151,17 @@
 					<td class="text-center">Remise : </td>
 					<td class="text-center">Total à Payer : </td>
 					<?php if ($rcc["paiement_nombre"]>1) { ?>
-						<td class="text-center">Acompte demandé <?php echo $echeance[0] ?>% : </td>
+						<td class="text-center">Acompte demandé <?= $echeance[0] ?>% : </td>
 					<?php } ?>
 				</tr>
 				<tr>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
-					<td class="text-center"><strong><?php echo $commande["remise"] ?></strong></td>
-					<td class="text-center"><strong><?php echo number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_ht"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_tva"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_ttc"],2,"."," ") ?> €</strong></td>
+					<td class="text-center"><strong><?= $commande["remise"] ?></strong></td>
+					<td class="text-center"><strong><?= number_format($commande["commande_remise_ttc"],2,"."," ") ?> €</strong></td>
 					<?php if ($rcc["paiement_nombre"]>1) { ?>
-						<td class="text-center"><strong><?php echo $acompte ?> €</strong></td>
+						<td class="text-center"><strong><?= $acompte ?> €</strong></td>
 					<?php } ?>
 				</tr>
 			</table>		
@@ -194,24 +194,24 @@
 					<td colspan="4" style="border-top: none!important;">Référence Bancaire<br></td>
 				</tr>
 				<tr>
-					<td colspan="4"><strong><?php echo $rcc["banque_nom"] ?></strong></td>
+					<td colspan="4"><strong><?= $rcc["banque_nom"] ?></strong></td>
 				</tr>
 				<tr>
 					<td>Code établissement<br>
-					<strong><?php echo $rcc["banque_code_etablissement"] ?></strong></td>
+					<strong><?= $rcc["banque_code_etablissement"] ?></strong></td>
 					<td>Code guichet<br>
-					<strong><?php echo $rcc["banque_code_guichet"] ?></strong></td>
+					<strong><?= $rcc["banque_code_guichet"] ?></strong></td>
 					<td>Numéro de compte<br>
-					<strong><?php echo $rcc["banque_compte"] ?></strong></td>
+					<strong><?= $rcc["banque_compte"] ?></strong></td>
 					<td>Clé RIB<br>
-					<strong><?php echo $rcc["banque_cle_rib"] ?></strong></td>
+					<strong><?= $rcc["banque_cle_rib"] ?></strong></td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						Code BIC (Bank Identification Code) - Code swift<br><strong><?php echo $rcc["banque_swift"] ?></strong>						
+						Code BIC (Bank Identification Code) - Code swift<br><strong><?= $rcc["banque_swift"] ?></strong>						
 					</td>
 					<td colspan="2">
-						IBAN (International Bank Account Number)<br><strong><?php echo $rcc["banque_iban"] ?></strong>
+						IBAN (International Bank Account Number)<br><strong><?= $rcc["banque_iban"] ?></strong>
 					</td>
 			</tbody>
 		</table>
@@ -219,8 +219,8 @@
 		Réserve de propriété : les produits restent la propriété du vendeur jusqu'au paiement complet du prix.</small></p>
 		
 		<footer class="text-center ">
-			<span>OLYMPE - <?php echo $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?php echo $rcc["showroom_cp"] ?> <?php echo $rcc["showroom_ville"] ?> - <?php echo $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
-			<small>N° <?php echo $rcc["showroom_rcs"] ?></small>
+			<span>OLYMPE - <?= $rcc["showroom_adr1"] ?> <?php if ($rcc["showroom_adr2"]!="") echo " - " . $rcc["showroom_adr2"]; ?>, <?= $rcc["showroom_cp"] ?> <?= $rcc["showroom_ville"] ?> - <?= $rcc["showroom_tel"] ?> - www.olympe-mariage.com</span>
+			<small>N° <?= $rcc["showroom_rcs"] ?></small>
 		</footer>
 	</div>
 <?php if ($print=="auto") { ?>
