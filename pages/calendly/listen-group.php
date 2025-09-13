@@ -104,9 +104,10 @@ switch ($data["event"]) {
                     $base->query($sql);
                     
                     // On envoi le mail selon le type de RDV
-                    $titre_mail = $mail_type[1][$rcl["client_genre"]]["titre"];
+                    $template = getEmailTemplate(1,$rcl["client_genre"]);
+				    $titre_mail = $template["titre"];
+				    $message_mail = $template["message"];
                     $titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-                    $message_mail = $mail_type[1][$rcl["client_genre"]]["message"];
                     $message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
                     $message_mail = str_replace("[DATE_HEURE]",format_date($date_debut,2,1),$message_mail);
                     $message_mail = str_replace("[SHOWROOM_NOM]",$u->mShowroomInfo["showroom_nom"],$message_mail);

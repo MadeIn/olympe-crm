@@ -34,9 +34,10 @@ try {
 			$nbr_commande = count($tt);
 			if ($nbr_commande==0) {
 				// On envoi le mail selon le type de RDV
-				$titre_mail = $mail_type[12][$rcc["client_genre"]]["titre"];
+				$template = getEmailTemplate(12,$rcc["client_genre"]);
+				$titre_mail = $template["titre"];
+				$message_mail = $template["message"];
 				$titre_mail = str_replace("[VILLE]",$rcc["showroom_ville"],$titre_mail);
-				$message_mail = $mail_type[12][$rcc["client_genre"]]["message"];
 				$message_mail = str_replace("[PRENOM]",$rcc["client_prenom"],$message_mail);
 				
 				echo $rcc["client_mail"] . "<br>";

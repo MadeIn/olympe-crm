@@ -24,9 +24,10 @@ try {
 	foreach ($cc as $rcc) {
 		
 		// On envoi le mail selon le type de RDV
-		$titre_mail = $mail_type[11][$rcc["client_genre"]]["titre"];
+		$template = getEmailTemplate(11,$rcc["client_genre"]);
+		$titre_mail = $template["titre"];
+		$message_mail = $template["message"];
 		$titre_mail = str_replace("[VILLE]",$rcc["showroom_ville"],$titre_mail);
-		$message_mail = $mail_type[11][$rcc["client_genre"]]["message"];
 		$message_mail = str_replace("[PRENOM]",$rcc["client_prenom"],$message_mail);
 		$message_mail = str_replace("[DATE_HEURE]",format_date($rcc["rdv_date"],2,1),$message_mail);
 		$message_mail = str_replace("[SHOWROOM_NOM]",$rcc["showroom_nom"],$message_mail);

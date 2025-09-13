@@ -81,9 +81,10 @@ try {
 				$type = 13;
 			}
 			// On envoi le mail selon le type de RDV
-			$titre_mail = $mail_type[$type][$rcc["client_genre"]]["titre"];
+			$template = getEmailTemplate($type,$rcc["client_genre"]);
+			$titre_mail = $template["titre"];
+			$message_mail = $template["message"];
 			$titre_mail = str_replace("[VILLE]",$rcc["showroom_ville"],$titre_mail);
-			$message_mail = $mail_type[$type][$rcc["client_genre"]]["message"];
 			$message_mail = str_replace("[PRENOM]",$rcc["client_prenom"],$message_mail);
 			$date_reception = format_date($rcc["rdv_date"],0,1);
 			$message_mail = str_replace("[DATE_RECEPTION]",$date_reception,$message_mail);
