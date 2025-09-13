@@ -462,9 +462,10 @@ if ($rdd) {
 if (isset($selection_envoi)) {
 	// On envoi le mail à la cliente avec sa sélection
 	
-	$titre_mail = $mail_type[7][$rcl["client_genre"]]["titre"];
+	$template = getEmailTemplate(7,$rcl["client_genre"]);
+	$titre_mail = $template["titre"];
+	$message_mail = $template["message"];
 	$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-	$message_mail = $mail_type[7][$rcl["client_genre"]]["message"];
 	$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 	$message_mail = str_replace("[SELECTION_NUM]",$selection_envoi,$message_mail);
 	
@@ -484,7 +485,7 @@ if (isset($commande_passage)) {
 		// On recupere le numero de devis pour le mettre dans commande
 		$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and id='" . decrypte($commande_passage) . "'";
 		$rco = $base->queryRow($sql);
- if ($rco) {
+ 		if ($rco) {
 			$commande_num = $rco["devis_num"];
 			
 			// ON regarde si il y a une date de commande pour la modifier ou pas
@@ -520,7 +521,7 @@ if (isset($commande_passage)) {
 					$facture_deb = Date("Y") * 100000 + Date("n") * 1000;
 					$sql = "select max(facture_num) val from commandes where facture_num>'" . $facture_deb . "' and showroom_num='" . $rco["showroom_num"] . "'";
 					$rdd = $base->queryRow($sql);
-if ($rdd) {
+					if ($rdd) {
 						if ($rdd["val"]>0)
 							$facture_num = $rdd["val"]+1;
 						else
@@ -535,7 +536,7 @@ if ($rdd) {
 					// On decroit les stocks
 					$sql = "select * from commandes where id='" . decrypte($commande_passage) . "'";
 					$rcc = $base->queryRow($sql);
-if ($rcc) {
+					if ($rcc) {
 						$showroom_num = $rcc["showroom_num"];
 						// On recupere les produits de la commande pour les enlever du stock
 						$sql = "select * from commandes_produits where id='" . decrypte($commande_passage) . "'";
@@ -543,7 +544,7 @@ if ($rcc) {
 						foreach ($co as $rco) {
 							$sql = "select * from stocks where produit_num='" . $rco["produit_num"] . "' and taille_num='" . $rco["taille_num"] . "' and showroom_num='" . $showroom_num . "'";
 							$rss = $base->queryRow($sql);
-if ($rss) {
+							if ($rss) {
 								// On update les stocks
 								$stock_virtuel = $rss["stock_virtuel"] - $rco["qte"];
 								$stock_reel = $rss["stock_reel"] - $rco["qte"];
@@ -714,9 +715,10 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 	$nbr = count($tt);
 	if ($nbr==0) { // On passe la commande
 		// On envoi le mail avec le devis
-		$titre_mail = $mail_type[8][$rcl["client_genre"]]["titre"];
+		$template = getEmailTemplate(8,$rcl["client_genre"]);
+		$titre_mail = $template["titre"];
+		$message_mail = $template["message"];
 		$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-		$message_mail = $mail_type[8][$rcl["client_genre"]]["message"];
 		$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 		$message_mail = str_replace("[DEVIS_NUM]",$devis_envoi,$message_mail);
 		
@@ -778,9 +780,10 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 
 if (isset($facture_envoi)) { // ON envoie le devis par mail
 	// On envoi le mail avec le devis
-	$titre_mail = $mail_type[9][$rcl["client_genre"]]["titre"];
+	$template = getEmailTemplate(9,$rcl["client_genre"]);
+	$titre_mail = $template["titre"];
+	$message_mail = $template["message"];
 	$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
-	$message_mail = $mail_type[9][$rcl["client_genre"]]["message"];
 	$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 	$message_mail = str_replace("[FACTURE_NUM]",$facture_envoi,$message_mail);
 	
@@ -800,10 +803,11 @@ if (isset($facture_envoi)) { // ON envoie le devis par mail
 
 if (isset($acompte_envoi)) { // ON envoie le devis par mail
 	// On envoi le mail avec le devis
-	$titre_mail = $mail_type[10][$rcl["client_genre"]]["titre"];
+	$template = getEmailTemplate(10,$rcl["client_genre"]);
+	$titre_mail = $template["titre"];
+	$message_mail = $template["message"];
 	$titre_mail = str_replace("[VILLE]",$u->mShowroomInfo["showroom_ville"],$titre_mail);
 	$titre_mail = str_replace("[PAIEMENT_NUM]",$paiement,$titre_mail);
-	$message_mail = $mail_type[10][$rcl["client_genre"]]["message"];
 	$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 	$message_mail = str_replace("[COMMANDE_NUM]",$acompte_envoi,$message_mail);
 	$message_mail = str_replace("[PAIEMENT_NUM]",$paiement,$message_mail);
@@ -843,10 +847,10 @@ if (isset($paiementfournisseur)) {
 
 $titre_page = "Client " . $rcl["client_nom"] . " " . $rcl["client_prenom"] . " - Olympe Mariage";
 $desc_page = "Client " . $rcl["client_nom"] . " " . $rcl["client_prenom"] . " - Olympe Mariage";
-?>
-<?php 
+
 $link_plugin = '<link href="/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />';
-include TEMPLATE_PATH . 'head.php'; ?>
+include TEMPLATE_PATH . 'head.php'; 
+?>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">

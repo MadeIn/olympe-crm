@@ -252,7 +252,7 @@ function logEmailSent(string $titre, string $message, int $client_num, int $user
     try {
         $db = Database::getInstance();
         
-        $sql = "INSERT INTO mails (mail_date, mail_titre, mail_contenu, client_num, user_num) 
+        $sql = "INSERT INTO mails (mail_date, mail_titre, mail_message, client_num, user_num) 
                 VALUES (?, ?, ?, ?, ?)";
         
         $db->insert($sql, [
