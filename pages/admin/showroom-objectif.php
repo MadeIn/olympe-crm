@@ -10,7 +10,7 @@ if (isset($objectif)) {
 	$base->query($sql);
 	
 	$date = $annee . "-" . $mois . "-01";
-	$sql = "insert into showrooms_objectifs values('" . $showroom_choix . "','" . $genre . "','" . $date . "','" . $mois . "','" . $annee . "','" . $ca . "','" . $nbr . "')";
+	$sql = "insert into showrooms_objectifs values(" . safe_sql($showroom_choix) . "," . safe_sql($genre) . "," . safe_sql($date) . "," . safe_sql($mois) . "," . safe_sql($annee) . "," . safe_sql($ca) . "," . safe_sql($nbr) . ")";
 	$base->query($sql);
 }
 

@@ -65,4 +65,12 @@ function norm_num_str(string $v): string {
     return str_replace([' ', ','], ['', '.'], $v);
 }
 
+/**
+ * Fonction helper pour échapper les valeurs SQL
+ */
+function sql_safe($value): string {
+    global $base;
+    return $base->quote($value);
+}
+
 ?>

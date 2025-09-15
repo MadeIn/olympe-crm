@@ -164,6 +164,9 @@
                         <ul class="dropdown-menu dropdown-menu-fw">
                             <li><a href="/produits/produit"><i class="fa fa-plus"></i> Création</a></li>
                             <li><a href="/produits/liste"><i class="fa fa-list"></i> Consultation</a></li>
+                            <?php if ($u && $u->mGroupe === 0): ?>
+                                <li><a href="/produits/ref"><i class="fa fa-list"></i> Références</a></li>
+                            <?php endif ?>
                             <li><a href="/produits/categories"><i class="fa fa-bookmark-o"></i> Catégories</a></li>
                             <li><a href="/produits/marques"><i class="fa fa-fire"></i> Marques</a></li>
                             <li><a href="/produits/tailles"><i class="fa fa-black-tie"></i> Tailles</a></li>

@@ -113,6 +113,13 @@ class Database {
     public function getPDO(): PDO {
         return $this->pdo;
     }
+
+    public function quote($value): string {
+        if ($value === null) {
+            return 'NULL';
+        }
+        return $this->pdo->quote($value);
+    }
 }
 
 // Fonctions de compatibilité pour l'ancien code

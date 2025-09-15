@@ -39,7 +39,6 @@ switch ($data["event"]) {
         
 		$date_debut = date("Y-m-d H:i:s",strtotime($date_debut . ' +2 hours'));
 		$date_fin = date("Y-m-d H:i:s",strtotime($date_fin . ' +2 hours'));
-
         $organisateur = $event["scheduled_event"]["event_memberships"][0]["user_email"];
         if ($organisateur=="lauriane@olympe-mariage.com")
             $user_num = 8;
@@ -47,11 +46,11 @@ switch ($data["event"]) {
             $user_num = 22;
 
         // On test si le client n'exite pas
-        $sql = "select * from clients where client_mail='" . $mail . "'";
+        $sql = "select * from clients where client_mail=" . safe_sql($mail);
         $rtt = $base->queryRow($sql);
         $nbr = count($rtt);
         if ($nbr==0) {
-            $sql = "insert into clients values (0,0,'" . $user["nom"] . "','" . $user["prenom"] . "','','','" . $user["cp"] . "','','" . $user["tel"] . "','" . $user["email"] . "','" . $user["date-mariage"] . "','','','','3','" . $user_num . "','" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "','','','','','','','','','','','','',0,0)";
+            $sql = "insert into clients values (0,0," . safe_sql($user["nom"]) . "," . safe_sql($user["prenom"]) . ",'',''," . safe_sql($user["cp"]) . ",''," . safe_sql($user["tel"]) . "," . safe_sql($user["email"]) . "," . safe_sql($user["date-mariage"]) . ",'','','','3'," . safe_sql($user_num) . ",'" . Date("Y-m-d H:i:s") . ",'" . Date("Y-m-d H:i:s") . ",'','','','','','','','','','','','',0,0)";
             $client_num = $base->insert($sql);
         } else {
             if ($rtt) {
@@ -63,7 +62,7 @@ switch ($data["event"]) {
         $type = 1;
 
         // On recherche le client 
-        $sql = "select * from clients where client_num='" . $client_num . "'";
+        $sql = "select * from clients where client_num=" . safe_sql($client_num) . "";
         $rcl = $base->queryRow($sql);
         if ($rcl) {
             if ($rcl["client_genre"]==0)
@@ -74,19 +73,19 @@ switch ($data["event"]) {
             $client_nom_complet = str_replace("'","\'",$rcl["client_nom"]) . " " . $rcl["client_prenom"];
             
             // On regarde si on a pas déjà un rendez vous 
-            $sql = "select * from rendez_vous where client_num='" . $client_num . "' and type_num='" . $type . "'";
+            $sql = "select * from rendez_vous where client_num=" . safe_sql($client_num) . " and type_num=" . safe_sql($type) . "";
             $rtt = $base->queryRow($sql);
  if ($rtt) {
-                $sql = "delete from rendez_vous where rdv_num='" . $rtt["rdv_num"] . "'";
+                $sql = "delete from rendez_vous where rdv_num=" . safe_sql($rtt["rdv_num"]) . "";
                 $base->query($sql);
                     
-                $sql = "delete from calendriers where rdv_num='" . $rtt["rdv_num"] . "'";
+                $sql = "delete from calendriers where rdv_num=" . safe_sql($rtt["rdv_num"]) . "";
                 $base->query($sql);
             }
             
             // On insere un Rendez vous
             $date_rdv = $date_debut;
-            $sql = "insert into rendez_vous values(0,'" . $client_num . "','" . $type . "','" . $date_rdv . "','',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00','" . $user_num . "')";
+            $sql = "insert into rendez_vous values(0," . safe_sql($client_num) . "," . safe_sql($type) . "," . safe_sql($date_rdv) . ",'',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . safe_sql($user_num) . ")";
             file_put_contents("calendly_events_group.log", $sql, FILE_APPEND);
             $num = $base->insert($sql);
             
@@ -99,7 +98,7 @@ switch ($data["event"]) {
                     $desc = str_replace("'","\'",$description);
                     
                     // On insere en bdd
-                    $sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $user_num . "','3','" . $client_num . "','" . $num . "')";
+                    $sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($user_num) . ",'3'," . safe_sql($client_num) . "," . safe_sql($num) . ")";
                     file_put_contents("calendly_events_group.log", $sql, FILE_APPEND);
                     $base->query($sql);
                     
@@ -124,7 +123,7 @@ switch ($data["event"]) {
                     // On envoi le mail
                     SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
                     
-                    $sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+                    $sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num) . "";
                     $base->query($sql);
                     
                 break;

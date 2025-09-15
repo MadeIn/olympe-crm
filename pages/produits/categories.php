@@ -14,16 +14,16 @@ if (isset($decalle))
 		$new_pos = $pos-1;
 
 	// On decalle 
-	$sql = "update categories set categorie_pos='" . $pos . "' where categorie_pos=" . $new_pos;
+	$sql = "update categories set categorie_pos=" . safe_sql($pos) . " where categorie_pos=" . $new_pos;
 	$base->query($sql);
-	$sql = "update categories set categorie_pos='" . $new_pos . "' where categorie_num=" . $val_num;
+	$sql = "update categories set categorie_pos=" . safe_sql($new_pos) . " where categorie_num=" . $val_num;
 	$base->query($sql);
 }
 
 if (isset($modif))
 {
 	$sql_modif = "";
-	$sql = "update categories set categorie_visible='" . $etat . "', categorie_nom='" . $nom . "'";
+	$sql = "update categories set categorie_visible=" . safe_sql($etat) . ", categorie_nom=" . safe_sql($nom);
 	$sql .= $sql_modif;
 	$sql .= " where categorie_num=" . decrypte($val_num);
 	$base->query($sql);
@@ -52,7 +52,7 @@ if (isset($modif))
 
 if (isset($ajout))
 {
-	$sql = "insert into categories values (0,'" . $nom . "','" . $etat . "')";
+	$sql = "insert into categories values (0," . safe_sql($nom) . "," . safe_sql($etat) . ")";
 	$num = $base->insert($sql);
 
 	// On insere les tailles

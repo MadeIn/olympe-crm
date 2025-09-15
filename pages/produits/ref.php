@@ -7,49 +7,6 @@ $nom_champ = "produit";
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
-<script language="Javascript">
-function displayReponse(sText, place) {
-	var info = document.getElementById(place);
-	info.innerHTML = sText;
-}
-
-function addWidget(id) {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	ref = document.getElementById("ref_" + id).value;
-	link = "display.php?ref="+ ref + "&produit=" + id;
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					//displayReponse(oXmlHttp.responseText, "select_client");
-					if (type!=1) {
-						displayReponse("", "select_acompte");
-					}
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, "select_client");
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-</script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">
@@ -101,7 +58,12 @@ function addWidget(id) {
 													<td class="highlight"><a href="produit.php?modif_num=<?= crypte($rcc[$nom_champ . "_num"]) ?>"> <?= $rcc["produit_nom"] ?></a></td>
 													<td><?= $rcc["categorie_nom"] ?></td>
 													<td><?= $rcc["marque_nom"] ?></td>
-													<td><input type="text" name="ref_<?= $rcc["produit_num"] ?>" id="ref_<?= $rcc["produit_num"] ?>" value="<?= $rcc["produit_ref"] ?>" onChange="addWidget(<?= $rcc["produit_num"] ?>)"></td>
+													<td>
+														<input type="text"
+															name="ref_<?= (int)$rcc['produit_num'] ?>"
+															id="ref_<?= (int)$rcc['produit_num'] ?>"
+															value="<?= h($rcc['produit_ref']) ?>"
+														>	
 												</tr>
 											  <?php } ?>
 												  
@@ -122,6 +84,37 @@ function addWidget(id) {
             </div>
         </div>
          <?php include TEMPLATE_PATH . 'bottom.php'; ?>
-    </body>
+		<script>
+			async function sendRef(input) {
+				const produit = input.dataset.produit;
+				const ref = input.value.trim();
+				try {
+				await $ol.apiPost('produit', { mode:'changeRef', produit, ref });
+				$ol.toastSuccess('Référence mise à jour !');
+				// petit feedback visuel
+				input.classList.add('is-saved');
+				setTimeout(()=>input.classList.remove('is-saved'), 800);
+				} catch(e) {
+				$ol.toastError('Échec MAJ référence', e?.message || 'Erreur inconnue');
+				}
+			}
 
+			document.addEventListener('DOMContentLoaded', () => {
+				document.querySelectorAll('input[id^="ref_"]').forEach(inp => {
+				const id = inp.id.replace(/^ref_/, '');
+				inp.dataset.produit = id;
+
+				// uniquement à la sortie du champ
+				inp.addEventListener('blur', () => sendRef(inp));
+				});
+			});
+		</script>
+		<style>
+		/* feedback optionnel */
+		input.is-saved {
+			outline: 2px solid #28a745;
+			transition: outline-color .8s;
+		}
+		</style>
+    </body>
 </html>

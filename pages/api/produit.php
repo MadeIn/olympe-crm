@@ -49,6 +49,20 @@ try {
             json_ok();
         }
 
+        case 'changeRef': {
+            $produit = $int('produit');    // produit_num
+            $ref     = $str('ref');        // nouvelle référence
+
+            if ($produit <= 0) json_err('Produit invalide');
+            // autorise vide si tu veux effacer la ref — sinon teste: if ($ref === '') json_err('Référence vide');
+
+            // Si ta classe Db ne gère pas les paramètres PDO, on sécurise a minima:
+            $sql = "UPDATE md_produits SET produit_ref='".$ref."' WHERE produit_num='".$produit."'";
+            $base->query($sql);
+
+            json_ok();
+        }
+
         default:
             json_err('Mode inconnu', 400);
     }

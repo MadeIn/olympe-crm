@@ -14,15 +14,15 @@ if (isset($decalle))
 		$new_pos = $pos-1;
 
 	// On decalle 
-	$sql = "update marques set marque_pos='" . $pos . "' where marque_pos=" . $new_pos;
+	$sql = "update marques set marque_pos=" . safe_sql($pos) . " where marque_pos=" . $new_pos;
 	$base->query($sql);
-	$sql = "update marques set marque_pos='" . $new_pos . "' where marque_num=" . $val_num;
+	$sql = "update marques set marque_pos=" . safe_sql($new_pos) . " where marque_num=" . $val_num;
 	$base->query($sql);
 }
 
 if (isset($modif))
 {
-	$sql = "update marques set marque_visible='" . $etat . "', marque_nom='" . $nom . "', marque_raison_social='" . $raison_social . "', marque_adr1='" . $adr1 . "', marque_adr2='" . $adr2 . "', marque_cp='" . $cp . "', marque_ville='" . $ville . "', marque_rcs='" . $rcs . "', marque_tva='" . $tva . "', marque_tel='" . $tel . "', marque_mail='" . $mail . "', marque_site='" . $site . "', marque_contact='" . $contact . "', marque_contact_mail='" . $contact_mail . "', marque_contact_tel='" . $contact_tel . "', marque_paiement='" . $paiement . "'";
+	$sql = "update marques set marque_visible=" . safe_sql($etat) . ", marque_nom=" . safe_sql($nom) . ", marque_raison_social=" . safe_sql($raison_social) . ", marque_adr1=" . safe_sql($adr1) . ", marque_adr2=" . safe_sql($adr2) . ", marque_cp=" . safe_sql($cp) . ", marque_ville=" . safe_sql($ville) . ", marque_rcs=" . safe_sql($rcs) . ", marque_tva=" . safe_sql($tva) . ", marque_tel=" . safe_sql($tel) . ", marque_mail=" . safe_sql($mail) . ", marque_site=" . safe_sql($site) . ", marque_contact=" . safe_sql($contact) . ", marque_contact_mail=" . safe_sql($contact_mail) . ", marque_contact_tel=" . safe_sql($contact_tel) . ", marque_paiement=" . safe_sql($paiement) . "";
 	$sql .= $sql_modif;
 	$sql .= " where marque_num=" . decrypte($val_num);
 	$base->query($sql);
@@ -30,7 +30,7 @@ if (isset($modif))
 
 if (isset($ajout))
 {
-	$sql = "insert into marques values (0,'" . $nom . "','','" . $raison_social . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $rcs . "','" . $tva . "','" . $tel . "','" . $mail . "','" . $site . "','" . $contact . "','" . $contact_mail . "','" . $contact_tel . "','" . $paiement . "','" . $etat . "')";
+	$sql = "insert into marques values (0," . safe_sql($nom) . ",''," . safe_sql($raison_social) . "," . safe_sql($adr1) . "," . safe_sql($adr2) . "," . safe_sql($cp) . "," . safe_sql($ville) . "," . safe_sql($rcs) . "," . safe_sql($tva) . "," . safe_sql($tel) . "," . safe_sql($mail) . "," . safe_sql($site) . "," . safe_sql($contact) . "," . safe_sql($contact_mail) . "," . safe_sql($contact_tel) . "," . safe_sql($paiement) . "," . safe_sql($etat) . ")";
 	$base->query($sql);
 }
 

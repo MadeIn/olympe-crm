@@ -8,13 +8,13 @@ if (isset($action)) {
 		
 		case "add" :
 			// On insere le showroom
-			$sql = "insert into users values(0,'" . $nom . "','" . $prenom . "','" . $mail . "','" . $mdp . "','" . $mail_mdp . "','" . $tel . "','','" . Date("Y-m-d H:i:s") . "','0000-00-00 00:00:00','" . $groupe . "','" . $showroom . "','" . $acces . "','" . $etat . "')";
+			$sql = "insert into users values(0," . safe_sql($nom) . "," . safe_sql($prenom) . "," . safe_sql($mail) . "," . safe_sql($mdp) . "," . safe_sql($mail_mdp) . "," . safe_sql($tel) . ",'','" . Date("Y-m-d H:i:s") . ",'0000-00-00 00:00:00'," . safe_sql($groupe) . "," . safe_sql($showroom) . "," . safe_sql($acces) . "," . safe_sql($etat) . ")";
 			$num = $base->insert($sql);	
 			$num = crypte($num);
 		break;
 		
 		case "update" :
-			$sql = "update users set user_nom='" . $nom . "',user_prenom='" . $prenom . "',user_email='" . $mail . "',user_mdp='" . $mdp . "',user_email_mdp='" . $mail_mdp . "',user_tel='" . $tel . "',groupe_num='" . $groupe . "',showroom_num='" . $showroom . "',user_etat='" . $etat . "', acces_compta='" . $acces . "' where user_num='" . decrypte($num) . "'";
+			$sql = "update users set user_nom=" . safe_sql($nom) . ",user_prenom=" . safe_sql($prenom) . ",user_email=" . safe_sql($mail) . ",user_mdp=" . safe_sql($mdp) . ",user_email_mdp=" . safe_sql($mail_mdp) . ",user_tel=" . safe_sql($tel) . ",groupe_num=" . safe_sql($groupe) . ",showroom_num=" . safe_sql($showroom) . ",user_etat=" . safe_sql($etat) . ", acces_compta=" . safe_sql($acces) . " where user_num=" . safe_sql(decrypte($num)) . "";
 			$base->query($sql);	
 		break;
 	}
@@ -24,7 +24,7 @@ if (isset($action)) {
 	$nom_image = uploadPhotoProfil($_FILES['photofileacc'],$img_nom,"200");
 	if ($nom_image!="") {
 		// Tout est ok alors on insere dans la base
-		$sql = "update users set user_photo='" . $nom_image . "' where user_num='" . decrypte($num) . "'";
+		$sql = "update users set user_photo=" . safe_sql($nom_image) . " where user_num=" . safe_sql(decrypte($num));
 		$base->query($sql);
 	}
 	

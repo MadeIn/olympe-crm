@@ -58,55 +58,6 @@ $desc_page = "Commandes Fournisseurs - Olympe Mariage";
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
-<script language="Javascript">
-function displayReponse(sText, place) {
-	var info = document.getElementById(place);
-	info.innerHTML = sText;
-}
-
-function changeEtat(id,produit,val,paiement) {
-	var oXmlHttp = null; 
-	
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	if (paiement==1) {
-		if (!document.getElementById("paiement1_" + id).checked)
-			val=0;
-	} else {
-		if (!document.getElementById("paiement2_" + id).checked)
-			val=0;
-	}
-	
-	affichage_retour = "reste_" + id;
-	
-	// Mode 1 : Insertion 2 : Delete
-	link = "display-paiements.php?id=" + id + "&produit=" + produit + "&val=" + val + "&paiement=" + paiement + "&rand=<?= rand(0,1000000) ?>";
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, affichage_retour);
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, affichage_retour);
-				}
-		}
-	};
-	oXmlHttp.send(null);	
-}
-
-</script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">

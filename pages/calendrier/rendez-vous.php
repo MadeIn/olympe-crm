@@ -6,8 +6,7 @@ $message_erreur = "";
 
 if (isset($modif_desc)) {
 	// On modifie la description du RDV
-	$calendrier_desc = str_replace("'","\'",$calendrier_desc);
-	$sql = "update calendriers set calendrier_desc='" . $calendrier_desc . "' where calendrier_num='" . $calendrier_num . "'";
+	$sql = "update calendriers set calendrier_desc=" . safe_sql($calendrier_desc) . " where calendrier_num=" . safe_sql($calendrier_num);
 	$base->query($sql);	
 }
 
@@ -23,9 +22,9 @@ if (isset($ajouter)) {
 			if (count($client_search)>0) {
 				$client_num = $client_search[0];
 				// On recherche le client 
-				$sql = "select * from clients where client_num='" . $client_num . "'";
+				$sql = "select * from clients where client_num=" . safe_sql($client_num);
 				$rcl = $base->queryRow($sql);
- if ($rcl) {
+ 				if ($rcl) {
 					if ($rcl["client_genre"]==0)
 						$genre = "Mme";
 					else
@@ -34,19 +33,19 @@ if (isset($ajouter)) {
 					$client_nom_complet = str_replace("'","\'",$rcl["client_nom"]) . " " . $rcl["client_prenom"];
 					
 					// On regarde si on a pas déjà un rendez vous 
-					$sql = "select * from rendez_vous where client_num='" . $client_num . "' and type_num='" . $type . "'";
+					$sql = "select * from rendez_vous where client_num=" . safe_sql($client_num) . " and type_num=" . safe_sql($type);
 					$rtt = $base->queryRow($sql);
- if ($rtt) {
-						$sql = "delete from rendez_vous where rdv_num='" . $rtt["rdv_num"] . "'";
+ 					if ($rtt) {
+						$sql = "delete from rendez_vous where rdv_num=" . safe_sql($rtt["rdv_num"]);
 						$base->query($sql);
 							
-						$sql = "delete from calendriers where rdv_num='" . $rtt["rdv_num"] . "'";
+						$sql = "delete from calendriers where rdv_num=" . safe_sql($rtt["rdv_num"]);
 						$base->query($sql);
 					}
 					
 					// On insere un Rendez vous
 					$date_rdv = $date_debut;
-					$sql = "insert into rendez_vous values(0,'" . $client_num . "','" . $type . "','" . $date_rdv . "','',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00','" . $u->mNum . "')";
+					$sql = "insert into rendez_vous values(0," . safe_sql($client_num) . "," . safe_sql($type) . "," . safe_sql($date_rdv) . ",'',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . safe_sql($u->mNum) . ")";
 					$num = $base->insert($sql);
 					
 					// On ajoute dans le calendrier du user
@@ -58,7 +57,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
+							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -82,7 +81,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
 							$base->query($sql);
 							
 						break;
@@ -94,7 +93,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
+							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -118,7 +117,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
 							$base->query($sql);
 							
 						break;
@@ -130,7 +129,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
+							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -154,7 +153,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
 							$base->query($sql);
 							
 						break;
@@ -166,7 +165,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
+							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -190,7 +189,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
 							$base->query($sql);
 							
 						break;
@@ -208,7 +207,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
+							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -237,7 +236,7 @@ if (isset($ajouter)) {
 								SendMail("lilietcie34@gmail.com",$titre_mail,$message_mail,$u->mNum,$client_num);
 							}
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
 							$base->query($sql);
 							
 						break;
@@ -249,7 +248,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
+							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -271,7 +270,7 @@ if (isset($ajouter)) {
 							$message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
 							
 							if ($dernier_acompte>0) {
-								$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num='" . $rcl["showroom_num"] . "' order by mode_ordre ASC";
+								$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num=" . safe_sql($rcl["showroom_num"]) . " order by mode_ordre ASC";
 								$pa = $base->query($sql);
 								$nbr_paiement = count($pa);
 								$moyen_paiement = "";
@@ -295,7 +294,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
 							$base->query($sql);
 						break;
 						
@@ -306,7 +305,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
+							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -330,7 +329,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
 							$base->query($sql);
 							
 						break;
@@ -343,7 +342,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $titre . "','" . $desc . "','" . $u->mNum . "','" . $rcl["showroom_num"] . "','" . $client_num . "','" . $num . "')";
+							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -358,7 +357,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $num . "'";
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
 							$base->query($sql);
 							
 						break;
@@ -367,7 +366,7 @@ if (isset($ajouter)) {
 				}
 			}
 		} else {
-			$sql = "insert into calendriers values(0,'" . $date_debut . "','" . $date_fin . "','" . $theme . "','" . $description . "','','" . $u->mNum . "','" . $u->mShowroom . "','" . $client_num . "','" . $rdv_num . "')";
+			$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($description) . ",''," . safe_sql($u->mNum) . "," . safe_sql($u->mShowroom) . "," . safe_sql($client_num) . "," . safe_sql($rdv_num) . ")";
 			$base->query($sql);
 		}
 	} else {
@@ -377,11 +376,11 @@ if (isset($ajouter)) {
 
 if (isset($ajout_client)) {
 	// On test si le client n'exite pas
-	$sql = "select * from clients where client_mail='" . $mail . "'";
+	$sql = "select * from clients where client_mail=" . safe_sql($mail);
 	$tt = $base->query($sql);
 	$nbr = count($tt);
 	if ($nbr==0) {
-		$sql = "insert into clients values (0,'" . $genre . "','" . $nom . "','" . $prenom . "','" . $adr1 . "','" . $adr2 . "','" . $cp . "','" . $ville . "','" . $tel . "','" . $mail . "','" . $date . "','" . $lieu . "','','','" . $u->mShowroom . "','" . $u->mNum . "','" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "','','','','','','','','','','','','',0,0)";
+		$sql = "insert into clients values (0," . safe_sql($genre) . "," . safe_sql($nom) . "," . safe_sql($prenom) . "," . safe_sql($adr1) . "," . safe_sql($adr2) . "," . safe_sql($cp) . "," . safe_sql($ville) . "," . safe_sql($tel) . "," . safe_sql($mail) . "," . safe_sql($date) . "," . safe_sql($lieu) . ",'',''," . safe_sql($u->mShowroom) . "," . safe_sql($u->mNum) . ",'" . Date("Y-m-d H:i:s") . ",'" . Date("Y-m-d H:i:s") . ",'','','','','','','','','','','','',0,0)";
 		$base->query($sql);
 	} else {
 		$message_erreur = "Un client est déjà enregistré avec cette adresse email !";
@@ -390,97 +389,6 @@ if (isset($ajout_client)) {
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
-<script language="Javascript">
-function displayReponse(sText, place) {
-	var info = document.getElementById(place);
-	info.innerHTML = sText;
-}
-
-function addWidget() {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	type = document.getElementById("theme").options[document.getElementById("theme").selectedIndex].value;
-	link = "display.php?type="+ type + "&mode=1";
-	oXmlHttp.open("get",link, true);
-	oXmlHttp.onreadystatechange = function () {
-		if (oXmlHttp.readyState == 4) {
-				if (oXmlHttp.status == 200) {
-					//alert('OK : ' + oXmlHttp.responseText);
-					displayReponse(oXmlHttp.responseText, "select_client");
-					if (type!=1) {
-						displayReponse("", "select_acompte");
-					}
-				}
-				else {
-					//alert('Erreur : ' + oXmlHttp.statusText);
-					displayReponse("Erreur : " + oXmlHttp.statusText, "select_client");
-				}
-		}
-	};
-	oXmlHttp.send(null);
-}
-
-function addAcompte() {	
-	//alert(id);
-	var oXmlHttp = null; 
-	 
-	//alert(id);
-	if(window.XMLHttpRequest)
-		oXmlHttp = new XMLHttpRequest();
-	else if(window.ActiveXObject)
-	{
-	   try  {
-                oXmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                oXmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-	}
-	
-	type = document.getElementById("type").options[document.getElementById("type").selectedIndex].value;
-	nom = document.getElementById("client").value;
-	if (type==5) {
-		link = "display.php?type=" + type + "&client=" + nom + "&mode=2";
-		oXmlHttp.open("get",link, true);
-		oXmlHttp.onreadystatechange = function () {
-			if (oXmlHttp.readyState == 4) {
-					if (oXmlHttp.status == 200) {
-						//alert('OK : ' + oXmlHttp.responseText);
-						displayReponse(oXmlHttp.responseText, "select_acompte");
-					}
-					else {
-						//alert('Erreur : ' + oXmlHttp.statusText);
-						displayReponse("Erreur : " + oXmlHttp.statusText, "select_acompte");
-					}
-			}
-		};
-		oXmlHttp.send(null);
-	}
-}
-
-function changeDateFin() {
-	date = document.getElementById("date_deb").value;
-	document.getElementById("date_fin").value = date;
-}
-
-function changeHeureFin() {
-	date = document.getElementById("time_deb").value;
-	document.getElementById("time_fin").value = date;
-}
-</script>
-
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">
@@ -541,7 +449,8 @@ function changeHeureFin() {
 																			<i class="fa fa-meh-o"></i>
 																		</span>
 																		<select name="theme" id="theme" class="form-control" onChange="addWidget();">
-																		<?php																			$sql = "select * from calendriers_themes order by theme_pos ASC";
+																		<?php																			
+																			$sql = "select * from calendriers_themes order by theme_pos ASC";
 																			$tt = $base->query($sql);
 																			foreach ($tt as $rtt) {
 																				echo '<option value="' . $rtt["theme_num"] . '"';
@@ -561,7 +470,8 @@ function changeHeureFin() {
 																				<i class="fa fa-share-alt"></i>
 																			</span>
 																			<select name="type" id="type" class="form-control">
-																			<?php																				$sql = "select * from rdv_types where type_num NOT IN (2,3) order by type_pos ASC";
+																			<?php																				
+																				$sql = "select * from rdv_types where type_num NOT IN (2,3) order by type_pos ASC";
 																				$tt = $base->query($sql);
 																				foreach ($tt as $rtt) {
 																					echo '<option value="' . $rtt["type_num"] . '"';
@@ -643,7 +553,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-user"></i>
 																		</span>
-																		<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= $nom ?>" required> </div>
+																		<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= ($nom ?? '') ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Prenom</label>
@@ -651,7 +561,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-user"></i>
 																		</span>
-																		<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?= $prenom ?>" required> </div>
+																		<input type="text" name="prenom" class="form-control" placeholder="Prénom" value="<?= ($prenom ?? '') ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Tel</label>
@@ -659,7 +569,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-mobile-phone"></i>
 																		</span>
-																		<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= $tel ?>" required> </div>
+																		<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= ($tel ?? '') ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Email</label>
@@ -667,7 +577,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-envelope"></i>
 																		</span>
-																		<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= $mail ?>" required> </div>
+																		<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= ($mail ?? '') ?>" required> </div>
 																</div>
 																<div class="form-group">
 																	<label>Adresse</label>
@@ -675,7 +585,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-road"></i>
 																		</span>
-																		<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?= $adr1 ?>"> </div>
+																		<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?= ($adr1 ?? '') ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>Complément d'adresse</label>
@@ -683,7 +593,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-road"></i>
 																		</span>
-																		<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?= $adr2 ?>"> </div>
+																		<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?= ($adr2 ?? '') ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>CP</label>
@@ -691,7 +601,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-search"></i>
 																		</span>
-																		<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?= $cp ?>"> </div>
+																		<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?= ($cp ?? '') ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>Ville</label>
@@ -699,7 +609,7 @@ function changeHeureFin() {
 																		<span class="input-group-addon">
 																			<i class="fa fa-shield"></i>
 																		</span>
-																		<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?= $ville ?>"> </div>
+																		<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?= ($ville ?? '') ?>"> </div>
 																</div>
 																<div class="form-group">
 																	<label>Date du mariage</label>
@@ -805,10 +715,11 @@ function changeHeureFin() {
 						</div>
 					</div>
 				</div>
-				<?php					$param = "";
+				<?php					
+					$param = "";
 					$date_deb = Date("Y-m-d 00:00:00", strtotime("-30 days"));
 					// ON recherche les events pour remplir le calendrier perso
-					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num='" . $u->mNum . "' and calendrier_datedeb>='" . $date_deb . "' and c.theme_num=4 order by calendrier_datedeb DESC";
+					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num=" . safe_sql($u->mNum) . " and calendrier_datedeb>=" . safe_sql($date_deb) . " and c.theme_num=4 order by calendrier_datedeb DESC";
 					$cc = $base->query($sql);
 					$nbr = count($cc);
 					$i=0;
@@ -830,13 +741,13 @@ function changeHeureFin() {
 						$link = "";
 						if ($rcc["client_num"]!=0) {
 							$genre = 0;
-							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
+							$sql = "select * from clients where client_num=" . safe_sql($rcc["client_num"]);
 							$rcl = $base->queryRow($sql);
  							if ($rcl) {
 								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
-							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
+							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num=" . safe_sql($rcc["rdv_num"]);
 							$rrr = $base->queryRow($sql);
 							if ($rrr) {
 								if ($genre==0)
@@ -846,11 +757,8 @@ function changeHeureFin() {
 							}
 						}
 						
-						
-						
 						$title_modal = $heure_deb . ":" . $minute_deb . " - " . $heure_fin . ":" . $minute_fin;
-						$desc_modal = "<p><strong>" . $rcc["calendrier_titre"] . "</strong></p>";
-						
+						$desc_modal = "<p><strong>" . $rcc["calendrier_titre"] . "</strong></p>";						
 						
 						$param .= '{
 								title: "' . $rcc["calendrier_titre"] . '",
@@ -867,7 +775,7 @@ function changeHeureFin() {
 						$param.= ",";
 					
 					// ON recherche les events pour remplir le calendrier du showroom
-					$sql = "select * from calendriers c, calendriers_themes ct, clients cl, users u where c.theme_num=ct.theme_num and c.client_num=cl.client_num and cl.user_num=u.user_num and c.showroom_num='" . $u->mShowroom . "'  and calendrier_datedeb>='" . $date_deb . "' and c.theme_num!=4 order by calendrier_datedeb DESC";
+					$sql = "select * from calendriers c, calendriers_themes ct, clients cl, users u where c.theme_num=ct.theme_num and c.client_num=cl.client_num and cl.user_num=u.user_num and c.showroom_num=" . safe_sql($u->mShowroom) . "  and calendrier_datedeb>=" . safe_sql($date_deb) . " and c.theme_num!=4 order by calendrier_datedeb DESC";
 					$cc = $base->query($sql);
 					$nbr = count($cc);
 					$i=0;
@@ -890,13 +798,13 @@ function changeHeureFin() {
 						$type_rdv = 0;
 						if ($rcc["client_num"]!=0) {
 							$genre = 0;
-							$sql = "select * from clients where client_num='" . $rcc["client_num"] . "'";
+							$sql = "select * from clients where client_num=" . safe_sql($rcc["client_num"]);
 							$rcl = $base->queryRow($sql);
  							if ($rcl) {
 								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
-							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num='" . $rcc["rdv_num"] . "'";
+							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num=" . safe_sql($rcc["rdv_num"]);
 							$rrr = $base->queryRow($sql);
 							if ($rrr) {
 								$type_rdv = $rrr["type_num"];
@@ -1034,7 +942,7 @@ function changeHeureFin() {
 		
 		$(function() {
 			var availableTagsClient = [';
-			$sql = "select * from clients where showroom_num='" . $u->mShowroom . "' and client_nom not like'%?%' and client_prenom not like '%?%' order by client_nom ASC, client_prenom ASC";
+			$sql = "select * from clients where showroom_num=" . safe_sql($u->mShowroom) . " and client_nom not like'%?%' and client_prenom not like '%?%' order by client_nom ASC, client_prenom ASC";
 			$jj = $base->query($sql);
 			$nbr = count($jj);
 			$i=0;
@@ -1095,6 +1003,41 @@ function changeHeureFin() {
 				//alert('submitting');
 				$('#formfield').submit();
 			});
+			// Remplit #select_client quand la catégorie change
+			async function addWidget(){
+				const type = document.getElementById('theme').value;
+				try{
+				const data = await $ol.apiPost('agenda', { mode:'prepare', type });
+				if (data?.ok && data?.place) $ol.html(document.getElementById(data.place), data.html || '');
+				else $ol.toastError('Agenda', data?.error || 'Réponse invalide');
+				if (String(type) !== '1') $ol.html(document.getElementById('select_acompte'), '');
+				}catch(e){ /* toast déjà fait par apiPost */ }
+			}
+
+			// Remplit #select_acompte en sortie du champ client
+			async function addAcompte(){
+				const typeEl   = document.getElementById('type');
+				const clientEl = document.getElementById('client');
+				const type   = typeEl ? typeEl.value : '';
+				const client = clientEl ? clientEl.value : '';
+				if (!client) { $ol.html(document.getElementById('select_acompte'), ''); return; }
+
+				try{
+				const data = await $ol.apiPost('agenda', { mode:'acompte', type, client });
+				if (data?.ok && data?.place) $ol.html(document.getElementById(data.place), data.html || '');
+				else $ol.toastError('Agenda', data?.error || 'Réponse invalide');
+				}catch(e){ /* toast déjà fait par apiPost */ }
+			}
+			function changeDateFin() {
+				date = document.getElementById("date_deb").value;
+				document.getElementById("date_fin").value = date;
+			}
+
+			function changeHeureFin() {
+				date = document.getElementById("time_deb").value;
+				document.getElementById("time_fin").value = date;
+			}
+
 		</script>	
     </body>
 

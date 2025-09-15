@@ -361,7 +361,7 @@ function secure_value($value): string {
     $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $value);
     
     // Nettoyer les caractères potentiellement dangereux mais garder les accents
-    $value = htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    //$value = htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     
     return trim($value);
 }
