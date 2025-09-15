@@ -328,7 +328,7 @@ function changeEtat(id,produit,val,paiement) {
 												 // On regarde la date de reception de la robe
 												 $sql = "select * from rendez_vous where type_num=2 and client_num='" . $row["client_num"] . "'";
 												 $rrr = $base->queryRow($sql);
-if ($rrr) {
+												if ($rrr) {
 													$date_reception = format_date($rrr["rdv_date"],11,1);
 												 }
 												 
@@ -362,13 +362,19 @@ if ($rrr) {
 													<td><small>
 													<?php 
 														if ($paiement_commande==1) {
-															if ($paiement1_payer==0) {
-																echo safe_number_format($paiement1_val,2,'.',' ') . " € ";
-																echo ' <input type="checkbox" name="paiement1_' . $row["id"] . '" id="paiement1_' . $row["id"] . '" onClick="changeEtat(' . $row["id"] . ',' . $row["produit_num"] . ',' . $paiement1_val . ',1)">';
-															} else {
-																echo safe_number_format($paiement1_payer,2,'.',' ') . " € ";
-																echo ' <input type="checkbox" name="paiement1_' . $row["id"] . '" id="paiement1_' . $row["id"] . '" CHECKED onClick="changeEtat(' . $row["id"] . ',' . $row["produit_num"] . ',' . $paiement1_val . ',1)">';
-															}
+															$paid      = (float)($paiement1_payer ?? 0);
+															$isPaid    = $paid > 0;
+															$display   = $isPaid ? $paid : (float)$paiement1_val; // ce qu'on affiche
+															$checked   = $isPaid ? ' checked' : '';               // état de la case
+
+															echo safe_number_format($display, 2, '.', ' ') . ' € ';
+															echo '<input type="checkbox"
+																	class="js-paiement"
+																	id="paiement1_' . (int)$row['id'] . '"
+																	data-id="' . (int)$row['id'] . '"
+																	data-produit="' . (int)$row['produit_num'] . '"
+																	data-val="' . (float)$paiement1_val . '"
+																	data-paiement="1"' . $checked . '>';
 														}
 													?>
 													</small></td>
@@ -382,13 +388,22 @@ if ($rrr) {
 													<td><small>
 													<?php 
 														if ($paiement_reception==1) {
-															if ($paiement2_payer==0) {
-																echo safe_number_format($paiement2_val,2,'.',' ') . " € ";
-																if ($date_reception!="NR")
-																	echo ' <input type="checkbox" name="paiement2_' . $row["id"] . '" id="paiement2_' . $row["id"] . '" onClick="changeEtat(' . $row["id"] . ',' . $row["produit_num"] . ',' . $paiement2_val . ',2)">';
-															} else {
-																echo safe_number_format($paiement2_payer,2,'.',' ') . " € ";
-																echo ' <input type="checkbox" name="paiement1_' . $row["id"] . '" CHECKED id="paiement2_' . $row["id"] . '"  onClick="changeEtat(' . $row["id"] . ',' . $row["produit_num"] . ',' . $paiement2_val . ',2)">';
+															$paid       = (float)($paiement2_payer ?? 0);
+															$isPaid     = $paid > 0;
+															$display    = $isPaid ? $paid : (float)$paiement2_val;   // montant affiché
+															$canCheck   = ($date_reception ?? '') !== 'NR';          // on autorise la case seulement si réception ok
+															$checked    = $isPaid ? ' checked' : '';
+
+															echo safe_number_format($display, 2, '.', ' ') . ' € ';
+															if ($canCheck) {
+																echo '<input type="checkbox"
+																		class="js-paiement"
+																		id="paiement2_' . (int)$row['id'] . '"
+																		name="paiement2_' . (int)$row['id'] . '"
+																		data-id="' . (int)$row['id'] . '"
+																		data-produit="' . (int)$row['produit_num'] . '"
+																		data-val="' . (float)$paiement2_val . '"
+																		data-paiement="2"' . $checked . '>';
 															}
 														}
 													?>
@@ -424,6 +439,59 @@ if ($rrr) {
             </div>
         </div>
          <?php include TEMPLATE_PATH . 'bottom.php'; ?>
-    </body>
+<script>
 
+// EXPOSE GLOBAL pour être appelé par onClick
+window.changeEtat = function(id, produit, val, paiement){
+  // si la case vient d’être décochée, on force val=0 (sécurité côté client)
+  const cbId = (paiement==1? 'paiement1_' : 'paiement2_') + id;
+  const cb = document.getElementById(cbId);
+  if (cb && !cb.checked) val = 0;
+
+  // Optionnel : petit "loading" inline dans la cellule du "reste"
+  const place = 'reste_' + id;
+  const cell = document.getElementById(place);
+  if (cell) cell.innerHTML = '<span class="fa fa-spinner fa-spin"></span>';
+
+  $ol.apiPost('fournisseur-paiement', {
+      mode: 'toggle',
+      id: id,
+      produit: produit,
+      val: val,
+      paiement: paiement
+    })
+    .then((resp) => {
+      // resp = {ok:true, html:"12.34 €", place:"reste_113"} par ex.
+      if (resp && resp.ok) {
+        if (resp.place && document.getElementById(resp.place)) {
+          document.getElementById(resp.place).innerHTML = resp.html;
+        }
+        // petit toast succès discret
+        $ol.toastSuccess && $ol.toastSuccess('Mise à jour', 'Paiement enregistré');
+      } else {
+        throw new Error(resp?.error || 'Réponse invalide');
+      }
+    })
+    .catch((e) => {
+      // rollback visuel : si erreur on re-bascule la case
+      if (cb) cb.checked = !cb.checked;
+      // remettre l’ancien contenu si on l’a encore ?
+      if (cell) cell.innerHTML = '<span class="ol-inline-error"><span class="dot"></span><span>Erreur</span></span>';
+
+      $ol.toastError('Erreur serveur', e?.message || 'Impossible de mettre à jour le paiement');
+    });
+};
+
+document.addEventListener('change', (e)=>{
+  const cb = e.target.closest('input[type="checkbox"][id^="paiement"]');
+  if (!cb) return;
+  const id = parseInt(cb.dataset.id,10) || 0;
+  const produit = parseInt(cb.dataset.produit,10) || 0;
+  const val = cb.checked ? (parseFloat(cb.dataset.val)||0) : 0;
+  const paiement = parseInt(cb.dataset.paiement,10) || 0;
+  changeEtat(id, produit, val, paiement); // réutilise la même fonction
+});
+</script>
+
+    </body>
 </html>

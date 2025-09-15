@@ -89,17 +89,15 @@ $desc_page = "Comptabilite - Olympe Mariage";
 			break;
 		}
 	}
+
+	$date_deb_input = $date_deb; // format YYYY-mm-dd
+	$date_fin_input = $date_fin;
+
 	$date_deb .= " 00:00:00";
 	$date_fin .= " 23:59:59";
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
-<script language="JavaScript">
-function initDate() {
-	document.getElementById("date_deb").value = ""; 
-	document.getElementById("date_fin").value = ""; 
-}
-</script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
         <div class="wrapper">
@@ -155,8 +153,8 @@ function initDate() {
 														<option value="4"<?php if ($periode==4) echo " SELECTED" ?>>Le mois dernier</option>
 													</select>
 												</td>
-												<td><input type="date" name="date_deb" id="date_deb" class="form-control input-medium" value="<?= $date_deb ?>"></td>
-												<td><input type="date" name="date_fin" id="date_fin" class="form-control input-medium" value="<?= $date_fin ?>"></td>
+												<td><input type="date" name="date_deb" id="date_deb" class="form-control input-medium" value="<?= h($date_deb_input ?? '') ?>"></td>
+												<td><input type="date" name="date_fin" id="date_fin" class="form-control input-medium" value="<?= h($date_fin_input ?? '') ?>"></td>
 												<td>
 													<select name="etat" class="form-control input-medium">
 														<option value="1" <?php if ($etat==1) echo " SELECTED"; ?>>Commandes en cours</option>
@@ -164,11 +162,12 @@ function initDate() {
 														<option value="3" <?php if ($etat==3) echo " SELECTED"; ?>>Commandes passées</option>
 													</select>
 												</td>
-												<td><input type="text" name="facture" id="facture" class="form-control input-medium" value="<?= $facture ?>"></td>
+												<td><input type="text" name="facture" id="facture" class="form-control input-medium" value="<?= ($facture ?? '') ?>"></td>
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															
+															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -217,7 +216,8 @@ function initDate() {
 										</tr>
 									</thead>
 									<tbody>
-										<?php											if ($facture!="") {
+										<?php											
+											if (($facture ?? '') !="") {
 												$sql = "select * from commandes c, clients cl, paiements p  where c.paiement_num=p.paiement_num and c.client_num=cl.client_num and c.showroom_num='" . $showroom . "' and facture_num='" . $facture . "' order by commande_date DESC";
 											} else {
 												switch ($etat) {
@@ -232,9 +232,7 @@ function initDate() {
 													case 3:
 														$sql = "select * from commandes c, clients cl, paiements p  where c.paiement_num=p.paiement_num and c.client_num=cl.client_num and commande_date>='" . $date_deb . "' and commande_date<='" . $date_fin . "' and c.showroom_num='" . $showroom . "' and commande_num!=0 order by commande_date DESC";
 													break;
-												}
-												
-													
+												}	
 											}
 											$sql_facture = $sql;
 											$cc = $base->query($sql);
@@ -256,7 +254,9 @@ function initDate() {
 												// On calcul la somme déjà payé
 												$montant_paye = 0;
 												$sql = "select sum(paiement_montant) val from commandes_paiements where id='" . $rcc["id"] . "'";
-												$rpa = $base->queryRow($sql); if ($rpa)													$montant_paye = $rpa["val"];
+												$rpa = $base->queryRow($sql); 
+												if ($rpa)													
+													$montant_paye = $rpa["val"];
 												
 												$reste_a_paye = abs(montantCommandeTTC($rcc["id"]) - $montant_paye);
 																							
@@ -314,13 +314,16 @@ function initDate() {
 							</div>
 						</div>
 						<?php if ($etat==2) { ?>
-							<hr>
-							<form name="extract" action="extract.php" method="POST">
-							<input type="hidden" name="date_debut" value="<?= $date_deb ?>">
-							<input type="hidden" name="date_fin" value="<?= $date_fin ?>">
-							<input type="hidden" name="showroom" value="<?= $showroom ?>">
-							<input type="submit" value="Export comptabilité" class="btn green">
-							</form>
+							<div class="mt-3">
+								<a class="btn green" target="_blank"
+								href="/api/export-comptabilite?what=factures&date_deb=<?= urlencode($date_deb_input) ?>&date_fin=<?= urlencode($date_fin_input) ?>&showroom=<?= (int)$showroom ?>">
+								Export CSV — Factures
+								</a>
+								<a class="btn green" target="_blank"
+								href="/api/export-comptabilite?what=reglements&date_deb=<?= urlencode($date_deb_input) ?>&date_fin=<?= urlencode($date_fin_input) ?>&showroom=<?= (int)$showroom ?>">
+								Export CSV — Règlements
+								</a>
+							</div>
 						<?php } ?>
 					</div>
                     <!-- END PAGE BASE CONTENT -->
@@ -329,6 +332,27 @@ function initDate() {
             </div>
         </div>
          <?php include TEMPLATE_PATH . 'bottom.php'; ?>
+<script>
+	function initDate() {
+		document.getElementById("date_deb").value = ""; 
+		document.getElementById("date_fin").value = ""; 
+	}
+  (function(){
+    const periode = document.querySelector('select[name="periode"]');
+    const deb = document.getElementById('date_deb');
+    const fin = document.getElementById('date_fin');
+
+    function setCustomIfDates(){
+      if (!periode) return;
+      if ((deb && deb.value) || (fin && fin.value)) {
+        periode.value = '0'; // Personnalisée
+      }
+    }
+    deb && deb.addEventListener('change', setCustomIfDates);
+    fin && fin.addEventListener('change', setCustomIfDates);
+  })();
+</script>
+
     </body>
 
 </html>
