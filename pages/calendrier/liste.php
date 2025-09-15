@@ -22,13 +22,6 @@ if (isset($calendrier_suppr)) {
 async function confirme() {
     return await $ol.confirmDialog("Etes vous sur de vouloir supprimer cette date ?");
 }
-
-function confirme() {
-	if (confirm("Etes vous sur de vouloir supprimer cette date ?"))
-		return true;
-	else 
-		return false;
-}
 </script>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
         <!-- BEGIN CONTAINER -->
