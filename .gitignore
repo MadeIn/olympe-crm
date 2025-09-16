@@ -6,6 +6,9 @@
 /assets/layout/
 /assets/global/plugins/
 
+## Config
+.env
+
 # Fichiers temporaires
 *.tmp
 *.cache

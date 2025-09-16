@@ -4,10 +4,10 @@
  */
 
 return [
-    'host' => 'localhost',
-    'database' => 'crm_dev',
-    'username' => 'crm_dev',
-    'password' => 'C0r7ex34170', // À configurer selon votre environnement
+    'host' => env('DB_HOST'),
+    'database' => env('DB_NAME'),
+    'username' => env('DB_USER'),
+    'password' => env('DB_PASSWORD'),
     'charset' => 'utf8mb4',
     'collation' => 'utf8mb4_unicode_ci',
     'options' => [

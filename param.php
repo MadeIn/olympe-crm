@@ -15,6 +15,8 @@ if (!defined('APP_BOOTSTRAPPED')) {
         require $ROOT . '/vendor/autoload.php';
     }
 
+    require_once $ROOT . '/includes/functions.php';
+
     // Config & erreurs
     $app_config = require $ROOT . '/config/app.php';
     $env = (string)($app_config['environment'] ?? 'prod');
@@ -34,8 +36,7 @@ if (!defined('APP_BOOTSTRAPPED')) {
     require_once $ROOT . '/classes/Database.php';
     require_once $ROOT . '/classes/User.php';
     require_once $ROOT . '/classes/Auth.php';
-    require_once $ROOT . '/includes/functions.php';
-
+    
     // (Optionnel) les autres helpers si besoin en accès direct:
     require_once $ROOT . '/includes/helpers.php';
     require_once $ROOT . '/includes/text_functions.php';

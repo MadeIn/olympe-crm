@@ -26,6 +26,8 @@ if (!isset($app_config) || !is_array($app_config)) {
     $app_config = require APP_ROOT . '/config/app.php';
 }
 
+require_once APP_ROOT . '/includes/functions.php';
+
 $__env = (string)($app_config['environment'] ?? 'prod');
 if ($__env === 'dev') {
     ini_set('display_errors', '1');
@@ -47,7 +49,6 @@ if (function_exists('mb_internal_encoding')) {
 // ────────────────────────────────────────────────────────────
 // 3) Helpers / includes thématiques (TOUS chargés)
 // ────────────────────────────────────────────────────────────
-require_once APP_ROOT . '/includes/functions.php';
 require_once APP_ROOT . '/includes/helpers.php';           // ton fichier helpers central si présent
 require_once APP_ROOT . '/includes/text_functions.php';
 require_once APP_ROOT . '/includes/date_functions.php';

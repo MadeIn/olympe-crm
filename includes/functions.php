@@ -3,6 +3,36 @@
  * Fonctions utilitaires du CRM
  * Fichier centralisé pour toutes les fonctions
  */
+// CHARGEMENT DU FICHIER .ENV
+if (!function_exists('loadEnvFile')) {
+    function loadEnvFile($path) {
+        if (!file_exists($path)) {
+            return false;
+        }
+        
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos(trim($line), '#') === 0) {
+                continue;
+            }
+            
+            if (strpos($line, '=') !== false) {
+                list($key, $value) = explode('=', $line, 2);
+                $key = trim($key);
+                $value = trim($value, '"\'');
+                
+                if (!isset($_ENV[$key])) {
+                    $_ENV[$key] = $value;
+                    putenv("$key=$value");
+                }
+            }
+        }
+        return true;
+    }
+}
+
+// Chargement automatique du .env
+loadEnvFile(__DIR__ . '/../.env');
 
 /**
  * Génération d'un champ CSRF pour les formulaires
@@ -421,5 +451,9 @@ function isActiveMenu(string $path, bool $prefixMatch = true): string {
     return '';
 }
 
+function env($key, $default = null) {
+    $value = $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key);
+    return $value !== false ? $value : $default;
+}
 
 ?>

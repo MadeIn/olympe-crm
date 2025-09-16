@@ -24,6 +24,8 @@ if (is_file($VENDOR . '/autoload.php')) {
 $app_config = require $ROOT . '/config/app.php';
 $chemins = (array)$app_config['paths'] ?? [];
 
+require_once $ROOT . '/includes/functions.php';
+
 // Gestion des erreurs selon l'env
 $env = (string)($app_config['environment'] ?? 'prod');
 if ($env === 'dev') {
@@ -45,7 +47,6 @@ require_once $ROOT . '/classes/Auth.php';
 
 // Helpers & fonctions (tes fichiers existants)
 require_once $ROOT . '/includes/helpers.php';
-require_once $ROOT . '/includes/functions.php';
 require_once $ROOT . '/includes/text_functions.php';
 require_once $ROOT . '/includes/date_functions.php';
 require_once $ROOT . '/includes/crypto_functions.php';
