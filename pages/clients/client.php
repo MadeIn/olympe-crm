@@ -1,4 +1,4 @@
-;<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/param.php";
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/param.php";
 
 if (!isset($tab)) {
 	if ($u->mGroupe!=0)
@@ -22,7 +22,7 @@ if (isset($modifier)) { // On modifie les infos
 			client_lieu_mariage=" . sql_safe($lieu) . ",
 			client_remarque=" . sql_safe($remarques) . ",
 			connaissance_num=" . sql_safe($connaissance) . ",
-			client_datemodification=" . Date("Y-m-d H:i:s") . ",
+			client_datemodification=" . sql_safe(Date("Y-m-d H:i:s")) . ",
 			poitrine=" . sql_safe($poitrine) . ",
 			sous_poitrine=" . sql_safe($sous_poitrine) . ",
 			taille=" . sql_safe($taille) . ",
@@ -43,7 +43,7 @@ if (isset($modifier)) { // On modifie les infos
 	$base->query($sql);
 }
 
-$sql = "select * from clients where client_num='" . decrypte($client_num);
+$sql = "select * from clients where client_num=" . decrypte($client_num);
 $rcl = $base->queryRow($sql);
 if (!$rcl) {
 	header("location:/home");
@@ -68,7 +68,7 @@ if (isset($rdv_num)) {
 	}
 	// On insere un Rendez vous
 	$date_rdv = $date . " " . $time;
-	$sql = "insert into rendez_vous values(0,'" . decrypte($client_num) . "," . sql_safe($type_num) . "," . sql_safe($date_rdv) . "," . sql_safe($remarque) . ",0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . sql_safe($u->mNum) . ")";
+	$sql = "insert into rendez_vous values(0," . decrypte($client_num) . "," . sql_safe($type_num) . "," . sql_safe($date_rdv) . "," . sql_safe($remarque) . ",0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . sql_safe($u->mNum) . ")";
 	$num = $base->insert($sql);
 	
 	// On ajoute dans le calendrier du user
@@ -83,7 +83,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -107,7 +107,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 			
 		break;
@@ -122,7 +122,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -146,7 +146,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 			
 		break;
@@ -161,7 +161,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -185,7 +185,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 			
 		break;
@@ -200,7 +200,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -224,7 +224,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 			
 		break;
@@ -244,7 +244,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -259,7 +259,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -273,7 +273,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -305,7 +305,7 @@ if (isset($rdv_num)) {
 				SendMail("margotla1982@gmail.com",$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			}
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -319,7 +319,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -365,7 +365,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -379,7 +379,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -408,7 +408,7 @@ if (isset($rdv_num)) {
 				SendMail("lilietcie34@gmail.com",$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			}
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -422,7 +422,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -436,7 +436,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 						
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 	}
@@ -457,7 +457,7 @@ if ($rdd) {
 	}
 	
 	// On insere le devis
-	$sql = "insert into commandes values(0,'" . decrypte($client_num). "," . sql_safe($devis_num) . ",'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','1'," . sql_safe($u->mNum) . "," . sql_safe($u->mShowroom) . ")";
+	$sql = "insert into commandes values(0," . decrypte($client_num). "," . sql_safe($devis_num) . "," . sql_safe(Date("Y-m-d H:i:s")) . ",'0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','1'," . sql_safe($u->mNum) . "," . sql_safe($u->mShowroom) . ")";
 	$id = $base->insert($sql);
 	
 	// ON insere les produits contenu dans la sélection
@@ -502,13 +502,13 @@ if (isset($selection_envoi)) {
 	// On envoi le mail
 	SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 	
-	$sql = "update selections set selection_envoye=1, selection_envoye_date='" . Date("Y-m-d H:i:s") . " where selection_num=" . decrypte($selection_envoi);
+	$sql = "update selections set selection_envoye=1, selection_envoye_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where selection_num=" . decrypte($selection_envoi);
 	$base->query($sql);
 }
 
 if (isset($commande_passage)) {
 	// On test si toutes les tailles sont renseignées
-	$sql = "select * from commandes_produits where id='" . decrypte($commande_passage) . " and taille_num='-1'";
+	$sql = "select * from commandes_produits where id='" . decrypte($commande_passage) . "' and taille_num='-1'";
 	$tt = $base->query($sql);
 	$nbr = count($tt);
 	if ($nbr==0) { // On passe la commande
@@ -543,7 +543,7 @@ if (isset($commande_passage)) {
 				$base->query($sql);
 				
 				// On insere le paiement
-				$sql = "insert into commandes_paiements values(" . decrypte($commande_passage) . ",'1','" . Date("Y-m-d H:i:s") . "," . sql_safe($montant_a_payer) . ",'1','',0,'0000-00-00 00:00:00')";
+				$sql = "insert into commandes_paiements values(" . decrypte($commande_passage) . ",'1'," . sql_safe(Date("Y-m-d H:i:s")) . "," . sql_safe($montant_a_payer) . ",'1','',0,'0000-00-00 00:00:00')";
 				$base->query($sql);
 				
 				if ($rco["facture_num"]==0) {
@@ -560,7 +560,7 @@ if (isset($commande_passage)) {
 						$facture_num = $facture_deb + 1 ;
 					}
 					
-					$sql = "update commandes set facture_num=" . sql_safe($facture_num) . ",facture_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($commande_passage);
+					$sql = "update commandes set facture_num=" . sql_safe($facture_num) . ",facture_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where id=" . decrypte($commande_passage);
 					$base->query($sql);
 					
 					// On decroit les stocks
@@ -603,7 +603,7 @@ if (isset($commande_passage)) {
 if (isset($paiement)) {
 	$montant = str_replace(",",".",$montant);
 	// On regarde si c'est une modification
-	if ($modif=="ok") {
+	if (($modif ?? '')=="ok") {
 		$sql = "update commandes_paiements set paiement_montant=" . sql_safe($montant) . ", mode_num=" . sql_safe($mode) . ", cheque_num=" . sql_safe($num) . " where id=" . decrypte($commande_modif) . " and paiement_num=" . sql_safe($echeance);
 		$base->query($sql);
 	} else {
@@ -636,7 +636,7 @@ if (isset($paiement)) {
 								$facture_num = $facture_deb + 1 ;
 							}
 							
-							$sql = "update commandes set facture_num=" . sql_safe($facture_num) . ",facture_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($commande_modif);
+							$sql = "update commandes set facture_num=" . sql_safe($facture_num) . ",facture_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where id=" . decrypte($commande_modif);
 							$base->query($sql);
 							
 							// On decroit les stocks
@@ -734,7 +734,7 @@ if (isset($devis)) {
 	}
 	
 	// On créé un devis
-	$sql = "insert into commandes values(0,'" . decrypte($client_num). "," . sql_safe($devis_num) . ",'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','3'," . sql_safe($u->mNum) . "," . sql_safe($u->mShowroom) . ")";
+	$sql = "insert into commandes values(0," . decrypte($client_num). "," . sql_safe($devis_num) . "," . sql_safe(Date("Y-m-d H:i:s")) . ",'0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','3'," . sql_safe($u->mNum) . "," . sql_safe($u->mShowroom) . ")";
 	$base->query($sql);
 }
 
@@ -799,7 +799,7 @@ if (isset($devis_envoi)) { // ON envoie le devis par mail
 		$sql = "delete from commandes_mails where id=" . decrypte($devis_envoi);
 		$base->query($sql);
 		
-		$sql = "insert into commandes_mails values(" . decrypte($devis_envoi) . ",'1','" . Date("Y-m-d H:i:s") . ",0,'0000-00-00 00:00:00')";
+		$sql = "insert into commandes_mails values(" . decrypte($devis_envoi) . ",'1'," . sql_safe(Date("Y-m-d H:i:s")) . ",0,'0000-00-00 00:00:00')";
 		$base->query($sql);
 	} else {
 		$message_erreur_devis = "Vous devez renseigner toutes les tailles avant d'envoyer le devis !";
@@ -823,10 +823,10 @@ if (isset($facture_envoi)) { // ON envoie le devis par mail
 	$sql = "select * from commandes_mails where id=" . decrypte($facture_envoi);
 	$rtt = $base->queryRow($sql);
  	if ($rtt) {
-		$sql = "update commandes_mails set facture_mail=1, facture_mail_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($facture_envoi);
+		$sql = "update commandes_mails set facture_mail=1, facture_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where id=" . decrypte($facture_envoi);
 		$base->query($sql);
 	} else {
-		$sql = "insert into commandes_mails values(" . decrypte($facture_envoi) . ",0,'0000-00-00 00:00:00','1','" . Date("Y-m-d H:i:s") . ")";
+		$sql = "insert into commandes_mails values(" . decrypte($facture_envoi) . ",0,'0000-00-00 00:00:00','1'," . sql_safe(Date("Y-m-d H:i:s")) . ")";
 		$base->query($sql);
 	}
 }
@@ -840,12 +840,12 @@ if (isset($acompte_envoi)) { // ON envoie le devis par mail
 	$titre_mail = str_replace("[PAIEMENT_NUM]",$paiement,$titre_mail);
 	$message_mail = str_replace("[PRENOM]",$rcl["client_prenom"],$message_mail);
 	$message_mail = str_replace("[COMMANDE_NUM]",$acompte_envoi,$message_mail);
-	$message_mail = str_replace("[PAIEMENT_NUM]",$paiement,$message_mail);
+	$message_mail = str_replace("[PAIEMENT_NUM]",$paiement_echeance,$message_mail);
 	
 	// On envoi le mail
 	SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 	
-	$sql = "update commandes_paiements set paiement_mail=1, paiement_mail_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($acompte_envoi) . " and paiement_num=" . sql_safe($paiement);
+	$sql = "update commandes_paiements set paiement_mail=1, paiement_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where id=" . decrypte($acompte_envoi) . " and paiement_num=" . sql_safe($paiement_echeance);
 	$base->query($sql);
 	
 	$commande_modif = $acompte_envoi;
@@ -853,7 +853,7 @@ if (isset($acompte_envoi)) { // ON envoie le devis par mail
 
 if (isset($selection)) {
 	// On créé une sélection
-	$sql = "insert into selections values(0,'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00','" . decrypte($client_num). "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ")";
+	$sql = "insert into selections values(0," . sql_safe(Date("Y-m-d H:i:s")) . ",'0','0000-00-00'," . decrypte($client_num). "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ")";
 	$base->query($sql);
 }
 
@@ -862,7 +862,7 @@ if (isset($cdefournisseur)) {
 	$sql = "delete from commandes_fournisseurs where id=" . decrypte($id) . " and produit_num=" . decrypte($produit);
 	$base->query($sql);
 	
-	$sql = "insert into commandes_fournisseurs values(" . decrypte($id) . "," . decrypte($produit) . "," . sql_safe($marque) . "," . sql_safe($livraison) . "," . sql_safe($fournisseur_commande_ref) . "," . sql_safe($fournisseur_remarque) . "," . sql_safe($fournisseur_poitrine) . "," . sql_safe($fournisseur_sous_poitrine) . "," . sql_safe($fournisseur_taille) . "," . sql_safe($fournisseur_hanche1) . "," . sql_safe($fournisseur_hanche2) . "," . sql_safe($fournisseur_biceps) . "," . sql_safe($fournisseur_carrure_avant) . "," . sql_safe($fournisseur_carrure_dos) . "," . sql_safe($fournisseur_longueur_dos) . "," . sql_safe($fournisseur_taille_sol) . "," . sql_safe($fournisseur_taille_choisie) . "," . sql_safe($fournisseur_montant) . "," . sql_safe($fournisseur_commande_date) . ",0,1,'" . Date("Y-m-d H:i:s") . ")";
+	$sql = "insert into commandes_fournisseurs values(" . decrypte($id) . "," . decrypte($produit) . "," . sql_safe($marque) . "," . sql_safe($livraison) . "," . sql_safe($fournisseur_commande_ref) . "," . sql_safe($fournisseur_remarque) . "," . sql_safe($fournisseur_poitrine) . "," . sql_safe($fournisseur_sous_poitrine) . "," . sql_safe($fournisseur_taille) . "," . sql_safe($fournisseur_hanche1) . "," . sql_safe($fournisseur_hanche2) . "," . sql_safe($fournisseur_biceps) . "," . sql_safe($fournisseur_carrure_avant) . "," . sql_safe($fournisseur_carrure_dos) . "," . sql_safe($fournisseur_longueur_dos) . "," . sql_safe($fournisseur_taille_sol) . "," . sql_safe($fournisseur_taille_choisie) . "," . sql_safe($fournisseur_montant) . "," . sql_safe($fournisseur_commande_date) . ",0,1," . sql_safe(Date("Y-m-d H:i:s")) . ")";
 	$base->query($sql);
 }
 
@@ -879,6 +879,7 @@ $titre_page = "Client " . $rcl["client_nom"] . " " . $rcl["client_prenom"] . " -
 $desc_page = "Client " . $rcl["client_nom"] . " " . $rcl["client_prenom"] . " - Olympe Mariage";
 
 $link_plugin = '<link href="/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />';
+echo '<style>.mt-element-overlay .mt-overlay-1 { height:110!important; } </style>';
 include TEMPLATE_PATH . 'head.php'; 
 ?>
     <body class="page-header-fixed page-sidebar-closed-hide-logo">
@@ -957,19 +958,19 @@ include TEMPLATE_PATH . 'head.php';
 									<!-- END PORTLET MAIN -->
 									<!-- PORTLET MAIN -->
 									<?php											
-											$sql = "select * from selections where client_num='" . decrypte($client_num). " order by selection_date DESC";
+											$sql = "select * from selections where client_num='" . decrypte($client_num). "' order by selection_date DESC";
 											$ss = $base->query($sql);
 											$nbr_selection = count($ss);
 											
-											$sql = "select * from commandes where client_num='" . decrypte($client_num). " and devis_num>0 and commande_num=0 and facture_num=0 order by commande_date DESC";
+											$sql = "select * from commandes where client_num='" . decrypte($client_num). "' and devis_num>0 and commande_num=0 and facture_num=0 order by commande_date DESC";
 											$ss = $base->query($sql);
 											$nbr_devis = count($ss);
 											
-											$sql = "select * from commandes where client_num='" . decrypte($client_num). " and devis_num>0 and commande_num>0 order by commande_date DESC";
+											$sql = "select * from commandes where client_num='" . decrypte($client_num). "' and devis_num>0 and commande_num>0 order by commande_date DESC";
 											$ss = $base->query($sql);
 											$nbr_commande = count($ss);
 											
-											$sql = "select * from commandes where client_num='" . decrypte($client_num). " and devis_num>0 and commande_num>0 order by commande_date DESC";
+											$sql = "select * from commandes where client_num='" . decrypte($client_num). "' and devis_num>0 and commande_num>0 order by commande_date DESC";
 											$ss = $base->query($sql);
 											$commande_ttc = 0;
 											foreach ($ss as $rss) 
@@ -1035,7 +1036,7 @@ include TEMPLATE_PATH . 'head.php';
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) { 
 																// On test si on a déjà rentré dans la base le RDV
-																$sql = "select * from rendez_vous where client_num='" . decrypte($client_num). " and type_num=" . sql_safe($rtt["type_num"]);
+																$sql = "select * from rendez_vous where client_num='" . decrypte($client_num). "' and type_num=" . sql_safe($rtt["type_num"]);
 																$rcc = $base->queryRow($sql);
 																$etat=0;
 																$num=0;
@@ -1084,7 +1085,7 @@ include TEMPLATE_PATH . 'head.php';
 																					echo '<input type="hidden" name="remarque" value="">';
 																					if ($rtt["type_num"]==5) {
 																						// On recherche les commandes en cours non facturée
-																						$sql = "select * from commandes where client_num='" . decrypte($client_num). " and devis_num!=0 and commande_num!=0 and facture_num=0 order by commande_date DESC";
+																						$sql = "select * from commandes where client_num='" . decrypte($client_num). "' and devis_num!=0 and commande_num!=0 and facture_num=0 order by commande_date DESC";
 																						$co = $base->query($sql);
 																						$nbr_commande = count($co);
 																						if ($nbr_commande>0) {
@@ -1106,7 +1107,7 @@ include TEMPLATE_PATH . 'head.php';
 																				<input type="submit" value="Ok" class="btn btn-outline btn-circle btn-sm purple">
 																			<?php } else { ?>
 																				<input type="submit" value="Modifier" class="btn btn-outline btn-circle btn-sm purple"> 
-																				<a href="client?client_num=<?= crypte($rcc["client_num"]) ?>&suppr_rdv_num=<?= crypte($num) ?>"  class="btn btn-outline btn-circle dark btn-sm black" onClick="return confirme_annulation_rdv()"> Annuler</a>
+																				<a href="client?client_num=<?= crypte($rcc["client_num"]) ?>&suppr_rdv_num=<?= crypte($num) ?>"  class="btn btn-outline btn-circle dark btn-sm black" data-confirm="confirme_annulation_rdv"> Annuler</a>
 																			<?php } ?>
 																		</td>
 																		<td>
@@ -1126,7 +1127,7 @@ include TEMPLATE_PATH . 'head.php';
 														<div class="tab-pane<?php if ($tab=="tab_1_2") echo " active"?>" id="tab_1_2">
 															<h4><i class="fa fa-plus"></i> Liste des sélections</h4>
 															<?php																
-																$sql = "select * from selections where client_num='" . decrypte($client_num). " order by selection_date DESC";
+																$sql = "select * from selections where client_num='" . decrypte($client_num). "' order by selection_date DESC";
 																$ss = $base->query($sql);
 																$nbr_selection = count($ss);
 																if ($nbr_selection>0) {
@@ -1184,8 +1185,8 @@ include TEMPLATE_PATH . 'head.php';
 																				<td>
 																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_ajout=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-plus"></i> Ajouter</a> 
 																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_envoi=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer</a> 
-																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_devis=' . crypte($rss["selection_num"]) . '&tab=tab_1_3" onClick="return confirmeDevis()" class="btn btn-outline btn-circle dark btn-sm purple"><i class="fa fa-euro"></i> Devis</a> 
-																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_suppr=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" onClick="return confirme()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>';
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_devis=' . crypte($rss["selection_num"]) . '&tab=tab_1_3" data-confirm="confirmeDevis" class="btn btn-outline btn-circle dark btn-sm purple"><i class="fa fa-euro"></i> Devis</a> 
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&selection_suppr=' . crypte($rss["selection_num"]) . '&tab=tab_1_2" data-confirm="confirme" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>';
 																		if ($rss["selection_envoye"]==1) echo "<hr><p><small>Envoyée par mail le : <strong>" . format_date($rss["selection_envoye_date"],0,1) . "</strong></small></p>";
 																		echo '	</td>';
 																	}
@@ -1215,7 +1216,7 @@ include TEMPLATE_PATH . 'head.php';
 																							<span class="input-group-addon">
 																								<i class="fa fa-list"></i>
 																							</span>
-																							<input type="text" name="nom" class="form-control" value="<?= $nom ?>"></div></td>
+																							<input type="text" name="nom" class="form-control" value="<?= ($nom ?? '') ?>"></div></td>
 																					</tr>
 																					<tr>
 																						<td><label>Categorie</label>
@@ -1228,7 +1229,7 @@ include TEMPLATE_PATH . 'head.php';
 																							foreach ($cc as $rcc)
 																							{
 																								echo "<option value=\"" . $rcc["categorie_num"] . "\"";
-																								if ($categorie==$rcc["categorie_num"])
+																								if (($categorie ?? 0)==$rcc["categorie_num"])
 																									echo " SELECTED";
 																								echo ">" . $rcc["categorie_nom"] . "</option>\n";
 																							}
@@ -1248,7 +1249,7 @@ include TEMPLATE_PATH . 'head.php';
 																							foreach ($cc as $rcc)
 																							{
 																								echo "<option value=\"" . $rcc["marque_num"] . "\"";
-																								if ($marque==$rcc["marque_num"])
+																								if (($marque ?? 0)==$rcc["marque_num"])
 																									echo " SELECTED";
 																								echo ">" . $rcc["marque_nom"] . "</option>\n";
 																							}
@@ -1287,12 +1288,12 @@ include TEMPLATE_PATH . 'head.php';
  																							if ($rpp) {
 																								$image_pdt = "/photos/produits/min/" . $rpp["photo_chemin"];
 																							} else 
-																								$image_pdt = "https://placehold.co/200x200?text=No+image";
+																								$image_pdt = "https://placehold.co/200x200";
 																							//echo '<div class="col-md-3"><a href=""><figure><figcaption>' . $rcc["produit_nom"] . '</figcaption><img src="' . $image_pdt . '" class="img-responsive"></figure></div>';
 																							echo '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
 																								<div class="mt-card-item">
 																									<div class="mt-card-avatar mt-overlay-1">
-																										<figure style="height:200px;overflow:hidden;position:relative;line-height:200px;">
+																										<figure style="height:100px;overflow:hidden;position:relative;line-height:100px;">
 																											<img src="' . $image_pdt . '" />
 																										</figure>
 																										<div class="mt-overlay">
@@ -1327,7 +1328,7 @@ include TEMPLATE_PATH . 'head.php';
 														<div class="tab-pane<?php if ($tab=="tab_1_3") echo " active"?>" id="tab_1_3">
 															<h4><i class="fa fa-plus"></i> Liste des devis en cours</h4>
 															<?php																
-																$sql = "select * from commandes where devis_num!=0 and commande_num=0 and facture_num=0 and client_num='" . decrypte($client_num). " order by devis_date DESC";
+																$sql = "select * from commandes where devis_num!=0 and commande_num=0 and facture_num=0 and client_num='" . decrypte($client_num). "' order by devis_date DESC";
 																$ss = $base->query($sql);
 																$nbr_devis = count($ss);
 																if ($nbr_devis>0) {
@@ -1356,7 +1357,7 @@ include TEMPLATE_PATH . 'head.php';
 																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_consulte=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm green"><i class="fa fa-book"></i> Consulter</a> 
 																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_envoi=' . crypte($rss["id"]) . '&tab=tab_1_3" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer</a> 
 																					<a href="#" onClick="window.open(\'/devis/index?devis=' . crypte($rss["id"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm yellow"><i class="fa fa-print"></i> Imprimer</a> 
-																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_suppr=' . crypte($rss["id"]) . '&tab=tab_1_3" onClick="return confirmeSupprDevis()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>
+																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_suppr=' . crypte($rss["id"]) . '&tab=tab_1_3" data-confirm="confirmeSupprDevis" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>
 																				</td>
 																				<td>';
 																				$sql = "select * from commandes_mails where id=" . sql_safe($rss["id"]) . " and devis_mail=1";
@@ -1656,7 +1657,7 @@ include TEMPLATE_PATH . 'head.php';
 																				}
 																			}
 																		?>
-																		<tr><td colspan="7" align="right"><a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_3" class="btn red">Fermer</a> <a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_4&commande_passage=<?= crypte($rcc["id"]) ?>" class="btn blue" onClick="return confirme_commande(<?= $rcc["id"] ?>)">Passer la commande</a></td></tr>
+																		<tr><td colspan="7" align="right"><a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_3" class="btn red">Fermer</a> <a href="<?= current_path() ?>?client_num=<?= $client_num ?>&tab=tab_1_4&commande_passage=<?= crypte($rcc["id"]) ?>" class="btn blue" data-confirm="confirme_commande" data-id="<?= $rcc["id"] ?>">Passer la commande</a></td></tr>
 																	</tbody>
 																</table>
 															<?php 	} ?>
@@ -1788,7 +1789,7 @@ include TEMPLATE_PATH . 'head.php';
 														<div class="tab-pane<?php if ($tab=="tab_1_4") echo " active"?>" id="tab_1_4">
 															<h4><i class="fa fa-plus"></i> Liste des commandes</h4>
 															<?php																
-																$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and devis_num!=0 and commande_num!=0 and client_num='" . decrypte($client_num). " order by commande_date DESC";
+																$sql = "select * from commandes c, paiements p where c.paiement_num=p.paiement_num and devis_num!=0 and commande_num!=0 and client_num='" . decrypte($client_num). "' order by commande_date DESC";
 																$ss = $base->query($sql);
 																$nbr_commande = count($ss);
 																if ($nbr_commande>0) {
@@ -1856,7 +1857,7 @@ include TEMPLATE_PATH . 'head.php';
 																			echo '<a href="#" onClick="window.open(\'/bon-de-reception/index?facture=' . crypte($rss["id"]) . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm"><i class="fa fa-print"></i> Bon de reception</a> ';
 																		}
 																		if ($rss["facture_num"]=="0")
-																			echo '		<a href="' . current_path() . '?client_num=' . $client_num . '&commande_suppr=' . crypte($rss["id"]) . '&tab=tab_1_4" onClick="return confirmeSupprCommande()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Modifier</a>
+																			echo '		<a href="' . current_path() . '?client_num=' . $client_num . '&commande_suppr=' . crypte($rss["id"]) . '&tab=tab_1_4" data-confirm="confirmeSupprCommande" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Modifier</a>
 																				</td>
 																			</tr>';
 																	}
@@ -2046,7 +2047,7 @@ include TEMPLATE_PATH . 'head.php';
 																	$sql = "select * from commandes_paiements c, paiements_modes m where c.mode_num=m.mode_num and id=" . decrypte($commande_modif);
 																	$pp = $base->query($sql);
 																	foreach ($pp as $rpp) {
-																		echo '<form name="paiement_' . $e . '" action="' . form_action_same() . '" method="POST">
+																		echo '<form name="paiement_' . $echeance . '" action="' . form_action_same() . '" method="POST">
 																			<input type="hidden" name="paiement" value="ok">
 																			<input type="hidden" name="modif" value="ok">
 																			<input type="hidden" name="echeance" value="' . $echeance . '">
@@ -2079,8 +2080,8 @@ include TEMPLATE_PATH . 'head.php';
 																				$envoye = " le " . format_date($rpp["paiement_mail_date"],11,1);
 																			}
 																			echo '		<a href="#" onClick="window.open(\'/acompte/index?id=' . $commande_modif . '&paiement=' . $rpp["paiement_num"] . '&print=auto\',\'_blank\',\'width=1200,height=800,toolbar=no\');" class="btn btn-outline btn-circle dark btn-sm yellow"><i class="fa fa-print"></i> Facture</a> 
-																			<a href="' . current_path() . '?client_num=' . $client_num . '&acompte_envoi=' . crypte($rpp["id"]) . '&paiement=' . $rpp["paiement_num"] . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer ' . $envoye . '</a> 
-																						<a href="' . current_path() . '?client_num=' . $client_num . '&paiement_suppr=' . crypte($rpp["id"]) . '&echeance=' . $echeance . '&tab=tab_1_4" onClick="return confirmeSupprPaiement()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>';
+																			<a href="' . current_path() . '?client_num=' . $client_num . '&acompte_envoi=' . crypte($rpp["id"]) . '&paiement_echeance=' . $rpp["paiement_num"] . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm blue"><i class="fa fa-envelope"></i> Envoyer ' . $envoye . '</a> 
+																						<a href="' . current_path() . '?client_num=' . $client_num . '&paiement_suppr=' . crypte($rpp["id"]) . '&echeance=' . $echeance . '&tab=tab_1_4" data-confirm="confirmeSupprPaiement" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>';
 																		}																					
 																		echo '		</td>
 																			  </tr>
@@ -2221,20 +2222,20 @@ include TEMPLATE_PATH . 'head.php';
 																		</span>
 																		<table>
 																			<tr>
-																				<td>Tour Taille<br><input type="text" name="taille" class="form-control" value="<?= $rcl["taille"] ?>"></td>
-																				<td>Poitrine<br><input type="text" name="poitrine" class="form-control" value="<?= $rcl["poitrine"] ?>"></td>
-																				<td>Ss poitrine<br><input type="text" name="sous_poitrine" class="form-control" value="<?= $rcl["sous_poitrine"] ?>"></td>
-																				<td>Lg Dos<br><input type="text" name="longueur_dos" class="form-control" value="<?= $rcl["longueur_dos"] ?>"></td>
-																				<td>Biceps<br><input type="text" name="biceps" class="form-control" value="<?= $rcl["biceps"] ?>"></td>
-																				<td>Taille-sol talons<br><input type="text" name="taille_sol" class="form-control" value="<?= $rcl["taille_sol"] ?>"></td>
+																				<td style="font-size:13px;">Tour Taille<br><input type="text" name="taille" class="form-control" value="<?= $rcl["taille"] ?>"></td>
+																				<td style="font-size:13px;">Poitrine<br><input type="text" name="poitrine" class="form-control" value="<?= $rcl["poitrine"] ?>"></td>
+																				<td style="font-size:13px;">Ss poitrine<br><input type="text" name="sous_poitrine" class="form-control" value="<?= $rcl["sous_poitrine"] ?>"></td>
+																				<td style="font-size:13px;">Lg Dos<br><input type="text" name="longueur_dos" class="form-control" value="<?= $rcl["longueur_dos"] ?>"></td>
+																				<td style="font-size:13px;">Biceps<br><input type="text" name="biceps" class="form-control" value="<?= $rcl["biceps"] ?>"></td>
+																				<td style="font-size:13px;">Taille-sol talons<br><input type="text" name="taille_sol" class="form-control" value="<?= $rcl["taille_sol"] ?>"></td>
 																			</tr>
 																			<tr>
-																				<td>Hanche 1<br><input type="text" name="hanche1" class="form-control" value="<?= $rcl["hanche1"] ?>"></td>
-																				<td>Hanche 2<br><input type="text" name="hanche2" class="form-control" value="<?= $rcl["hanche2"] ?>"></td>
-																				<td>Carrure Av<br><input type="text" name="carrure_avant" class="form-control" value="<?= $rcl["carrure_avant"] ?>"></td>
-																				<td>Carrure Dos<br><input type="text" name="carrure_dos" class="form-control" value="<?= $rcl["carrure_dos"] ?>"></td>
-																				<td>Pointure<br><input type="text" name="pointure" class="form-control" value="<?= $rcl["pointure"] ?>"></td>
-																				<td>Taille<br><input type="text" name="tour_taille" class="form-control" value="<?= $rcl["tour_taille"] ?>"></td>
+																				<td style="font-size:13px;">Hanche 1<br><input type="text" name="hanche1" class="form-control" value="<?= $rcl["hanche1"] ?>"></td>
+																				<td style="font-size:13px;">Hanche 2<br><input type="text" name="hanche2" class="form-control" value="<?= $rcl["hanche2"] ?>"></td>
+																				<td style="font-size:13px;">Carrure Av<br><input type="text" name="carrure_avant" class="form-control" value="<?= $rcl["carrure_avant"] ?>"></td>
+																				<td style="font-size:13px;">Carrure Dos<br><input type="text" name="carrure_dos" class="form-control" value="<?= $rcl["carrure_dos"] ?>"></td>
+																				<td style="font-size:13px;">Pointure<br><input type="text" name="pointure" class="form-control" value="<?= $rcl["pointure"] ?>"></td>
+																				<td style="font-size:13px;">Taille<br><input type="text" name="tour_taille" class="form-control" value="<?= $rcl["tour_taille"] ?>"></td>
 																			</tr>
 																		</table>
 																	</div>
@@ -2378,7 +2379,7 @@ include TEMPLATE_PATH . 'head.php';
 																		</thead>
 																		<tbody>
 																		<?php																			
-																			$sql = "select * from commandes c, commandes_produits cd where c.id=cd.id and commande_num>0 and client_num='" . decrypte($client_num). " order by commande_date ASC, c.id ASC";
+																			$sql = "select * from commandes c, commandes_produits cd where c.id=cd.id and commande_num>0 and client_num='" . decrypte($client_num). "' order by commande_date ASC, c.id ASC";
 																			$co = $base->query($sql);
 																			foreach ($co as $rco) {
 																				$checked = "";
@@ -2629,17 +2630,56 @@ include TEMPLATE_PATH . 'head.php';
          <?php include TEMPLATE_PATH . 'bottom.php'; ?>
 <script>
 // Confirmations (plus concis)
-function confirme_annulation_rdv() { return $ol.ask("Êtes-vous sûr de vouloir annuler ce rendez-vous ?"); }
-function confirme()                { return $ol.ask("Êtes-vous sûr de vouloir supprimer cette sélection ?"); }
-function confirmeDevis()           { return $ol.ask("Transformer cette sélection en devis ?"); }
-function confirmeSupprDevis()      { return $ol.ask("Supprimer ce devis ?"); }
-function confirmeSupprCommande()   { return $ol.ask("Modifier cette commande ? Elle repassera en devis."); }
-function confirmeSupprPaiement()   { return $ol.ask("Supprimer ce paiement ?"); }
-function confirme_commande(id) {
+async function confirme_annulation_rdv() { return await $ol.ask("Êtes-vous sûr de vouloir annuler ce rendez-vous ?"); }
+async function confirme()                { return await $ol.ask("Êtes-vous sûr de vouloir supprimer cette sélection ?"); }
+async function confirmeDevis()           { return await $ol.ask("Transformer cette sélection en devis ?"); }
+async function confirmeSupprDevis()      { return await $ol.ask("Supprimer ce devis ?"); }
+async function confirmeSupprCommande()   { return await $ol.ask("Modifier cette commande ? Elle repassera en devis."); }
+async function confirmeSupprPaiement()   { return await $ol.ask("Supprimer ce paiement ?"); }
+async function confirme_commande(id) {
   const p = document.getElementById("paiement_" + id);
   const txt = p ? p.options[p.selectedIndex].text : '';
-  return $ol.ask("Passer le devis en commande avec le mode de paiement : " + txt + " ?");
+  return await $ol.ask("Passer le devis en commande avec le mode de paiement : " + txt + " ?");
 }
+
+document.addEventListener('click', async function(e) {
+    const link = e.target.closest('[data-confirm]');
+    if (!link) return;
+    
+    e.preventDefault();
+    
+    let confirmed = false;
+    switch(link.dataset.confirm) {
+        case 'confirme_annulation_rdv':
+            confirmed = await confirme_annulation_rdv();
+            break;
+        case 'confirme':
+            confirmed = await confirme();
+            break;
+		case 'confirmeDevis':
+            confirmed = await confirmeDevis();
+            break;
+		case 'confirmeSupprDevis':
+            confirmed = await confirmeSupprDevis();
+            break;
+		case 'confirmeSupprCommande':
+            confirmed = await confirmeSupprCommande();
+            break;
+		case 'confirmeSupprPaiement':
+            confirmed = await confirmeSupprPaiement();
+            break;
+		case 'confirme_commande':
+			const id = e.target.closest('[data-id]');
+            confirmed = await confirme_commande(id);
+            break;
+        
+    }
+    
+    if (confirmed) {
+        window.location.href = link.href;
+    }
+});
+
 
 // API calls
 async function addWidget(selection, pdt, mode) {

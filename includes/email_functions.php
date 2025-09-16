@@ -9,7 +9,7 @@
  */
 function SendMail(string $email, string $titre, string $message, int $user, int $client_num = 0): bool {
     try {
-        $db = Database::getInstance();
+       $base = Database::getInstance();
         
         // Récupérer les informations utilisateur et showroom
         $sql = "SELECT u.*, s.* 
@@ -250,12 +250,12 @@ function sendEmailFallback(string $to_email, string $subject, string $message, a
  */
 function logEmailSent(string $titre, string $message, int $client_num, int $user): void {
     try {
-        $db = Database::getInstance();
+        $base = Database::getInstance();
         
         $sql = "INSERT INTO mails (mail_date, mail_titre, mail_message, client_num, user_num) 
                 VALUES (?, ?, ?, ?, ?)";
         
-        $db->insert($sql, [
+        $base->insert($sql, [
             date('Y-m-d H:i:s'),
             $titre,
             $message,

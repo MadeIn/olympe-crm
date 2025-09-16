@@ -81,7 +81,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -117,7 +117,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -153,7 +153,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -189,7 +189,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -236,7 +236,7 @@ if (isset($ajouter)) {
 								SendMail("lilietcie34@gmail.com",$titre_mail,$message_mail,$u->mNum,$client_num);
 							}
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -294,7 +294,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 						break;
 						
@@ -329,7 +329,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -357,7 +357,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -380,7 +380,7 @@ if (isset($ajout_client)) {
 	$tt = $base->query($sql);
 	$nbr = count($tt);
 	if ($nbr==0) {
-		$sql = "insert into clients values (0," . sql_safe($genre) . "," . sql_safe($nom) . "," . sql_safe($prenom) . "," . sql_safe($adr1) . "," . sql_safe($adr2) . "," . sql_safe($cp) . "," . sql_safe($ville) . "," . sql_safe($tel) . "," . sql_safe($mail) . "," . sql_safe($date) . "," . sql_safe($lieu) . ",'',''," . sql_safe($u->mShowroom) . "," . sql_safe($u->mNum) . ",'" . Date("Y-m-d H:i:s") . ",'" . Date("Y-m-d H:i:s") . ",'','','','','','','','','','','','',0,0)";
+		$sql = "insert into clients values (0," . sql_safe($genre) . "," . sql_safe($nom) . "," . sql_safe($prenom) . "," . sql_safe($adr1) . "," . sql_safe($adr2) . "," . sql_safe($cp) . "," . sql_safe($ville) . "," . sql_safe($tel) . "," . sql_safe($mail) . "," . sql_safe($date) . "," . sql_safe($lieu) . ",'',0," . sql_safe($u->mShowroom) . "," . sql_safe($u->mNum) . "," . sql_safe(Date("Y-m-d H:i:s")) . "," . sql_safe(Date("Y-m-d H:i:s")) . ",0,0,0,0,0,0,0,0,0,0,'','',0,0)";
 		$base->query($sql);
 	} else {
 		$message_erreur = "Un client est déjà enregistré avec cette adresse email !";
@@ -436,16 +436,17 @@ if (isset($ajout_client)) {
 								<h4 id="modalTitle" class="modal-title"></h4>
 							</div>
 							<!--<div id="modalBody" class="modal-body"> </div>-->
-							<form name="calendrier_desc" method="POST" action="<?php current_path() ?>">
-								<input type="hidden" name="modif_desc" value="ok">
-								<input type="hidden" name="calendrier_num" id="calendrier_num" value="">
-								<center><textarea name="calendrier_desc" id="calendrier_desc" cols="80" rows="5"></textarea></center>
-							<div class="modal-footer">
-								<input type="submit" value="Modifier" class="btn red">
-								<a href="" id="lien" class="btn blue">Allez sur la Fiche Client</a>
-								<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+								<form name="calendrier_desc" method="POST" action="<?php current_path() ?>" style="padding:10px;">
+									<input type="hidden" name="modif_desc" value="ok">
+									<input type="hidden" name="calendrier_num" id="calendrier_num" value="">
+									<textarea name="calendrier_desc" id="calendrier_desc" class="form-control" cols="80" rows="5"></textarea>
+									<div class="modal-footer">
+										<input type="submit" value="Modifier" class="btn red">
+										<a href="" id="lien" class="btn blue">Allez sur la Fiche Client</a>
+										<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+									</div>
+								</form>
 							</div>
-							</form>
 						</div>
 					</div>
 				</div>

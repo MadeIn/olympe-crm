@@ -390,7 +390,7 @@ $objectif_nbr_robe = safe_number_format($objectif_nbr_robe * 100, 0);
                                     $rrr = $rr[0] ?? null;
                                     if ($rrr) {
                                         $nbr_rdv = $rrr["val"];
-                                        $sql = "select count(rdv_num) val from rendez_vous r, clients c where c.client_num=r.client_num and rdv_date>='" . Date("Y-m-d H:i:s") . "' and rdv_date<='" . $date_fin_annee . "' and r.type_num=1 and c.showroom_num='" . $u->mShowroom . "'  and client_genre=0";
+                                        $sql = "select count(rdv_num) val from rendez_vous r, clients c where c.client_num=r.client_num and rdv_date>=" . sql_safe(Date("Y-m-d H:i:s")) . " and rdv_date<='" . $date_fin_annee . "' and r.type_num=1 and c.showroom_num='" . $u->mShowroom . "'  and client_genre=0";
                                         $dd = $base->queryRow($sql);
                                         $nbr_rdv_a_venir = $dd["val"] ?? 0;
                                                                               

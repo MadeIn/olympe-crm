@@ -8,7 +8,7 @@ if (isset($action)) {
 		
 		case "add" :
 			// On insere le showroom
-			$sql = "insert into users values(0," . sql_safe($nom) . "," . sql_safe($prenom) . "," . sql_safe($mail) . "," . sql_safe($mdp) . "," . sql_safe($mail_mdp) . "," . sql_safe($tel) . ",'','" . Date("Y-m-d H:i:s") . ",'0000-00-00 00:00:00'," . sql_safe($groupe) . "," . sql_safe($showroom) . "," . sql_safe($acces) . "," . sql_safe($etat) . ")";
+			$sql = "insert into users values(0," . sql_safe($nom) . "," . sql_safe($prenom) . "," . sql_safe($mail) . "," . sql_safe($mdp) . "," . sql_safe($mail_mdp) . "," . sql_safe($tel) . ",''," . sql_safe(Date("Y-m-d H:i:s")) . ",'0000-00-00 00:00:00'," . sql_safe($groupe) . "," . sql_safe($showroom) . "," . sql_safe($acces) . "," . sql_safe($etat) . ")";
 			$num = $base->insert($sql);	
 			$num = crypte($num);
 		break;

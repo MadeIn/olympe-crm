@@ -7,7 +7,14 @@ $desc_page = "Extraction email - Olympe Mariage";
   
   if (!isset($genre))
 	  $genre=-1;
-  
+  if (!isset($interet))
+	  $interet=0;
+  if (!isset($showroom))
+	  $showroom=0;
+  if (!isset($user_select))
+	$user_select = 0;
+  if (!isset($affichage))
+	$affichage = 0;
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>

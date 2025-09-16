@@ -179,33 +179,35 @@ function renderDevisHTML(int $id): string {
     return $out;
 }
 
-function renderSelectionHTML(array $pp, Db $base, int $selection): string {
+function renderSelectionHTML(array $pp, int $selection): string {
+    global $base;
     if (count($pp) === 0) return '<p><i>Aucun produit dans votre sélection</i></p>';
 
     $out = '<div class="mt-element-card mt-element-overlay">';
     foreach ($pp as $rpp) {
         $rph = $base->queryRow("SELECT * FROM md_produits_photos WHERE produit_num='".(int)$rpp["produit_num"]."' AND photo_pos=1");
-        $image_pdt = $rph ? "/photos/produits/min/".$rph["photo_chemin"] : "https://placehold.co/50x50?text=No+image";
-        $out .= '
-        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
-        <div class="mt-card-item">
-            <div class="mt-card-avatar mt-overlay-1">
-            <figure style="height:100px;overflow:hidden;position:relative;line-height:100px;">
-                <img src="'.h($image_pdt).'" />
-            </figure>
-            <div class="mt-overlay">
-                <ul class="mt-info">
-                <li>
-                    <a class="btn default btn-outline" href="javascript:addWidget('.(int)$selection.','.(int)$rpp["produit_num"].',2)">
-                    <i class="fa fa-trash"></i>
-                    </a>
-                </li>
-                </ul>
-            </div>
-            </div>
-            <div class="mt-card-content"><h5><small>'.h($rpp["produit_nom"]).'</small></h5></div>
-        </div>
-        </div>';
+        $image_pdt = $rph ? "/photos/produits/min/".$rph["photo_chemin"] : "";
+        $out .= '<div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                    <div class="mt-card-item">
+                        <div class="mt-card-avatar mt-overlay-1">
+                            <figure style="height:100px;overflow:hidden;position:relative;line-height:100px;">
+                                <img src="' . h($image_pdt) . '" />
+                            </figure>
+                            <div class="mt-overlay">
+                                <ul class="mt-info">
+                                    <li>
+                                        <a class="btn default btn-outline" href="javascript:addWidget('.(int)$selection.','.(int)$rpp["produit_num"].',2)">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-card-content">
+                            <h5><small>' . h($rpp["produit_nom"]) . '</small></h5>
+                        </div>
+                    </div>
+                </div>';
     }
     $out .= '</div>';
     return $out;
@@ -294,7 +296,7 @@ try {
                 $base->query("INSERT INTO selections_produits VALUES('".$selection."','".$pdt."')");
             }
             $pp = $base->query("SELECT * FROM selections_produits s JOIN md_produits p ON s.produit_num=p.produit_num WHERE selection_num='".$selection."'");
-            $html = renderSelectionHTML($pp, $base, $selection);
+            $html = renderSelectionHTML($pp,$selection);
             json_ok(['html'=>$html, 'place'=>'select_'.$selection]);
         }
 
@@ -304,7 +306,7 @@ try {
             $pdt = $int('pdt');
             $base->query("DELETE FROM selections_produits WHERE selection_num='".$selection."' AND produit_num='".$pdt."'");
             $pp = $base->query("SELECT * FROM selections_produits s JOIN md_produits p ON s.produit_num=p.produit_num WHERE selection_num='".$selection."'");
-            $html = renderSelectionHTML($pp, $base, $selection);
+            $html = renderSelectionHTML($pp, $selection);
             json_ok(['ok'=>true,'html'=>$html,'place'=>'select_'.$selection]);
         }
 

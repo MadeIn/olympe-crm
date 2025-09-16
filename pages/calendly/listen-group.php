@@ -50,7 +50,7 @@ switch ($data["event"]) {
         $rtt = $base->queryRow($sql);
         $nbr = count($rtt);
         if ($nbr==0) {
-            $sql = "insert into clients values (0,0," . sql_safe($user["nom"]) . "," . sql_safe($user["prenom"]) . ",'',''," . sql_safe($user["cp"]) . ",''," . sql_safe($user["tel"]) . "," . sql_safe($user["email"]) . "," . sql_safe($user["date-mariage"]) . ",'','','','3'," . sql_safe($user_num) . ",'" . Date("Y-m-d H:i:s") . ",'" . Date("Y-m-d H:i:s") . ",'','','','','','','','','','','','',0,0)";
+            $sql = "insert into clients values (0,0," . sql_safe($user["nom"]) . "," . sql_safe($user["prenom"]) . ",'',''," . sql_safe($user["cp"]) . ",''," . sql_safe($user["tel"]) . "," . sql_safe($user["email"]) . "," . sql_safe($user["date-mariage"]) . ",'','','','3'," . sql_safe($user_num) . "," . sql_safe(Date("Y-m-d H:i:s")) . "," . sql_safe(Date("Y-m-d H:i:s")) . ",'','','','','','','','','','','','',0,0)";
             $client_num = $base->insert($sql);
         } else {
             if ($rtt) {
@@ -123,7 +123,7 @@ switch ($data["event"]) {
                     // On envoi le mail
                     SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
                     
-                    $sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num) . "";
+                    $sql = "update rendez_vous set rdv_mail=1, rdv_mail_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num=" . sql_safe($num) . "";
                     $base->query($sql);
                     
                 break;

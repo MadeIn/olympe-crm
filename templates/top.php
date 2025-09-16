@@ -1,4 +1,9 @@
 <!-- BEGIN HEADER -->
+<style>
+    .page-header .navbar .navbar-nav>li>a {
+        font-size:16px;
+    }
+</style>
 <header class="page-header">
     <nav class="navbar mega-menu" role="navigation">
         <div class="container-fluid">

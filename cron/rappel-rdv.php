@@ -46,7 +46,7 @@ try {
 		// On envoi le mail
 		SendMail($rcc["client_mail"],$titre_mail,$message_mail,$rcc["user_num"],$rcc["client_num"]);
 		
-		$sql = "update rendez_vous set rdv_mail_relance=1, rdv_mail_relance_date='" . Date("Y-m-d H:i:s") . "' where rdv_num='" . $rcc["rdv_num"] . "'";
+		$sql = "update rendez_vous set rdv_mail_relance=1, rdv_mail_relance_date=" . sql_safe(Date("Y-m-d H:i:s")) . " where rdv_num='" . $rcc["rdv_num"] . "'";
 		$base->query($sql);		
 	}
 } catch (Exception $e) {

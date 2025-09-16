@@ -87,7 +87,7 @@ if (isset($ajout)) {
 	$desc = str_replace("&lt;","<",$desc);
 	$desc = str_replace("&gt;",">",$desc);
 	
-	$sql = "insert into md_produits values (0," . sql_safe($ref) . "," . sql_safe($nom) . "," . sql_safe($desc) . ",'','" . Date("Y-m-d H:i:s") . "'," . sql_safe($categorie) . "," . sql_safe($marque) . "," . sql_safe($etat) . ",0,0,0,'',0,0)";
+	$sql = "insert into md_produits values (0," . sql_safe($ref) . "," . sql_safe($nom) . "," . sql_safe($desc) . ",''," . sql_safe(Date("Y-m-d H:i:s")) . "," . sql_safe($categorie) . "," . sql_safe($marque) . "," . sql_safe($etat) . ",0,0,0,'',0,0)";
 	$num = $base->insert($sql);
 	
 		
@@ -101,14 +101,14 @@ if (isset($ajout)) {
 		$prix=0;
 		
 	$prix = str_replace(",",".",$prix);
-	$sql = "insert into prix values(0,''," . sql_safe($prix) . ",'','','','" . Date("Y-m-d H:i:s") . "')";
+	$sql = "insert into prix values(0,''," . sql_safe($prix) . ",'','',''," . sql_safe(Date("Y-m-d H:i:s")) . ")";
 	$prix_num = $base->insert($sql);
 	
 	// On insere le prix d'achat
 	if ($prixachat=="")
 		$prixachat=0;
 	$prixachat = str_replace(",",".",$prixachat);
-	$sql = "insert into prixachats values(0," . sql_safe($prixachat) . ",'" . Date("Y-m-d H:i:s") . ")";
+	$sql = "insert into prixachats values(0," . sql_safe($prixachat) . "," . sql_safe(Date("Y-m-d H:i:s")) . ")";
 	$prixachat_num = $base->insert($sql);
 	
 	$sql = "update md_produits set prix_num=" . sql_safe($prix_num) . ", prixachat_num=" . sql_safe($prixachat_num) . ", produit_poids=" . intval($poids) . ", tva_num=" . sql_safe($tva_num) . ", produit_montant_remise=" . sql_safe($remise) . ", produit_remise_type=" . sql_safe($remise_type) . "  where produit_num=" . sql_safe($num);
