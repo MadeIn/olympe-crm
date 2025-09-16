@@ -5,7 +5,7 @@ $desc_page = "Statistiques - Olympe Mariage";
   $mois_nom = array("","Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre");
   $mois_jour = array(0,31,28,31,30,31,30,31,31,30,31,30,31);
   
-  if (!isset($showroom)) {
+  	if (!isset($showroom)) {
 		if ($u->mShowroom==0)
 			$showroom=1;
 		else
@@ -17,7 +17,9 @@ $desc_page = "Statistiques - Olympe Mariage";
 		
 	if (!isset($date_fin))
 		$date_fin = Date("Y-m-d");
-		
+	
+	if (!isset($annee_deb)) 
+			$annee_deb = Date("Y");
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
@@ -74,7 +76,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<?php if ($u->mGroupe==0) { ?>
 													<td>
 														<select name="showroom" class="form-control input-medium">
-														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															
+															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -103,7 +106,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 									</div>
 									<div class="portlet-body">
 									   <table class="table bordered">
-											<?php												$nbr_annee = Date("Y") - $annee_deb;
+											<?php												
+												$nbr_annee = Date("Y") - $annee_deb;
 												$mois_encours = Date("n");
 												if ($mois_encours>=9) 
 													$nbr_annee++;
@@ -157,7 +161,6 @@ $desc_page = "Statistiques - Olympe Mariage";
                                                                 $total_ca_commande += $ca;
                                                             }
                                                             echo '<td class="text-center">' . $nbr_commande . '<br>' . safe_number_format($ca,2,"."," ") . '€</td>';
-                                                            $total += $nbr_premier;
                                                         }
                                                         echo '<td class="text-center"><b>' . $total_nbr_commande . '<br>' . safe_number_format($total_ca_commande,2,"."," ") . '€</b></td>';
                                                         echo '</tr>';

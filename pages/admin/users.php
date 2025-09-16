@@ -8,13 +8,13 @@ if (isset($action)) {
 		
 		case "add" :
 			// On insere le showroom
-			$sql = "insert into users values(0," . safe_sql($nom) . "," . safe_sql($prenom) . "," . safe_sql($mail) . "," . safe_sql($mdp) . "," . safe_sql($mail_mdp) . "," . safe_sql($tel) . ",'','" . Date("Y-m-d H:i:s") . ",'0000-00-00 00:00:00'," . safe_sql($groupe) . "," . safe_sql($showroom) . "," . safe_sql($acces) . "," . safe_sql($etat) . ")";
+			$sql = "insert into users values(0," . sql_safe($nom) . "," . sql_safe($prenom) . "," . sql_safe($mail) . "," . sql_safe($mdp) . "," . sql_safe($mail_mdp) . "," . sql_safe($tel) . ",'','" . Date("Y-m-d H:i:s") . ",'0000-00-00 00:00:00'," . sql_safe($groupe) . "," . sql_safe($showroom) . "," . sql_safe($acces) . "," . sql_safe($etat) . ")";
 			$num = $base->insert($sql);	
 			$num = crypte($num);
 		break;
 		
 		case "update" :
-			$sql = "update users set user_nom=" . safe_sql($nom) . ",user_prenom=" . safe_sql($prenom) . ",user_email=" . safe_sql($mail) . ",user_mdp=" . safe_sql($mdp) . ",user_email_mdp=" . safe_sql($mail_mdp) . ",user_tel=" . safe_sql($tel) . ",groupe_num=" . safe_sql($groupe) . ",showroom_num=" . safe_sql($showroom) . ",user_etat=" . safe_sql($etat) . ", acces_compta=" . safe_sql($acces) . " where user_num=" . safe_sql(decrypte($num)) . "";
+			$sql = "update users set user_nom=" . sql_safe($nom) . ",user_prenom=" . sql_safe($prenom) . ",user_email=" . sql_safe($mail) . ",user_mdp=" . sql_safe($mdp) . ",user_email_mdp=" . sql_safe($mail_mdp) . ",user_tel=" . sql_safe($tel) . ",groupe_num=" . sql_safe($groupe) . ",showroom_num=" . sql_safe($showroom) . ",user_etat=" . sql_safe($etat) . ", acces_compta=" . sql_safe($acces) . " where user_num=" . sql_safe(decrypte($num)) . "";
 			$base->query($sql);	
 		break;
 	}
@@ -24,7 +24,7 @@ if (isset($action)) {
 	$nom_image = uploadPhotoProfil($_FILES['photofileacc'],$img_nom,"200");
 	if ($nom_image!="") {
 		// Tout est ok alors on insere dans la base
-		$sql = "update users set user_photo=" . safe_sql($nom_image) . " where user_num=" . safe_sql(decrypte($num));
+		$sql = "update users set user_photo=" . sql_safe($nom_image) . " where user_num=" . sql_safe(decrypte($num));
 		$base->query($sql);
 	}
 	

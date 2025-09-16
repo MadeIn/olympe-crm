@@ -2,18 +2,18 @@
 	$titre_page = "Taux de transformation - Olympe Mariage";
 	$desc_page = "Taux de transformation - Olympe Mariage";
 
-if ($u->mGroupe==0) {
-	if (!isset($showroom_choix)) {
-		$u->mShowroom = 1; // Si on est admin par defaut c'est Montpellier 
-	} else 
-		$u->mShowroom = $showroom_choix;
+	if ($u->mGroupe==0) {
+		if (!isset($showroom_choix)) {
+			$u->mShowroom = 1; // Si on est admin par defaut c'est Montpellier 
+		} else 
+			$u->mShowroom = $showroom_choix;
 
-	$sql = "select * from showrooms where showroom_num='" . $u->mShowroom . "'";
-	$rss = $base->queryRow($sql);
-if ($rss) {
-		$u->mShowroomInfo = $rss;
+		$sql = "select * from showrooms where showroom_num='" . $u->mShowroom . "'";
+		$rss = $base->queryRow($sql);
+		if ($rss) {
+			$u->mShowroomInfo = $rss;
+		}
 	}
-}
 	// On calcul l'année en cours
 	$mois_deb = 8;
 	$mois_encours = Date("n");
@@ -89,7 +89,9 @@ if ($rss) {
 												</tr>
 											</thead>
 											<tbody>
-											<?php												$nbr_total_rdv = 0;
+											<?php												
+												$nbr_total_rdv = 0;
+												$nbr_total_rdv_avenir = 0;
 												$nbr_total_commande = 0;
 												
 												$sql = "select * from users where showroom_num='" . $u->mShowroom . "' and user_num not in (3,5,14) order by user_nom ASC, user_prenom ASC";
@@ -98,6 +100,7 @@ if ($rss) {
 													$sql = "select count(rdv_num) val from rendez_vous r, clients c where c.client_num=r.client_num and rdv_date>='" . $date_debut_annee . "' and rdv_date<='" . Date("Y-m-d H:i:s") . "' and r.type_num=1 and c.showroom_num='" . $u->mShowroom . "' and client_genre=0 and c.user_num='" . $rcc["user_num"] . "'";	
 													$rrr = $base->queryRow($sql);
 													$nbr_rdv = 0;
+													$nbr_rdv_avenir = 0;
 													$transformation = 0;
 													$nbr_commande = 0;
 													if ($rrr) {

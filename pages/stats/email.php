@@ -8,6 +8,15 @@ $desc_page = "Extraction email - Olympe Mariage";
   if (!isset($genre))
 	  $genre=-1;
   
+  if (!isset($date_debut))
+	$date_debut = "";
+  if (!isset($date_fin))
+	$date_fin = "";
+
+  if (!isset($etat))
+		$etat=0;
+  if (!isset($showroom))
+	$showroom=-1;
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
@@ -55,10 +64,10 @@ $desc_page = "Extraction email - Olympe Mariage";
 										<tbody>
 											<tr>
 												<td>
-													<input type="date" name="date_debut" value="<?= $date_debut ?>">
+													<input type="date" name="date_debut" value="<?= $date_debut ?>" class="form-control">
 												</td>
 												<td>
-													<input type="date" name="date_fin" value="<?= $date_fin ?>">
+													<input type="date" name="date_fin" value="<?= $date_fin ?>" class="form-control">
 												</td>
 												<td>
 													<select name="etat" class="form-control input-medium">
@@ -70,8 +79,9 @@ $desc_page = "Extraction email - Olympe Mariage";
 												</td>
 												<td>
 													<select name="showroom" class="form-control input-medium">
-														<option value="0">Tous</option>
-													<?php														$sql = "select * from showrooms order by showroom_nom ASC";
+														<option value="-1">Tous</option>
+													<?php														
+														$sql = "select * from showrooms order by showroom_nom ASC";
 														$tt = $base->query($sql);
 														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["showroom_num"] . '"';
@@ -98,12 +108,13 @@ $desc_page = "Extraction email - Olympe Mariage";
 						</div>
                     	<?php if (isset($recherche)) { ?>
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<?php							$sql = "select client_num,client_mail, client_prenom, client_nom from clients where client_num=client_num";
+						<?php							
+							$sql = "select client_num,client_mail, client_prenom, client_nom from clients where client_num=client_num";
 							if ($date_debut!="")
 								$sql .= " and client_datecreation>='" . $date_debut . " 00:00:00'";
 							if ($date_fin!="")
 								$sql .= " and client_datecreation<='" . $date_fin . " 23:59:59'";
-							if ($showroom!=0)
+							if ($showroom!=-1)
 								$sql .= " and showroom_num='" . $showroom . "'";
 							if ($genre!=-1)
 								$sql .= " and client_genre='" . $genre . "'";

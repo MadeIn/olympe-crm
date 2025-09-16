@@ -11,6 +11,16 @@ $desc_page = "Statistiques - Olympe Mariage";
 		else
 			$showroom = $u->mShowroom;
 	}
+
+	if (!isset($mois_deb)) 
+		$mois_deb = Date("m");
+	if (!isset($annee_deb)) 
+		$annee_deb = Date("Y");
+
+	if (!isset($mois_fin)) 
+		$mois_fin = Date("m");
+	if (!isset($annee_fin)) 
+		$annee_fin = Date("Y");
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>

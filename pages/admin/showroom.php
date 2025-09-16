@@ -14,12 +14,14 @@ if (isset($action)) {
 		break;
 		
 		case "update" :
-			$sql = "update showrooms set showroom_nom=" . sql_safe($nom) . ",showroom_adr1=" . sql_safe($adr1) . ",showroom_adr2=" . sql_safe($adr2) . ",showroom_cp=" . sql_safe($cp) . ",showroom_ville=" . sql_safe($ville) . ",showroom_acces=" . sql_safe($acces) . ",showroom_tel=" . sql_safe($tel) . ",showroom_mail=" . sql_safe($mail) . ",showroom_rcs=" . sql_safe($rcs) . ",showroom_raison=" . sql_safe($raison) . ",showroom_siret=" . sql_safe($siret) . ",showroom_tva=" . sql_safe($tva) . ",ca_annee=" . sql_safe($ca_annee) . ",ca_janvier=" . sql_safe($ca_janvier) . ",ca_fevrier=" . sql_safe($ca_fevrier) . ",ca_mars=" . sql_safe($ca_mars) . ",ca_avril=" . sql_safe($ca_avril) . ",ca_mai=" . sql_safe($ca_mai) . ",ca_juin=" . sql_safe($ca_juin) . ",ca_juillet=" . sql_safe($ca_juillet) . ",ca_aout=" . sql_safe($ca_aout) . ",ca_septembre=" . sql_safe($ca_septembre) . ",ca_octobre=" . sql_safe($ca_octobre) . ",ca_novembre=" . sql_safe($ca_novembre) . ",ca_decembre=" . sql_safe($ca_decembre) . ",nbr_annee=" . sql_safe($nbr_annee) . ",nbr_janvier=" . sql_safe($nbr_janvier) . ",nbr_fevrier=" . sql_safe($nbr_fevrier) . ",nbr_mars=" . sql_safe($nbr_mars) . ",nbr_avril=" . sql_safe($nbr_avril) . ",nbr_mai=" . sql_safe($nbr_mai) . ",nbr_juin=" . sql_safe($nbr_juin) . ",nbr_juillet=" . sql_safe($nbr_juillet) . ",nbr_aout=" . sql_safe($nbr_aout) . ",nbr_septembre=" . sql_safe($nbr_septembre) . ",nbr_octobre=" . sql_safe($nbr_octobre) . ",nbr_novembre=" . sql_safe($nbr_novembre) . ",nbr_decembre=" . sql_safe($nbr_decembre) . ", banque_nom=" . sql_safe($banque_nom) . ", banque_code_etablissement=" . sql_safe($banque_code_etablissement) . ",banque_code_guichet=" . sql_safe($banque_code_guichet) . ",banque_compte=" . sql_safe($banque_compte) . ",banque_cle_rib=" . sql_safe($banque_cle_rib) . ",banque_swift=" . sql_safe($banque_swift) . ",banque_iban=" . sql_safe($banque_iban) . " where showroom_num=" . safe_sql(decrypte($num)) . "";
+			$sql = "update showrooms set showroom_nom=" . sql_safe($nom) . ",showroom_adr1=" . sql_safe($adr1) . ",showroom_adr2=" . sql_safe($adr2) . ",showroom_cp=" . sql_safe($cp) . ",showroom_ville=" . sql_safe($ville) . ",showroom_acces=" . sql_safe($acces) . ",showroom_tel=" . sql_safe($tel) . ",showroom_mail=" . sql_safe($mail) . ",showroom_rcs=" . sql_safe($rcs) . ",showroom_raison=" . sql_safe($raison) . ",showroom_siret=" . sql_safe($siret) . ",showroom_tva=" . sql_safe($tva) . ",ca_annee=" . sql_safe($ca_annee) . ",ca_janvier=" . sql_safe($ca_janvier) . ",ca_fevrier=" . sql_safe($ca_fevrier) . ",ca_mars=" . sql_safe($ca_mars) . ",ca_avril=" . sql_safe($ca_avril) . ",ca_mai=" . sql_safe($ca_mai) . ",ca_juin=" . sql_safe($ca_juin) . ",ca_juillet=" . sql_safe($ca_juillet) . ",ca_aout=" . sql_safe($ca_aout) . ",ca_septembre=" . sql_safe($ca_septembre) . ",ca_octobre=" . sql_safe($ca_octobre) . ",ca_novembre=" . sql_safe($ca_novembre) . ",ca_decembre=" . sql_safe($ca_decembre) . ",nbr_annee=" . sql_safe($nbr_annee) . ",nbr_janvier=" . sql_safe($nbr_janvier) . ",nbr_fevrier=" . sql_safe($nbr_fevrier) . ",nbr_mars=" . sql_safe($nbr_mars) . ",nbr_avril=" . sql_safe($nbr_avril) . ",nbr_mai=" . sql_safe($nbr_mai) . ",nbr_juin=" . sql_safe($nbr_juin) . ",nbr_juillet=" . sql_safe($nbr_juillet) . ",nbr_aout=" . sql_safe($nbr_aout) . ",nbr_septembre=" . sql_safe($nbr_septembre) . ",nbr_octobre=" . sql_safe($nbr_octobre) . ",nbr_novembre=" . sql_safe($nbr_novembre) . ",nbr_decembre=" . sql_safe($nbr_decembre) . ", banque_nom=" . sql_safe($banque_nom) . ", banque_code_etablissement=" . sql_safe($banque_code_etablissement) . ",banque_code_guichet=" . sql_safe($banque_code_guichet) . ",banque_compte=" . sql_safe($banque_compte) . ",banque_cle_rib=" . sql_safe($banque_cle_rib) . ",banque_swift=" . sql_safe($banque_swift) . ",banque_iban=" . sql_safe($banque_iban) . " where showroom_num=" . sql_safe(decrypte($num)) . "";
 			$base->query($sql);	
 			
 			// On efface les moyes de paiements pour les remettre
 			$sql = "delete from showrooms_paiements where showroom_num='" . intval(decrypte($num)) . "'";
 			$base->query($sql);
+
+			$edit = $num;
 		break;
 	}
 	
@@ -115,7 +117,7 @@ async function confirme() {
 											
 											$sql = "select * from showrooms where showroom_num='" . decrypte($edit) . "'";
 											$rtt = $base->queryRow($sql);
- if ($rtt) {
+ 											if ($rtt) {
 												$num = $rtt["showroom_num"];
 												$nom = $rtt["showroom_nom"];
 												$adr1 = $rtt["showroom_adr1"];
@@ -187,7 +189,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-industry"></i>
 													</span>
-													<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= $nom ?>" required> </div>
+													<input type="text" name="nom" class="form-control" placeholder="Nom" value="<?= ($nom ?? '') ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Adresse</label>
@@ -195,7 +197,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-road"></i>
 													</span>
-													<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?= $adr1 ?>" required> </div>
+													<input type="text" name="adr1" class="form-control" placeholder="Adresse"  value="<?= ($adr1 ?? '') ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Complément d'adresse</label>
@@ -203,7 +205,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-road"></i>
 													</span>
-													<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?= $adr2 ?>"> </div>
+													<input type="text" name="adr2" class="form-control" placeholder="Complément d'adresse"  value="<?= ($adr2 ?? '') ?>"> </div>
 											</div>
 											<div class="form-group">
 												<label>CP</label>
@@ -211,7 +213,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-search"></i>
 													</span>
-													<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?= $cp ?>" required> </div>
+													<input type="text" name="cp" class="form-control" placeholder="Code Postal"  value="<?= ($cp ?? '') ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Ville</label>
@@ -219,7 +221,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-shield"></i>
 													</span>
-													<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?= $ville ?>" required> </div>
+													<input type="text" name="ville" class="form-control" placeholder="Ville" value="<?= ($ville ?? '') ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Accès</label>
@@ -227,7 +229,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-map"></i>
 													</span>
-													<textarea name="acces" class="form-control" rows="4"><?= $acces ?></textarea>
+													<textarea name="acces" class="form-control" rows="4"><?= ($acces ?? '') ?></textarea>
 													</div>
 											</div>
 											<div class="form-group">
@@ -236,7 +238,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-mobile-phone"></i>
 													</span>
-													<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= $tel ?>" required> </div>
+													<input type="text" name="tel" class="form-control" placeholder="Téléphone" value="<?= ($tel ?? '') ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>Email</label>
@@ -244,7 +246,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-envelope"></i>
 													</span>
-													<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= $mail ?>" required> </div>
+													<input type="email" name="mail" class="form-control" placeholder="Email" value="<?= ($mail ?? '') ?>" required> </div>
 											</div>
 											<div class="form-group">
 												<label>RCS</label>
@@ -252,7 +254,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-barcode"></i>
 													</span>
-													<input type="text" name="rcs" class="form-control" placeholder="RCS" value="<?= $rcs ?>" > </div>
+													<input type="text" name="rcs" class="form-control" placeholder="RCS" value="<?= ($rcs ?? '') ?>" > </div>
 											</div>
 											<div class="form-group">
 												<label>Raison Social</label>
@@ -260,7 +262,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-barcode"></i>
 													</span>
-													<input type="text" name="raison" class="form-control" placeholder="Raison social" value="<?= $raison ?>" > </div>
+													<input type="text" name="raison" class="form-control" placeholder="Raison social" value="<?= ($raison ?? '') ?>" > </div>
 											</div>
 											<div class="form-group">
 												<label>SIRET</label>
@@ -268,7 +270,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-barcode"></i>
 													</span>
-													<input type="text" name="siret" class="form-control" placeholder="SIRET" value="<?= $siret ?>" > </div>
+													<input type="text" name="siret" class="form-control" placeholder="SIRET" value="<?= ($siret ?? '') ?>" > </div>
 											</div>
 											<div class="form-group">
 												<label>TVA</label>
@@ -276,7 +278,7 @@ async function confirme() {
 													<span class="input-group-addon">
 														<i class="fa fa-barcode"></i>
 													</span>
-													<input type="text" name="tva" class="form-control" placeholder="TVA Intra" value="<?= $tva ?>" > </div>
+													<input type="text" name="tva" class="form-control" placeholder="TVA Intra" value="<?= ($tva ?? '') ?>" > </div>
 											</div>
 											<div class="form-group">
 												<label>Coordonnées bancaires</label>
@@ -286,25 +288,25 @@ async function confirme() {
 													</span>
 													<table class="table">
 														<tr>
-															<td>Nom :</td><td><input type="text" name="banque_nom" class="form-control" placeholder="Nom de la banque" value="<?= $banque_nom ?>">
+															<td>Nom :</td><td><input type="text" name="banque_nom" class="form-control" placeholder="Nom de la banque" value="<?= ($banque_nom ?? '')?>">
 														</tr>
 														<tr>
-															<td>Code établissement :</td><td><input type="text" name="banque_code_etablissement" class="form-control" placeholder="Code établissement" value="<?= $banque_code_etablissement ?>">
+															<td>Code établissement :</td><td><input type="text" name="banque_code_etablissement" class="form-control" placeholder="Code établissement" value="<?= ($banque_code_etablissement ?? '') ?>">
 														</tr>
 														<tr>
-															<td>Code guichet :</td><td><input type="text" name="banque_code_guichet" class="form-control" placeholder="Code guichet" value="<?= $banque_code_guichet ?>">
+															<td>Code guichet :</td><td><input type="text" name="banque_code_guichet" class="form-control" placeholder="Code guichet" value="<?= ($banque_code_guichet ?? '') ?>">
 														</tr>
 														<tr>
-															<td>N° de compte :</td><td><input type="text" name="banque_compte" class="form-control" placeholder="N° de compte" value="<?= $banque_compte ?>">
+															<td>N° de compte :</td><td><input type="text" name="banque_compte" class="form-control" placeholder="N° de compte" value="<?= ($banque_compte ?? '') ?>">
 														</tr>
 														<tr>
-															<td>Clé RIB :</td><td><input type="text" name="banque_cle_rib" class="form-control" placeholder="Clé RIB" value="<?= $banque_cle_rib ?>">
+															<td>Clé RIB :</td><td><input type="text" name="banque_cle_rib" class="form-control" placeholder="Clé RIB" value="<?= ($banque_cle_rib ?? '') ?>">
 														</tr>
 														<tr>
-															<td>Code SWIFT :</td><td><input type="text" name="banque_swift" class="form-control" placeholder="Code SWIFT" value="<?= $banque_swift ?>">
+															<td>Code SWIFT :</td><td><input type="text" name="banque_swift" class="form-control" placeholder="Code SWIFT" value="<?= ($banque_swift ?? '') ?>">
 														</tr>
 														<tr>
-															<td>IBAN :</td><td><input type="text" name="banque_iban" class="form-control" placeholder="IBAN" value="<?= $banque_iban ?>">
+															<td>IBAN :</td><td><input type="text" name="banque_iban" class="form-control" placeholder="IBAN" value="<?= ($banque_iban ?? '') ?>">
 														</tr>
 													</table>
 												</div>
@@ -321,10 +323,12 @@ async function confirme() {
 														$pp = $base->query($sql);
 														foreach ($pp as $rpp) {
 															$checked = "";
-															$sql = "select * from showrooms_paiements where showroom_num='" . intval(decrypte($edit)) . "' and mode_num='" . $rpp["mode_num"] . "'";
-															$rtt = $base->queryRow($sql);
- if ($rtt) {
-																$checked = " CHECKED";
+															if (isset($edit)) {
+																$sql = "select * from showrooms_paiements where showroom_num='" . intval(decrypte($edit)) . "' and mode_num='" . $rpp["mode_num"] . "'";
+																$rtt = $base->queryRow($sql);
+																if ($rtt) {
+																	$checked = " CHECKED";
+																}
 															}
 															echo '<li><input type="checkbox" name="mode[]" value="' . $rpp["mode_num"] . '"' . $checked . '> ' . $rpp["mode_nom"] . '</li>';
 														}
@@ -333,12 +337,12 @@ async function confirme() {
 												</div>
 											</div>
 											<div class="form-group">
-												<label>Objectif CA Annuel robes</label>
+												<label>Objectif Nbr Annuel robes</label>
 												<div class="input-group">
 													<span class="input-group-addon">
 														<i class="fa fa-eur"></i>
 													</span>
-													<input type="text" name="ca_annee" class="form-control" placeholder="Ca Annuel" value="<?= $ca_annee ?>" size="5"> </div>
+													<input type="text" name="nbr_annee" class="form-control" placeholder="Nbr Annuel" value="<?= ($nbr_annee ?? '') ?>" size="5"> </div>
 											</div>
 											<div class="form-group">
 												<label>Objectif Nbr mensuel robes</label>
@@ -348,23 +352,31 @@ async function confirme() {
 													</span>
 													<table class="table">
 														<tr>
-															<td>Jan.<br><input type="text" name="nbr_janvier" class="form-control" placeholder="01" value="<?= $nbr_janvier ?>"></td>
-															<td>Fev.<br><input type="text" name="nbr_fevrier" class="form-control" placeholder="02" value="<?= $nbr_fevrier ?>"></td>
-															<td>Mars<br><input type="text" name="nbr_mars" class="form-control" placeholder="03" value="<?= $nbr_mars ?>"></td>
-															<td>Avr.<br><input type="text" name="nbr_avril" class="form-control" placeholder="04" value="<?= $nbr_avril ?>"></td>
-															<td>Mai<br><input type="text" name="nbr_mai" class="form-control" placeholder="05" value="<?= $nbr_mai ?>"></td>
-															<td>Juin<br><input type="text" name="nbr_juin" class="form-control" placeholder="06" value="<?= $nbr_juin ?>"></td>
+															<td>Jan.<br><input type="text" name="nbr_janvier" class="form-control" placeholder="01" value="<?= ($nbr_janvier ?? '') ?>"></td>
+															<td>Fev.<br><input type="text" name="nbr_fevrier" class="form-control" placeholder="02" value="<?= ($nbr_fevrier ?? '') ?>"></td>
+															<td>Mars<br><input type="text" name="nbr_mars" class="form-control" placeholder="03" value="<?= ($nbr_mars ?? '') ?>"></td>
+															<td>Avr.<br><input type="text" name="nbr_avril" class="form-control" placeholder="04" value="<?= ($nbr_avril ?? '') ?>"></td>
+															<td>Mai<br><input type="text" name="nbr_mai" class="form-control" placeholder="05" value="<?= ($nbr_mai ?? '') ?>"></td>
+															<td>Juin<br><input type="text" name="nbr_juin" class="form-control" placeholder="06" value="<?= ($nbr_juin ?? '') ?>"></td>
 														</tr>
 														<tr>
-															<td>Jui.<br><input type="text" name="nbr_juillet" class="form-control" placeholder="07" value="<?= $nbr_juillet ?>"></td>
-															<td>Aout<br><input type="text" name="nbr_aout" class="form-control" placeholder="08" value="<?= $nbr_aout ?>"></td>
-															<td>Sep.<br><input type="text" name="nbr_septembre" class="form-control" placeholder="09" value="<?= $nbr_septembre ?>"></td>
-															<td>Oct.<br><input type="text" name="nbr_octobre" class="form-control" placeholder="10" value="<?= $nbr_octobre ?>"></td>
-															<td>Nov.<br><input type="text" name="nbr_novembre" class="form-control" placeholder="11" value="<?= $nbr_novembre ?>"></td>
-															<td>Dec.<br><input type="text" name="nbr_decembre" class="form-control" placeholder="12" value="<?= $nbr_decembre ?>"></td>
+															<td>Jui.<br><input type="text" name="nbr_juillet" class="form-control" placeholder="07" value="<?= ($nbr_juillet ?? '') ?>"></td>
+															<td>Aout<br><input type="text" name="nbr_aout" class="form-control" placeholder="08" value="<?= ($nbr_aout ?? '') ?>"></td>
+															<td>Sep.<br><input type="text" name="nbr_septembre" class="form-control" placeholder="09" value="<?= ($nbr_septembre ?? '') ?>"></td>
+															<td>Oct.<br><input type="text" name="nbr_octobre" class="form-control" placeholder="10" value="<?= ($nbr_octobre ?? '') ?>"></td>
+															<td>Nov.<br><input type="text" name="nbr_novembre" class="form-control" placeholder="11" value="<?= ($nbr_novembre ?? '') ?>"></td>
+															<td>Dec.<br><input type="text" name="nbr_decembre" class="form-control" placeholder="12" value="<?= ($nbr_decembre ?? '') ?>"></td>
 														</tr>
 													</table>
 												</div>
+											</div>
+											<div class="form-group">
+												<label>Objectif CA Annuel robes</label>
+												<div class="input-group">
+													<span class="input-group-addon">
+														<i class="fa fa-eur"></i>
+													</span>
+													<input type="text" name="ca_annee" class="form-control" placeholder="Ca Annuel" value="<?= ($ca_annee ?? '') ?>" size="5"> </div>
 											</div>
 											<div class="form-group">
 												<label>Objectif CA mensuel robes</label>
@@ -374,20 +386,20 @@ async function confirme() {
 													</span>
 													<table class="table">
 														<tr>
-															<td>Jan.<br><input type="text" name="ca_janvier" class="form-control" placeholder="01" value="<?= $ca_janvier ?>"></td>
-															<td>Fev.<br><input type="text" name="ca_fevrier" class="form-control" placeholder="02" value="<?= $ca_fevrier ?>"></td>
-															<td>Mars<br><input type="text" name="ca_mars" class="form-control" placeholder="03" value="<?= $ca_mars ?>"></td>
-															<td>Avr.<br><input type="text" name="ca_avril" class="form-control" placeholder="04" value="<?= $ca_avril ?>"></td>
-															<td>Mai<br><input type="text" name="ca_mai" class="form-control" placeholder="05" value="<?= $ca_mai ?>"></td>
-															<td>Juin<br><input type="text" name="ca_juin" class="form-control" placeholder="06" value="<?= $ca_juin ?>"></td>
+															<td>Jan.<br><input type="text" name="ca_janvier" class="form-control" placeholder="01" value="<?= ($ca_janvier ?? '') ?>"></td>
+															<td>Fev.<br><input type="text" name="ca_fevrier" class="form-control" placeholder="02" value="<?= ($ca_fevrier ?? '') ?>"></td>
+															<td>Mars<br><input type="text" name="ca_mars" class="form-control" placeholder="03" value="<?= ($ca_mars ?? '') ?>"></td>
+															<td>Avr.<br><input type="text" name="ca_avril" class="form-control" placeholder="04" value="<?= ($ca_avril ?? '') ?>"></td>
+															<td>Mai<br><input type="text" name="ca_mai" class="form-control" placeholder="05" value="<?= ($ca_mai ?? '') ?>"></td>
+															<td>Juin<br><input type="text" name="ca_juin" class="form-control" placeholder="06" value="<?= ($ca_juin ?? '') ?>"></td>
 														</tr>
 														<tr>
-															<td>Jui.<br><input type="text" name="ca_juillet" class="form-control" placeholder="07" value="<?= $ca_juillet ?>"></td>
-															<td>Aout<br><input type="text" name="ca_aout" class="form-control" placeholder="08" value="<?= $ca_aout ?>"></td>
-															<td>Sep.<br><input type="text" name="ca_septembre" class="form-control" placeholder="09" value="<?= $ca_septembre ?>"></td>
-															<td>Oct.<br><input type="text" name="ca_octobre" class="form-control" placeholder="10" value="<?= $ca_octobre ?>"></td>
-															<td>Nov.<br><input type="text" name="ca_novembre" class="form-control" placeholder="11" value="<?= $ca_novembre ?>"></td>
-															<td>Dec.<br><input type="text" name="ca_decembre" class="form-control" placeholder="12" value="<?= $ca_decembre ?>"></td>
+															<td>Jui.<br><input type="text" name="ca_juillet" class="form-control" placeholder="07" value="<?= ($ca_juillet ?? '') ?>"></td>
+															<td>Aout<br><input type="text" name="ca_aout" class="form-control" placeholder="08" value="<?= ($ca_aout ?? '') ?>"></td>
+															<td>Sep.<br><input type="text" name="ca_septembre" class="form-control" placeholder="09" value="<?= ($ca_septembre ?? '') ?>"></td>
+															<td>Oct.<br><input type="text" name="ca_octobre" class="form-control" placeholder="10" value="<?= ($ca_octobre ?? '') ?>"></td>
+															<td>Nov.<br><input type="text" name="ca_novembre" class="form-control" placeholder="11" value="<?= ($ca_novembre ?? '') ?>"></td>
+															<td>Dec.<br><input type="text" name="ca_decembre" class="form-control" placeholder="12" value="<?= ($ca_decembre ?? '') ?>"></td>
 														</tr>
 													</table>
 												</div>
@@ -449,6 +461,17 @@ async function confirme() {
             </div>
         </div>
          <?php include TEMPLATE_PATH . 'bottom.php'; ?>
+		 <?php if (isset($action)) { 
+				switch ($action) {
+					case 'add':
+						echo '<script>$ol.toastSuccess("Showroom mis à jour !");</script>';
+					break;
+					case 'update':
+						echo '<script>$ol.toastSuccess("Showroom ajouté !");</script>';
+					break;
+				}
+		   }
+		?>
     </body>
 
 </html>

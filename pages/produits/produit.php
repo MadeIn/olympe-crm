@@ -13,10 +13,10 @@ if (isset($decalle)) {
 		$new_pos = $pos-1;
 		
 	// On decalle 
-	$sql = "update md_produits_photos set photo_pos=" . safe_sql($pos) . " where photo_pos=" . $new_pos . " and produit_num=" . safe_sql($modif_num);
+	$sql = "update md_produits_photos set photo_pos=" . sql_safe($pos) . " where photo_pos=" . $new_pos . " and produit_num=" . sql_safe($modif_num);
 	$base->query($sql);
 	
-	$sql = "update md_produits_photos set photo_pos=" . safe_sql($new_pos) . " where photo_num=" . $photo_pos;
+	$sql = "update md_produits_photos set photo_pos=" . sql_safe($new_pos) . " where photo_num=" . $photo_pos;
 	$base->query($sql);
 }
 
@@ -25,7 +25,7 @@ if (isset($modif)) {
 	$desc = str_replace("&lt;","<",$desc);
 	$desc = str_replace("&gt;",">",$desc);
 	
-	$sql = "update md_produits set produit_etat=" . safe_sql($etat) . ",produit_ref=" . safe_sql($ref) . ",produit_nom=" . safe_sql($nom) . ",  produit_desc=" . safe_sql($desc) . ",categorie_num=" . safe_sql($categorie) . ", marque_num=" . safe_sql($marque);
+	$sql = "update md_produits set produit_etat=" . sql_safe($etat) . ",produit_ref=" . sql_safe($ref) . ",produit_nom=" . sql_safe($nom) . ",  produit_desc=" . sql_safe($desc) . ",categorie_num=" . sql_safe($categorie) . ", marque_num=" . sql_safe($marque);
 	$sql .= " where produit_num=" . decrypte($val_num);
 	$base->query($sql);
 
@@ -47,7 +47,7 @@ if (isset($modif)) {
 	
 	if ($pp_num!=0) {
 		// On efface le prix pour le remettre
-		$sql = "delete from prix where prix_num=" . safe_sql($pp_num);
+		$sql = "delete from prix where prix_num=" . sql_safe($pp_num);
 		$base->query($sql);
 	}
 	
@@ -63,7 +63,7 @@ if (isset($modif)) {
 	// On insere le prix d'achat
 	if ($pa_num!=0)	{
 		// On efface le prix pour le remettre
-		$sql = "delete from prixachats where prixachat_num=" . safe_sql($pa_num);
+		$sql = "delete from prixachats where prixachat_num=" . sql_safe($pa_num);
 		$base->query($sql);
 	}
 	if ($prixachat=="")
@@ -77,7 +77,7 @@ if (isset($modif)) {
 
 	$prixachat_num = $base->insert($sql,['paht' => $paht]);
 
-	$sql = "update md_produits set prix_num=" . safe_sql($prix_num) . ", prixachat_num=" . safe_sql($prixachat_num) . ", produit_poids=" . intval($poids) . ", tva_num=" . safe_sql($tva) . ", produit_montant_remise=" . safe_sql($remise) . ", produit_remise_type=" . safe_sql($remise_type) . "  where produit_num=" . decrypte($val_num);
+	$sql = "update md_produits set prix_num=" . sql_safe($prix_num) . ", prixachat_num=" . sql_safe($prixachat_num) . ", produit_poids=" . intval($poids) . ", tva_num=" . sql_safe($tva) . ", produit_montant_remise=" . sql_safe($remise) . ", produit_remise_type=" . sql_safe($remise_type) . "  where produit_num=" . decrypte($val_num);
 	$base->query($sql);
 	
 	$modif_num = $val_num;
@@ -87,7 +87,7 @@ if (isset($ajout)) {
 	$desc = str_replace("&lt;","<",$desc);
 	$desc = str_replace("&gt;",">",$desc);
 	
-	$sql = "insert into md_produits values (0," . safe_sql($ref) . "," . safe_sql($nom) . "," . safe_sql($desc) . ",'','" . Date("Y-m-d H:i:s") . "'," . safe_sql($categorie) . "," . safe_sql($marque) . "," . safe_sql($etat) . ",0,0,0,'',0,0)";
+	$sql = "insert into md_produits values (0," . sql_safe($ref) . "," . sql_safe($nom) . "," . sql_safe($desc) . ",'','" . Date("Y-m-d H:i:s") . "'," . sql_safe($categorie) . "," . sql_safe($marque) . "," . sql_safe($etat) . ",0,0,0,'',0,0)";
 	$num = $base->insert($sql);
 	
 		
@@ -101,17 +101,17 @@ if (isset($ajout)) {
 		$prix=0;
 		
 	$prix = str_replace(",",".",$prix);
-	$sql = "insert into prix values(0,''," . safe_sql($prix) . ",'','','','" . Date("Y-m-d H:i:s") . "')";
+	$sql = "insert into prix values(0,''," . sql_safe($prix) . ",'','','','" . Date("Y-m-d H:i:s") . "')";
 	$prix_num = $base->insert($sql);
 	
 	// On insere le prix d'achat
 	if ($prixachat=="")
 		$prixachat=0;
 	$prixachat = str_replace(",",".",$prixachat);
-	$sql = "insert into prixachats values(0," . safe_sql($prixachat) . ",'" . Date("Y-m-d H:i:s") . ")";
+	$sql = "insert into prixachats values(0," . sql_safe($prixachat) . ",'" . Date("Y-m-d H:i:s") . ")";
 	$prixachat_num = $base->insert($sql);
 	
-	$sql = "update md_produits set prix_num=" . safe_sql($prix_num) . ", prixachat_num=" . safe_sql($prixachat_num) . ", produit_poids=" . intval($poids) . ", tva_num=" . safe_sql($tva_num) . ", produit_montant_remise=" . safe_sql($remise) . ", produit_remise_type=" . safe_sql($remise_type) . "  where produit_num=" . safe_sql($num);
+	$sql = "update md_produits set prix_num=" . sql_safe($prix_num) . ", prixachat_num=" . sql_safe($prixachat_num) . ", produit_poids=" . intval($poids) . ", tva_num=" . sql_safe($tva_num) . ", produit_montant_remise=" . sql_safe($remise) . ", produit_remise_type=" . sql_safe($remise_type) . "  where produit_num=" . sql_safe($num);
 	$base->query($sql);
 	
 	// On ajoute les photos
@@ -125,7 +125,7 @@ if (isset($ajout)) {
 		$legende = $_POST[$leg];
 		$nom_image = uploadPhotoPdt($_FILES[$file_upload],$nom_photo,'produits',"1200","800","400");
 		if ($nom_image!="")	{
-			$sql = "insert into md_produits_photos values(0," . safe_sql($num) . "," . safe_sql($nom_image) . "," . safe_sql($legende) . "," . safe_sql($i) . ")";
+			$sql = "insert into md_produits_photos values(0," . sql_safe($num) . "," . sql_safe($nom_image) . "," . sql_safe($legende) . "," . sql_safe($i) . ")";
 			$base->query($sql);
 		}
 	}	
@@ -158,7 +158,7 @@ if (isset($add_photo)) {
 		if ($nom_image!="") {
 			$leg = "leg_" . $i;
 			$legende = $_POST[$leg];
-			$sql = "insert into md_produits_photos values(0," . decrypte($modif_num) . "," . safe_sql($nom_image) . "," . safe_sql($legende) . "," . safe_sql($pos) . ")";
+			$sql = "insert into md_produits_photos values(0," . decrypte($modif_num) . "," . sql_safe($nom_image) . "," . sql_safe($legende) . "," . sql_safe($pos) . ")";
 			$base->query($sql);
 		}
 		$pos++;
@@ -189,13 +189,13 @@ if (isset($suppr)) {
 
 if (isset($modif_stock)) {
 	// On efface les anciens stocks pour les reinserer
-	$sql = "delete from stocks where produit_num=" . decrypte($modif_num) . " and taille_num=" . $taille_num . " and showroom_num=" . safe_sql($u->mShowroom);
+	$sql = "delete from stocks where produit_num=" . decrypte($modif_num) . " and taille_num=" . $taille_num . " and showroom_num=" . sql_safe($u->mShowroom);
 	$base->query($sql);
 	
 	if (($st_virtuel!="") && ($st_reel!="")) {
 		if (($st_virtuel>0) && ($st_reel>0))
 			$date_reappro = "0000-00-00";
-		$sql = "insert into stocks values(" . decrypte($modif_num) . "," . safe_sql($taille_num) . "," . safe_sql($st_virtuel) . "," . safe_sql($st_reel) . ",'10'," . safe_sql($date_reappro) . "," . safe_sql($u->mShowroom) . ")";
+		$sql = "insert into stocks values(" . decrypte($modif_num) . "," . sql_safe($taille_num) . "," . sql_safe($st_virtuel) . "," . sql_safe($st_reel) . ",'10'," . sql_safe($date_reappro) . "," . sql_safe($u->mShowroom) . ")";
 		$sql_stock = $sql;
 		$base->query($sql);
 	}
@@ -221,7 +221,7 @@ if (isset($suppr_photo)) {
 	$cc = $base->query($sql);
 	$pos=1;
 	foreach ($cc as $res) {
-		$sql = "update md_produits_photos set photo_pos=" . safe_sql($pos) . " where photo_num=" . safe_sql($res["photo_num"]);
+		$sql = "update md_produits_photos set photo_pos=" . sql_safe($pos) . " where photo_num=" . sql_safe($res["photo_num"]);
 		$base->query($sql);
 		$pos++;
 	}
@@ -427,14 +427,14 @@ async function confirme() {
 												$remise = $rcc["produit_montant_remise"];
 												$remise_type = $rcc["produit_remise_type"];
 												
-												$sql = "select * from prix where prix_num=" . safe_sql($rcc["prix_num"]);
+												$sql = "select * from prix where prix_num=" . sql_safe($rcc["prix_num"]);
 												$rpp = $base->queryRow($sql);
 												if ($rpp)
 													$prix = $rpp["prix_montant_ht"];
 												else
 													$prix = 0;
 													
-												$sql = "select * from prixachats where prixachat_num=" . safe_sql($rcc["prixachat_num"]);
+												$sql = "select * from prixachats where prixachat_num=" . sql_safe($rcc["prixachat_num"]);
 												$rpp = $base->queryRow($sql);
 												if ($rpp)
 													$prixachat = $rpp["prixachat_montant"];
@@ -710,7 +710,7 @@ async function confirme() {
 											$sql = "select * from tailles t, categories_tailles c where t.taille_num=c.taille_num and c.categorie_num=" . $categorie_num;
 											$ss = $base->query($sql);
 											foreach ($ss as $st) {
-												$sql = "select * from stocks where taille_num=" . $st["taille_num"] . " and produit_num=" . decrypte($modif_num) . " and showroom_num=" . safe_sql($u->mShowroom);
+												$sql = "select * from stocks where taille_num=" . $st["taille_num"] . " and produit_num=" . decrypte($modif_num) . " and showroom_num=" . sql_safe($u->mShowroom);
 												$rcc = $base->queryRow($sql);
 												if ($rcc) {
 													$stock_virtuel = $rcc["stock_virtuel"];

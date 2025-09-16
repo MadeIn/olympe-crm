@@ -42,7 +42,7 @@ if (!function_exists('h')) {
         <!-- END GLOBAL MANDATORY STYLES -->
 
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <?= $link_plugin /* trusted HTML (e.g., extra <link> tags) */ ?>
+        <?= ($link_plugin ?? '') /* trusted HTML (e.g., extra <link> tags) */ ?>
         <link href="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
         <link href="/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />

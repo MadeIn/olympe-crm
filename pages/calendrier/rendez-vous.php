@@ -6,7 +6,7 @@ $message_erreur = "";
 
 if (isset($modif_desc)) {
 	// On modifie la description du RDV
-	$sql = "update calendriers set calendrier_desc=" . safe_sql($calendrier_desc) . " where calendrier_num=" . safe_sql($calendrier_num);
+	$sql = "update calendriers set calendrier_desc=" . sql_safe($calendrier_desc) . " where calendrier_num=" . sql_safe($calendrier_num);
 	$base->query($sql);	
 }
 
@@ -22,7 +22,7 @@ if (isset($ajouter)) {
 			if (count($client_search)>0) {
 				$client_num = $client_search[0];
 				// On recherche le client 
-				$sql = "select * from clients where client_num=" . safe_sql($client_num);
+				$sql = "select * from clients where client_num=" . sql_safe($client_num);
 				$rcl = $base->queryRow($sql);
  				if ($rcl) {
 					if ($rcl["client_genre"]==0)
@@ -33,19 +33,19 @@ if (isset($ajouter)) {
 					$client_nom_complet = str_replace("'","\'",$rcl["client_nom"]) . " " . $rcl["client_prenom"];
 					
 					// On regarde si on a pas déjà un rendez vous 
-					$sql = "select * from rendez_vous where client_num=" . safe_sql($client_num) . " and type_num=" . safe_sql($type);
+					$sql = "select * from rendez_vous where client_num=" . sql_safe($client_num) . " and type_num=" . sql_safe($type);
 					$rtt = $base->queryRow($sql);
  					if ($rtt) {
-						$sql = "delete from rendez_vous where rdv_num=" . safe_sql($rtt["rdv_num"]);
+						$sql = "delete from rendez_vous where rdv_num=" . sql_safe($rtt["rdv_num"]);
 						$base->query($sql);
 							
-						$sql = "delete from calendriers where rdv_num=" . safe_sql($rtt["rdv_num"]);
+						$sql = "delete from calendriers where rdv_num=" . sql_safe($rtt["rdv_num"]);
 						$base->query($sql);
 					}
 					
 					// On insere un Rendez vous
 					$date_rdv = $date_debut;
-					$sql = "insert into rendez_vous values(0," . safe_sql($client_num) . "," . safe_sql($type) . "," . safe_sql($date_rdv) . ",'',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . safe_sql($u->mNum) . ")";
+					$sql = "insert into rendez_vous values(0," . sql_safe($client_num) . "," . sql_safe($type) . "," . sql_safe($date_rdv) . ",'',0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . sql_safe($u->mNum) . ")";
 					$num = $base->insert($sql);
 					
 					// On ajoute dans le calendrier du user
@@ -57,7 +57,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
+							$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . sql_safe($client_num) . "," . sql_safe($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -81,7 +81,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -93,7 +93,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
+							$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . sql_safe($client_num) . "," . sql_safe($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -117,7 +117,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -129,7 +129,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
+							$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . sql_safe($client_num) . "," . sql_safe($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -153,7 +153,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -165,7 +165,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
+							$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . sql_safe($client_num) . "," . sql_safe($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -189,7 +189,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -207,7 +207,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
+							$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . sql_safe($client_num) . "," . sql_safe($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -236,7 +236,7 @@ if (isset($ajouter)) {
 								SendMail("lilietcie34@gmail.com",$titre_mail,$message_mail,$u->mNum,$client_num);
 							}
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -248,7 +248,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
+							$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . sql_safe($client_num) . "," . sql_safe($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -270,7 +270,7 @@ if (isset($ajouter)) {
 							$message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
 							
 							if ($dernier_acompte>0) {
-								$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num=" . safe_sql($rcl["showroom_num"]) . " order by mode_ordre ASC";
+								$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num=" . sql_safe($rcl["showroom_num"]) . " order by mode_ordre ASC";
 								$pa = $base->query($sql);
 								$nbr_paiement = count($pa);
 								$moyen_paiement = "";
@@ -294,7 +294,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 						break;
 						
@@ -305,7 +305,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
+							$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . sql_safe($client_num) . "," . sql_safe($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -329,7 +329,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -342,7 +342,7 @@ if (isset($ajouter)) {
 							$desc = $description;
 							
 							// On insere en bdd
-							$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . "," . safe_sql($client_num) . "," . safe_sql($num) . ")";
+							$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . "," . sql_safe($client_num) . "," . sql_safe($num) . ")";
 							$base->query($sql);
 							
 							// On envoi le mail selon le type de RDV
@@ -357,7 +357,7 @@ if (isset($ajouter)) {
 							// On envoi le mail
 							SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,$client_num);
 							
-							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+							$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 							$base->query($sql);
 							
 						break;
@@ -366,7 +366,7 @@ if (isset($ajouter)) {
 				}
 			}
 		} else {
-			$sql = "insert into calendriers values(0," . safe_sql($date_debut) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($description) . ",''," . safe_sql($u->mNum) . "," . safe_sql($u->mShowroom) . "," . safe_sql($client_num) . "," . safe_sql($rdv_num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_debut) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($description) . ",''," . sql_safe($u->mNum) . "," . sql_safe($u->mShowroom) . "," . sql_safe($client_num) . "," . sql_safe($rdv_num) . ")";
 			$base->query($sql);
 		}
 	} else {
@@ -376,11 +376,11 @@ if (isset($ajouter)) {
 
 if (isset($ajout_client)) {
 	// On test si le client n'exite pas
-	$sql = "select * from clients where client_mail=" . safe_sql($mail);
+	$sql = "select * from clients where client_mail=" . sql_safe($mail);
 	$tt = $base->query($sql);
 	$nbr = count($tt);
 	if ($nbr==0) {
-		$sql = "insert into clients values (0," . safe_sql($genre) . "," . safe_sql($nom) . "," . safe_sql($prenom) . "," . safe_sql($adr1) . "," . safe_sql($adr2) . "," . safe_sql($cp) . "," . safe_sql($ville) . "," . safe_sql($tel) . "," . safe_sql($mail) . "," . safe_sql($date) . "," . safe_sql($lieu) . ",'',''," . safe_sql($u->mShowroom) . "," . safe_sql($u->mNum) . ",'" . Date("Y-m-d H:i:s") . ",'" . Date("Y-m-d H:i:s") . ",'','','','','','','','','','','','',0,0)";
+		$sql = "insert into clients values (0," . sql_safe($genre) . "," . sql_safe($nom) . "," . sql_safe($prenom) . "," . sql_safe($adr1) . "," . sql_safe($adr2) . "," . sql_safe($cp) . "," . sql_safe($ville) . "," . sql_safe($tel) . "," . sql_safe($mail) . "," . sql_safe($date) . "," . sql_safe($lieu) . ",'',''," . sql_safe($u->mShowroom) . "," . sql_safe($u->mNum) . ",'" . Date("Y-m-d H:i:s") . ",'" . Date("Y-m-d H:i:s") . ",'','','','','','','','','','','','',0,0)";
 		$base->query($sql);
 	} else {
 		$message_erreur = "Un client est déjà enregistré avec cette adresse email !";
@@ -719,7 +719,7 @@ if (isset($ajout_client)) {
 					$param = "";
 					$date_deb = Date("Y-m-d 00:00:00", strtotime("-30 days"));
 					// ON recherche les events pour remplir le calendrier perso
-					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num=" . safe_sql($u->mNum) . " and calendrier_datedeb>=" . safe_sql($date_deb) . " and c.theme_num=4 order by calendrier_datedeb DESC";
+					$sql = "select * from calendriers c, calendriers_themes ct where c.theme_num=ct.theme_num and user_num=" . sql_safe($u->mNum) . " and calendrier_datedeb>=" . sql_safe($date_deb) . " and c.theme_num=4 order by calendrier_datedeb DESC";
 					$cc = $base->query($sql);
 					$nbr = count($cc);
 					$i=0;
@@ -741,13 +741,13 @@ if (isset($ajout_client)) {
 						$link = "";
 						if ($rcc["client_num"]!=0) {
 							$genre = 0;
-							$sql = "select * from clients where client_num=" . safe_sql($rcc["client_num"]);
+							$sql = "select * from clients where client_num=" . sql_safe($rcc["client_num"]);
 							$rcl = $base->queryRow($sql);
  							if ($rcl) {
 								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
-							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num=" . safe_sql($rcc["rdv_num"]);
+							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num=" . sql_safe($rcc["rdv_num"]);
 							$rrr = $base->queryRow($sql);
 							if ($rrr) {
 								if ($genre==0)
@@ -775,7 +775,7 @@ if (isset($ajout_client)) {
 						$param.= ",";
 					
 					// ON recherche les events pour remplir le calendrier du showroom
-					$sql = "select * from calendriers c, calendriers_themes ct, clients cl, users u where c.theme_num=ct.theme_num and c.client_num=cl.client_num and cl.user_num=u.user_num and c.showroom_num=" . safe_sql($u->mShowroom) . "  and calendrier_datedeb>=" . safe_sql($date_deb) . " and c.theme_num!=4 order by calendrier_datedeb DESC";
+					$sql = "select * from calendriers c, calendriers_themes ct, clients cl, users u where c.theme_num=ct.theme_num and c.client_num=cl.client_num and cl.user_num=u.user_num and c.showroom_num=" . sql_safe($u->mShowroom) . "  and calendrier_datedeb>=" . sql_safe($date_deb) . " and c.theme_num!=4 order by calendrier_datedeb DESC";
 					$cc = $base->query($sql);
 					$nbr = count($cc);
 					$i=0;
@@ -798,13 +798,13 @@ if (isset($ajout_client)) {
 						$type_rdv = 0;
 						if ($rcc["client_num"]!=0) {
 							$genre = 0;
-							$sql = "select * from clients where client_num=" . safe_sql($rcc["client_num"]);
+							$sql = "select * from clients where client_num=" . sql_safe($rcc["client_num"]);
 							$rcl = $base->queryRow($sql);
  							if ($rcl) {
 								$link = '/clients/client?client_num=' . crypte($rcc["client_num"]);
 								$genre = $rcl["client_genre"];
 							}
-							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num=" . safe_sql($rcc["rdv_num"]);
+							$sql = "select * from rendez_vous r, rdv_types t where r.type_num=t.type_num and rdv_num=" . sql_safe($rcc["rdv_num"]);
 							$rrr = $base->queryRow($sql);
 							if ($rrr) {
 								$type_rdv = $rrr["type_num"];
@@ -942,7 +942,7 @@ if (isset($ajout_client)) {
 		
 		$(function() {
 			var availableTagsClient = [';
-			$sql = "select * from clients where showroom_num=" . safe_sql($u->mShowroom) . " and client_nom not like'%?%' and client_prenom not like '%?%' order by client_nom ASC, client_prenom ASC";
+			$sql = "select * from clients where showroom_num=" . sql_safe($u->mShowroom) . " and client_nom not like'%?%' and client_prenom not like '%?%' order by client_nom ASC, client_prenom ASC";
 			$jj = $base->query($sql);
 			$nbr = count($jj);
 			$i=0;

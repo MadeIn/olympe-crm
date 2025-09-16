@@ -67,7 +67,8 @@ $desc_page = "Extraction email - Olympe Mariage";
 												<td>
 													<select name="showroom" class="form-control input-medium">
 														<option value="0">Tous</option>
-													<?php														$sql = "select * from showrooms order by showroom_nom ASC";
+													<?php														
+														$sql = "select * from showrooms order by showroom_nom ASC";
 														$tt = $base->query($sql);
 														foreach ($tt as $rtt) {
 															echo '<option value="' . $rtt["showroom_num"] . '"';

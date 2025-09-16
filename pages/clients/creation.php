@@ -8,11 +8,11 @@ if (isset($ajout)) {
 	if ($showroom==0)
 		$showroom = $u->mShowroom;
 	// On test si le client n'exite pas
-	$sql = "select * from clients where client_mail=" . safe_sql($mail);
+	$sql = "select * from clients where client_mail=" . sql_safe($mail);
 	$tt = $base->query($sql);
 	$nbr = count($tt);
 	if ($nbr==0) {
-		$sql = "insert into clients values (0," . safe_sql($genre) . "," . safe_sql($nom) . "," . safe_sql($prenom) . "," . safe_sql($adr1) . "," . safe_sql($adr2) . "," . safe_sql($cp) . "," . safe_sql($ville) . "," . safe_sql($tel) . "," . safe_sql($mail) . "," . safe_sql($date) . "," . safe_sql($lieu) . "," . safe_sql($remarques) . "," . safe_sql($connaissance) . "," . safe_sql($showroom) . "," . safe_sql($u->mNum) . ",'" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "'," . safe_sql($poitrine) . "," . safe_sql($sous_poitrine) . "," . safe_sql($taille) . "," . safe_sql($hanche1) . "," . safe_sql($hanche2) . "," . safe_sql($carrure_avant) . "," . safe_sql($carrure_dos) . "," . safe_sql($longueur_dos) . "," . safe_sql($biceps) . "," . safe_sql($taille_sol) . "," . safe_sql($pointure) . "," . safe_sql($tour_taille) . "," . safe_sql($interet) . ",0)";
+		$sql = "insert into clients values (0," . sql_safe($genre) . "," . sql_safe($nom) . "," . sql_safe($prenom) . "," . sql_safe($adr1) . "," . sql_safe($adr2) . "," . sql_safe($cp) . "," . sql_safe($ville) . "," . sql_safe($tel) . "," . sql_safe($mail) . "," . sql_safe($date) . "," . sql_safe($lieu) . "," . sql_safe($remarques) . "," . sql_safe($connaissance) . "," . sql_safe($showroom) . "," . sql_safe($u->mNum) . ",'" . Date("Y-m-d H:i:s") . "','" . Date("Y-m-d H:i:s") . "'," . sql_safe($poitrine) . "," . sql_safe($sous_poitrine) . "," . sql_safe($taille) . "," . sql_safe($hanche1) . "," . sql_safe($hanche2) . "," . sql_safe($carrure_avant) . "," . sql_safe($carrure_dos) . "," . sql_safe($longueur_dos) . "," . sql_safe($biceps) . "," . sql_safe($taille_sol) . "," . sql_safe($pointure) . "," . sql_safe($tour_taille) . "," . sql_safe($interet) . ",0)";
 		$base->query($sql);
 	} else {
 		$message_erreur = "Un client est déjà enregistré avec cette adresse email !";

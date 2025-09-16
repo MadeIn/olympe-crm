@@ -10,7 +10,7 @@ if (isset($objectif)) {
 	$base->query($sql);
 	
 	$date = $annee . "-" . $mois . "-01";
-	$sql = "insert into showrooms_objectifs values(" . safe_sql($showroom_choix) . "," . safe_sql($genre) . "," . safe_sql($date) . "," . safe_sql($mois) . "," . safe_sql($annee) . "," . safe_sql($ca) . "," . safe_sql($nbr) . ")";
+	$sql = "insert into showrooms_objectifs values(" . sql_safe($showroom_choix) . "," . sql_safe($genre) . "," . sql_safe($date) . "," . sql_safe($mois) . "," . sql_safe($annee) . "," . sql_safe($ca) . "," . sql_safe($nbr) . ")";
 	$base->query($sql);
 }
 
@@ -64,7 +64,7 @@ async function confirme() {
 												$cc = $base->query($sql);
 												foreach ($cc as $rcc) {
 													echo '<option value="' . $rcc["showroom_num"] . '"';
-													if ($rcc["showroom_num"]==$showroom_choix)
+													if ($rcc["showroom_num"]==($showroom_choix ?? 0))
 														echo ' SELECTED';
 													echo '>' . $rcc["showroom_nom"] . '</option>';
 												}
@@ -114,7 +114,7 @@ async function confirme() {
 												<select name="annee" class="form-control">
 												<?php for ($i=Date("Y")+2;$i>2016;$i--) {
 														echo '<option value="' . $i . '"';
-														if ($i==$annee)
+														if ($i==($annee ?? Date("Y")))
 															echo ' SELECTED';
 														echo '>' . $i . '</option>';
 													}

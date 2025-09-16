@@ -11,6 +11,9 @@ $desc_page = "Dashboard - Olympe Mariage";
 		else
 			$showroom = $u->mShowroom;
 	}
+
+	if (!isset($annee_deb))
+		$annee_deb = Date("Y");
 ?>
 
 <?php include TEMPLATE_PATH . 'head.php'; ?>
@@ -48,6 +51,10 @@ $desc_page = "Dashboard - Olympe Mariage";
 										<thead>
 											<tr>
 												<th>Date Debut</th>
+												<?php if ($u->mGroupe==0) { ?>
+													<th>Showroom</th>
+												<?php } ?>
+												<th></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -96,7 +103,8 @@ $desc_page = "Dashboard - Olympe Mariage";
 									</div>
 									<div class="portlet-body">
 									   <table class="table bordered">
-											<?php												$nbr_annee = Date("Y") - $annee_deb;
+											<?php												
+												$nbr_annee = Date("Y") - $annee_deb;
 												$mois_encours = Date("n");
 												if ($mois_encours>=9) 
 													$nbr_annee++;
@@ -288,7 +296,6 @@ $desc_page = "Dashboard - Olympe Mariage";
 														$co = $base->query($sql);
 														$nbr_premier = count($co);
 														echo '<td class="text-center">' . $nbr_premier . '</td>';
-														$total += $nbr_panier;
 													}
 													echo '<td class="text-center">' . $total . '</td>';
 													echo '</tr>';

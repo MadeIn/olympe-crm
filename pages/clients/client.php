@@ -9,36 +9,36 @@ if (!isset($tab)) {
 
 if (isset($modifier)) { // On modifie les infos 
 	$sql = "update clients set 
-			client_genre=" . safe_sql($genre) . ",
-			client_nom=" . safe_sql($nom) . ",
-			client_prenom=" . safe_sql($prenom) . ",
-			client_adr1=" . safe_sql($adr1) . ",
-			client_adr2=" . safe_sql($adr2) . ",
-			client_cp=" . safe_sql($cp) . ",
-			client_ville=" . safe_sql($ville) . ",
-			client_tel=" . safe_sql($tel) . ",
-			client_mail=" . safe_sql($mail) . ",
-			client_date_mariage=" . safe_sql($date) . ",
-			client_lieu_mariage=" . safe_sql($lieu) . ",
-			client_remarque=" . safe_sql($remarques) . ",
-			connaissance_num=" . safe_sql($connaissance) . ",
+			client_genre=" . sql_safe($genre) . ",
+			client_nom=" . sql_safe($nom) . ",
+			client_prenom=" . sql_safe($prenom) . ",
+			client_adr1=" . sql_safe($adr1) . ",
+			client_adr2=" . sql_safe($adr2) . ",
+			client_cp=" . sql_safe($cp) . ",
+			client_ville=" . sql_safe($ville) . ",
+			client_tel=" . sql_safe($tel) . ",
+			client_mail=" . sql_safe($mail) . ",
+			client_date_mariage=" . sql_safe($date) . ",
+			client_lieu_mariage=" . sql_safe($lieu) . ",
+			client_remarque=" . sql_safe($remarques) . ",
+			connaissance_num=" . sql_safe($connaissance) . ",
 			client_datemodification=" . Date("Y-m-d H:i:s") . ",
-			poitrine=" . safe_sql($poitrine) . ",
-			sous_poitrine=" . safe_sql($sous_poitrine) . ",
-			taille=" . safe_sql($taille) . ",
-			hanche1=" . safe_sql($hanche1) . ",
-			hanche2=" . safe_sql($hanche2) . ",
-			carrure_avant=" . safe_sql($carrure_avant) . ",
-			carrure_dos=" . safe_sql($carrure_dos) . ",
-			biceps=" . safe_sql($biceps) . ",
-			taille_sol=" . safe_sql($taille_sol) . ",
-			longueur_dos=" . safe_sql($longueur_dos) . ",
-			pointure=" . safe_sql($pointure) . ",
-			tour_taille=" . safe_sql($tour_taille) . ",
-			interet=" . safe_sql($interet) . ", 
-			user_num=" . safe_sql($user_suivi) . ", 
-			couturiere_num=" . safe_sql($couturiere) . ", 
-			showroom_num=" . safe_sql($showroom_modif) . " 
+			poitrine=" . sql_safe($poitrine) . ",
+			sous_poitrine=" . sql_safe($sous_poitrine) . ",
+			taille=" . sql_safe($taille) . ",
+			hanche1=" . sql_safe($hanche1) . ",
+			hanche2=" . sql_safe($hanche2) . ",
+			carrure_avant=" . sql_safe($carrure_avant) . ",
+			carrure_dos=" . sql_safe($carrure_dos) . ",
+			biceps=" . sql_safe($biceps) . ",
+			taille_sol=" . sql_safe($taille_sol) . ",
+			longueur_dos=" . sql_safe($longueur_dos) . ",
+			pointure=" . sql_safe($pointure) . ",
+			tour_taille=" . sql_safe($tour_taille) . ",
+			interet=" . sql_safe($interet) . ", 
+			user_num=" . sql_safe($user_suivi) . ", 
+			couturiere_num=" . sql_safe($couturiere) . ", 
+			showroom_num=" . sql_safe($showroom_modif) . " 
 		where client_num=" . decrypte($client_num);
 	$base->query($sql);
 }
@@ -60,15 +60,15 @@ $client_nom_complet = str_replace("'","\'",$rcl["client_nom"]) . " " . $rcl["cli
 if (isset($rdv_num)) {
 	$num = decrypte($rdv_num);
 	if ($num!=0) { // On efface l'ancien RDV pour le modifier
-		$sql = "delete from rendez_vous where rdv_num=" . safe_sql($num);
+		$sql = "delete from rendez_vous where rdv_num=" . sql_safe($num);
 		$base->query($sql);
 		
-		$sql = "delete from calendriers where rdv_num=" . safe_sql($num);
+		$sql = "delete from calendriers where rdv_num=" . sql_safe($num);
 		$base->query($sql);
 	}
 	// On insere un Rendez vous
 	$date_rdv = $date . " " . $time;
-	$sql = "insert into rendez_vous values(0,'" . decrypte($client_num) . "," . safe_sql($type_num) . "," . safe_sql($date_rdv) . "," . safe_sql($remarque) . ",0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . safe_sql($u->mNum) . ")";
+	$sql = "insert into rendez_vous values(0,'" . decrypte($client_num) . "," . sql_safe($type_num) . "," . sql_safe($date_rdv) . "," . sql_safe($remarque) . ",0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . sql_safe($u->mNum) . ")";
 	$num = $base->insert($sql);
 	
 	// On ajoute dans le calendrier du user
@@ -83,7 +83,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . safe_sql($date_deb) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . safe_sql($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -107,7 +107,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 			
 		break;
@@ -122,7 +122,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . safe_sql($date_deb) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . safe_sql($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -146,7 +146,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 			
 		break;
@@ -161,7 +161,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . safe_sql($date_deb) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . safe_sql($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -185,7 +185,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 			
 		break;
@@ -200,7 +200,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . safe_sql($date_deb) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . safe_sql($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -224,7 +224,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 			
 		break;
@@ -244,7 +244,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -259,7 +259,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -273,7 +273,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . safe_sql($date_deb) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . safe_sql($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -305,7 +305,7 @@ if (isset($rdv_num)) {
 				SendMail("margotla1982@gmail.com",$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			}
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -319,7 +319,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . safe_sql($date_deb) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . safe_sql($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -341,7 +341,7 @@ if (isset($rdv_num)) {
 			$message_mail = str_replace("[SHOWROOM_ACCES]",$u->mShowroomInfo["showroom_acces"],$message_mail);
 			
 			if ($dernier_acompte>0) {
-				$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num=" . safe_sql($rcl["showroom_num"]) . " order by mode_ordre ASC";
+				$sql = "select * from paiements_modes p, showrooms_paiements s where p.mode_num=s.mode_num and showroom_num=" . sql_safe($rcl["showroom_num"]) . " order by mode_ordre ASC";
 				$pa = $base->query($sql);
 				$nbr_paiement = count($pa);
 				$moyen_paiement = "";
@@ -365,7 +365,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -379,7 +379,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . safe_sql($date_deb) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . safe_sql($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -408,7 +408,7 @@ if (isset($rdv_num)) {
 				SendMail("lilietcie34@gmail.com",$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 			}
 			
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 		
@@ -422,7 +422,7 @@ if (isset($rdv_num)) {
 			$desc = "";
 			 
 			// On insere en bdd
-			$sql = "insert into calendriers values(0," . safe_sql($date_deb) . "," . safe_sql($date_fin) . "," . safe_sql($theme) . "," . safe_sql($titre) . "," . safe_sql($desc) . "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . safe_sql($num) . ")";
+			$sql = "insert into calendriers values(0," . sql_safe($date_deb) . "," . sql_safe($date_fin) . "," . sql_safe($theme) . "," . sql_safe($titre) . "," . sql_safe($desc) . "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ",'" . decrypte($client_num). "," . sql_safe($num) . ")";
 			$base->query($sql);
 			
 			// On envoi le mail selon le type de RDV
@@ -436,7 +436,7 @@ if (isset($rdv_num)) {
 			// On envoi le mail
 			SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 						
-			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . safe_sql($num);
+			$sql = "update rendez_vous set rdv_mail=1, rdv_mail_date='" . Date("Y-m-d H:i:s") . " where rdv_num=" . sql_safe($num);
 			$base->query($sql);
 		break;
 	}
@@ -445,7 +445,7 @@ if (isset($rdv_num)) {
 if (isset($selection_devis)) {
 	// ON cherche le numero de devis 
 	$devis_deb = Date("Y") * 10000;
-	$sql = "select max(devis_num) val from commandes where devis_num>" . safe_sql($devis_deb);
+	$sql = "select max(devis_num) val from commandes where devis_num>" . sql_safe($devis_deb);
 	$rdd = $base->queryRow($sql);
 if ($rdd) {
 		if ($rdd["val"]>0)
@@ -457,7 +457,7 @@ if ($rdd) {
 	}
 	
 	// On insere le devis
-	$sql = "insert into commandes values(0,'" . decrypte($client_num). "," . safe_sql($devis_num) . ",'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','1'," . safe_sql($u->mNum) . "," . safe_sql($u->mShowroom) . ")";
+	$sql = "insert into commandes values(0,'" . decrypte($client_num). "," . sql_safe($devis_num) . ",'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','1'," . sql_safe($u->mNum) . "," . sql_safe($u->mShowroom) . ")";
 	$id = $base->insert($sql);
 	
 	// ON insere les produits contenu dans la sélection
@@ -470,7 +470,7 @@ if ($rdd) {
 	
 	foreach ($dd as $rdd) {
 		$prixProduit = RecupPrix($rdd["produit_num"]);
-		$sql = "insert into commandes_produits values (" . safe_sql($id) . "," . safe_sql($rdd["produit_num"]) . ",'-1',1," . safe_sql($prixProduit["montant_ht"]) . "," . safe_sql($prixProduit["montant_tva"]) . "," . safe_sql($prixProduit["montant_ttc"]) . "," . safe_sql($prixProduit["montant_remise"]) . "," . safe_sql($prixProduit["montant_remise_type"]) . "," . safe_sql($prixProduit["montant_ht_remise"]) . "," . safe_sql($prixProduit["montant_tva_remise"]) . "," . safe_sql($prixProduit["montant_ttc_remise"]) . ",'0','0')";
+		$sql = "insert into commandes_produits values (" . sql_safe($id) . "," . sql_safe($rdd["produit_num"]) . ",'-1',1," . sql_safe($prixProduit["montant_ht"]) . "," . sql_safe($prixProduit["montant_tva"]) . "," . sql_safe($prixProduit["montant_ttc"]) . "," . sql_safe($prixProduit["montant_remise"]) . "," . sql_safe($prixProduit["montant_remise_type"]) . "," . sql_safe($prixProduit["montant_ht_remise"]) . "," . sql_safe($prixProduit["montant_tva_remise"]) . "," . sql_safe($prixProduit["montant_ttc_remise"]) . ",'0','0')";
 		$base->query($sql);
 		
 		if ($prixProduit["montant_remise_type"]==0) {
@@ -485,7 +485,7 @@ if ($rdd) {
 	}
 	
 	// On upadte le montant
-	$sql = "update commandes set commande_ht=" . safe_sql($montant_total_ht) . ", commande_tva=" . safe_sql($montant_total_tva) . ", commande_ttc=" . safe_sql($montant_total_ttc) . " where id=" . safe_sql($id);
+	$sql = "update commandes set commande_ht=" . sql_safe($montant_total_ht) . ", commande_tva=" . sql_safe($montant_total_tva) . ", commande_ttc=" . sql_safe($montant_total_ttc) . " where id=" . sql_safe($id);
 	$base->query($sql);
 }
 
@@ -525,7 +525,7 @@ if (isset($commande_passage)) {
 				$commande_modif_date = Date("Y-m-d H:i:s");
 			
 			// On modifie la commande
-			$sql = "update commandes set commande_num=" . safe_sql($commande_num) . ", commande_date=" . safe_sql($commande_modif_date) . " where id=" . decrypte($commande_passage);
+			$sql = "update commandes set commande_num=" . sql_safe($commande_num) . ", commande_date=" . sql_safe($commande_modif_date) . " where id=" . decrypte($commande_passage);
 			$base->query($sql);
 			
 			$commande_modif = $commande_passage;
@@ -543,13 +543,13 @@ if (isset($commande_passage)) {
 				$base->query($sql);
 				
 				// On insere le paiement
-				$sql = "insert into commandes_paiements values(" . decrypte($commande_passage) . ",'1','" . Date("Y-m-d H:i:s") . "," . safe_sql($montant_a_payer) . ",'1','',0,'0000-00-00 00:00:00')";
+				$sql = "insert into commandes_paiements values(" . decrypte($commande_passage) . ",'1','" . Date("Y-m-d H:i:s") . "," . sql_safe($montant_a_payer) . ",'1','',0,'0000-00-00 00:00:00')";
 				$base->query($sql);
 				
 				if ($rco["facture_num"]==0) {
 					// ON genere le numero de facture
 					$facture_deb = Date("Y") * 100000 + Date("n") * 1000;
-					$sql = "select max(facture_num) val from commandes where facture_num>" . safe_sql($facture_deb) . " and showroom_num=" . safe_sql($rco["showroom_num"]);
+					$sql = "select max(facture_num) val from commandes where facture_num>" . sql_safe($facture_deb) . " and showroom_num=" . sql_safe($rco["showroom_num"]);
 					$rdd = $base->queryRow($sql);
 					if ($rdd) {
 						if ($rdd["val"]>0)
@@ -560,7 +560,7 @@ if (isset($commande_passage)) {
 						$facture_num = $facture_deb + 1 ;
 					}
 					
-					$sql = "update commandes set facture_num=" . safe_sql($facture_num) . ",facture_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($commande_passage);
+					$sql = "update commandes set facture_num=" . sql_safe($facture_num) . ",facture_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($commande_passage);
 					$base->query($sql);
 					
 					// On decroit les stocks
@@ -572,14 +572,14 @@ if (isset($commande_passage)) {
 						$sql = "select * from commandes_produits where id=" . decrypte($commande_passage);
 						$co = $base->query($sql);
 						foreach ($co as $rco) {
-							$sql = "select * from stocks where produit_num=" . safe_sql($rco["produit_num"]) . " and taille_num=" . safe_sql($rco["taille_num"]) . " and showroom_num=" . safe_sql($showroom_num);
+							$sql = "select * from stocks where produit_num=" . sql_safe($rco["produit_num"]) . " and taille_num=" . sql_safe($rco["taille_num"]) . " and showroom_num=" . sql_safe($showroom_num);
 							$rss = $base->queryRow($sql);
 							if ($rss) {
 								// On update les stocks
 								$stock_virtuel = $rss["stock_virtuel"] - $rco["qte"];
 								$stock_reel = $rss["stock_reel"] - $rco["qte"];
 								
-								$sql = "update stocks set stock_virtuel=" . safe_sql($stock_virtuel) . ", stock_reel=" . safe_sql($stock_reel) . " where produit_num=" . safe_sql($rco["produit_num"]) . " and taille_num=" . safe_sql($rco["taille_num"]) . " and showroom_num=" . safe_sql($showroom_num);
+								$sql = "update stocks set stock_virtuel=" . sql_safe($stock_virtuel) . ", stock_reel=" . sql_safe($stock_reel) . " where produit_num=" . sql_safe($rco["produit_num"]) . " and taille_num=" . sql_safe($rco["taille_num"]) . " and showroom_num=" . sql_safe($showroom_num);
 								$base->query($sql);
 							}
 						}							
@@ -604,17 +604,17 @@ if (isset($paiement)) {
 	$montant = str_replace(",",".",$montant);
 	// On regarde si c'est une modification
 	if ($modif=="ok") {
-		$sql = "update commandes_paiements set paiement_montant=" . safe_sql($montant) . ", mode_num=" . safe_sql($mode) . ", cheque_num=" . safe_sql($num) . " where id=" . decrypte($commande_modif) . " and paiement_num=" . safe_sql($echeance);
+		$sql = "update commandes_paiements set paiement_montant=" . sql_safe($montant) . ", mode_num=" . sql_safe($mode) . ", cheque_num=" . sql_safe($num) . " where id=" . decrypte($commande_modif) . " and paiement_num=" . sql_safe($echeance);
 		$base->query($sql);
 	} else {
 		if ($nbr_echeance>1) {
 			
 			if ($montant<=$reste_a_payer) {
-				$sql = "delete from commandes_paiements where id=" . decrypte($commande_modif) . " and paiement_num=" . safe_sql($echeance);
+				$sql = "delete from commandes_paiements where id=" . decrypte($commande_modif) . " and paiement_num=" . sql_safe($echeance);
 				$base->query($sql);
 				
 				// On insere le paiement
-				$sql = "insert into commandes_paiements values(" . decrypte($commande_modif) . "," . safe_sql($echeance) . "," . safe_sql($date) . "," . safe_sql($montant) . "," . safe_sql($mode) . "," . safe_sql($num) . ",0,'0000-00-00 00:00:00')";
+				$sql = "insert into commandes_paiements values(" . decrypte($commande_modif) . "," . sql_safe($echeance) . "," . sql_safe($date) . "," . sql_safe($montant) . "," . sql_safe($mode) . "," . sql_safe($num) . ",0,'0000-00-00 00:00:00')";
 				$base->query($sql);
 				
 				if ($echeance==$nbr_echeance) { // Le paiement est terminé, on génére la facture
@@ -625,7 +625,7 @@ if (isset($paiement)) {
 						if ($rco["facture_num"]==0) {
 							// ON cherche le numero de facture
 							$facture_deb = Date("Y") * 100000 + Date("n") * 1000;
-							$sql = "select max(facture_num) val from commandes where facture_num>" . safe_sql($facture_deb) . " and showroom_num=" . safe_sql($rco["showroom_num"]);
+							$sql = "select max(facture_num) val from commandes where facture_num>" . sql_safe($facture_deb) . " and showroom_num=" . sql_safe($rco["showroom_num"]);
 							$rdd = $base->queryRow($sql);
 							if ($rdd) {
 								if ($rdd["val"]>0)
@@ -636,7 +636,7 @@ if (isset($paiement)) {
 								$facture_num = $facture_deb + 1 ;
 							}
 							
-							$sql = "update commandes set facture_num=" . safe_sql($facture_num) . ",facture_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($commande_modif);
+							$sql = "update commandes set facture_num=" . sql_safe($facture_num) . ",facture_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($commande_modif);
 							$base->query($sql);
 							
 							// On decroit les stocks
@@ -648,14 +648,14 @@ if (isset($paiement)) {
 								$sql = "select * from commandes_produits where id=" . decrypte($commande_modif);
 								$co = $base->query($sql);
 								foreach ($co as $rco) {
-									$sql = "select * from stocks where produit_num=" . safe_sql($rco["produit_num"]) . " and taille_num=" . safe_sql($rco["taille_num"]) . " and showroom_num=" . safe_sql($showroom_num);
+									$sql = "select * from stocks where produit_num=" . sql_safe($rco["produit_num"]) . " and taille_num=" . sql_safe($rco["taille_num"]) . " and showroom_num=" . sql_safe($showroom_num);
 									$rss = $base->queryRow($sql);
 									if ($rss) {
 										// On update les stocks
 										$stock_virtuel = $rss["stock_virtuel"] - $rco["qte"];
 										$stock_reel = $rss["stock_reel"] - $rco["qte"];
 										
-										$sql = "update stocks set stock_virtuel=" . safe_sql($stock_virtuel) . ", stock_reel=" . safe_sql($stock_reel) . " where produit_num=" . safe_sql($rco["produit_num"]) . " and taille_num=" . safe_sql($rco["taille_num"]) . " and showroom_num=" . safe_sql($showroom_num);
+										$sql = "update stocks set stock_virtuel=" . sql_safe($stock_virtuel) . ", stock_reel=" . sql_safe($stock_reel) . " where produit_num=" . sql_safe($rco["produit_num"]) . " and taille_num=" . sql_safe($rco["taille_num"]) . " and showroom_num=" . sql_safe($showroom_num);
 										$base->query($sql);
 									}
 								}							
@@ -672,7 +672,7 @@ if (isset($paiement)) {
 				$message_erreur_paiement = "Attention le montant de l'acompte est supérieur au reste à régler !";
 			}
 		} else { // La facture a déjà été réglé c'est juste une modif du mode de paiement comptant
-			$sql = "update commandes_paiements set mode_num=" . safe_sql($mode) . ", cheque_num=" . safe_sql($num) . " where id=" . decrypte($commande_modif) . " and paiement_num=" . safe_sql($echeance);
+			$sql = "update commandes_paiements set mode_num=" . sql_safe($mode) . ", cheque_num=" . sql_safe($num) . " where id=" . decrypte($commande_modif) . " and paiement_num=" . sql_safe($echeance);
 			$base->query($sql);
 		}
 	}
@@ -714,7 +714,7 @@ if (isset($commande_suppr)) {
 }
 
 if (isset($paiement_suppr)) {
-	$sql = "delete from commandes_paiements where id=" . decrypte($paiement_suppr) . " and paiement_num=" . safe_sql($echeance);
+	$sql = "delete from commandes_paiements where id=" . decrypte($paiement_suppr) . " and paiement_num=" . sql_safe($echeance);
 	$base->query($sql);
 	$commande_modif = $paiement_suppr;
 }
@@ -722,7 +722,7 @@ if (isset($paiement_suppr)) {
 if (isset($devis)) {
 	// ON cherche le numero de devis 
 	$devis_deb = Date("Y") * 10000;
-	$sql = "select max(devis_num) val from commandes where devis_num>" . safe_sql($devis_deb);
+	$sql = "select max(devis_num) val from commandes where devis_num>" . sql_safe($devis_deb);
 	$rdd = $base->queryRow($sql);
 	if ($rdd) {
 		if ($rdd["val"]>0)
@@ -734,7 +734,7 @@ if (isset($devis)) {
 	}
 	
 	// On créé un devis
-	$sql = "insert into commandes values(0,'" . decrypte($client_num). "," . safe_sql($devis_num) . ",'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','3'," . safe_sql($u->mNum) . "," . safe_sql($u->mShowroom) . ")";
+	$sql = "insert into commandes values(0,'" . decrypte($client_num). "," . sql_safe($devis_num) . ",'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00 00:00:00','0','0000-00-00 00:00:00','0','0','0','0','0','3'," . sql_safe($u->mNum) . "," . sql_safe($u->mShowroom) . ")";
 	$base->query($sql);
 }
 
@@ -845,7 +845,7 @@ if (isset($acompte_envoi)) { // ON envoie le devis par mail
 	// On envoi le mail
 	SendMail($rcl["client_mail"],$titre_mail,$message_mail,$u->mNum,decrypte($client_num));
 	
-	$sql = "update commandes_paiements set paiement_mail=1, paiement_mail_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($acompte_envoi) . " and paiement_num=" . safe_sql($paiement);
+	$sql = "update commandes_paiements set paiement_mail=1, paiement_mail_date='" . Date("Y-m-d H:i:s") . " where id=" . decrypte($acompte_envoi) . " and paiement_num=" . sql_safe($paiement);
 	$base->query($sql);
 	
 	$commande_modif = $acompte_envoi;
@@ -853,7 +853,7 @@ if (isset($acompte_envoi)) { // ON envoie le devis par mail
 
 if (isset($selection)) {
 	// On créé une sélection
-	$sql = "insert into selections values(0,'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00','" . decrypte($client_num). "," . safe_sql($u->mNum) . "," . safe_sql($rcl["showroom_num"]) . ")";
+	$sql = "insert into selections values(0,'" . Date("Y-m-d H:i:s") . ",'0','0000-00-00','" . decrypte($client_num). "," . sql_safe($u->mNum) . "," . sql_safe($rcl["showroom_num"]) . ")";
 	$base->query($sql);
 }
 
@@ -862,7 +862,7 @@ if (isset($cdefournisseur)) {
 	$sql = "delete from commandes_fournisseurs where id=" . decrypte($id) . " and produit_num=" . decrypte($produit);
 	$base->query($sql);
 	
-	$sql = "insert into commandes_fournisseurs values(" . decrypte($id) . "," . decrypte($produit) . "," . safe_sql($marque) . "," . safe_sql($livraison) . "," . safe_sql($fournisseur_commande_ref) . "," . safe_sql($fournisseur_remarque) . "," . safe_sql($fournisseur_poitrine) . "," . safe_sql($fournisseur_sous_poitrine) . "," . safe_sql($fournisseur_taille) . "," . safe_sql($fournisseur_hanche1) . "," . safe_sql($fournisseur_hanche2) . "," . safe_sql($fournisseur_biceps) . "," . safe_sql($fournisseur_carrure_avant) . "," . safe_sql($fournisseur_carrure_dos) . "," . safe_sql($fournisseur_longueur_dos) . "," . safe_sql($fournisseur_taille_sol) . "," . safe_sql($fournisseur_taille_choisie) . "," . safe_sql($fournisseur_montant) . "," . safe_sql($fournisseur_commande_date) . ",0,1,'" . Date("Y-m-d H:i:s") . ")";
+	$sql = "insert into commandes_fournisseurs values(" . decrypte($id) . "," . decrypte($produit) . "," . sql_safe($marque) . "," . sql_safe($livraison) . "," . sql_safe($fournisseur_commande_ref) . "," . sql_safe($fournisseur_remarque) . "," . sql_safe($fournisseur_poitrine) . "," . sql_safe($fournisseur_sous_poitrine) . "," . sql_safe($fournisseur_taille) . "," . sql_safe($fournisseur_hanche1) . "," . sql_safe($fournisseur_hanche2) . "," . sql_safe($fournisseur_biceps) . "," . sql_safe($fournisseur_carrure_avant) . "," . sql_safe($fournisseur_carrure_dos) . "," . sql_safe($fournisseur_longueur_dos) . "," . sql_safe($fournisseur_taille_sol) . "," . sql_safe($fournisseur_taille_choisie) . "," . sql_safe($fournisseur_montant) . "," . sql_safe($fournisseur_commande_date) . ",0,1,'" . Date("Y-m-d H:i:s") . ")";
 	$base->query($sql);
 }
 
@@ -871,7 +871,7 @@ if (isset($paiementfournisseur)) {
 	$sql = "delete from commandes_fournisseurs_paiements where id=" . decrypte($id) . " and produit_num=" . decrypte($produit);
 	$base->query($sql);
 	
-	$sql = "insert into commandes_fournisseurs_paiements values(" . decrypte($id) . "," . decrypte($produit) . "," . safe_sql($fournisseur_paiement1) . "," . safe_sql($fournisseur_paiement2) . "," . safe_sql($fournisseur_paiement3) . "," . safe_sql($fournisseur_paiement1_date) . "," . safe_sql($fournisseur_paiement2_date) . "," . safe_sql($fournisseur_paiement3_date) . ")";
+	$sql = "insert into commandes_fournisseurs_paiements values(" . decrypte($id) . "," . decrypte($produit) . "," . sql_safe($fournisseur_paiement1) . "," . sql_safe($fournisseur_paiement2) . "," . sql_safe($fournisseur_paiement3) . "," . sql_safe($fournisseur_paiement1_date) . "," . sql_safe($fournisseur_paiement2_date) . "," . sql_safe($fournisseur_paiement3_date) . ")";
 	$base->query($sql);
 }
 
@@ -930,7 +930,7 @@ include TEMPLATE_PATH . 'head.php';
 														<i class="fa fa-map-marker"></i> <?= $rcl["client_lieu_mariage"]  ?> </a>
 												</li>
 												<?php 
-													$sql = "select * from users where user_num=" . safe_sql($rcl["user_num"]);
+													$sql = "select * from users where user_num=" . sql_safe($rcl["user_num"]);
 													$rtt = $base->queryRow($sql);
  													if ($rtt) {
 														echo '<li>
@@ -940,7 +940,7 @@ include TEMPLATE_PATH . 'head.php';
 													}
 												?>
 												<?php 
-													$sql = "select * from users where user_num=" . safe_sql($rcl["couturiere_num"]);
+													$sql = "select * from users where user_num=" . sql_safe($rcl["couturiere_num"]);
 													$rtt = $base->queryRow($sql);
  													if ($rtt) {
 														echo '<li>
@@ -1035,7 +1035,7 @@ include TEMPLATE_PATH . 'head.php';
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) { 
 																// On test si on a déjà rentré dans la base le RDV
-																$sql = "select * from rendez_vous where client_num='" . decrypte($client_num). " and type_num=" . safe_sql($rtt["type_num"]);
+																$sql = "select * from rendez_vous where client_num='" . decrypte($client_num). " and type_num=" . sql_safe($rtt["type_num"]);
 																$rcc = $base->queryRow($sql);
 																$etat=0;
 																$num=0;
@@ -1143,12 +1143,12 @@ include TEMPLATE_PATH . 'head.php';
 																				<td id="select_' . $rss["selection_num"] . '">
 																					<div class="mt-element-card mt-element-overlay">';
 																		// On affiche les produits sélectionnés
-																		$sql = "select * from selections_produits s, md_produits p where s.produit_num=p.produit_num and selection_num=" . safe_sql($rss["selection_num"]);
+																		$sql = "select * from selections_produits s, md_produits p where s.produit_num=p.produit_num and selection_num=" . sql_safe($rss["selection_num"]);
 																		$pp = $base->query($sql);
 																		$nbr_pp = count($pp);
 																		if ($nbr_pp>0) {
 																			foreach ($pp as $rpp) {
-																				$sql = "select * from md_produits_photos where produit_num=" . safe_sql($rpp["produit_num"]) . " and photo_pos=1";
+																				$sql = "select * from md_produits_photos where produit_num=" . sql_safe($rpp["produit_num"]) . " and photo_pos=1";
 																				$rph = $base->queryRow($sql);
 																				if ($rph) {
 																					$image_pdt = "/photos/produits/min/" . $rph["photo_chemin"];
@@ -1270,9 +1270,9 @@ include TEMPLATE_PATH . 'head.php';
 																			<?php if (isset($recherche_produit)) { 
 																					$sql = "select * from md_produits p, categories c, marques m where p.categorie_num=c.categorie_num and p.marque_num=m.marque_num and produit_etat='1'";
 																					if ($categorie!=0)
-																						$sql .= " and p.categorie_num=" . safe_sql($categorie);
+																						$sql .= " and p.categorie_num=" . sql_safe($categorie);
 																					if ($marque!=0)
-																						$sql .= " and p.marque_num=" . safe_sql($marque);
+																						$sql .= " and p.marque_num=" . sql_safe($marque);
 																					if ($nom!="") {
 																						$nom = str_replace("'","\'",$nom);
 																						$sql .= " and produit_nom like '%" . $nom . "%'";
@@ -1282,7 +1282,7 @@ include TEMPLATE_PATH . 'head.php';
 																					$nbr_produit = count($cc);
 																					if ($nbr_produit>0) {
 																						foreach ($cc as $rcc) { 
-																							$sql = "select * from md_produits_photos where produit_num=" . safe_sql($rcc["produit_num"]) . " and photo_pos=1";
+																							$sql = "select * from md_produits_photos where produit_num=" . sql_safe($rcc["produit_num"]) . " and photo_pos=1";
 																							$rpp = $base->queryRow($sql);
  																							if ($rpp) {
 																								$image_pdt = "/photos/produits/min/" . $rpp["photo_chemin"];
@@ -1342,7 +1342,7 @@ include TEMPLATE_PATH . 'head.php';
 																			</thead>
 																			<tbody>';
 																	foreach ($ss as $rss) {
-																		$sql = "select * from commandes_produits where id=" . safe_sql($rss["id"]);
+																		$sql = "select * from commandes_produits where id=" . sql_safe($rss["id"]);
 																		$pp = $base->query($sql);
 																		$nbr_produit = count($pp);
 																		
@@ -1359,7 +1359,7 @@ include TEMPLATE_PATH . 'head.php';
 																					<a href="' . current_path() . '?client_num=' . $client_num . '&devis_suppr=' . crypte($rss["id"]) . '&tab=tab_1_3" onClick="return confirmeSupprDevis()" class="btn btn-outline btn-circle dark btn-sm red"><i class="fa fa-trash"></i> Suppr</a>
 																				</td>
 																				<td>';
-																				$sql = "select * from commandes_mails where id=" . safe_sql($rss["id"]) . " and devis_mail=1";
+																				$sql = "select * from commandes_mails where id=" . sql_safe($rss["id"]) . " and devis_mail=1";
 																				$rdm = $base->queryRow($sql);
 																				if ($rdm) {
 																					echo '<small><strong>Devis envoyé le : </strong>' . format_date($rdm["devis_mail_date"],2,1) . '</small>';
@@ -1528,7 +1528,7 @@ include TEMPLATE_PATH . 'head.php';
 																			}			
 																			
 																			// On verifie les stocke pour chaque produit
-																			$sql = "select * from stocks where taille_num=" . $rpp["taille_num"] . " and produit_num=" . $rpp["produit_num"] . " and showroom_num=" . safe_sql($u->mShowroom);
+																			$sql = "select * from stocks where taille_num=" . $rpp["taille_num"] . " and produit_num=" . $rpp["produit_num"] . " and showroom_num=" . sql_safe($u->mShowroom);
 																			$rss = $base->queryRow($sql);
 																			if ($rss) {
 																				$stock = $rss["stock_virtuel"];
@@ -1732,9 +1732,9 @@ include TEMPLATE_PATH . 'head.php';
 																			<?php if (isset($recherche_produit)) { 
 																					$sql = "select * from md_produits p, categories c, marques m where p.categorie_num=c.categorie_num and p.marque_num=m.marque_num and produit_etat='1'";
 																					if ($categorie!=0)
-																						$sql .= " and p.categorie_num=" . safe_sql($categorie);
+																						$sql .= " and p.categorie_num=" . sql_safe($categorie);
 																					if ($marque!=0)
-																						$sql .= " and p.marque_num=" . safe_sql($marque);
+																						$sql .= " and p.marque_num=" . sql_safe($marque);
 																					if ($nom!="") {
 																						$nom = str_replace("'","\'",$nom);
 																						$sql .= " and produit_nom like '%" . $nom . "%'";
@@ -1744,7 +1744,7 @@ include TEMPLATE_PATH . 'head.php';
 																					$nbr_produit = count($cc);
 																					if ($nbr_produit>0) {
 																						foreach ($cc as $rcc) { 
-																							$sql = "select * from md_produits_photos where produit_num=" . safe_sql($rcc["produit_num"]) . " and photo_pos=1";
+																							$sql = "select * from md_produits_photos where produit_num=" . sql_safe($rcc["produit_num"]) . " and photo_pos=1";
 																							$rpp = $base->queryRow($sql);
  																							if ($rpp) {
 																								$image_pdt = "/photos/produits/min/" . $rpp["photo_chemin"];
@@ -1809,20 +1809,20 @@ include TEMPLATE_PATH . 'head.php';
 																		$nbr_echeance = $rss["paiement_nombre"];
 																		
 																		// On regarde le nombre de paiement effectué
-																		$sql = "select * from commandes_paiements where id=" . safe_sql($rss["id"]);
+																		$sql = "select * from commandes_paiements where id=" . sql_safe($rss["id"]);
 																		$pa = $base->query($sql);
 																		$nbr_paiement = count($pa);
 																		
 																		// On calcul la somme déjà payé
 																		$montant_paye = 0;
-																		$sql = "select sum(paiement_montant) val from commandes_paiements where id=" . safe_sql($rss["id"]);
+																		$sql = "select sum(paiement_montant) val from commandes_paiements where id=" . sql_safe($rss["id"]);
 																		$rpa = $base->queryRow($sql); 
 																		if ($rpa)																			
 																			$montant_paye = $rpa["val"];
 																		
 																		$reste_a_paye = safe_number_format(abs(montantCommandeTTC($rss["id"]) - $montant_paye),2,"."," ");
 																																				
-																		$sql = "select * from commandes_produits where id=" . safe_sql($rss["id"]);
+																		$sql = "select * from commandes_produits where id=" . sql_safe($rss["id"]);
 																		$pp = $base->query($sql);
 																		$nbr_produit = count($pp);
 																		
@@ -1844,7 +1844,7 @@ include TEMPLATE_PATH . 'head.php';
 																					<a href="' . current_path() . '?client_num=' . $client_num . '&commande_consulte=' . crypte($rss["id"]) . '&tab=tab_1_4" class="btn btn-outline btn-circle dark btn-sm green"><i class="fa fa-book"></i> Consulter</a>';
 																		if ($rss["facture_num"]!=0) {
 																			// ON regarde si la facture a été envoyé par mail
-																			$sql = "select * from commandes_mails where id=" . safe_sql($rss["id"]) . " and facture_mail=1";
+																			$sql = "select * from commandes_mails where id=" . sql_safe($rss["id"]) . " and facture_mail=1";
 																			$rff = $base->queryRow($sql);
 																			$envoye = "";
 																			if ($rff) {
@@ -1961,7 +1961,7 @@ include TEMPLATE_PATH . 'head.php';
 																		<?php																			
 																			if ($rcc["paiement_nombre"]>1) { // ON affiche les acomptes
 																				// On regarde si il y a déjà eu des paiments
-																				$sql = "select * from commandes_paiements where id=" . safe_sql($rcc["id"]);
+																				$sql = "select * from commandes_paiements where id=" . sql_safe($rcc["id"]);
 																				$pa = $base->query($sql);
 																				$nbr_paiement = count($pa);
 																				if ($nbr_paiement==0) {
@@ -2015,13 +2015,13 @@ include TEMPLATE_PATH . 'head.php';
 																		$nbr_echeance = $rpa["paiement_nombre"];
 																		
 																		// On regarde le nombre de paiement effectué
-																		$sql = "select * from commandes_paiements where id=" . safe_sql($rpa["id"]);
+																		$sql = "select * from commandes_paiements where id=" . sql_safe($rpa["id"]);
 																		$pa = $base->query($sql);
 																		$nbr_paiement = count($pa);
 																		
 																		// On calcul la somme déjà payé
 																		$montant_paye = 0;
-																		$sql = "select sum(paiement_montant) val from commandes_paiements where id=" . safe_sql($rpa["id"]);
+																		$sql = "select sum(paiement_montant) val from commandes_paiements where id=" . sql_safe($rpa["id"]);
 																		$rpp = $base->queryRow($sql); if ($rpp)																			$montant_paye = $rpp["val"];
 																		
 																		$reste_a_paye = safe_number_format(abs(montantCommandeTTC($rpa["id"]) - $montant_paye),2,".","");
@@ -2301,7 +2301,7 @@ include TEMPLATE_PATH . 'head.php';
 																		</span>
 																		<select name="user_suivi" class="form-control">
 																			<?php																				
-																				$sql = "select * from users where showroom_num=" . safe_sql($rcl["showroom_num"]) . " and user_etat=1";
+																				$sql = "select * from users where showroom_num=" . sql_safe($rcl["showroom_num"]) . " and user_etat=1";
 																				$uu = $base->query($sql);
 																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["user_num"] . '"';
@@ -2322,7 +2322,7 @@ include TEMPLATE_PATH . 'head.php';
 																		<select name="couturiere" class="form-control">
 																		<option value="0">----------------------</option>
 																			<?php																				
-																				$sql = "select * from users where showroom_num=" . safe_sql($rcl["showroom_num"]) . " and user_etat=1";
+																				$sql = "select * from users where showroom_num=" . sql_safe($rcl["showroom_num"]) . " and user_etat=1";
 																				$uu = $base->query($sql);
 																				foreach ($uu as $ruu) {
 																					echo '<option value="' . $ruu["user_num"] . '"';
@@ -2384,7 +2384,7 @@ include TEMPLATE_PATH . 'head.php';
 																				$checked = "";
 																				$date_fournisseur = "";
 																				$montant = 0;
-																				$sql = "select * from commandes_fournisseurs where id=" . safe_sql($rco["id"]) . " and produit_num=" . safe_sql($rco["produit_num"]);
+																				$sql = "select * from commandes_fournisseurs where id=" . sql_safe($rco["id"]) . " and produit_num=" . sql_safe($rco["produit_num"]);
 																				$rtt = $base->queryRow($sql);
  																				if ($rtt) {
 																					$checked = " CHECKED";
@@ -2404,7 +2404,7 @@ include TEMPLATE_PATH . 'head.php';
 																						$paiement1_date = "";
 																						$paiement2_date = "";
 																						$paiement3_date = "";
-																						$sql = "select * from commandes_fournisseurs_paiements where id=" . safe_sql($rco["id"]) . " and produit_num=" . safe_sql($rco["produit_num"]);
+																						$sql = "select * from commandes_fournisseurs_paiements where id=" . sql_safe($rco["id"]) . " and produit_num=" . sql_safe($rco["produit_num"]);
 																						$rpa = $base->queryRow($sql);
 																						if ($rpa) {
 																							if ($rpa["paiement1"]!=0) {
@@ -2489,7 +2489,7 @@ include TEMPLATE_PATH . 'head.php';
 																			$taille_choisie = $rcl["taille_choisie"];
 																			$montant = $rcl["commande_montant"];
 																			$commande_date = Date("Y-m-d");
-																			$sql = "select * from prixachats where prixachat_num=" . safe_sql($rmm["prixachat_num"]);
+																			$sql = "select * from prixachats where prixachat_num=" . sql_safe($rmm["prixachat_num"]);
 																			$rpp = $base->queryRow($sql);
  																			if ($rpp) {
 																				$montant = $rpp["prixachat_montant"];

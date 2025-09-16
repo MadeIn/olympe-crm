@@ -1,11 +1,11 @@
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/param.php";
-$titre_page = "Statistiques - Olympe Mariage";
-$desc_page = "Statistiques - Olympe Mariage";
+	$titre_page = "Statistiques - Olympe Mariage";
+	$desc_page = "Statistiques - Olympe Mariage";
   
-  $mois_nom = array("","Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre");
-  $mois_jour = array(0,31,28,31,30,31,30,31,31,30,31,30,31);
+  	$mois_nom = array("","Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Aout","Septembre","Octobre","Novembre","Décembre");
+  	$mois_jour = array(0,31,28,31,30,31,30,31,31,30,31,30,31);
   
-  if (!isset($showroom)) {
+  	if (!isset($showroom)) {
 		if ($u->mShowroom==0)
 			$showroom=1;
 		else
@@ -85,11 +85,12 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<td>
 													<select name="categorie" class="form-control">
 														<option value="0">------------</option>
-														<?php															$sql = "select * from categories";
+														<?php															
+															$sql = "select * from categories";
 															$cc = $base->query($sql);
 															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["categorie_num"] . '"';
-																if ($rcc["categorie_num"]==$categorie)
+																if ($rcc["categorie_num"]==($categorie ?? ''))
 																	echo " SELECTED";
 																echo ">" . $rcc["categorie_nom"] . "</option>";
 															}
@@ -99,11 +100,12 @@ $desc_page = "Statistiques - Olympe Mariage";
 												<td>
 													<select name="marques" class="form-control">
 														<option value="0">------------</option>
-														<?php															$sql = "select * from marques";
+														<?php															
+															$sql = "select * from marques";
 															$cc = $base->query($sql);
 															foreach ($cc as $rcc) {
 																echo '<option value="' . $rcc["marque_num"] . '"';
-																if ($rcc["marque_num"]==$marques)
+																if ($rcc["marque_num"]==($marques ?? ''))
 																	echo " SELECTED";
 																echo ">" . $rcc["marque_nom"] . "</option>";
 															}
@@ -120,11 +122,12 @@ $desc_page = "Statistiques - Olympe Mariage";
 													<td>
 														<select name="showroom" class="form-control input-medium">
 															<option value="-1">Tous</option>
-														<?php															$sql = "select * from showrooms order by showroom_nom ASC";
+														<?php															
+															$sql = "select * from showrooms order by showroom_nom ASC";
 															$tt = $base->query($sql);
 															foreach ($tt as $rtt) {
 																echo '<option value="' . $rtt["showroom_num"] . '"';
-																if ($rtt["showroom_num"]==$showroom) echo " SELECTED";
+																if ($rtt["showroom_num"]==($showroom ?? '')) echo " SELECTED";
 																echo '>' . $rtt["showroom_nom"] . '</option>';
 															}
 														?>
@@ -178,27 +181,6 @@ $desc_page = "Statistiques - Olympe Mariage";
 												  {
 													 $nbr++;
 													 $nbr_total += $row["val"];
-													 $prix_produit = $rco["montant_ht"];
-													if ($rco["montant_ht_remise"]!=0)
-														$prix_produit = $rco["montant_ht_remise"];
-													
-													$prix_produit = $prix_produit*$rco["qte"];
-													
-													switch ($rco["commande_produit_remise_type"]) {
-														case 1: // Remise en %
-															$prix_produit = $prix_produit*(1-($rco["commande_produit_remise"]/100));
-														break;
-													
-														case 2: // Remise en euro
-															$prix_produit = $prix_produit - $rco["commande_produit_remise"];
-														break;
-													}
-													if ($commande_encours!=$rco["id"]) {
-														$nbr_annee_robe += $rco["qte"];
-														$commande_encours = $rco["id"];
-													}
-													$ca_annee_robe += $prix_produit;							
-													 
 													 $montant += $row["total"];
 												?>
 													<tr>
@@ -235,7 +217,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 													</tr>
 												</thead>
 												<tbody>
-												<?php												  $nbr = 0;
+												<?php												 
+												  $nbr = 0;
 												  $sql = "SELECT sum(qte) val, sum(montant_ht*qte) total, marque_nom FROM commandes c, commandes_produits cd, md_produits p, marques m WHERE c.id=cd.id and cd.produit_num=p.produit_num and p.marque_num=m.marque_num and commande_num!=0";
 												  if ($showroom!=-1)
 													$sql .= " and c.showroom_num='" . $showroom . "'";
@@ -528,7 +511,8 @@ $desc_page = "Statistiques - Olympe Mariage";
 												</tr>
 											</thead>
 											<tbody>
-											<?php											  $nbr = 0;
+											<?php											  
+											  $nbr = 0;
 											  $sql = "select client_ville, count(client_num) val from clients where client_datecreation>='" . $date_deb . "' and client_datecreation<='" . $date_fin . "'";
 											  if ($showroom!=-1)
 												$sql .= " and showroom_num='" . $showroom . "'";
