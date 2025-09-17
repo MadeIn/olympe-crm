@@ -87,7 +87,7 @@ if (isset($ajout)) {
 	$desc = str_replace("&lt;","<",$desc);
 	$desc = str_replace("&gt;",">",$desc);
 	
-	$sql = "insert into md_produits values (0," . sql_safe($ref) . "," . sql_safe($nom) . "," . sql_safe($desc) . ",''," . sql_safe(Date("Y-m-d H:i:s")) . "," . sql_safe($categorie) . "," . sql_safe($marque) . "," . sql_safe($etat) . ",0,0,0,'',0,0)";
+	$sql = "insert into md_produits values (0," . sql_safe($ref) . "," . sql_safe($nom) . "," . sql_safe($desc) . ",''," . sql_safe(Date("Y-m-d H:i:s")) . "," . sql_safe($categorie) . "," . sql_safe($marque) . "," . sql_safe($etat) . ",0,0,0,0,0,0)";
 	$num = $base->insert($sql);
 	
 		
@@ -101,7 +101,7 @@ if (isset($ajout)) {
 		$prix=0;
 		
 	$prix = str_replace(",",".",$prix);
-	$sql = "insert into prix values(0,''," . sql_safe($prix) . ",'','',''," . sql_safe(Date("Y-m-d H:i:s")) . ")";
+	$sql = "insert into prix values(0,0," . sql_safe($prix) . ",0,0,0," . sql_safe(Date("Y-m-d H:i:s")) . ")";
 	$prix_num = $base->insert($sql);
 	
 	// On insere le prix d'achat
@@ -111,9 +111,9 @@ if (isset($ajout)) {
 	$sql = "insert into prixachats values(0," . sql_safe($prixachat) . "," . sql_safe(Date("Y-m-d H:i:s")) . ")";
 	$prixachat_num = $base->insert($sql);
 	
-	$sql = "update md_produits set prix_num=" . sql_safe($prix_num) . ", prixachat_num=" . sql_safe($prixachat_num) . ", produit_poids=" . intval($poids) . ", tva_num=" . sql_safe($tva_num) . ", produit_montant_remise=" . sql_safe($remise) . ", produit_remise_type=" . sql_safe($remise_type) . "  where produit_num=" . sql_safe($num);
+	$sql = "update md_produits set prix_num=" . sql_safe($prix_num) . ", prixachat_num=" . sql_safe($prixachat_num) . ", produit_poids=" . intval($poids) . ", tva_num=" . sql_safe($tva) . ", produit_montant_remise=" . sql_safe($remise) . ", produit_remise_type=" . sql_safe($remise_type) . "  where produit_num=" . sql_safe($num);
 	$base->query($sql);
-	
+
 	// On ajoute les photos
 	$nbr_upload = 3;
 	for ($i=1;$i<=$nbr_upload;$i++) {
@@ -566,7 +566,9 @@ async function confirme() {
 											</tr>
 											</tbody>
 											</table>
+											<?php if (isset($modif_num)): ?>	
 											</form>
+											<?php endif; ?>
 										<?php											}
 										} ?>
 								</div>
@@ -587,12 +589,15 @@ async function confirme() {
 										<label class="control-label"><b>Photo 1 (Couverture) : </b></label>
 										<div class="controls">
 											<input name="userfile_acc_1" type="file" size=50 style="margin:5px 0;" /><br />
+											<textarea id="leg_1" name="leg_1" style="height:50px;width:90%;"></textarea><br />
 											<hr size="1" width="99%">
 											<label class="control-label"><b>Photo 2 : </b></label>
 											<input name="userfile_acc_2" type="file" size=50 style="margin:5px 0;" /><br />
+											<textarea id="leg_2" name="leg_2" style="height:50px;width:90%;"></textarea><br />
 											<hr size="1" width="99%">
 											<label class="control-label"><b>Photo 3 : </b></label>
 											<input name="userfile_acc_3" type="file" size=50 style="margin:5px 0;" /><br />
+											<textarea id="leg_3" name="leg_3" style="height:50px;width:90%;"></textarea><br />
 										</div>
 									</div>
 								</div>
@@ -656,7 +661,7 @@ async function confirme() {
 											?>
 												<tr>
 													<td><?= $rcc["photo_pos"] . $couv ?></td>
-													<td class="span2"><img src="/photos/produits/norm/<?= $rcc["photo_chemin"] ?>" height="30" /><br /><?= $rcc["photo_legende"] ?></td>
+													<td class="span2"><img src="/photos/produits/norm/<?= $rcc["photo_chemin"] ?>" height="100" /><br /><?= $rcc["photo_legende"] ?></td>
 													<td> 
 													<?php 	
 														if ($nbr_ligne>1)
@@ -757,7 +762,10 @@ async function confirme() {
 				include( $chemin . "/mod/footer.php"); ?>
             </div>
         </div>
-         <?php include TEMPLATE_PATH . 'bottom.php'; ?>
+        <?php include TEMPLATE_PATH . 'bottom.php'; ?>
+		<?php if (isset($modif)) : ?>
+		<script>$ol.toastSuccess("Produit mis à jour !");</script>
+		<?php endif;?>
     </body>
 
 </html>
