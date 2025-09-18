@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-
+date_default_timezone_set('Europe/Paris');
 /**
  * Front-controller (routeur) — PHP 8
  * - Résout les URLs propres vers /pages/<route>.php
@@ -48,6 +48,7 @@ require_once $ROOT . '/classes/Auth.php';
 // Helpers & fonctions (tes fichiers existants)
 require_once $ROOT . '/includes/helpers.php';
 require_once $ROOT . '/includes/text_functions.php';
+require_once $ROOT . '/includes/math_functions.php';
 require_once $ROOT . '/includes/date_functions.php';
 require_once $ROOT . '/includes/crypto_functions.php';
 require_once $ROOT . '/includes/image_functions.php';

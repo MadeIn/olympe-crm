@@ -23,6 +23,7 @@ class Database {
         try {
             $dsn = "mysql:host={$this->config['host']};dbname={$this->config['database']};charset={$this->config['charset']}";
             $this->pdo = new PDO($dsn, $this->config['username'], $this->config['password'], $this->config['options']);
+             $this->pdo->exec("SET time_zone = 'Europe/Paris'");
         } catch (PDOException $e) {
             $this->handleError('Erreur de connexion à la base de données: ' . $e->getMessage());
         }

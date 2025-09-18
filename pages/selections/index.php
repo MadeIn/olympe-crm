@@ -55,8 +55,8 @@
 				$ph = $base->query($sql);
 				echo '<div class="col-sm-7 col-xs-12">';
 				foreach ($ph as $rph) {
-					$image_norm = "https://crm.olympe-mariage.com/photos/produits/norm/" . $rph["photo_chemin"];
-					$image_zoom = "https://crm.olympe-mariage.com/photos/produits/zoom/" . $rph["photo_chemin"];
+					$image_norm = env('URL') . "/photos/produits/norm/" . $rph["photo_chemin"];
+					$image_zoom = env('URL') . "/photos/produits/zoom/" . $rph["photo_chemin"];
 					echo '	<a href="' . $image_zoom . '" class="lightbox" rel="showroom' . $rpp["produit_num"] . '">
 								<figure>
 									<img src="' . $image_norm . '">

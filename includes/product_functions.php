@@ -29,7 +29,7 @@ function RecupPrix(int $produit): array|false {
         $tva_taux = (float)$result["tva_taux"];
         
         $montant_tva = $prix_ht * ($tva_taux / 100);
-        $prix_ttc = round($prix_ht + $montant_tva, 2);
+        $prix_ttc = round($prix_ht + $montant_tva);
         
         // Calcul des prix avec remise
         $prix_ht_remise = 0;
@@ -57,11 +57,11 @@ function RecupPrix(int $produit): array|false {
             'montant_remise_type' => $remise_type,
             'montant_remise' => $remise_montant,
             'tva_taux' => $tva_taux,
-            'montant_tva' => round($montant_tva, 2),
+            'montant_tva' => round_prix($montant_tva, 2),
             'montant_ttc' => $prix_ttc,
-            'montant_ht_remise' => round($prix_ht_remise, 2),
-            'montant_tva_remise' => round($montant_tva_remise, 2),
-            'montant_ttc_remise' => round($prix_ttc_remise, 2)
+            'montant_ht_remise' => round_prix($prix_ht_remise, 2),
+            'montant_tva_remise' => round_prix($montant_tva_remise, 2),
+            'montant_ttc_remise' => round_prix($prix_ttc_remise, 2)
         ];
         
     } catch (Exception $e) {
@@ -216,7 +216,7 @@ function montantCommande(int $id): array|false {
             'commande_remise_type' => $remise_type,
             'commande_remise' => $remise_montant,
             'remise' => $remise_label,
-            'commande_remise_ttc' => round($commande_remise_ttc, 2)
+            'commande_remise_ttc' => round_prix($commande_remise_ttc, 2)
         ];
         
     } catch (Exception $e) {
@@ -253,7 +253,7 @@ function montantCommandeHT(int $id): float|false {
         return $montant_data['commande_ht'];
     } else {
         $ratio_remise = $montant_data['commande_remise_ttc'] / $montant_data['commande_ttc'];
-        return round($montant_data['commande_ht'] * $ratio_remise, 2);
+        return round_prix($montant_data['commande_ht'] * $ratio_remise, 2);
     }
 }
 

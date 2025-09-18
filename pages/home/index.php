@@ -488,7 +488,7 @@ $objectif_nbr_robe = safe_number_format($objectif_nbr_robe * 100, 0);
                                                 <small>CA TTC</small>
                                             </div>  <div class="number">
                                                 <h3 class="font-purple-soft">
-                                                        <span style="margin-left:30px;margin-right:30px;">/</span> <span data-counter="counterup" data-value="<?= round($encaissement,2) ?>">0</span>
+                                                        <span style="margin-left:30px;margin-right:30px;">/</span> <span data-counter="counterup" data-value="<?= round_prix($encaissement,2) ?>">0</span>
                                                     <small class="font-purple-soft">€</small>
                                                 </h3>
                                                     <span style="margin-left:50px;margin-right:30px;"></span><small>Encaissement</small>

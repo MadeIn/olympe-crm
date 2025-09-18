@@ -63,7 +63,7 @@ return [
             'message' => '<p>Bonjour [PRENOM],</p>
                          <p>Merci encore d\'avoir choisi Olympe pour essayer votre future robe de mariée, notre rendez-vous a été un vrai plaisir!</p>
                          <p>Pour faire suite, vous trouverez les photos des tenues que vous avez sélectionnées, accompagnées de leur prix en cliquant sur le lien suivant :</p>
-                         <p><a href="https://crm.olympe-mariage.com/selections/index.php?id=[SELECTION_NUM]" target="_blank"><u><strong>Découvrez votre sélection</strong></u></a></p>
+                         <p><a href="' . env('URL') . '/selections/index?id=[SELECTION_NUM]" target="_blank"><u><strong>Découvrez votre sélection</strong></u></a></p>
                          <p>Je reste à votre entière disposition si vous souhaitez des informations supplémentaires ou un second rendez-vous.</p>
                          <p>Dans l\'attente de vous lire ou de vous voir !</p>
                          <p>Très bonne journée,</p>'
@@ -78,7 +78,7 @@ return [
                          [ACOMPTE_SUITE]
                          [RETOUCHE]
                          <p>Vous pouvez consulter et imprimer votre devis en cliquant sur le lien suivant :</p>
-                         <p><a href="https://crm.olympe-mariage.com/devis/index?devis=[DEVIS_NUM]&print=no" target="_blank"><u><strong>Votre devis Olympe Mariage</strong></u></a></p>
+                         <p><a href="' . env('URL') . '/devis/index?devis=[DEVIS_NUM]&print=no" target="_blank"><u><strong>Votre devis Olympe Mariage</strong></u></a></p>
                          <p>Je reste à votre entière disposition si vous avez la moindre question.</p>
                          <p>À très bientôt,</p>'
         ],
@@ -88,7 +88,7 @@ return [
             'message' => '<p>Bonjour [PRENOM],</p>
                          <p>J\'espère que vous allez bien.</p>
                          <p>Vous pouvez consulter et imprimer votre facture en cliquant sur le lien suivant :</p>
-                         <p><a href="https://crm.olympe-mariage.com/facture/index?facture=[FACTURE_NUM]&print=no" target="_blank"><u><strong>Votre facture Olympe Mariage</strong></u></a></p>
+                         <p><a href="' . env('URL') . '/facture/index?facture=[FACTURE_NUM]&print=no" target="_blank"><u><strong>Votre facture Olympe Mariage</strong></u></a></p>
                          <p>Je reste à votre entière disposition si vous avez la moindre question.</p>
                          <p>Toute l\'équipe Olympe vous souhaite beaucoup de bonheur et un très beau mariage.</p>
                          <p>À très bientôt,</p>'
@@ -147,7 +147,7 @@ return [
             'message' => '<p>Bonjour [PRENOM],</p>
                          <p>Merci encore d\'avoir choisi Beau. pour essayer votre futur costume de marié, notre rendez-vous a été un vrai plaisir!</p>
                          <p>Pour faire suite, vous trouverez les photos des tenues que vous avez sélectionnées, accompagnées de leur prix en cliquant sur le lien suivant :</p>
-                         <p><a href="https://crm.olympe-mariage.com/selections/index.php?id=[SELECTION_NUM]" target="_blank"><u><strong>Découvrez votre sélection</strong></u></a></p>
+                         <p><a href="' . env('URL') . '/selections/index?id=[SELECTION_NUM]" target="_blank"><u><strong>Découvrez votre sélection</strong></u></a></p>
                          <p>Je reste à votre entière disposition si vous souhaitez des informations supplémentaires ou un second rendez-vous.</p>
                          <p>Dans l\'attente de vous lire ou de vous voir !</p>
                          <p>Très bonne journée,</p>'

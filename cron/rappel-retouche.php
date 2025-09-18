@@ -69,7 +69,7 @@ try {
 												<li>Code BIC / SWIFT : ' . $rco["banque_swift"] . '</li>
 											</ul>
 										</li>
-										<li>Retrouvez les détails de votre commande en <a href="https://crm.olympe-mariage.com/commandes/index?cde=' . crypte($rco["commande_num"]) . '">cliquant ici</a></li>
+										<li>Retrouvez les détails de votre commande en <a href="' . env('URL') . '/commandes/index?cde=' . crypte($rco["commande_num"]) . '">cliquant ici</a></li>
 									</ul';										
 				}
 			}

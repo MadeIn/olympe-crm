@@ -340,7 +340,8 @@ try {
 
         case 6: // ajout produit devis (taille -1)
         {
-            $devis=$int('devis'); $pdt=$int('pdt');
+            $devis=$int('devis'); 
+            $pdt=$int('pdt');
             $tt = $base->query("SELECT * FROM commandes_produits WHERE id='".$devis."' AND produit_num='".$pdt."' AND taille_num=-1");
             if (count($tt)===0) {
                 $prix = RecupPrix($pdt);

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+date_default_timezone_set('Europe/Paris');
 /**
  * param_invite.php — Bootstrap pour pages publiques (invités)
  * - N'exige PAS d'authentification
@@ -51,6 +52,7 @@ if (function_exists('mb_internal_encoding')) {
 // ────────────────────────────────────────────────────────────
 require_once APP_ROOT . '/includes/helpers.php';           // ton fichier helpers central si présent
 require_once APP_ROOT . '/includes/text_functions.php';
+require_once APP_ROOT . '/includes/math_functions.php';
 require_once APP_ROOT . '/includes/date_functions.php';
 require_once APP_ROOT . '/includes/crypto_functions.php';
 require_once APP_ROOT . '/includes/image_functions.php';

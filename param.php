@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+date_default_timezone_set('Europe/Paris');
 /**
  * param.php — garde d’accès (ACL) pour pages protégées
  * À inclure tout en haut des pages nécessitant une authentification.
@@ -40,6 +41,7 @@ if (!defined('APP_BOOTSTRAPPED')) {
     // (Optionnel) les autres helpers si besoin en accès direct:
     require_once $ROOT . '/includes/helpers.php';
     require_once $ROOT . '/includes/text_functions.php';
+    require_once $ROOT . '/includes/math_functions.php';
     require_once $ROOT . '/includes/date_functions.php';
     require_once $ROOT . '/includes/crypto_functions.php';
     require_once $ROOT . '/includes/image_functions.php';

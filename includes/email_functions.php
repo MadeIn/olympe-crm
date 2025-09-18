@@ -299,7 +299,7 @@ function sendBrevoTemplateEmail(string $email, int $template_id, array $variable
  * Construit le template HTML d'email (version optimisée)
  */
 function buildEmailTemplate(string $message, array $user_data): string {
-    $logo_url = "https://crm.olympe-mariage.com/mails/img/olympe-mariage-logo.jpg";
+    $logo_url = env('URL') . "/assets/images/olympe-mariage-logo.jpg";
     
     // Template HTML responsive et compatible avec tous les clients email
     $template = '
