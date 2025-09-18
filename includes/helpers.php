@@ -73,4 +73,22 @@ function sql_safe($value): string {
     return $base->quote($value);
 }
 
+if (!function_exists('env')) {
+    function env($key, $default = null) {
+        // Vérifier dans $_ENV d'abord
+        if (isset($_ENV[$key])) {
+            return $_ENV[$key];
+        }
+        
+        // Puis dans getenv()
+        $value = getenv($key);
+        if ($value !== false) {
+            return $value;
+        }
+        
+        // Retourner la valeur par défaut
+        return $default;
+    }
+}
+
 ?>

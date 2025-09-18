@@ -7,6 +7,8 @@ if (!isset($tab)) {
 		$tab="tab_1_6";
 }
 
+$alert_message = "";
+
 if (isset($modifier)) { // On modifie les infos 
 	$sql = "update clients set 
 			client_genre=" . sql_safe($genre) . ",
@@ -70,7 +72,7 @@ if (isset($rdv_num)) {
 	$date_rdv = $date . " " . $time;
 	$sql = "insert into rendez_vous values(0," . decrypte($client_num) . "," . sql_safe($type_num) . "," . sql_safe($date_rdv) . "," . sql_safe($remarque) . ",0,'0000-00-00 00:00:00',0,'0000-00-00 00:00:00'," . sql_safe($u->mNum) . ")";
 	$num = $base->insert($sql);
-	
+	$alert_message = "Prise de rendez-vous enregistrée !";
 	// On ajoute dans le calendrier du user
 	switch ($type_num) {
 		case 1: // 1er RDV
@@ -2350,7 +2352,7 @@ include TEMPLATE_PATH . 'head.php';
 																					echo '<option value="' . $ruu["showroom_num"] . '"';
 																					if ($ruu["showroom_num"]==$rcl["showroom_num"])
 																						echo " SELECTED";
-																					echo '>' . $ruu["showroom_nom"] . ' ' . $ruu["showroom_vill"] . '</option>';
+																					echo '>' . $ruu["showroom_nom"] . ' ' . $ruu["showroom_ville"] . '</option>';
 																				}
 																			?>
 																		</select>
@@ -2795,6 +2797,13 @@ async function commandeFournisseur(id) {
     displayReponse("Erreur réseau", placeId);
   } finally { $ol.loading(false); }
 }
+<?php if (isset($modifier)) { ?>
+$ol.toastSuccess("Client mis à jour !");
+<?php } ?>
+<?php if ($alert_message!=="") { ?>
+$ol.toastSuccess("<?php echo $alert_message ?>");
+<?php } ?>
+
 </script>
     </body>
 </html>
